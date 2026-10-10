@@ -237,6 +237,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <div class="settings-box qol-box">
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
+<section class="qol-section"><h3>Infinite Mode Completed-Wave EXP &amp; Wave Description Fix</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:39 AM MDT</p><ul><li>Infinite Mode now awards gems, food and player EXP only after every enemy from that specific wave has been defeated or escaped, rather than when the next wave starts. Overlapping waves are tracked separately.</li><li>Infinite player EXP remains +1 per completed wave for waves 1–10, +2 for waves 11–20, +3 for waves 21–30, increasing by one per ten waves.</li><li>Corrected regular map difficulty information to say 15 waves instead of 10.</li></ul></section>
 <section class="qol-section"><h3>Collapsible Battle Unit Slots, Barter Prestige Income &amp; Economy-First Auto Upgrade</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:35 AM MDT</p><ul><li>Tap the small arrow beside the left-side unit slots to hide the entire loadout dock and see more of the map; tap the arrow again to restore your unit slots. Works on phones and in fullscreen.</li><li>Every prestige star on an owned Barter permanently increases that Barter’s generated coins by 10% (1 star +10%, up to 5 stars +50%). The bonus stacks multiplicatively with Midas income effects and remains after battles and reloads.</li><li>Auto Upgrade and Smart Auto Play now always prioritize affordable Barter money-generation upgrades before damage and other support upgrades. When no affordable Barter upgrade exists, they upgrade other units based on tactical value.</li></ul></section>
 <section class="qol-section"><h3>Victory &amp; Defeat Battle Headers</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:27 AM MDT</p><ul><li>When a battle ends, a large centered VICTORY header appears in bright yellow for a win, or a DEFEAT header appears in red with black outlining and shadow for a loss.</li><li>The result stays visible over the battlefield until the next battle begins or you leave the stage; existing rewards, Next Map button, and saved progress are unchanged.</li><li>Works on mobile and desktop, including regular maps, Infinite Mode, and raids.</li></ul></section>
 <section class="qol-section"><h3>Next Map Button After Victory</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:24 AM MDT</p><ul><li>After winning a regular map, a Next Map? button appears immediately before Speed in the battle controls.</li><li>Tap it to begin the next unlocked map using the same difficulty (Easy, Medium, Hard, or Hell).</li><li>The button is hidden after losses, during battles, in Infinite Mode and raids, and on the last available map. Your completed rewards and progress save normally.</li></ul></section>
@@ -592,10 +593,10 @@ function renderModes(){
   const M=MODES[curMode];
   $('#modeInfo').textContent=curMode==='infinite'
     ?'Endless waves that keep getting stronger. Every wave you clear pays 6 gems (31 on each 10th wave) plus food from that map as you go. Player EXP per wave: 1 on waves 1–10, 2 on waves 11–20, 3 on waves 21–30, and +1 for every further 10 waves.'
-    :'Clear all 10 waves to earn '+25*M.mult+' gems and '+Math.ceil(2*M.mult)+' of that map\u2019s food. Enemy health x'+M.hp+', unit EXP x'+M.xp+'.';
+    :'Clear all 15 waves to earn '+25*M.mult+' gems and '+Math.ceil(2*M.mult)+' of that map\u2019s food. Enemy health x'+M.hp+', unit EXP x'+M.xp+'.';
 }
-function infReward(){
-  const w=G.wave,fd=STAGES[G.si].food,g=6+(w%10===0?25:0),f=(w%2===0?1:0)+(w%10===0?3:0);
+function infReward(w){
+  const fd=STAGES[G.si].food,g=6+(w%10===0?25:0),f=(w%2===0?1:0)+(w%10===0?3:0);
   const playerXp=Math.floor((w-1)/10)+1;
   S.gems+=g;if(f){S.bag[fd]=(S.bag[fd]||0)+f;discoverItem(fd);}G.ig+=g;G.fg+=f;G.infinitePlayerXp=(G.infinitePlayerXp||0)+playerXp;gainPlayerExp(playerXp);save(false);gemUI();
   toast('Wave '+w+' cleared: +'+g+' gems, +'+playerXp+' player EXP'+(f?' and +'+f+' '+ITEMS[fd].n:''));
@@ -1298,6 +1299,8 @@ function nextWave(force=false){
     G.q.push({hp:hp*7,kind:'boss',delayBefore:3});
   }
   if(miniBoss)G.q.push({hp:hp*5.5,kind:'miniboss'});
+  // Count all enemies belonging to this wave, including enemies not yet spawned.
+  if(G.mode==='infinite'){G.waveRemaining=G.waveRemaining||{};G.waveRewarded=G.waveRewarded||{};G.waveRemaining[G.wave]=G.q.length;}
   G.sp=0;G.waveSpawnCountdown=null;hud();
 }
 $('#bWave').onclick=()=>{
@@ -1797,14 +1800,14 @@ function step(dt){
       if(pick)upgradePlacedUnit(pick);
     }
   }
-  if(G.q.length){G.sp-=dt;if(G.sp<=0){const spawn=G.q.shift();const kind=typeof spawn==='number'?'normal':spawn.kind,hp=typeof spawn==='number'?spawn:spawn.hp;G.en.push({d:0,hp,mx:hp,kind,boss:kind==='boss'||kind==='miniboss',v:kind==='boss'?32:kind==='miniboss'?37:kind==='tank'?27:kind==='runner'?105:kind==='elite'?57:44+Math.random()*18,sl:0,x:-30,y:-30});G.sp=G.q[0]?.delayBefore??.75;if(!G.q.length)G.waveSpawnCountdown=5;}}
+  if(G.q.length){G.sp-=dt;if(G.sp<=0){const spawn=G.q.shift();const kind=typeof spawn==='number'?'normal':spawn.kind,hp=typeof spawn==='number'?spawn:spawn.hp;G.en.push({wave:G.wave,d:0,hp,mx:hp,kind,boss:kind==='boss'||kind==='miniboss',v:kind==='boss'?32:kind==='miniboss'?37:kind==='tank'?27:kind==='runner'?105:kind==='elite'?57:44+Math.random()*18,sl:0,x:-30,y:-30});G.sp=G.q[0]?.delayBefore??.75;if(!G.q.length)G.waveSpawnCountdown=5;}}
   // Start the next wave 5 game-seconds after the final enemy of this wave is spawned.
   // The countdown is independent of whether earlier enemies are still alive.
   if(G.run&&G.waveSpawnCountdown!==null){
     G.waveSpawnCountdown-=dt;
     if(G.waveSpawnCountdown<=0){
       G.waveSpawnCountdown=null;
-      if(G.mode==='infinite'){infReward();nextWave(true)}else if(G.wave<(G.raidLevel?raidMaxWave(G.raidLevel):15))nextWave(true);
+      if(G.mode==='infinite'){nextWave(true)}else if(G.wave<(G.raidLevel?raidMaxWave(G.raidLevel):15))nextWave(true);
     }
   }
   for(const e of G.en){
@@ -1952,7 +1955,23 @@ function step(dt){
       grantTraitReroll('Hard boss defeated',1+Math.floor(Math.random()*3));
     }
   }
+  // Credit an Infinite wave only after every enemy in that wave has been
+  // defeated or escaped. Overlapping waves are tracked independently.
+  if(G.mode==='infinite'){
+    for(const e of G.en){
+      if(e.hp<=0&&e.wave!=null&&G.waveRemaining&&G.waveRemaining[e.wave]!=null)
+        G.waveRemaining[e.wave]=Math.max(0,G.waveRemaining[e.wave]-1);
+    }
+  }
   G.en=G.en.filter(e=>e.hp>0);
+  if(G.lives>0&&G.mode==='infinite'&&G.waveRemaining){
+    for(const w of Object.keys(G.waveRemaining).map(Number).sort((a,b)=>a-b)){
+      if(G.waveRemaining[w]===0&&!G.waveRewarded[w]){
+        G.waveRewarded[w]=true;infReward(w);
+        delete G.waveRemaining[w];
+      }
+    }
+  }
   G.fx.forEach(f=>f.l-=dt);G.fx=G.fx.filter(f=>f.l>0);
   hud();
   if(G.lives<=0) return finish(false);
