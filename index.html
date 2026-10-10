@@ -250,6 +250,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <div class="settings-box qol-box">
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
+<section class="qol-section"><h3>Map &amp; Difficulty Player EXP Scaling</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:42 AM MDT</p><ul><li>Regular map victories start at 50 player EXP on Map 1 Easy and increase by 1.5% per subsequent map, compounded.</li><li>For each map, Medium awards 2.5%, Hard 5%, and Hell 10% more player EXP than Easy on that same map. Final rewards are rounded to whole EXP.</li><li>Infinite Mode wave EXP and raid player EXP remain unchanged. Unit-leveling EXP is separate.</li></ul></section>
 <section class="qol-section"><h3>Fullscreen Battle Screen-Awake Protection</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:34 AM MDT</p><ul><li>Fullscreen battles now request the same Android screen wake lock used by AFK mode, helping prevent the display from sleeping while playing.</li><li>The game retries if the browser releases the lock and attempts to restore it after returning to the app. A small fullscreen status shows whether protection is active or blocked.</li><li>Exiting fullscreen or finishing the battle releases protection unless AFK mode still needs it. Android battery settings and browser restrictions may override the request.</li></ul></section>
 <section class="qol-section"><h3>Consistent Unit Gem Sell Values</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:31 AM MDT</p><ul><li>Corrected reversed Common and Rare gem resale values. Rarity tiers now increase consistently: Common 10, Rare 40, Epic 100, Legendary 250, Mythic 600, Secret 1,400, Exclusive 2,500 gems for a newly summoned level-1 unit.</li><li>Manual selling and summon Auto-Sell now share exactly the same pricing function. Level and prestige increase manual resale value, but never beyond the starting price of the next rarity tier.</li><li>Existing owned units and save keys are unchanged; only their displayed future sale value is recalculated.</li></ul></section>
 
@@ -1079,6 +1080,13 @@ const originalSyncSettings=syncSettings;syncSettings=()=>{originalSyncSettings()
 syncSettings();
 
 // Player progression: EXP requirement increases by 75 per level; regular maps award 50 EXP.
+// Map EXP increases by 1.5% per map; difficulty bonuses compare to Easy on the same map.
+// Round only the final reward to an integer so small percentage increases accumulate fairly.
+function regularMapPlayerExp(stageIndex,mode){
+  const bonus={easy:1,medium:1.025,hard:1.05,hell:1.10};
+  const index=Math.max(0,Math.min(STAGES.length-1,Math.floor(Number(stageIndex)||0)));
+  return Math.round(50*Math.pow(1.015,index)*(bonus[mode]||1));
+}
 function playerExpNeeded(level){return 100+75*(level-1);}
 function gainPlayerExp(amount){
   if(S.playerLevel>=100)return;
@@ -1093,7 +1101,7 @@ function renderProfile(){
   $('#headerPlayer').textContent=S.playerName+' · Lv '+S.playerLevel;
   $('#profileLevel').textContent='Level '+S.playerLevel;
   $('#profileFill').style.width=Math.min(100,100*S.playerExp/playerExpNeeded(S.playerLevel))+'%';
-  $('#profileExp').textContent=S.playerLevel>=100?'MAX LEVEL · 100':S.playerExp+'/'+playerExpNeeded(S.playerLevel)+' EXP · Regular map: +50 EXP; Infinite: +1 EXP per wave, increasing every 10 waves';
+  $('#profileExp').textContent=S.playerLevel>=100?'MAX LEVEL · 100':S.playerExp+'/'+playerExpNeeded(S.playerLevel)+' EXP · Regular maps: 50 base EXP, +1.5% per map; Medium +2.5%, Hard +5%, Hell +10%; Infinite: +1 EXP per wave, increasing every 10 waves';
   $('#playerName').value=S.playerName;
   const avatar=$('#headerAvatar'),c=avatar.getContext('2d');c.clearRect(0,0,48,48);
   if(S.playerAvatar&&UNITS[S.playerAvatar])art(c,S.playerAvatar,24,30,.8);else{c.fillStyle='#8e83c7';c.font='bold 27px sans-serif';c.textAlign='center';c.fillText('★',24,33)}
@@ -1671,7 +1679,7 @@ function finish(win){
     S.gems+=g;S.bag[fd]=(S.bag[fd]||0)+f;discoverItem(fd);S.cleared=Math.max(S.cleared,G.si+1);
     const stars=stageStars(G.lives),key=stageStarKey(G.si,G.mode);
     if(!inf)S.stageStars[key]=Math.max(S.stageStars[key]||0,stars);
-    gainPlayerExp(50);m='Stage cleared on '+M.n+'! '+(inf?'':('Rating: '+ '★'.repeat(stars)+'☆'.repeat(3-stars)+' (best: '+'★'.repeat(S.stageStars[key])+'☆'.repeat(3-S.stageStars[key])+'). '))+'You earned '+g+' gems, '+f+' '+ITEMS[fd].n+' and 50 player EXP.';
+    const playerXp=regularMapPlayerExp(G.si,G.mode);gainPlayerExp(playerXp);m='Stage cleared on '+M.n+'! '+(inf?'':('Rating: '+ '★'.repeat(stars)+'☆'.repeat(3-stars)+' (best: '+'★'.repeat(S.stageStars[key])+'☆'.repeat(3-S.stageStars[key])+'). '))+'You earned '+g+' gems, '+f+' '+ITEMS[fd].n+' and '+playerXp+' player EXP.';
   }else if(inf) m='Run over at wave '+G.wave+'. This run earned '+G.ig+' gems, '+(G.infinitePlayerXp||0)+' player EXP and '+G.fg+' '+ITEMS[fd].n+'.';
   else{S.gems+=10;m='Your base fell. You earned 10 gems for trying.'}
   const bx=150+G.si*190;

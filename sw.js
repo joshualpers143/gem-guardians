@@ -1,4 +1,4 @@
-const CACHE='gem-guardians-public-v20261010-fullscreen-wakelock';
+const CACHE='gem-guardians-public-v20261010-map-difficulty-player-exp';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install', event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
