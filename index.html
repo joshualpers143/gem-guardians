@@ -250,7 +250,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <div class="settings-box qol-box">
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
-<section class="qol-section"><h3>Save Backup Audit &amp; Unit Slot Recovery</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:54 AM MDT</p><ul><li>Preserved equipped unit selections when save data contains nonconsecutive unit IDs after selling units.</li><li>Preserved targeted auto-trait unit selection through save migration.</li><li>Strengthened backup import validation for invalid unit records and missing player fields.</li><li>Existing save keys and game progress remain unchanged.</li></ul></section>
+<section class="qol-section"><h3>Save Backup Audit, Unit Slot &amp; Protected Recovery</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:54 AM MDT</p><ul><li>Preserved equipped unit selections when save data contains nonconsecutive unit IDs after selling units.</li><li>Preserved targeted auto-trait unit selection through save migration.</li><li>Strengthened backup import validation for invalid unit records and missing player fields.</li><li>Existing save keys and game progress remain unchanged.</li><li>Import now preserves a dedicated copy of the previous progress that regular autosaves cannot overwrite.</li><li>Settings now offers Restore Before Import with confirmation to recover the progress held before the latest import.</li><li>Reset Progress clears the protected recovery copy, while Public and Creator saves remain separate.</li><li>Export the current save before restoring if you also want to preserve newer progress.</li></ul></section>
 <section class="qol-section"><h3>Save Backup &amp; Recovery — Stability Update</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:51 AM MDT</p><ul><li>Added manual JSON save export and import to Settings, with edition/version validation and explicit overwrite confirmation.</li><li>Existing save keys remain unchanged; imports keep a local backup of the previous save.</li><li>Improved player progress safety; browser/device compatibility and full balance still require hands-on testing.</li></ul></section>
 <section class="qol-section"><h3>Map &amp; Difficulty Player EXP Scaling</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:42 AM MDT</p><ul><li>Regular map victories start at 50 player EXP on Map 1 Easy and increase by 1.5% per subsequent map, compounded.</li><li>For each map, Medium awards 2.5%, Hard 5%, and Hell 10% more player EXP than Easy on that same map. Final rewards are rounded to whole EXP.</li><li>Infinite Mode wave EXP and raid player EXP remain unchanged. Unit-leveling EXP is separate.</li></ul></section>
 <section class="qol-section"><h3>Fullscreen Battle Screen-Awake Protection</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:34 AM MDT</p><ul><li>Fullscreen battles now request the same Android screen wake lock used by AFK mode, helping prevent the display from sleeping while playing.</li><li>The game retries if the browser releases the lock and attempts to restore it after returning to the app. A small fullscreen status shows whether protection is active or blocked.</li><li>Exiting fullscreen or finishing the battle releases protection unless AFK mode still needs it. Android battery settings and browser restrictions may override the request.</li></ul></section>
@@ -293,7 +293,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <label class="setting"><span><b>Attack effects (FX)</b><small>Show or hide attack effects for all units, including Archers, Snipers, and Apprentices</small></span><input type="checkbox" data-setting="attackFx"></label>
  <div class="setting" style="display:block"><b>Auto-sell summoned units</b><small>Automatically sell newly summoned units of the selected rarities. New discoveries still count toward the Index.</small><div class="row" id="autoSellOptions" style="margin-top:8px"></div></div>
  <p style="color:var(--mut);font-size:12px">Settings are saved with your game progress. Automatic actions wait 3 seconds.</p>
- <div style="margin-top:16px;padding-top:14px;border-top:1px solid #ffffff30"><b>Save Backup &amp; Recovery</b><p style="color:var(--mut);font-size:12px">Download a copy of your progress before clearing browser data or changing devices. Import replaces this edition’s current progress after confirmation.</p><div class="row" style="margin-top:8px"><button type="button" id="exportSave">⬇ Export Save</button><button type="button" class="alt" id="importSave">⬆ Import Save</button><input type="file" id="importSaveFile" accept=".json,application/json" style="display:none" aria-label="Choose Gem Guardians save backup"></div></div>
+ <div style="margin-top:16px;padding-top:14px;border-top:1px solid #ffffff30"><b>Save Backup &amp; Recovery</b><p style="color:var(--mut);font-size:12px">Download a copy of your progress before clearing browser data or changing devices. Import replaces this edition’s current progress after confirmation.</p><div class="row" style="margin-top:8px"><button type="button" id="exportSave">⬇ Export Save</button><button type="button" class="alt" id="importSave">⬆ Import Save</button><button type="button" class="alt" id="restorePreImport">↶ Restore Before Import</button><input type="file" id="importSaveFile" accept=".json,application/json" style="display:none" aria-label="Choose Gem Guardians save backup"></div></div>
  <div style="margin-top:16px;padding-top:14px;border-top:1px solid #ffffff30"><button id="bRes" style="background:#a12c47">Reset Game Progress</button></div>
  </div></div>
 
@@ -409,6 +409,7 @@ function battleStage(){return G?.raidLevel?RAID_MAPS.hellsing:STAGES[G.si];}
 // Keep this storage key unchanged across releases so older progress is found.
 const KEY='gemGuardiansSave';
 const BACKUP_KEY='gemGuardiansSave_backup';
+const PRE_IMPORT_KEY=KEY+'_pre_import_recovery';
 const SAVE_VERSION=5;
 const STARTING_LIVES=10;
 function stageStars(lives){return lives>=STARTING_LIVES?3:lives>=Math.ceil(STARTING_LIVES/2)?2:1;}
@@ -565,12 +566,37 @@ $('#importSaveFile').onchange=async e=>{
     const restored=clean(parsed.data);
     if(!Array.isArray(parsed.data.units)||!Array.isArray(parsed.data.discovered))throw Error('Incomplete save data');
     if(!confirm('Replace your current '+GG_EDITION+' Edition progress with this backup? This cannot be undone unless you exported your current save.'))return;
-    // Do not overwrite the old backup: retain a recovery copy of the current progress.
-    const current=localStorage.getItem(KEY);if(current)localStorage.setItem(BACKUP_KEY,current);
-    localStorage.setItem(KEY,JSON.stringify(restored));
+    // Keep a dedicated recovery snapshot that routine autosaves never touch.
+    // Preserve the current in-memory state too, including unsaved changes.
+    const previous=JSON.stringify(clean(S));
+    const imported=JSON.stringify(restored);
+    localStorage.setItem(PRE_IMPORT_KEY,previous);
+    try{localStorage.setItem(KEY,imported)}catch(writeError){
+      // If writing the imported save fails, keep the original save intact.
+      try{localStorage.setItem(KEY,previous)}catch(rollbackError){console.error('Save rollback failed',rollbackError)}
+      throw writeError;
+    }
+    lastSaved=imported;
     alert('Save imported successfully. The game will reload to apply it.');location.reload();
   }catch(err){console.error('Import failed',err);alert('Could not import backup: '+err.message)}
   finally{input.value=''}
+};
+$('#restorePreImport').onclick=()=>{
+  try{
+    const raw=localStorage.getItem(PRE_IMPORT_KEY);
+    if(!raw){alert('No pre-import recovery save exists yet. Import a backup first.');return}
+    const recovered=clean(JSON.parse(raw));
+    if(!confirm('Restore your progress from before the last successful import? Your current progress will be replaced. Export your current save first if you want to keep it.'))return;
+    // Save the current state as a downloadable backup before restoring.
+    // Do not replace the protected snapshot until the restore succeeds.
+    const current=JSON.stringify(clean(S));
+    const restored=JSON.stringify(recovered);
+    localStorage.setItem(KEY,restored);
+    lastSaved=restored;
+    // Keep the prior current state available through the standard fallback slot.
+    try{localStorage.setItem(BACKUP_KEY,current)}catch(e){console.warn('Unable to store fallback backup',e)}
+    alert('Pre-import progress restored. The game will reload now.');location.reload();
+  }catch(err){console.error('Pre-import recovery failed',err);alert('Could not restore recovery save: '+err.message)}
 };
 $('#bSettings').onclick=()=>{syncSettings();$('#settingsModal').classList.remove('hide')};
 $('#bQol').onclick=()=>$('#qolModal').classList.remove('hide');
@@ -599,6 +625,7 @@ $('#bRes').onclick=()=>{leaveAfk();
   try{
     localStorage.removeItem(KEY);
     localStorage.removeItem(BACKUP_KEY);
+    localStorage.removeItem(PRE_IMPORT_KEY);
   }catch(e){}
   save(false);
   // Do not retain a pre-reset backup, which could restore erased progress.
