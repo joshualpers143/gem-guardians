@@ -251,6 +251,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <div class="settings-box qol-box">
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
+<section class="qol-section"><h3>Unique Enemy &amp; Summoned Creature Designs</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 10:59 AM MDT</p><ul><li>Replaced enemy orb visuals with unique silhouettes for horned imps, armored beetle tanks, fast goblin runners, spiked elite knights, and crowned demon bosses, while retaining their existing rarity/type colors and battle hitboxes.</li><li>Abyss Summoner now displays hooded shadow specters and larger horned armored Elite Ghouls; allied wolf summons also have recognizable wolf-like bodies instead of plain circles.</li><li>Creature artwork follows its summon skill identity; combat movement, damage, balance and save data remain unchanged.</li></ul></section>
 <section class="qol-section"><h3>Prestige Star Display &amp; Summoner Route Repair</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 10:54 AM MDT</p><ul><li>Owned unit cards show filled gold prestige stars, gray unearned stars, and an explicit 0–5 numerical count, so maxed-out units cannot be mistaken for zero-star units.</li><li>Abyss Summoner's shadow monsters and Elite Ghouls now spawn at the player's base and march backward along the enemy route toward the enemy entrance, rather than remaining beside the tower.</li><li>Added a reusable reverse-path summoning helper for future allied summoner units, including raid maps.</li></ul></section>
 <section class="qol-section"><h3>Distinct Fruit Artwork &amp; Prestige Testing</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 10:40 AM MDT</p><ul><li>Each of the 11 fruits now has its own recognizable shape and colors instead of sharing the same polygon silhouette.</li><li>The Bag explains how to feed fruits and where to prestige level-100 units.</li></ul></section>
 <section class="qol-section"><h3>Save Backup Audit, Unit Slot &amp; Protected Recovery</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:54 AM MDT</p><ul><li>Preserved equipped unit selections when save data contains nonconsecutive unit IDs after selling units.</li><li>Preserved targeted auto-trait unit selection through save migration.</li><li>Strengthened backup import validation for invalid unit records and missing player fields.</li><li>Existing save keys and game progress remain unchanged.</li><li>Import now preserves a dedicated copy of the previous progress that regular autosaves cannot overwrite.</li><li>Settings now offers Restore Before Import with confirmation to recover the progress held before the latest import.</li><li>Reset Progress clears the protected recovery copy, while Public and Creator saves remain separate.</li><li>Export the current save before restoring if you also want to preserve newer progress.</li></ul></section>
@@ -2192,14 +2193,64 @@ function raisedDisc(x,y,r,top,edge,height=7){
   const grad=cx.createRadialGradient(x-r*.35,y-r*.25,1,x,y,r*1.6);grad.addColorStop(0,'#ffffff99');grad.addColorStop(.3,top);grad.addColorStop(1,edge);
   cx.fillStyle=grad;cx.beginPath();cx.ellipse(x,y,r,r*.62,0,0,7);cx.fill();cx.strokeStyle='#ffffff66';cx.lineWidth=1.4;cx.stroke();cx.restore();
 }
+// Distinct enemy silhouettes; existing enemy colors, hitboxes and mechanics stay unchanged.
 function shadedEnemy(e){
-  const r=e.boss?18:e.kind==='tank'?14:e.kind==='runner'?8:10;
-  const palette={tank:['#4b9aff','#173a8e'],runner:['#65f58a','#12672b'],boss:['#595367','#05030b'],elite:['#ca86ff','#552288'],normal:['#ff8a83','#8e1922']}[e.kind]||['#ff8a83','#8e1922'];
-  cx.save();cx.fillStyle='#090b15aa';cx.beginPath();cx.ellipse(e.x+3,e.y+r*.6+4,r*1.1,r*.4,0,0,7);cx.fill();
-  const g=cx.createRadialGradient(e.x-r*.35,e.y-r*.4,1,e.x,e.y,r*1.4);g.addColorStop(0,'#ffffff');g.addColorStop(.18,palette[0]);g.addColorStop(1,palette[1]);
-  cx.fillStyle=g;cx.beginPath();cx.arc(e.x,e.y,r,0,7);cx.fill();cx.strokeStyle='#101525';cx.lineWidth=2;cx.stroke();
-  cx.fillStyle='#101525';cx.beginPath();cx.ellipse(e.x-r*.28,e.y-r*.08,Math.max(1.5,r*.12),Math.max(2,r*.18),0,0,7);cx.ellipse(e.x+r*.28,e.y-r*.08,Math.max(1.5,r*.12),Math.max(2,r*.18),0,0,7);cx.fill();
-  cx.restore();cx.fillStyle='#070b17';cx.fillRect(e.x-12,e.y-r-10,24,4);cx.fillStyle='#4ade80';cx.fillRect(e.x-12,e.y-r-10,24*Math.max(0,e.hp/e.mx),4);
+  const kind=e.boss?'boss':e.kind;
+  const r=kind==='boss'?18:kind==='tank'?14:kind==='runner'?9:kind==='elite'?13:11;
+  const palette={tank:['#4b9aff','#173a8e'],runner:['#65f58a','#12672b'],boss:['#595367','#05030b'],elite:['#ca86ff','#552288'],normal:['#ff8a83','#8e1922']}[kind]||['#ff8a83','#8e1922'];
+  const x=e.x,y=e.y;
+  cx.save();cx.fillStyle='#06091488';cx.beginPath();cx.ellipse(x+3,y+r*.8+3,r*1.2,r*.43,0,0,7);cx.fill();
+  cx.translate(x,y);cx.strokeStyle='#121727';cx.lineWidth=1.8;cx.lineJoin='round';
+  const body=cx.createLinearGradient(-r,-r,r,r);body.addColorStop(0,palette[0]);body.addColorStop(1,palette[1]);cx.fillStyle=body;
+  const poly=(pts)=>{cx.beginPath();pts.forEach((p,i)=>i?cx.lineTo(p[0],p[1]):cx.moveTo(p[0],p[1]));cx.closePath();cx.fill();cx.stroke();};
+  if(kind==='tank'){
+    // Armored beetle: massive plated shell, mandibles, and six legs.
+    cx.lineWidth=3;for(const s of [-1,1])for(let i=0;i<3;i++){cx.beginPath();cx.moveTo(s*8,-5+i*5);cx.lineTo(s*(r+7),-10+i*9);cx.stroke();}
+    cx.lineWidth=1.8;poly([[-r,-7],[-7,-r],[7,-r],[r,-7],[r,r*.55],[6,r],[-6,r],[-r,r*.55]]);
+    cx.strokeStyle='#9cceff';cx.beginPath();cx.moveTo(0,-r+2);cx.lineTo(0,r-2);cx.moveTo(-r+3,0);cx.lineTo(r-3,0);cx.stroke();
+    cx.strokeStyle='#11192a';cx.beginPath();cx.moveTo(-5,r-4);cx.lineTo(-9,r+6);cx.moveTo(5,r-4);cx.lineTo(9,r+6);cx.stroke();
+  }else if(kind==='runner'){
+    // Agile goblin: sharp ears, pointed chin, small limbs and swept-back crest.
+    poly([[-r-6,-5],[-7,-r+2],[0,-r-5],[7,-r+2],[r+6,-5],[r-2,6],[0,r+6],[-r+2,6]]);
+    cx.fillStyle='#b9ff9d';poly([[-4,-r+1],[0,-r-8],[5,-r+1]]);
+    cx.strokeStyle=palette[1];cx.lineWidth=2.5;cx.beginPath();cx.moveTo(-5,r+4);cx.lineTo(-10,r+10);cx.moveTo(5,r+4);cx.lineTo(10,r+10);cx.stroke();
+  }else if(kind==='elite'){
+    // Spiked void knight: angular helm, horns, shoulder plates.
+    poly([[-r-7,-r+1],[-r+2,-r+5],[-r-3,-r-10],[0,-r+1],[r+3,-r-10],[r-2,-r+5],[r+7,-r+1],[r,r],[0,r+5],[-r,r]]);
+    cx.fillStyle='#e0b7ff';poly([[-5,-5],[0,-10],[5,-5],[3,4],[-3,4]]);
+    cx.fillStyle='#351050';cx.fillRect(-5,-2,10,3);
+  }else if(kind==='boss'){
+    // Large crowned demon: wide horns, angular armor and glowing core.
+    poly([[-r-8,-r+3],[-r-13,-r-13],[-r+1,-r+5],[-8,-r-5],[0,-r-13],[8,-r-5],[r-1,-r+5],[r+13,-r-13],[r+8,-r+3],[r+3,r],[0,r+9],[-r-3,r]]);
+    cx.fillStyle='#e34261';poly([[0,-9],[7,0],[0,9],[-7,0]]);
+    cx.strokeStyle='#aeb0c5';cx.lineWidth=2;cx.beginPath();cx.moveTo(-r+3,4);cx.lineTo(-7,r+2);cx.moveTo(r-3,4);cx.lineTo(7,r+2);cx.stroke();
+  }else{
+    // Red horned imp: pointed ears, tail and clawed hands.
+    cx.strokeStyle=palette[1];cx.lineWidth=3;cx.beginPath();cx.moveTo(r-3,5);cx.quadraticCurveTo(r+12,10,r+9,-5);cx.stroke();
+    poly([[-r-5,-r-8],[-r+2,-r+1],[0,-r-4],[r-2,-r+1],[r+5,-r-8],[r,r*.6],[0,r+6],[-r,r*.6]]);
+    cx.strokeStyle=palette[0];cx.lineWidth=2;cx.beginPath();cx.moveTo(-r+2,4);cx.lineTo(-r-6,10);cx.moveTo(r-2,4);cx.lineTo(r+6,10);cx.stroke();
+  }
+  cx.fillStyle=kind==='boss'?'#ff3e60':'#0c1421';
+  if(kind!=='elite'){cx.beginPath();cx.ellipse(-r*.32,-2,Math.max(1.5,r*.13),2.5,0,0,7);cx.ellipse(r*.32,-2,Math.max(1.5,r*.13),2.5,0,0,7);cx.fill();}
+  cx.restore();
+  cx.fillStyle='#070b17';cx.fillRect(x-13,y-r-15,26,4);cx.fillStyle='#4ade80';cx.fillRect(x-13,y-r-15,26*Math.max(0,Math.min(1,e.hp/e.mx)),4);
+}
+function drawSummonedCreature(a){
+  // Shadow monster: hooded specter; Elite Ghoul: larger armored horned ghoul.
+  const x=a.x,y=a.y,r=a.elite?13:9;
+  cx.save();cx.translate(x,y);cx.fillStyle='#07051088';cx.beginPath();cx.ellipse(3,r*.8+3,r,4,0,0,7);cx.fill();
+  cx.shadowColor=a.elite?'#ff3656':'#8b36bd';cx.shadowBlur=a.elite?14:7;
+  cx.lineJoin='round';cx.lineWidth=1.5;cx.strokeStyle=a.elite?'#ff6484':'#bd77ee';
+  cx.fillStyle=a.elite?'#32101d':'#21152d';cx.beginPath();
+  if(a.elite){cx.moveTo(-r-5,-r+2);cx.lineTo(-r-8,-r-8);cx.lineTo(-6,-r+1);cx.lineTo(0,-r-6);cx.lineTo(6,-r+1);cx.lineTo(r+8,-r-8);cx.lineTo(r+5,-r+2);cx.lineTo(r,r);cx.lineTo(-r,r);}
+  else{cx.moveTo(-r,-2);cx.quadraticCurveTo(-r,-r-7,0,-r-7);cx.quadraticCurveTo(r,-r-7,r,-2);cx.lineTo(r+2,r);cx.lineTo(r*.4,r-3);cx.lineTo(0,r+2);cx.lineTo(-r*.4,r-3);cx.lineTo(-r-2,r);}
+  cx.closePath();cx.fill();cx.stroke();
+  cx.shadowBlur=0;cx.fillStyle=a.elite?'#ff3656':'#e178ff';
+  cx.beginPath();cx.moveTo(-6,-2);cx.lineTo(-2,0);cx.lineTo(-5,2);cx.moveTo(6,-2);cx.lineTo(2,0);cx.lineTo(5,2);cx.fill();
+  cx.strokeStyle=a.elite?'#ff879e':'#8b57bc';cx.lineWidth=2;
+  if(a.elite){cx.beginPath();cx.moveTo(-r,3);cx.lineTo(-r-6,10);cx.moveTo(r,3);cx.lineTo(r+6,10);cx.moveTo(-5,r);cx.lineTo(-7,r+5);cx.moveTo(5,r);cx.lineTo(7,r+5);cx.stroke();}
+  else{cx.beginPath();cx.moveTo(-r+2,5);cx.lineTo(-r-4,10);cx.moveTo(r-2,5);cx.lineTo(r+4,10);cx.stroke();}
+  cx.restore();
 }
 function draw(){
   cx.setTransform(1,0,0,1,0,0);
@@ -2232,15 +2283,12 @@ function draw(){
     cx.globalAlpha*=.35;cx.beginPath();cx.arc(x,y,ward.radius,0,Math.PI*2);cx.stroke();cx.restore();
   }
   for(const w of (G.wolves||[])){
-    const [x,y]=posAt(w.d);cx.save();cx.shadowBlur=10;cx.shadowColor='#ff2d2d';
-    C(cx,x,y,10,'#2a1015');C(cx,x-4,y-2,2,'#ff3b32');C(cx,x+4,y-2,2,'#ff3b32');cx.restore();
+    const [x,y]=posAt(w.d);cx.save();cx.translate(x,y);cx.shadowColor='#ff3333';cx.shadowBlur=8;
+    cx.fillStyle='#371a20';cx.strokeStyle='#ff6262';cx.lineWidth=1.5;
+    cx.beginPath();cx.moveTo(-11,5);cx.lineTo(-8,-6);cx.lineTo(-3,-10);cx.lineTo(0,-5);cx.lineTo(4,-10);cx.lineTo(10,-6);cx.lineTo(12,5);cx.lineTo(5,9);cx.lineTo(-6,9);cx.closePath();cx.fill();cx.stroke();
+    cx.fillStyle='#ff4141';cx.fillRect(-6,-2,3,3);cx.fillRect(3,-2,3,3);cx.restore();
   }
-  for(const a of (G.allies||[])){
-    cx.save();cx.shadowColor=a.elite?'#ff1d3c':'#8e2238';cx.shadowBlur=a.elite?15:7;
-    C(cx,a.x,a.y,a.elite?10:7,a.elite?'#2a0b14':'#17121d');
-    C(cx,a.x-3,a.y-2,1.8,'#ff334b');C(cx,a.x+3,a.y-2,1.8,'#ff334b');
-    cx.strokeStyle='#ff3651';cx.lineWidth=1.4;cx.beginPath();cx.arc(a.x,a.y,a.elite?12:9,0,7);cx.stroke();cx.restore();
-  }
+  for(const a of (G.allies||[]))drawSummonedCreature(a);
   for(const u of G.us){
     raisedDisc(u.x,u.y+13,18,'#48516b','#181e32',8);
     cx.strokeStyle=TYPES[UNITS[u.id].t];cx.lineWidth=2;cx.beginPath();cx.ellipse(u.x,u.y+13,18,11,0,0,7);cx.stroke();
