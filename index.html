@@ -210,7 +210,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
         <button id="bWave">Start wave</button>
         <button id="bNextMap" class="hide" title="Start the next map on the same difficulty">Next Map?</button>
         <button class="alt" id="bSpd">Speed x1</button>
-        <button class="alt" id="bPause">Pause</button><button class="alt" id="bAutoUpgrade" aria-pressed="false">Auto Upgrade: OFF</button><button class="alt" id="bAutoPlay" aria-pressed="false">🔒 Auto Play</button><button class="alt" id="bFullMap">⛶ Fullscreen Map</button>
+        <button class="alt" id="bPause">Pause</button><button class="alt" id="bAutoUpgrade" aria-pressed="false">Auto Upgrade: OFF</button><button class="alt" id="bAutoPlay" aria-pressed="false">🔒 Auto Play</button><button class="alt" id="bFullMap">⛶ Fullscreen Map</button><span id="battleWakeStatus" style="font-size:11px;color:#9fe5bb" aria-live="polite"></span>
         <button class="alt" id="bQuit">Leave stage</button>
       </div>
       <div class="battle-canvas-wrap"><canvas id="cv" width="800" height="450"></canvas><div id="battleOutcome" class="hide" role="status" aria-live="polite" aria-label="Battle result"><div class="outcome-title" id="battleOutcomeTitle"></div></div><div id="battleUnitDock" aria-label="Battle unit slots"><div id="bar"></div></div><button type="button" id="battleDockToggle" aria-label="Hide unit slots" aria-expanded="true" title="Hide unit slots">◀</button><div id="unitQuick" class="unit-quick hide" role="group" aria-label="Selected unit quick actions"></div></div>
@@ -250,6 +250,11 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <div class="settings-box qol-box">
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
+<section class="qol-section"><h3>Fullscreen Battle Screen-Awake Protection</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:34 AM MDT</p><ul><li>Fullscreen battles now request the same Android screen wake lock used by AFK mode, helping prevent the display from sleeping while playing.</li><li>The game retries if the browser releases the lock and attempts to restore it after returning to the app. A small fullscreen status shows whether protection is active or blocked.</li><li>Exiting fullscreen or finishing the battle releases protection unless AFK mode still needs it. Android battery settings and browser restrictions may override the request.</li></ul></section>
+<section class="qol-section"><h3>Consistent Unit Gem Sell Values</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:31 AM MDT</p><ul><li>Corrected reversed Common and Rare gem resale values. Rarity tiers now increase consistently: Common 10, Rare 40, Epic 100, Legendary 250, Mythic 600, Secret 1,400, Exclusive 2,500 gems for a newly summoned level-1 unit.</li><li>Manual selling and summon Auto-Sell now share exactly the same pricing function. Level and prestige increase manual resale value, but never beyond the starting price of the next rarity tier.</li><li>Existing owned units and save keys are unchanged; only their displayed future sale value is recalculated.</li></ul></section>
+
+<section class="qol-section"><h3>Auto-Sell Verified &amp; Summon Results Improved</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:29 AM MDT</p><ul><li>Fixed a second bug: brand-new saves lacked the rarity schema version, which could change Common auto-sell selection into Rare after reopening the game. Rechecked checkbox and summon handling.</li><li>Summon results now explicitly mark auto-sold pulls and display the number of units sold and gems refunded, including duplicate pulls.</li><li>Only newly summoned units of enabled rarities are sold; owned units and other rarities remain untouched.</li></ul></section>
+<section class="qol-section"><h3>Auto-Sell Summon Settings Fix</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:23 AM MDT</p><ul><li>Fixed Enable auto-sell checkbox not saving its setting because its handler was bound before the dynamically created control existed.</li><li>Auto-sell now works for newly summoned units of selected rarities during single, ten-pull, and automatic summoning; unselected rarities and existing units remain untouched.</li><li>Added a clear live status message reminding players to choose at least one rarity; auto-sold units still count toward Index discoveries.</li></ul></section>
 <section class="qol-section"><h3>AFK Screen Awake, Scrollable Rewards &amp; Status Improvements</h3><p style="color:var(--mut);font-size:12px">Updated Saturday, October 10, 2026 at 03:55 AM MDT · Original wake-lock update Saturday, October 10, 2026 at 03:47 AM MDT · Scroll/status update Saturday, October 10, 2026 at 03:52 AM MDT</p><ul><li>AFK mode requests a screen wake lock and tries to restore it when Android or the browser releases it or the game regains focus.</li><li>A visible status bar shows whether screen-awake protection is active, checking, paused, or unavailable, with a Retry Keep Screen Awake button.</li><li>The black AFK rewards screen scrolls vertically on phones while the status and Retry button remain visible at the top. Claim Rewards and Leave AFK Mode remain reachable.</li><li>Leaving AFK mode releases the wake lock to save battery. Android power settings or browser restrictions can still turn the display off.</li></ul></section>
 <section class="qol-section"><h3>Infinite Mode Completed-Wave EXP &amp; Wave Description Fix</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:39 AM MDT</p><ul><li>Infinite Mode now awards gems, food and player EXP only after every enemy from that specific wave has been defeated or escaped, rather than when the next wave starts. Overlapping waves are tracked separately.</li><li>Infinite player EXP remains +1 per completed wave for waves 1–10, +2 for waves 11–20, +3 for waves 21–30, increasing by one per ten waves.</li><li>Corrected regular map difficulty information to say 15 waves instead of 10.</li></ul></section>
 <section class="qol-section"><h3>Collapsible Battle Unit Slots, Barter Prestige Income &amp; Economy-First Auto Upgrade</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:35 AM MDT</p><ul><li>Tap the small arrow beside the left-side unit slots to hide the entire loadout dock and see more of the map; tap the arrow again to restore your unit slots. Works on phones and in fullscreen.</li><li>Every prestige star on an owned Barter permanently increases that Barter’s generated coins by 10% (1 star +10%, up to 5 stars +50%). The bonus stacks multiplicatively with Midas income effects and remains after battles and reloads.</li><li>Auto Upgrade and Smart Auto Play now always prioritize affordable Barter money-generation upgrades before damage and other support upgrades. When no affordable Barter upgrade exists, they upgrade other units based on tactical value.</li></ul></section>
@@ -443,7 +448,7 @@ function updateTraitRerollButton(){
 }
 setInterval(updateTraitRerollButton,200);
 const DEFAULT_SETTINGS={autoRestart:false,attackFx:true,autoSell:false};
-let S={gems:500,units:[],cleared:0,nid:1,bag:{},settings:{...DEFAULT_SETTINGS},discovered:[],indexClaimed:[],pityLegendary:0,pityMythic:0,pitySecret:0,traitPity:0,traitRerolls:25,autoTraitEnabled:false,autoTraitTarget:"",autoTraitUnitUid:null,autoSellRarities:[],playerLevel:1,playerExp:0,playerName:"Player",playerAvatar:"",playerRewards:[],stageStars:{},equipped:[],afkPendingGems:0,afkPendingRerolls:0,raidCleared:0};
+let S={gems:500,units:[],cleared:0,nid:1,bag:{},settings:{...DEFAULT_SETTINGS},discovered:[],indexClaimed:[],pityLegendary:0,pityMythic:0,pitySecret:0,traitPity:0,traitRerolls:25,autoTraitEnabled:false,autoTraitTarget:"",autoTraitUnitUid:null,autoSellRarities:[],unitRarityVersion:2,playerLevel:1,playerExp:0,playerName:"Player",playerAvatar:"",playerRewards:[],stageStars:{},equipped:[],afkPendingGems:0,afkPendingRerolls:0,raidCleared:0};
 let lastSaved='';
 function clean(d){
   if(!d||typeof d!=='object'||Array.isArray(d)) throw Error('Invalid save');
@@ -547,7 +552,7 @@ addEventListener('beforeunload',()=>save(false));
 $('#bSave').onclick=()=>save(true);
 $('#bRes').onclick=()=>{leaveAfk();
   // A confirmed reset starts a completely new game, including settings and pity.
-  S={gems:500,units:[],cleared:0,nid:1,bag:{},settings:{...DEFAULT_SETTINGS},discovered:[],discoveredItems:[],indexClaimed:[],pityLegendary:0,pityMythic:0,pitySecret:0,traitPity:0,traitRerolls:25,autoTraitEnabled:false,autoTraitTarget:"",autoTraitUnitUid:null,autoSellRarities:[],playerLevel:1,playerExp:0,playerName:"Player",playerAvatar:"",playerRewards:[],stageStars:{},equipped:[],afkPendingGems:0,afkPendingRerolls:0,raidCleared:0};
+  S={gems:500,units:[],cleared:0,nid:1,bag:{},settings:{...DEFAULT_SETTINGS},discovered:[],discoveredItems:[],indexClaimed:[],pityLegendary:0,pityMythic:0,pitySecret:0,traitPity:0,traitRerolls:25,autoTraitEnabled:false,autoTraitTarget:"",autoTraitUnitUid:null,autoSellRarities:[],unitRarityVersion:2,playerLevel:1,playerExp:0,playerName:"Player",playerAvatar:"",playerRewards:[],stageStars:{},equipped:[],afkPendingGems:0,afkPendingRerolls:0,raidCleared:0};
   grantStarterBarter();afkPendingUI();
   G=null;
   lastSaved='';
@@ -615,7 +620,18 @@ function infReward(w){
   S.gems+=g;if(f){S.bag[fd]=(S.bag[fd]||0)+f;discoverItem(fd);}G.ig+=g;G.fg+=f;G.infinitePlayerXp=(G.infinitePlayerXp||0)+playerXp;gainPlayerExp(playerXp);save(false);gemUI();
   toast('Wave '+w+' cleared: +'+g+' gems, +'+playerXp+' player EXP'+(f?' and +'+f+' '+ITEMS[fd].n:''));
 }
-function sellVal(i){return Math.round({Common:30,Rare:15,Epic:65,Legendary:160,Mythic:350,Secret:750,Exclusive:65}[UNITS[i.id].r]*(1+i.st*.5)+i.lv*2)}
+// Centralized gem resale values. Rarity bands never overlap, even after leveling/prestige.
+const UNIT_SELL_BASE={Common:10,Rare:40,Epic:100,Legendary:250,Mythic:600,Secret:1400,Exclusive:2500};
+const UNIT_SELL_NEXT={Common:'Rare',Rare:'Epic',Epic:'Legendary',Legendary:'Mythic',Mythic:'Secret',Secret:'Exclusive'};
+function sellVal(i){
+  const rarity=UNITS[i.id].r,base=UNIT_SELL_BASE[rarity];
+  if(!Number.isFinite(base))throw new Error('Unknown unit rarity: '+rarity);
+  const level=Math.max(1,Math.min(100,Number(i.lv)||1));
+  const stars=Math.max(0,Math.min(5,Number(i.st)||0));
+  const value=Math.round(base*(1+stars*.5)+(level-1)*2);
+  const next=UNIT_SELL_NEXT[rarity];
+  return next?Math.min(value,UNIT_SELL_BASE[next]-1):value;
+}
 function sell(uid){
   const i=S.units.find(x=>x.uid===uid);if(!i)return;
   if(G&&G.us.some(x=>x.uid===uid)) return toast('That unit is on the map. Leave the stage first.');
@@ -956,7 +972,7 @@ function pull(n){
   ensureBanner();
   const cost=n===1?50:450;
   if(S.gems<cost)return toast('You need '+cost+' gems for that');
-  S.gems-=cost;const got=[];
+  S.gems-=cost;const got=[];const sold=[];const soldFlags=[];let autoSellRefund=0;
   for(let i=0;i<n;i++){
     let k;
     if(S.playerLevel>=10&&((S.pitySecret||0)>=2499||Math.random()<.005))k='Secret';
@@ -973,11 +989,11 @@ function pull(n){
     S.pityLegendary=k==='Legendary'?0:(S.pityLegendary||0)+1;
     S.pityMythic=k==='Mythic'?0:(S.pityMythic||0)+1;
     if(S.playerLevel>=10)S.pitySecret=k==='Secret'?0:Math.min(2499,(S.pitySecret||0)+1);
-    if(S.settings.autoSell&&S.autoSellRarities.includes(k)){S.gems+=Math.round({Common:30,Rare:15,Epic:65,Legendary:160,Mythic:350,Secret:750,Exclusive:65}[k]+2);}else{S.units.push({uid:S.nid++,id,lv:1,xp:0,st:0,trait:''});}
+    if(S.settings.autoSell&&S.autoSellRarities.includes(k)){const refund=sellVal({id,lv:1,st:0});S.gems+=refund;autoSellRefund+=refund;sold.push(id);soldFlags.push(true);}else{soldFlags.push(false);S.units.push({uid:S.nid++,id,lv:1,xp:0,st:0,trait:''});}
     if(!S.discovered.includes(id))S.discovered.push(id);
     got.push(id);
   }
-  $('#res').innerHTML='You got: '+got.map(id=>'<b class="'+UNITS[id].r+'">'+UNITS[id].n+'</b>').join(', ');
+  $('#res').innerHTML='You got: '+got.map((id,i)=>'<b class="'+UNITS[id].r+'">'+UNITS[id].n+(soldFlags[i]?' (auto-sold)':'')+'</b>').join(', ')+(sold.length?'<div style="margin-top:8px;color:#a5f3bd">Auto-sold '+sold.length+' unit(s) for +'+autoSellRefund+' gems.</div>':'');
   save(false);gemUI();renderAll();updatePity();
 }
 $('#p1').onclick=()=>pull(1);$('#p10').onclick=()=>pull(10);
@@ -1053,9 +1069,14 @@ setInterval(()=>{
 },350);
 refreshAutoTraitUI();refreshAutoSummonUI();
 const SELL_RARITIES=['Common','Rare','Epic','Legendary','Mythic','Secret'];
-$('#autoSellOptions').innerHTML='<label><input type="checkbox" data-setting="autoSell"> Enable auto-sell</label>'+SELL_RARITIES.map(r=>`<label class="${r}"><input type="checkbox" data-sell-rarity="${r}"> ${r}</label>`).join('');
-$('#autoSellOptions').querySelectorAll('[data-sell-rarity]').forEach(el=>el.onchange=()=>{S.autoSellRarities=SELL_RARITIES.filter(r=>$('#autoSellOptions [data-sell-rarity="'+r+'"]').checked);save(false)});
-const originalSyncSettings=syncSettings;syncSettings=()=>{originalSyncSettings();$('#autoSellOptions').querySelectorAll('[data-sell-rarity]').forEach(el=>el.checked=S.autoSellRarities.includes(el.dataset.sellRarity));};
+$('#autoSellOptions').innerHTML='<label><input type="checkbox" data-setting="autoSell"> Enable auto-sell</label>'+SELL_RARITIES.map(r=>`<label class="${r}"><input type="checkbox" data-sell-rarity="${r}"> ${r}</label>`).join('')+'<small id="autoSellHint" style="display:block;width:100%;color:var(--mut)"></small>';
+// These controls are inserted dynamically, after the global Settings listeners are bound.
+const autoSellToggle=$('#autoSellOptions [data-setting="autoSell"]');
+autoSellToggle.onchange=()=>{S.settings.autoSell=autoSellToggle.checked;save(false);updateAutoSellHint();};
+function updateAutoSellHint(){const hint=$('#autoSellHint');if(!hint)return;hint.textContent=!S.settings.autoSell?'Auto-sell is off.':!S.autoSellRarities.length?'Choose at least one rarity above to sell newly summoned units.':'Active: new summons of '+S.autoSellRarities.join(', ')+' will be sold automatically for gems. Existing units are safe.';}
+$('#autoSellOptions').querySelectorAll('[data-sell-rarity]').forEach(el=>el.onchange=()=>{S.autoSellRarities=SELL_RARITIES.filter(r=>$('#autoSellOptions [data-sell-rarity="'+r+'"]').checked);save(false);updateAutoSellHint();});
+const originalSyncSettings=syncSettings;syncSettings=()=>{originalSyncSettings();$('#autoSellOptions').querySelectorAll('[data-sell-rarity]').forEach(el=>el.checked=S.autoSellRarities.includes(el.dataset.sellRarity));updateAutoSellHint();};
+syncSettings();
 
 // Player progression: EXP requirement increases by 75 per level; regular maps award 50 EXP.
 function playerExpNeeded(level){return 100+75*(level-1);}
@@ -1160,6 +1181,22 @@ $('#claimAfkOutside').onclick=()=>claimAfkRewards();
 // Keep the screen awake while the AFK overlay is visible. Browsers may revoke
 // the lock on visibility changes, low battery, or system power restrictions.
 let afkWakeLock=null,afkWakeRequesting=false,afkWakeRetry=null;
+// One shared screen wake lock covers AFK mode and fullscreen battles.
+function battleWakeWanted(){return !!($('#arena').classList.contains('map-fullscreen') && G && !G.over);}
+function screenWakeWanted(){return afkActive || battleWakeWanted();}
+function updateBattleWakeStatus(message){
+  const el=$('#battleWakeStatus');if(!el)return;
+  el.textContent=message;
+  el.title='Android/browser battery restrictions can still turn the screen off.';
+}
+function ensureScreenWakeRetry(){
+  if(afkWakeRetry!==null)return;
+  afkWakeRetry=setInterval(()=>{if(screenWakeWanted() && document.visibilityState==='visible' && !afkWakeLock)requestAfkWakeLock();},15000);
+}
+function syncScreenWake(){
+  if(!screenWakeWanted()){releaseAfkWakeLock();updateBattleWakeStatus('');return;}
+  ensureScreenWakeRetry();requestAfkWakeLock();
+}
 function afkWakeStatus(message){
   const status=$('#afkWakeStatus');
   if(!status)return;
@@ -1168,29 +1205,32 @@ function afkWakeStatus(message){
 }
 function stopAfkWakeRetry(){if(afkWakeRetry!==null){clearInterval(afkWakeRetry);afkWakeRetry=null;}}
 async function requestAfkWakeLock(){
-  if(!afkActive || document.visibilityState!=='visible')return;
-  if(afkWakeLock){afkWakeStatus('Screen-awake protection active ✓');return;}
+  if(!screenWakeWanted() || document.visibilityState!=='visible')return;
+  if(afkWakeLock){if(afkActive)afkWakeStatus('Screen-awake protection active ✓');updateBattleWakeStatus('☀ Screen awake: Active ✓');return;}
   if(afkWakeRequesting)return;
   if(!window.isSecureContext || !('wakeLock' in navigator)){
-    afkWakeStatus('Unavailable here. Open the installed HTTPS game in Brave or Chrome and tap Retry.');return;
+    if(afkActive)afkWakeStatus('Unavailable here. Open the installed HTTPS game in Brave or Chrome and tap Retry.');updateBattleWakeStatus('☀ Screen awake: Unavailable');return;
   }
   afkWakeRequesting=true;
   try{
     const lock=await navigator.wakeLock.request('screen');
-    if(!afkActive || document.visibilityState!=='visible'){await lock.release();return;}
+    if(!screenWakeWanted() || document.visibilityState!=='visible'){await lock.release();return;}
     afkWakeLock=lock;
     lock.addEventListener('release',()=>{
       if(afkWakeLock!==lock)return;
       afkWakeLock=null;
-      if(afkActive){
-        afkWakeStatus('Screen-awake protection was released. Tap Retry if your screen dims.');
+      if(screenWakeWanted()){
+        if(afkActive)afkWakeStatus('Screen-awake protection was released. Tap Retry if your screen dims.');
+        updateBattleWakeStatus('☀ Screen awake: Reconnecting…');
         // Some Android browsers release the lock on focus changes; try to reacquire.
         if(document.visibilityState==='visible')setTimeout(requestAfkWakeLock,700);
       }
     });
-    afkWakeStatus('Screen-awake protection active ✓');
+    if(afkActive)afkWakeStatus('Screen-awake protection active ✓');
+    updateBattleWakeStatus('☀ Screen awake: Active ✓');
   }catch(err){
-    afkWakeStatus('Could not keep screen awake (battery saver/browser restriction). Tap Retry.');
+    if(afkActive)afkWakeStatus('Could not keep screen awake (battery saver/browser restriction). Tap Retry.');
+    updateBattleWakeStatus('☀ Screen awake: Blocked (check battery saver)');
   }finally{afkWakeRequesting=false;}
 }
 function releaseAfkWakeLock(){
@@ -1221,7 +1261,7 @@ function afkUpdate(){
 }
 function leaveAfk(){
   if(!afkActive)return;
-  afkUpdate();afkActive=false;releaseAfkWakeLock();
+  afkUpdate();afkActive=false;syncScreenWake();
   // Leaving AFK forfeits any incomplete 60-second cycle.
   const completed=afkPaid;afkStart=0;afkPaid=0;
   $('#afkCountdown').textContent='01:00';
@@ -1233,12 +1273,12 @@ function leaveAfk(){
 $('#enterAfk').onclick=()=>{
   if(afkActive)return;
   afkActive=true;afkStart=performance.now();afkPaid=0;afkGems=0;afkRerolls=0;afkPendingUI();
-  $('#afkLatest').textContent='';$('#afkOverlay').classList.remove('hide');afkWakeStatus('Requesting screen-awake protection…');afkUpdate();requestAfkWakeLock();stopAfkWakeRetry();afkWakeRetry=setInterval(()=>{if(afkActive && document.visibilityState==='visible' && !afkWakeLock)requestAfkWakeLock();},15000);
+  $('#afkLatest').textContent='';$('#afkOverlay').classList.remove('hide');afkWakeStatus('Requesting screen-awake protection…');afkUpdate();syncScreenWake();
 };
 $('#exitAfk').onclick=leaveAfk;
 setInterval(afkUpdate,1000);
-document.addEventListener('visibilitychange',()=>{if(afkActive){afkUpdate();if(document.visibilityState==='visible')requestAfkWakeLock();else afkWakeStatus('Screen-awake protection paused while app is in background');}});
-window.addEventListener('focus',()=>{if(afkActive)requestAfkWakeLock();});
+document.addEventListener('visibilitychange',()=>{if(afkActive)afkUpdate();if(document.visibilityState==='visible')syncScreenWake();else if(afkActive)afkWakeStatus('Screen-awake protection paused while app is in background');});
+window.addEventListener('focus',()=>{if(screenWakeWanted())syncScreenWake();});
 
 /* ---------- Tabs ---------- */
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
@@ -1515,6 +1555,7 @@ function setMapFullscreen(on){
   $('#bFullMap').textContent=on?'⛶ Exit Fullscreen':'⛶ Fullscreen Map';
   if(!on&&document.fullscreenElement=== $('#arena'))document.exitFullscreen().catch(()=>{});
   if(on&&$('#arena').requestFullscreen)$('#arena').requestFullscreen().catch(()=>{});
+  syncScreenWake();
   if(G&&G.sel)requestAnimationFrame(positionQuick);
 }
 $('#bFullMap').onclick=()=>setMapFullscreen(!$('#arena').classList.contains('map-fullscreen'));
@@ -1531,6 +1572,7 @@ $('#battleDockToggle').onclick=()=>{
 
 document.addEventListener('fullscreenchange',()=>{
   if(!document.fullscreenElement&&$('#arena').classList.contains('map-fullscreen'))setMapFullscreen(false);
+  else syncScreenWake();
 });
 
 $('#bQuit').onclick=()=>{
@@ -1608,7 +1650,7 @@ cv.onclick=e=>{
 };
 function finish(win){
   const M=MODES[G.mode],inf=G.mode==='infinite',fd=STAGES[G.si].food;
-  G.over=true;G.victory=!!win;$('#bNextMap').classList.add('hide');const outcome=$('#battleOutcome');outcome.className=win?'victory':'defeat';$('#battleOutcomeTitle').textContent=win?'VICTORY':'DEFEAT';let m,first=false;
+  G.over=true;syncScreenWake();G.victory=!!win;$('#bNextMap').classList.add('hide');const outcome=$('#battleOutcome');outcome.className=win?'victory':'defeat';$('#battleOutcomeTitle').textContent=win?'VICTORY':'DEFEAT';let m,first=false;
   if(win&&G.raidLevel){
     const lv=G.raidLevel;
     S.raidCleared=Math.max(S.raidCleared,lv);
