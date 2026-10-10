@@ -110,6 +110,22 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
 @supports (height:100dvh){#settingsModal .settings-box{max-height:calc(100dvh - 24px)}}
 @media(max-width:600px){#settingsModal{place-items:start center}#settingsModal .settings-box{width:100%;padding:16px}}
 
+
+/* Center-screen outcome header for completed battles, including raids and Infinite runs. */
+#battleOutcome{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;pointer-events:none;padding:12px}
+#battleOutcome.hide{display:none}
+#battleOutcome .outcome-title{font-size:clamp(42px,9vw,100px);font-weight:1000;letter-spacing:.08em;line-height:1.1;text-align:center;text-transform:uppercase;animation:outcomeReveal .45s ease-out both;max-width:100%;overflow-wrap:anywhere}
+#battleOutcome.victory .outcome-title{color:#ffe04b;-webkit-text-stroke:1px #b07805;text-shadow:0 3px 0 #9d6a00,0 0 20px #ffc400,0 0 45px #eaa500,3px 6px 9px #000b}
+#battleOutcome.defeat .outcome-title{color:#ed182c;-webkit-text-stroke:2px #080309;text-shadow:0 3px 0 #000,0 0 15px #9d0015,0 0 36px #f01830,4px 7px 10px #000}
+@keyframes outcomeReveal{from{opacity:0;transform:scale(.72)}to{opacity:1;transform:scale(1)}}
+@media(max-width:600px){#battleOutcome .outcome-title{font-size:clamp(34px,11vw,66px);letter-spacing:.035em}}
+
+
+/* Collapsible battle loadout: a small edge tab remains visible when slots are hidden. */
+#battleDockToggle{position:absolute;z-index:7;top:12px;left:calc(clamp(84px,13%,122px) + 10px);padding:8px 7px;background:#24183fee;color:#fff0a3;border:1px solid #a997e5;border-radius:7px;min-width:28px;touch-action:manipulation;box-shadow:0 3px 10px #000a}
+.battle-canvas-wrap.dock-collapsed #battleUnitDock{display:none}
+.battle-canvas-wrap.dock-collapsed #battleDockToggle{left:5px}
+@media(max-width:700px){#battleDockToggle{left:82px;top:5px;padding:6px 5px}.battle-canvas-wrap.dock-collapsed #battleDockToggle{left:4px}}
 </style>
 
 <style>
@@ -179,11 +195,12 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
       <div class="panel row"><b id="hud"></b>
         <span style="margin-left:auto"></span>
         <button id="bWave">Start wave</button>
+        <button id="bNextMap" class="hide" title="Start the next map on the same difficulty">Next Map?</button>
         <button class="alt" id="bSpd">Speed x1</button>
         <button class="alt" id="bPause">Pause</button><button class="alt" id="bAutoUpgrade" aria-pressed="false">Auto Upgrade: OFF</button><button class="alt" id="bAutoPlay" aria-pressed="false">🔒 Auto Play</button><button class="alt" id="bFullMap">⛶ Fullscreen Map</button>
         <button class="alt" id="bQuit">Leave stage</button>
       </div>
-      <div class="battle-canvas-wrap"><canvas id="cv" width="800" height="450"></canvas><div id="battleUnitDock" aria-label="Battle unit slots"><div id="bar"></div></div><div id="unitQuick" class="unit-quick hide" role="group" aria-label="Selected unit quick actions"></div></div>
+      <div class="battle-canvas-wrap"><canvas id="cv" width="800" height="450"></canvas><div id="battleOutcome" class="hide" role="status" aria-live="polite" aria-label="Battle result"><div class="outcome-title" id="battleOutcomeTitle"></div></div><div id="battleUnitDock" aria-label="Battle unit slots"><div id="bar"></div></div><button type="button" id="battleDockToggle" aria-label="Hide unit slots" aria-expanded="true" title="Hide unit slots">◀</button><div id="unitQuick" class="unit-quick hide" role="group" aria-label="Selected unit quick actions"></div></div>
       <div id="msg" class="hide"></div>
       
       <div class="panel row" id="selp">Pick a unit above to place it. Tap a placed unit for its nearby upgrade menu.</div>
@@ -220,6 +237,9 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <div class="settings-box qol-box">
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
+<section class="qol-section"><h3>Collapsible Battle Unit Slots, Barter Prestige Income &amp; Economy-First Auto Upgrade</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:35 AM MDT</p><ul><li>Tap the small arrow beside the left-side unit slots to hide the entire loadout dock and see more of the map; tap the arrow again to restore your unit slots. Works on phones and in fullscreen.</li><li>Every prestige star on an owned Barter permanently increases that Barter’s generated coins by 10% (1 star +10%, up to 5 stars +50%). The bonus stacks multiplicatively with Midas income effects and remains after battles and reloads.</li><li>Auto Upgrade and Smart Auto Play now always prioritize affordable Barter money-generation upgrades before damage and other support upgrades. When no affordable Barter upgrade exists, they upgrade other units based on tactical value.</li></ul></section>
+<section class="qol-section"><h3>Victory &amp; Defeat Battle Headers</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:27 AM MDT</p><ul><li>When a battle ends, a large centered VICTORY header appears in bright yellow for a win, or a DEFEAT header appears in red with black outlining and shadow for a loss.</li><li>The result stays visible over the battlefield until the next battle begins or you leave the stage; existing rewards, Next Map button, and saved progress are unchanged.</li><li>Works on mobile and desktop, including regular maps, Infinite Mode, and raids.</li></ul></section>
+<section class="qol-section"><h3>Next Map Button After Victory</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:24 AM MDT</p><ul><li>After winning a regular map, a Next Map? button appears immediately before Speed in the battle controls.</li><li>Tap it to begin the next unlocked map using the same difficulty (Easy, Medium, Hard, or Hell).</li><li>The button is hidden after losses, during battles, in Infinite Mode and raids, and on the last available map. Your completed rewards and progress save normally.</li></ul></section>
 <section class="qol-section"><h3>Smarter Auto Upgrade &amp; Infinite Player EXP</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:22 AM MDT</p><ul><li>Auto Upgrade now prioritizes valuable upgrades instead of buying the cheapest first. It evaluates damage output, path coverage, splash/slow effects, nearby support units, battle economy, and upgrade cost. Smart Auto Play uses the same upgrade priorities.</li><li>Infinite Mode now awards player EXP for each completed wave: 1 EXP per wave on waves 1–10, 2 EXP per wave on waves 11–20, 3 EXP per wave on waves 21–30, increasing by 1 every ten waves thereafter.</li><li>Infinite EXP is awarded as each wave finishes its spawn cycle and the next wave begins, following the existing Infinite reward timing. Progress is saved normally.</li></ul></section>
 <section class="qol-section"><h3>Mobile Settings Scrolling Fixed</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:11 AM MDT</p><ul><li>Settings now scrolls vertically on phones, so the Reset Progress button and all lower settings remain reachable. Added touch scrolling and mobile-height support.</li></ul></section>
 <section class="qol-section"><h3>New App Guide Button</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:05 AM MDT</p><ul><li>Moved Android installation instructions, future update steps, offline-play details, and progress-saving guidance out of QOL into the new 📲 App Guide button beside QOL. QOL now focuses on the update history.</li></ul></section>
@@ -544,7 +564,7 @@ function addXp(i,x){
 function prestige(uid){
   const i=S.units.find(x=>x.uid===uid);
   if(!i||i.lv<100||i.st>=5) return;
-  if(!confirm('Prestige '+UNITS[i.id].n+'? It returns to level 1 and gains a star, which makes it stronger at every level.')) return;
+  if(!confirm('Prestige '+UNITS[i.id].n+'? It returns to level 1 and gains a star, which makes it stronger at every level.'+(i.id==='barter'?' Each star permanently increases this Barter’s coin generation by 10%.':''))) return;
   i.st++;i.lv=1;i.xp=0;save(false);renderAll();toast(UNITS[i.id].n+' now has '+i.st+' star'+(i.st>1?'s':''));
 }
 
@@ -1205,6 +1225,7 @@ function isMidas(uid){return S.units.find(i=>i.uid===uid)?.trait==='midas'}
 function placementCost(inst){return Math.round(UNITS[inst.id].c*(isMidas(inst.uid)?.75:1))}
 function boostCost(u){return Math.round(UNITS[u.id].c*.8*u.bl*(isMidas(u.uid)?.75:1))}
 function midasIncomeMultiplier(uid,boost){return isMidas(uid)?1.5+.25*(boost-1):1}
+function barterPrestigeMultiplier(uid){const inst=S.units.find(i=>i.uid===uid);return 1+Math.max(0,Math.min(5,Number(inst?.st)||0))*.10}
 
 function refreshPlacementBar(){
   if(!G)return;
@@ -1232,7 +1253,7 @@ function startBattle(si,mode,raidLevel=0){
   $('#bAutoPlay').setAttribute('aria-pressed','false');
   $('#bAutoUpgrade').textContent='Auto Upgrade: OFF';$('#bAutoUpgrade').setAttribute('aria-pressed','false');
   $('#bWave').classList.remove('hide');$('#bWave').disabled=false;$('#bWave').textContent='Start wave';
-  hideQuick();$('#msg').classList.add('hide');$('#bSpd').textContent='Speed x1';$('#bPause').textContent='Pause';
+  hideQuick();$('#msg').classList.add('hide');$('#battleOutcome').className='hide';$('#battleOutcomeTitle').textContent='';$('#bNextMap').classList.add('hide');$('#bSpd').textContent='Speed x1';$('#bPause').textContent='Pause';
   $('#bar').innerHTML=(S.equipped||[]).map(uid=>S.units.find(u=>u.uid===uid)).filter(Boolean).map(i=>{const u=UNITS[i.id];
     return '<div class="card" data-uid="'+i.uid+'" style="cursor:pointer"><canvas class="ico" width="72" height="64" data-id="'+i.id+'" data-trait="'+(i.trait||'')+'"></canvas><b class="'+u.r+'">'+u.n+'</b><br><span style="color:#ffc94d">'+'★'.repeat(i.st)+'</span> level '+i.lv+'<br><span style="color:'+TYPES[u.t]+'">'+u.t+'</span>, '+u.c+' coins</div>'}).join('');paintIcons();
   $('#bar').querySelectorAll('.card').forEach(c=>c.onclick=()=>{
@@ -1283,6 +1304,13 @@ $('#bWave').onclick=()=>{
   // A manual click can only start the first wave once per battle.
   if(!G||G.over||G.wave!==0)return;
   nextWave();
+};
+$('#bNextMap').onclick=()=>{
+  if(!G||!G.over||!G.victory||G.raidLevel||G.mode==='infinite'||G.si+1>=STAGES.length)return;
+  const next=G.si+1,mode=G.mode;
+  if(next>S.cleared)return toast('Complete the previous map to unlock the next map.');
+  startBattle(next,mode);
+  toast('Next map: '+STAGES[next].n+' · '+MODES[mode].n);
 };
 $('#bSpd').onclick=()=>{if(!G)return;G.speed=G.speed%3+1;$('#bSpd').textContent='Speed x'+G.speed};
 $('#bPause').onclick=()=>{if(!G||G.over)return;G.paused=!G.paused;$('#bPause').textContent=G.paused?'Resume':'Pause'};
@@ -1405,14 +1433,18 @@ function smartUpgradePriority(u){
 }
 function smartUpgradeChoice(){
   if(!G||G.over)return null;
-  return G.us.filter(u=>u.bl<5&&boostCost(u)<=G.coins)
-    .sort((a,b)=>smartUpgradePriority(b)-smartUpgradePriority(a)||boostCost(a)-boostCost(b))[0]||null;
+  const affordable=G.us.filter(u=>u.bl<5&&boostCost(u)<=G.coins);
+  // Absolute priority: upgrade every affordable income-generating Barter first.
+  // Only once no affordable Barter upgrades remain do we consider damage/support.
+  const income=affordable.filter(u=>u.id==='barter');
+  const pool=income.length?income:affordable;
+  return pool.sort((a,b)=>smartUpgradePriority(b)-smartUpgradePriority(a)||boostCost(a)-boostCost(b))[0]||null;
 }
 function autoPlayUpgrade(){
   if(!G||!G.autoPlay||G.over)return;
   const pick=smartUpgradeChoice();if(!pick)return;
   // Reserve money for early offensive placements when the board is underdeveloped.
-  if(G.wave<=3&&G.us.filter(u=>u.d>0).length<2&&G.coins<boostCost(pick)+110)return;
+  if(pick.id!=='barter'&&G.wave<=3&&G.us.filter(u=>u.d>0).length<2&&G.coins<boostCost(pick)+110)return;
   upgradePlacedUnit(pick);
 }
 $('#bAutoPlay').onclick=()=>{
@@ -1444,6 +1476,17 @@ function setMapFullscreen(on){
   if(G&&G.sel)requestAnimationFrame(positionQuick);
 }
 $('#bFullMap').onclick=()=>setMapFullscreen(!$('#arena').classList.contains('map-fullscreen'));
+// A single accessible edge tab can hide and restore the entire left loadout dock.
+$('#battleDockToggle').onclick=()=>{
+  const wrap=$('#battleDockToggle').parentElement;
+  const closed=wrap.classList.toggle('dock-collapsed');
+  const b=$('#battleDockToggle');
+  b.textContent=closed?'▶':'◀';
+  b.title=closed?'Show unit slots':'Hide unit slots';
+  b.setAttribute('aria-label',b.title);
+  b.setAttribute('aria-expanded',String(!closed));
+};
+
 document.addEventListener('fullscreenchange',()=>{
   if(!document.fullscreenElement&&$('#arena').classList.contains('map-fullscreen'))setMapFullscreen(false);
 });
@@ -1486,7 +1529,7 @@ function selUI(){
     +'</div>'
     +(u.bl>=5?'<div class="quick-max">★ MAX BOOST 5/5 — Final upgrade stats</div>'
       :'<div class="quick-next">Next boost: '+fmt(nextD)+' DMG · '+fmt(nextRg)+' range</div>')
-    +(u.id==='barter'?'<div class="quick-meta">Merchant income: +'+Math.round(10+(u.bl<=1?0:5*(Math.pow(1.1,u.bl-2)-1)/.1))+' coins every '+Math.max(1,6-u.bl)+' second(s) · automatic</div>':'')
+    +(u.id==='barter'?'<div class="quick-meta">Merchant income: +'+Math.round((10+(u.bl<=1?0:5*(Math.pow(1.1,u.bl-2)-1)/.1))*midasIncomeMultiplier(u.uid,u.bl)*barterPrestigeMultiplier(u.uid))+' coins every '+Math.max(1,6-u.bl)+' second(s) · +10% per Barter prestige star (permanent)</div>':'')
     +(u.id==='starlord'?'<div class="quick-meta">Astral Ricochet: hits 4 additional enemies · each bounce loses 10% of original damage</div>':'')
     +(u.id==='eternity'?'<div class="quick-meta">Eternal Blessing: alternates +20% damage and +25% attack speed for nearby units · lasts 7.5s · recasts every '+(15-1.5*(u.bl-1))+'s</div>':'')
     +(u.id==='xenowarden'?'<div class="quick-meta">Triune Wards: every 2s · max 3 active · 3s duration · Slow 5s (50% speed) · Stun / Freeze 0.5s</div>':'')
@@ -1523,7 +1566,7 @@ cv.onclick=e=>{
 };
 function finish(win){
   const M=MODES[G.mode],inf=G.mode==='infinite',fd=STAGES[G.si].food;
-  G.over=true;let m,first=false;
+  G.over=true;G.victory=!!win;$('#bNextMap').classList.add('hide');const outcome=$('#battleOutcome');outcome.className=win?'victory':'defeat';$('#battleOutcomeTitle').textContent=win?'VICTORY':'DEFEAT';let m,first=false;
   if(win&&G.raidLevel){
     const lv=G.raidLevel;
     S.raidCleared=Math.max(S.raidCleared,lv);
@@ -1552,6 +1595,12 @@ function finish(win){
   G.us.forEach(u=>{const i=S.units.find(x=>x.uid===u.uid);if(!i)return;const b=i.lv;addXp(i,xp);if(i.lv>b)ups.push(UNITS[i.id].n+' '+b+' to '+i.lv)});
   m+=' Placed units earned '+xp+' EXP.'+(ups.length?' Level ups: '+ups.slice(0,4).join(', ')+(ups.length>4?' and more':'')+'.':'');
   $('#msg').textContent=m;$('#msg').classList.remove('hide');
+  // Normal-map victories only: the next unlocked map keeps the same difficulty.
+  // No next-map action for losses, raids, Infinite Mode, or the final map.
+  if(win&&!G.raidLevel&&!inf&&G.si+1<STAGES.length&&G.si+1<=S.cleared){
+    $('#bNextMap').classList.remove('hide');
+  }
+
   save(false);gemUI();renderAll();
   if(S.settings.autoRestart){
     G.replayAutoPlay=!!G.autoPlay;
@@ -1785,7 +1834,7 @@ function step(dt){
         u.barterTimer+=barterCD;
         const bonus=u.bl<=1?0:5*(Math.pow(1.1,u.bl-2)-1)/.1;
         const payout=Math.round(10+bonus);
-        G.coins+=Math.round(payout*midasIncomeMultiplier(u.uid,u.bl));
+        G.coins+=Math.round(payout*midasIncomeMultiplier(u.uid,u.bl)*barterPrestigeMultiplier(u.uid));
         if(S.settings.attackFx)G.fx.push({kind:'summon',x:u.x,y:u.y,l:.45,max:.45});
       }
     }
