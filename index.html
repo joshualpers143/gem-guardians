@@ -220,6 +220,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <div class="settings-box qol-box">
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
+<section class="qol-section"><h3>Smarter Auto Upgrade &amp; Infinite Player EXP</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:22 AM MDT</p><ul><li>Auto Upgrade now prioritizes valuable upgrades instead of buying the cheapest first. It evaluates damage output, path coverage, splash/slow effects, nearby support units, battle economy, and upgrade cost. Smart Auto Play uses the same upgrade priorities.</li><li>Infinite Mode now awards player EXP for each completed wave: 1 EXP per wave on waves 1–10, 2 EXP per wave on waves 11–20, 3 EXP per wave on waves 21–30, increasing by 1 every ten waves thereafter.</li><li>Infinite EXP is awarded as each wave finishes its spawn cycle and the next wave begins, following the existing Infinite reward timing. Progress is saved normally.</li></ul></section>
 <section class="qol-section"><h3>Mobile Settings Scrolling Fixed</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:11 AM MDT</p><ul><li>Settings now scrolls vertically on phones, so the Reset Progress button and all lower settings remain reachable. Added touch scrolling and mobile-height support.</li></ul></section>
 <section class="qol-section"><h3>New App Guide Button</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:05 AM MDT</p><ul><li>Moved Android installation instructions, future update steps, offline-play details, and progress-saving guidance out of QOL into the new 📲 App Guide button beside QOL. QOL now focuses on the update history.</li></ul></section>
 <section class="qol-section"><h3>Starting Coins Increased to 500</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 02:11 AM MDT</p><ul><li>All new battles now begin with 500 coins instead of 300.</li><li>Existing saved player progress remains unchanged.</li></ul></section>
@@ -238,7 +239,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <section class="qol-section"><h3>Update: Separate Raids Menu</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 12:40 AM MDT</p><ul><li>Moved Raids into its own tab immediately after Battle.</li><li>Castle Hellsing and Raid Map 2 — Coming Soon now appear in the Raids tab.</li><li>Starting a raid opens the Battle arena while preserving raid progress and unlocks.</li></ul></section>
  <section class="qol-section"><h3>Update: Raid Map 2 Placeholder</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 12:36 AM MDT</p><ul><li>Added a second raid map card labeled “Coming Soon.”</li><li>Raid Map 2 cannot be played yet; Castle Hellsing remains unchanged.</li></ul></section>
  <section class="qol-section"><h3>Update: Castle Hellsing Raids &amp; Alucard</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 12:26 AM MDT</p><ul><li>One raid map with five progressively unlocked levels, always on Hell difficulty.</li><li>Levels 1–4: 10 waves each; Level 5: 15 waves.</li><li>Enemy strength increases by 25% per raid level, compounded, and scales with waves.</li><li>Boss at the end of each raid level; an Elite appears three seconds before the boss.</li><li>Level 5 completion has a 5% chance to award Alucard, a Secret raid-only unit.</li><li>Raid-only units are excluded from summon banners.</li></ul></section>
-  <section class="qol-section"><h3>🎮 Gameplay &amp; Battles</h3><ul><li>Automatic wave progression: after the final enemy of a wave spawns, the next wave starts 5 seconds later. Maps introduce normal enemies, then tanks (Map 2), runners (Map 3), and elites (Map 4). Every regular map ends with a boss; Infinite Mode has a boss every 10 waves. An elite spawns 3 seconds before each boss.</li><li>Auto Upgrade upgrades placed units using the cheapest affordable upgrade first.</li><li>Fullscreen battlefield option, with equipped unit slots displayed on the left.</li><li>Fixed battlefield camera for simpler controls; no cinematic camera or tilt toggles.</li><li>Automatic unit abilities, distinct attack effects, and a setting to hide attack effects.</li><li>Optional automatic map restart and replay settings.</li><li>Six-unit loadout; slots 5 and 6 unlock at player levels 5 and 10.</li><li>Placement limits depend on unit rarity, while allowing repeat placements of owned units.</li><li>Separate map difficulty modes and star ratings based on lives remaining.</li></ul></section><section class="qol-section"><h3>🎰 Summoning &amp; Banners</h3><ul><li>Auto Summon unlocks above 1,000 gems and performs only ×10 summons for 450 gems per batch.</li><li>Auto Summon stops below 400 gems and waits if another ×10 batch is unaffordable.</li><li>Exclusive units are excluded from every summon banner.</li><li>Featured banner rotation and rarity-specific pity counters.</li><li>Secret summons unlock at player level 10, with a 0.5% chance and a 2,500-summon pity.</li></ul></section><section class="qol-section"><h3>✨ Traits &amp; Unit Management</h3><ul><li>Permanent Auto Trait Reroll toggle alongside the normal single-reroll button.</li><li>A 3-second reroll lock after obtaining Legendary or Mythic traits, including during Auto Reroll.</li><li>Favorite units with a heart and show favorites first in unit selectors.</li><li>Sort units by rarity, damage, or placement cost in ascending or descending order.</li><li>Three-column unit browsers with three visible rows in collection and selection menus.</li><li>Auto-sell newly summoned units of chosen rarities while preserving Index discoveries.</li><li>Unit Index reveals ability descriptions only after the unit has been obtained.</li><li>Unique automatic abilities for Epic, Legendary, Mythic, and Secret units.</li><li>Added the Mythic Midas trait, including bonus income and discounted placement/upgrades.</li></ul></section><section class="qol-section"><h3>💎 Rewards, Progress &amp; Offline Play</h3><ul><li>AFK rewards accumulate and remain unclaimed until the player presses Claim Rewards.</li><li>AFK progress and rewards are saved locally; leaving AFK resets only the unfinished countdown.</li><li>Player profiles, level milestones, and avatar selection.</li><li>Progress saves automatically in browser storage, with a manual Save game button for reassurance.</li><li>Offline gameplay without Firebase, online leaderboards, or required internet access.</li><li>Settings include a progress reset option.</li></ul></section>
+  <section class="qol-section"><h3>🎮 Gameplay &amp; Battles</h3><ul><li>Automatic wave progression: after the final enemy of a wave spawns, the next wave starts 5 seconds later. Maps introduce normal enemies, then tanks (Map 2), runners (Map 3), and elites (Map 4). Every regular map ends with a boss; Infinite Mode has a boss every 10 waves. An elite spawns 3 seconds before each boss.</li><li>Auto Upgrade prioritizes the best-value upgrades using damage, path coverage, support synergy, economy timing, and coin cost.</li><li>Fullscreen battlefield option, with equipped unit slots displayed on the left.</li><li>Fixed battlefield camera for simpler controls; no cinematic camera or tilt toggles.</li><li>Automatic unit abilities, distinct attack effects, and a setting to hide attack effects.</li><li>Optional automatic map restart and replay settings.</li><li>Six-unit loadout; slots 5 and 6 unlock at player levels 5 and 10.</li><li>Placement limits depend on unit rarity, while allowing repeat placements of owned units.</li><li>Separate map difficulty modes and star ratings based on lives remaining.</li></ul></section><section class="qol-section"><h3>🎰 Summoning &amp; Banners</h3><ul><li>Auto Summon unlocks above 1,000 gems and performs only ×10 summons for 450 gems per batch.</li><li>Auto Summon stops below 400 gems and waits if another ×10 batch is unaffordable.</li><li>Exclusive units are excluded from every summon banner.</li><li>Featured banner rotation and rarity-specific pity counters.</li><li>Secret summons unlock at player level 10, with a 0.5% chance and a 2,500-summon pity.</li></ul></section><section class="qol-section"><h3>✨ Traits &amp; Unit Management</h3><ul><li>Permanent Auto Trait Reroll toggle alongside the normal single-reroll button.</li><li>A 3-second reroll lock after obtaining Legendary or Mythic traits, including during Auto Reroll.</li><li>Favorite units with a heart and show favorites first in unit selectors.</li><li>Sort units by rarity, damage, or placement cost in ascending or descending order.</li><li>Three-column unit browsers with three visible rows in collection and selection menus.</li><li>Auto-sell newly summoned units of chosen rarities while preserving Index discoveries.</li><li>Unit Index reveals ability descriptions only after the unit has been obtained.</li><li>Unique automatic abilities for Epic, Legendary, Mythic, and Secret units.</li><li>Added the Mythic Midas trait, including bonus income and discounted placement/upgrades.</li></ul></section><section class="qol-section"><h3>💎 Rewards, Progress &amp; Offline Play</h3><ul><li>AFK rewards accumulate and remain unclaimed until the player presses Claim Rewards.</li><li>AFK progress and rewards are saved locally; leaving AFK resets only the unfinished countdown.</li><li>Player profiles, level milestones, and avatar selection.</li><li>Progress saves automatically in browser storage, with a manual Save game button for reassurance.</li><li>Offline gameplay without Firebase, online leaderboards, or required internet access.</li><li>Settings include a progress reset option.</li></ul></section>
   <p style="color:var(--mut);font-size:12px">Daily Login and online leaderboard features are not included.</p>
  </div>
 </div>
@@ -570,13 +571,14 @@ function renderModes(){
   $('#modes').querySelectorAll('button').forEach(b=>b.onclick=()=>{curMode=b.dataset.m;renderAll()});
   const M=MODES[curMode];
   $('#modeInfo').textContent=curMode==='infinite'
-    ?'Endless waves that keep getting stronger. Every wave you clear pays 6 gems (31 on each 10th wave) plus food from that map as you go.'
+    ?'Endless waves that keep getting stronger. Every wave you clear pays 6 gems (31 on each 10th wave) plus food from that map as you go. Player EXP per wave: 1 on waves 1–10, 2 on waves 11–20, 3 on waves 21–30, and +1 for every further 10 waves.'
     :'Clear all 10 waves to earn '+25*M.mult+' gems and '+Math.ceil(2*M.mult)+' of that map\u2019s food. Enemy health x'+M.hp+', unit EXP x'+M.xp+'.';
 }
 function infReward(){
   const w=G.wave,fd=STAGES[G.si].food,g=6+(w%10===0?25:0),f=(w%2===0?1:0)+(w%10===0?3:0);
-  S.gems+=g;if(f){S.bag[fd]=(S.bag[fd]||0)+f;discoverItem(fd);}G.ig+=g;G.fg+=f;save(false);gemUI();
-  toast('Wave '+w+' cleared: +'+g+' gems'+(f?' and +'+f+' '+ITEMS[fd].n:''));
+  const playerXp=Math.floor((w-1)/10)+1;
+  S.gems+=g;if(f){S.bag[fd]=(S.bag[fd]||0)+f;discoverItem(fd);}G.ig+=g;G.fg+=f;G.infinitePlayerXp=(G.infinitePlayerXp||0)+playerXp;gainPlayerExp(playerXp);save(false);gemUI();
+  toast('Wave '+w+' cleared: +'+g+' gems, +'+playerXp+' player EXP'+(f?' and +'+f+' '+ITEMS[fd].n:''));
 }
 function sellVal(i){return Math.round({Common:30,Rare:15,Epic:65,Legendary:160,Mythic:350,Secret:750,Exclusive:65}[UNITS[i.id].r]*(1+i.st*.5)+i.lv*2)}
 function sell(uid){
@@ -1035,7 +1037,7 @@ function renderProfile(){
   $('#headerPlayer').textContent=S.playerName+' · Lv '+S.playerLevel;
   $('#profileLevel').textContent='Level '+S.playerLevel;
   $('#profileFill').style.width=Math.min(100,100*S.playerExp/playerExpNeeded(S.playerLevel))+'%';
-  $('#profileExp').textContent=S.playerLevel>=100?'MAX LEVEL · 100':S.playerExp+'/'+playerExpNeeded(S.playerLevel)+' EXP · Complete a regular map for +50 EXP';
+  $('#profileExp').textContent=S.playerLevel>=100?'MAX LEVEL · 100':S.playerExp+'/'+playerExpNeeded(S.playerLevel)+' EXP · Regular map: +50 EXP; Infinite: +1 EXP per wave, increasing every 10 waves';
   $('#playerName').value=S.playerName;
   const avatar=$('#headerAvatar'),c=avatar.getContext('2d');c.clearRect(0,0,48,48);
   if(S.playerAvatar&&UNITS[S.playerAvatar])art(c,S.playerAvatar,24,30,.8);else{c.fillStyle='#8e83c7';c.font='bold 27px sans-serif';c.textAlign='center';c.fillText('★',24,33)}
@@ -1372,23 +1374,46 @@ function autoPlayBuild(){
   G.us.push({summonTimer:5,chronoTimer:10,uid:inst.uid,id:inst.id,x:pos.x,y:pos.y,bl:1,pl:inst.lv,d:st.d,rg:st.rg,cd:st.cd,t:0,col:U.col,slow:U.slow,splash:U.splash,spent:cost});
   refreshPlacementBar();hud();return true;
 }
+// Upgrade priorities consider actual damage, path coverage, special roles, and affordability.
+function smartUpgradePriority(u){
+  const cost=boostCost(u),coverage=autoPlayCoverage(u.x,u.y,u.rg);
+  const pathLength=battleStage().path.reduce((sum,p,i,arr)=>i?sum+Math.hypot(p[0]-arr[i-1][0],p[1]-arr[i-1][1]):sum,0);
+  const coverageRatio=Math.min(1,coverage/Math.max(1,pathLength));
+  const damage=u.d/Math.max(.12,u.cd);
+  const attacking=G.us.filter(v=>v.d>0);
+  const near=attacking.filter(v=>Math.hypot(v.x-u.x,v.y-u.y)<=u.rg);
+  const surroundingDps=near.reduce((sum,v)=>sum+v.d/Math.max(.12,v.cd),0);
+  let value;
+  if(u.id==='barter'){
+    // Early economy upgrades compound over the remaining waves.
+    const remaining=G.mode==='infinite'?Math.max(8,22-G.wave):Math.max(0,(G.raidLevel?raidMaxWave(G.raidLevel):15)-G.wave);
+    value=remaining>4?(remaining*9+20):2;
+  }else if(u.d>0){
+    // Approximate the next upgrade's 35% damage gain across covered path.
+    value=damage*.35*(.35+coverageRatio*1.4);
+    if(u.splash)value*=1.22;
+    if(u.slow)value*=1.12;
+    if(G.en.length>8)value*=1.2;
+    if(G.en.some(e=>e.boss))value*=1.15;
+  }else{
+    // Support units benefit only when they can influence nearby damage dealers.
+    value=surroundingDps*(u.id==='eternity'?.16:.095);
+    if(!near.length)value=0;
+  }
+  // Prioritize impactful upgrades per coin without ignoring powerful units.
+  return value/Math.pow(Math.max(1,cost),.82);
+}
+function smartUpgradeChoice(){
+  if(!G||G.over)return null;
+  return G.us.filter(u=>u.bl<5&&boostCost(u)<=G.coins)
+    .sort((a,b)=>smartUpgradePriority(b)-smartUpgradePriority(a)||boostCost(a)-boostCost(b))[0]||null;
+}
 function autoPlayUpgrade(){
   if(!G||!G.autoPlay||G.over)return;
-  const choices=G.us.filter(u=>u.bl<5&&boostCost(u)<=G.coins);
-  if(!choices.length)return;
-  choices.sort((a,b)=>{
-    const priority=u=>{
-      if(u.id==='barter')return G.wave<=6?(7-G.wave)*22/(boostCost(u)+30):0;
-      const coverage=autoPlayCoverage(u.x,u.y,u.rg);
-      const damage=u.d/Math.max(.1,u.cd);
-      return (damage*.35+coverage*.2)/(boostCost(u)+30);
-    };
-    return priority(b)-priority(a);
-  });
-  // Invest in damage and economy without exhausting the opening build budget.
-  const first=choices[0];
-  if(G.us.filter(u=>UNITS[u.id].d>0).length<2&&G.wave<=3&&G.coins<boostCost(first)+110)return;
-  upgradePlacedUnit(first);
+  const pick=smartUpgradeChoice();if(!pick)return;
+  // Reserve money for early offensive placements when the board is underdeveloped.
+  if(G.wave<=3&&G.us.filter(u=>u.d>0).length<2&&G.coins<boostCost(pick)+110)return;
+  upgradePlacedUnit(pick);
 }
 $('#bAutoPlay').onclick=()=>{
   if(!G||G.over)return;
@@ -1520,7 +1545,7 @@ function finish(win){
     const stars=stageStars(G.lives),key=stageStarKey(G.si,G.mode);
     if(!inf)S.stageStars[key]=Math.max(S.stageStars[key]||0,stars);
     gainPlayerExp(50);m='Stage cleared on '+M.n+'! '+(inf?'':('Rating: '+ '★'.repeat(stars)+'☆'.repeat(3-stars)+' (best: '+'★'.repeat(S.stageStars[key])+'☆'.repeat(3-S.stageStars[key])+'). '))+'You earned '+g+' gems, '+f+' '+ITEMS[fd].n+' and 50 player EXP.';
-  }else if(inf) m='Run over at wave '+G.wave+'. This run earned '+G.ig+' gems and '+G.fg+' '+ITEMS[fd].n+'.';
+  }else if(inf) m='Run over at wave '+G.wave+'. This run earned '+G.ig+' gems, '+(G.infinitePlayerXp||0)+' player EXP and '+G.fg+' '+ITEMS[fd].n+'.';
   else{S.gems+=10;m='Your base fell. You earned 10 gems for trying.'}
   const bx=150+G.si*190;
   const xp=Math.round((inf?bx*G.wave/10:bx*M.xp*(win?1:.3*G.wave/10))*(first?1.5:1)),ups=[];
@@ -1714,14 +1739,13 @@ function step(dt){
     if(G.autoPlayStartDelay>0){G.autoPlayStartDelay=Math.max(0,G.autoPlayStartDelay-dt);}
     else {G.autoPlayTimer-=dt;if(G.autoPlayTimer<=0){G.autoPlayTimer=.65;autoPlayBuild();autoPlayUpgrade();if(G.wave===0)nextWave();}}
   }
-  // Spend available battle coins on the cheapest affordable upgrade first.
+  // Choose the most valuable affordable upgrade using combat, support, and economy priorities.
   if(G.autoUpgrade){
     G.autoUpgradeTimer=(G.autoUpgradeTimer||0)-dt;
     if(G.autoUpgradeTimer<=0){
       G.autoUpgradeTimer=.3;
-      const affordable=G.us.filter(u=>u.bl<5&&boostCost(u)<=G.coins)
-        .sort((a,b)=>boostCost(a)-boostCost(b));
-      if(affordable.length)upgradePlacedUnit(affordable[0]);
+      const pick=smartUpgradeChoice();
+      if(pick)upgradePlacedUnit(pick);
     }
   }
   if(G.q.length){G.sp-=dt;if(G.sp<=0){const spawn=G.q.shift();const kind=typeof spawn==='number'?'normal':spawn.kind,hp=typeof spawn==='number'?spawn:spawn.hp;G.en.push({d:0,hp,mx:hp,kind,boss:kind==='boss'||kind==='miniboss',v:kind==='boss'?32:kind==='miniboss'?37:kind==='tank'?27:kind==='runner'?105:kind==='elite'?57:44+Math.random()*18,sl:0,x:-30,y:-30});G.sp=G.q[0]?.delayBefore??.75;if(!G.q.length)G.waveSpawnCountdown=5;}}
