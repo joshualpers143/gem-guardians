@@ -139,6 +139,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
 .afk-overlay .afk-center>*{max-width:540px;margin-left:auto;margin-right:auto}
 @media(max-height:650px){.afk-overlay .afk-center{padding-top:12px}.afk-overlay .afk-moon{font-size:34px}.afk-overlay .afk-timer{margin:9px auto}}
 
+.prestige-stars{display:inline-flex;gap:2px;align-items:center;font-size:15px;white-space:nowrap}.prestige-filled{color:#ffca28;text-shadow:0 0 6px #b97518;font-weight:900}.prestige-empty{color:#697284;opacity:.8}.prestige-stars strong{font-size:11px;color:#e5e7eb;margin-left:4px}
 </style>
 
 <style>
@@ -250,6 +251,8 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <div class="settings-box qol-box">
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
+<section class="qol-section"><h3>Prestige Star Display &amp; Summoner Route Repair</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 10:54 AM MDT</p><ul><li>Owned unit cards show filled gold prestige stars, gray unearned stars, and an explicit 0–5 numerical count, so maxed-out units cannot be mistaken for zero-star units.</li><li>Abyss Summoner's shadow monsters and Elite Ghouls now spawn at the player's base and march backward along the enemy route toward the enemy entrance, rather than remaining beside the tower.</li><li>Added a reusable reverse-path summoning helper for future allied summoner units, including raid maps.</li></ul></section>
+<section class="qol-section"><h3>Distinct Fruit Artwork &amp; Prestige Testing</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 10:40 AM MDT</p><ul><li>Each of the 11 fruits now has its own recognizable shape and colors instead of sharing the same polygon silhouette.</li><li>The Bag explains how to feed fruits and where to prestige level-100 units.</li></ul></section>
 <section class="qol-section"><h3>Save Backup Audit, Unit Slot &amp; Protected Recovery</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:54 AM MDT</p><ul><li>Preserved equipped unit selections when save data contains nonconsecutive unit IDs after selling units.</li><li>Preserved targeted auto-trait unit selection through save migration.</li><li>Strengthened backup import validation for invalid unit records and missing player fields.</li><li>Existing save keys and game progress remain unchanged.</li><li>Import now preserves a dedicated copy of the previous progress that regular autosaves cannot overwrite.</li><li>Settings now offers Restore Before Import with confirmation to recover the progress held before the latest import.</li><li>Reset Progress clears the protected recovery copy, while Public and Creator saves remain separate.</li><li>Export the current save before restoring if you also want to preserve newer progress.</li></ul></section>
 <section class="qol-section"><h3>Save Backup &amp; Recovery — Stability Update</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:51 AM MDT</p><ul><li>Added manual JSON save export and import to Settings, with edition/version validation and explicit overwrite confirmation.</li><li>Existing save keys remain unchanged; imports keep a local backup of the previous save.</li><li>Improved player progress safety; browser/device compatibility and full balance still require hands-on testing.</li></ul></section>
 <section class="qol-section"><h3>Map &amp; Difficulty Player EXP Scaling</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:42 AM MDT</p><ul><li>Regular map victories start at 50 player EXP on Map 1 Easy and increase by 1.5% per subsequent map, compounded.</li><li>For each map, Medium awards 2.5%, Hard 5%, and Hell 10% more player EXP than Easy on that same map. Final rewards are rounded to whole EXP.</li><li>Infinite Mode wave EXP and raid player EXP remain unchanged. Unit-leveling EXP is separate.</li></ul></section>
@@ -306,7 +309,7 @@ const UNITS={
  barter:{n:'Barter',t:'Support',r:'Exclusive',c:100,d:0,rg:80,cd:1.5,col:'#d5a548',g:[.04,.003,.01],ability:"Merchant's Dividend: earns 10 coins every 5 seconds at boost 1/5. Each boost reduces the income cooldown by 1 second (minimum 1 second at boost 5/5) and increases the bonus by 5 coins, scaling that bonus by 1.1× per boost.",special:0},
  rift_blade:{n:'Rift Blade',t:'Physical',r:'Secret',c:340,d:115,rg:145,cd:.85,col:'#181625',g:[.07,.004,.012],ability:'Releases sweeping crescent energy slashes; every fourth strike unleashes a piercing shockwave',special:0},
  chrono_warden:{n:'Chrono Warden',t:'Magic',r:'Secret',c:360,d:65,rg:130,cd:1.15,col:'#172a39',g:[.045,.004,.012],ability:'Freezes all enemies in its area for 1 second, gaining +0.5 seconds with each boost (3 seconds at 5/5). Activates every 10 seconds',special:0},
- abyss_summoner:{n:'Abyss Summoner',t:'Magic',r:'Secret',c:320,d:95,rg:135,cd:1.1,col:'#08080c',g:[.065,.004,.014],ability:'Summons three shadow monsters every 5 seconds; at map boost 5/5 summons two Elite Ghouls instead',special:0},
+ abyss_summoner:{n:'Abyss Summoner',t:'Magic',r:'Secret',c:320,d:95,rg:135,cd:1.1,col:'#08080c',g:[.065,.004,.014],ability:'Summons three shadow monsters every 5 seconds at your base; they march toward the enemy entrance. At map boost 5/5 summons two Elite Ghouls instead',special:0},
  knight:{n:'Knight',t:'Physical',r:'Rare',c:55,d:15,rg:55,cd:.5,col:'#94a3b8',g:[.06,0,.01]},
  archer:{n:'Archer',t:'Ranged',r:'Rare',c:50,d:9,rg:95,cd:.55,col:'#4d9a3a',g:[.04,.006,.012]},
  apprentice:{n:'Apprentice',t:'Magic',r:'Rare',c:60,d:13,rg:85,cd:.8,col:'#8b5cf6',splash:30,g:[.045,.003,.015]},
@@ -636,6 +639,8 @@ $('#bRes').onclick=()=>{leaveAfk();
   toast('New game: Barter (Exclusive) equipped, 500 gems and 25 trait rerolls!');
 };
 
+/* Clear distinction between earned (gold) and unearned (gray) prestige stars. */
+
 /* ---------- Levels, stats, prestige ---------- */
 const need=lv=>30+lv*8;
 function stats(i){
@@ -650,7 +655,9 @@ function addXp(i,x){
 }
 function prestige(uid){
   const i=S.units.find(x=>x.uid===uid);
-  if(!i||i.lv<100||i.st>=5) return;
+  if(!i)return toast('Unit not found');
+  if(i.st>=5)return toast('This unit already has the maximum 5 prestige stars');
+  if(i.lv<100)return toast('Reach unit level 100 before prestiging');
   if(!confirm('Prestige '+UNITS[i.id].n+'? It returns to level 1 and gains a star, which makes it stronger at every level.'+(i.id==='barter'?' Each star permanently increases this Barter’s coin generation by 10%.':''))) return;
   i.st++;i.lv=1;i.xp=0;save(false);renderAll();toast(UNITS[i.id].n+' now has '+i.st+' star'+(i.st>1?'s':''));
 }
@@ -720,13 +727,30 @@ function renderBag(){setupUnitSort('feedPickerSort','feedPicker',renderBag);
     $('#bagUseTraitReroll').onclick=()=>{const tab=document.querySelector('.tabs button[data-tab="traits"]');if(tab)tab.click();};
     return;
   }
+  renderBagPrestigeTools();
   const k=bagSel&&S.bag[bagSel]>0?bagSel:null,box=$('#bagInfo');
-  if(!k){bagSel=null;box.textContent='Click an item to see what it does.';return}
+  if(!k){bagSel=null;box.innerHTML='<b>Feed fruits to level up your units</b><p>Select a fruit above, then choose a unit and tap Feed 1 or Feed up to 10. Prestige becomes available in the Units tab at level 100.</p>'+'';return}
   const it=ITEMS[k],eligible=S.units.filter(u=>u.lv<100),opts=eligible.map(u=>'<option value="'+u.uid+'">'+unitLabel(u)+'</option>').join('');
   box.innerHTML='<b>'+it.n+'</b> x'+S.bag[k]+'<br>Food from '+STAGES[it.map].n+'. Each one gives a unit '+it.exp+' EXP. Earn more by clearing that map or playing its Infinite mode.<br><br>'
     +(opts?'<select id="feedPickerSort" class="unit-sort" aria-label="Sort feed units"></select><div id="feedPicker" class="unit-picker"></div><select id="feedTo" class="hide">'+opts+'</select> <button id="f1">Feed 1</button> <button class="alt" id="f10">Feed up to 10</button>':'You have no units below level 100 to feed.');
   if(opts){const select=$('#feedTo');const old=renderBag.selectedUid;if(eligible.some(u=>String(u.uid)===old))select.value=old;renderUnitPicker('feedPicker',eligible,select.value,uid=>{select.value=uid;renderBag.selectedUid=uid;renderUnitPicker('feedPicker',eligible,uid,v=>{select.value=v;renderBag.selectedUid=v;});});$('#f1').onclick=()=>feed(1);$('#f10').onclick=()=>feed(10)}
 }
+
+function renderBagPrestigeTools(){
+  let panel=$('#bagPrestigeTools');
+  if(!panel){panel=document.createElement('div');panel.id='bagPrestigeTools';panel.className='panel';$('#bagInfo').insertAdjacentElement('afterend',panel)}
+  const units=S.units.filter(u=>u.st<5);
+  const selected=Number(panel.querySelector('select')?.value)||Number(renderBagPrestigeTools.selectedUid)||units[0]?.uid;
+  const target=units.find(u=>u.uid===selected)||units[0];
+  panel.innerHTML='<h3>⭐ Unit Prestige</h3><p style="color:var(--mut)">At level 100, prestige resets that unit to level 1 and adds one permanent star (maximum 5).</p>'
+    +(units.length?'<label for="bagPrestigeUnit">Choose unit</label><select id="bagPrestigeUnit" style="width:100%;margin:6px 0">'+units.map(u=>'<option value="'+u.uid+'"'+(u.uid===target.uid?' selected':'')+'>'+unitLabel(u)+' · Lv '+u.lv+' · '+'★'.repeat(u.st)+'☆'.repeat(5-u.st)+' ('+u.st+'/5)</option>').join('')+'</select><p id="bagPrestigeHint"></p><button id="bagPrestigeButton">⭐ Prestige selected unit</button>':'<p>All owned units have five stars, or you have no units yet.</p>');
+  const sel=$('#bagPrestigeUnit');if(!sel)return;
+  const update=()=>{const u=S.units.find(x=>x.uid===Number(sel.value));if(!u)return;renderBagPrestigeTools.selectedUid=u.uid;$('#bagPrestigeHint').textContent=u.lv>=100?'Ready to prestige!':'Level '+u.lv+'/100 — feed fruits to reach level 100';$('#bagPrestigeButton').disabled=u.lv<100||u.st>=5};
+  sel.onchange=update;
+  $('#bagPrestigeButton').onclick=()=>prestige(Number(sel.value));
+  update();
+}
+
 function feed(n){
   const k=bagSel,i=S.units.find(x=>x.uid===+$('#feedTo').value);
   if(!k||!i) return toast('Pick a unit first');
@@ -738,10 +762,22 @@ function feed(n){
 }
 function itemArt(c,id,x,y,s){
   c.save();c.translate(x,y);c.scale(s,s);
-  if(ITEMS[id]){const k=ITEMS[id].map;c.fillStyle=['#ef476f','#38bdf8','#fb923c','#b4e0e7','#f7c76c','#b7e7ff','#a3e635','#f97316','#d8b4fe','#e6cc9b','#c084fc'][k];c.beginPath();c.moveTo(0,-19);c.lineTo(13,-4);c.lineTo(8,14);c.lineTo(-8,14);c.lineTo(-13,-4);c.closePath();c.fill();c.restore();return;}
-  if(id==='berry'){C(c,-5,3,8,'#e11d48');C(c,6,5,7,'#f43f5e');C(c,-7,0,2,'#fecdd3');L(c,0,-6,3,-14,2,'#65a30d');T(c,[3,-14,12,-17,8,-9],'#84cc16')}
-  else if(id==='crystal'){T(c,[0,-16,11,-2,0,16,-11,-2],'#38bdf8');T(c,[0,-16,11,-2,0,-2],'#bae6fd');L(c,0,-16,0,-21,2,'#22c55e')}
-  else{T(c,[-9,-8,8,-8,6,4,-1,15,-6,4],'#f97316');T(c,[-9,-8,8,-8,6,-4,-7,-4],'#ef4444');L(c,-1,-8,-1,-15,3,'#16a34a')}
+  const ellipse=(x,y,rx,ry,col,rot=0)=>{c.fillStyle=col;c.beginPath();c.ellipse(x,y,rx,ry,rot,0,Math.PI*2);c.fill()};
+  const poly=(pts,col)=>{c.fillStyle=col;c.beginPath();c.moveTo(pts[0],pts[1]);for(let i=2;i<pts.length;i+=2)c.lineTo(pts[i],pts[i+1]);c.closePath();c.fill()};
+  const line=(a,b,d,e,col,w=2)=>{c.strokeStyle=col;c.lineWidth=w;c.lineCap='round';c.beginPath();c.moveTo(a,b);c.lineTo(d,e);c.stroke()};
+  switch(id){
+    case 'berry': ellipse(-6,4,8,9,'#ed2452');ellipse(5,5,8,9,'#ff4970');ellipse(0,-3,7,8,'#db174b');poly([-5,-9,0,-16,5,-9,13,-11,5,-5,0,-8,-6,-4,-12,-9],'#4ade80');break;
+    case 'crystal': poly([0,-22,12,-5,7,15,-7,15,-12,-5],'#35c4fa');poly([0,-22,12,-5,0,5],'#d8f6ff');poly([0,5,7,15,-7,15],'#1486ce');break;
+    case 'pepper': ellipse(2,4,7,15,'#f43f28',-.3);ellipse(-4,5,5,12,'#fb8a22',-.3);line(0,-10,4,-17,'#448d34',3);poly([4,-15,13,-13,7,-9],'#76bd43');break;
+    case 'lotus': for(let j=0;j<6;j++){let a=j*Math.PI/3;ellipse(Math.sin(a)*7,Math.cos(a)*7,5,11,j%2?'#a9d5f6':'#f4b8f2',-a)}ellipse(0,0,5,5,'#ffe3a0');break;
+    case 'date': ellipse(0,2,9,16,'#c97630',-.15);ellipse(-3,-1,3,10,'#f4c46c',-.15);line(0,-13,3,-20,'#826337',3);break;
+    case 'icefruit': ellipse(0,2,13,14,'#9de7fc');ellipse(-4,-2,6,8,'#e1faff');poly([-8,0,-2,-14,4,-2,11,2,2,16],'#5dc2ee');line(0,-12,4,-19,'#84b9c6',2);break;
+    case 'spore': ellipse(0,9,5,12,'#e8e5ba');ellipse(0,-4,17,10,'#9fcb43');ellipse(-5,-8,5,3,'#dcf78c');ellipse(8,-3,3,3,'#527b31');break;
+    case 'embercore': poly([0,-21,11,-8,15,8,0,19,-15,8,-11,-8],'#8c2338');poly([0,-15,7,-5,4,11,-4,12,-8,-3],'#ff8c21');poly([0,-10,3,1,-1,9,-5,1],'#ffe39c');break;
+    case 'starfruit': poly([0,-21,6,-7,20,-5,9,4,12,18,0,10,-12,18,-9,4,-20,-5,-6,-7],'#e5c4ff');poly([0,-16,5,-3,0,9,-5,-3],'#a777f2');ellipse(0,0,3,3,'#fff7c7');break;
+    case 'relicseed': ellipse(0,2,12,17,'#b99c63');ellipse(0,2,7,12,'#f2e3ae');poly([0,-14,5,-4,0,0,-5,-4],'#8b7446');line(-5,10,5,10,'#9b8052');break;
+    case 'xenopod': ellipse(0,1,12,17,'#743dd0');ellipse(0,1,8,12,'#bc8bff');for(let j=-1;j<=1;j++){ellipse(j*7,-4,3,4,'#79f6e2');line(j*7,12,j*9,19,'#9b63ed',2)}break;
+  }
   c.restore();
 }
 
@@ -1420,6 +1456,15 @@ function startBattle(si,mode,raidLevel=0){
   $('#selp').textContent='Pick a unit above to place it. Tap a placed unit for its nearby upgrade menu.';
   showArena(true);hud();refreshPlacementBar();
 }
+// All allied summoners use the same route: player base (end of enemy path)
+// toward the enemy entrance (start of enemy path), including winding raid maps.
+function summonPathAlly(owner,elite,hp,damage,offset=0){
+  if(!G)return;
+  G.allies=G.allies||[];
+  const d=Math.max(0,G.tot-8-Math.max(0,offset));
+  const [x,y]=posAt(d);
+  G.allies.push({owner,elite,d,x,y,life:hp,maxLife:hp,damage,cooldown:0,ttl:Math.max(35,G.tot/105+8),speed:elite?125:145});
+}
 function posAt(d){
   const p=battleStage().path;let i=0;
   while(i<G.L.length-1&&d>G.L[i]){d-=G.L[i];i++}
@@ -2020,7 +2065,7 @@ function step(dt){
         const elite=u.bl>=5,count=elite?2:3;
         // Summoner HP is a unit-specific stat for its minions, not a tower life bar.
         const summonerHp=100+u.pl*12+u.bl*35;
-        for(let i=0;i<count;i++)G.allies.push({owner:u.uid,elite,x:u.x+(i-1)*13,y:u.y+18,life:elite?summonerHp*1.25:summonerHp*.75,maxLife:elite?summonerHp*1.25:summonerHp*.75,damage:u.d*(elite?1.5:.55),cooldown:0,ttl:18});
+        for(let i=0;i<count;i++)summonPathAlly(u.uid,elite,elite?summonerHp*1.25:summonerHp*.75,u.d*(elite?1.5:.55),i*18);
         if(S.settings.attackFx)G.fx.push({kind:'summon',x:u.x,y:u.y,l:.65,max:.65});
       }
     }
@@ -2083,10 +2128,17 @@ function step(dt){
       if(MYTHIC_VISUALS[trait])G.fx.push({kind:'mythic',trait,x:b.x,y:b.y,l:.5,max:.5});
     }
   }
-  // Allied summons defend the map and expire after 18 seconds.
+  // Allied summons march from the player base to the enemy entrance, fighting along the path.
   G.allies=G.allies||[];
   for(const a of G.allies){
     a.ttl-=dt;a.cooldown-=dt;
+    // Advance against the enemy flow, from the path exit to its entrance.
+    if(Number.isFinite(a.d)){
+      a.d=Math.max(0,a.d-(a.speed||135)*dt);
+      [a.x,a.y]=posAt(a.d);
+      if(a.d<=0)a.ttl=0;
+    }
+    if(a.ttl<=0)continue;
     if(a.cooldown<=0){
       const target=G.en.filter(e=>e.hp>0).sort((x,y)=>Math.hypot(x.x-a.x,x.y-a.y)-Math.hypot(y.x-a.x,y.y-a.y))[0];
       if(target&&Math.hypot(target.x-a.x,target.y-a.y)<110){
