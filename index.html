@@ -103,6 +103,13 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
 #arena.map-fullscreen #cv{width:100%;height:100%;object-fit:fill}
 #arena.map-fullscreen #selp,#arena.map-fullscreen #msg{display:none}
 @media(max-width:700px){#battleUnitDock{width:76px;left:4px;top:4px;bottom:4px}#battleUnitDock .card{font-size:9px;padding:2px}#battleUnitDock .card .ico{width:34px;height:30px}#battleUnitDock .card b{font-size:9px}}
+
+/* Mobile settings accessibility: scroll the dialog rather than clipping its bottom controls. */
+#settingsModal{overflow-y:auto;overscroll-behavior:contain;align-items:safe center;-webkit-overflow-scrolling:touch;padding:12px}
+#settingsModal .settings-box{max-height:calc(100dvh - 24px);max-height:calc(100vh - 24px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;min-height:0;touch-action:pan-y}
+@supports (height:100dvh){#settingsModal .settings-box{max-height:calc(100dvh - 24px)}}
+@media(max-width:600px){#settingsModal{place-items:start center}#settingsModal .settings-box{width:100%;padding:16px}}
+
 </style>
 
 <style>
@@ -213,6 +220,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <div class="settings-box qol-box">
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
+<section class="qol-section"><h3>Mobile Settings Scrolling Fixed</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:11 AM MDT</p><ul><li>Settings now scrolls vertically on phones, so the Reset Progress button and all lower settings remain reachable. Added touch scrolling and mobile-height support.</li></ul></section>
 <section class="qol-section"><h3>New App Guide Button</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:05 AM MDT</p><ul><li>Moved Android installation instructions, future update steps, offline-play details, and progress-saving guidance out of QOL into the new 📲 App Guide button beside QOL. QOL now focuses on the update history.</li></ul></section>
 <section class="qol-section"><h3>Starting Coins Increased to 500</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 02:11 AM MDT</p><ul><li>All new battles now begin with 500 coins instead of 300.</li><li>Existing saved player progress remains unchanged.</li></ul></section>
 <section class="qol-section"><h3>Automatic Saves &amp; Future Update Compatibility</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 01:58 AM MDT</p><ul><li>Removed Export and Import controls; kept the Save game button for reassurance.</li><li>Game progress is saved automatically to this browser's local storage every five seconds and when the tab is hidden or closed. A manual save writes the same progress immediately.</li><li>The game keeps a local backup of the previous valid save when changes are written, and tries that backup if the primary save cannot load.</li><li>Future versions of the same edition should keep the same save key and load and migrate existing progress without resetting units, levels, traits, stars, currencies, items, or raid unlocks. Creator and Public editions use separate save keys.</li><li>Progress is stored on this device and browser only, not in a cloud account. Moving to another browser/device, clearing site data, private browsing, or opening files in a different storage context can lose access to progress. Automatic saving cannot guarantee recovery after storage is erased or blocked.</li></ul></section>
