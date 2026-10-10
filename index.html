@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#211c3f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>Gem Guardians — Public Version</title>
+<style>
+:root{--bg:#15122a;--panel:#211c3f;--card:#2c2655;--ink:#f3f0ff;--mut:#a39cc9;--acc:#7b5cff;--gem:#3ee0c4;--gold:#ffc94d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 "Trebuchet MS",Verdana,sans-serif}
+header{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 14px;background:var(--panel)}
+h1{font-size:clamp(23px,3vw,28px);margin:0 auto 0 0;letter-spacing:.4px;font-family:"Trebuchet MS","Arial Rounded MT Bold",Verdana,sans-serif;font-weight:900;background:linear-gradient(90deg,#39ff14 0%,#00e5ff 55%,#1685ff 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#39ff14;line-height:1.2}
+.gems{color:var(--gem);font-weight:bold;font-size:17px}
+#st{color:var(--mut);font-size:12px}
+button{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:8px 12px;cursor:pointer;font:inherit}
+button:hover{filter:brightness(1.12)}button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button.alt{background:#40396e}button:disabled{opacity:.4;cursor:default}
+main{max-width:980px;margin:0 auto;padding:12px}
+.tabs{display:flex;gap:8px;margin-bottom:10px}
+.tabs button.on{background:var(--gold);color:#241a00}
+.panel{background:var(--panel);border-radius:12px;padding:12px;margin-bottom:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.card{background:var(--card);border-radius:10px;padding:8px;text-align:center;border:2px solid transparent;font-size:13px}
+.card.sel{border-color:var(--gold)}.card.off{opacity:.35}
+.dot{display:inline-block;width:26px;height:26px;border-radius:50%;margin-bottom:4px}
+.ico{display:block;margin:0 auto 4px}
+#modes button.on{background:var(--gold);color:#241a00}
+#bar,#coll{max-height:280px;overflow:auto}
+.Secret{color:#ff314d;text-shadow:0 0 9px #ed173a,0 0 15px #660a19}.Common{color:#22c55e}.Uncommon{color:#4ade80}.Rare{color:#3b82f6}.Legendary{color:#ffbf47}.Mythic{color:#ff68e9}.Epic{color:#a78bfa}.Exclusive{background:linear-gradient(90deg,#ff4141,#ffae00,#f7f542,#36d97a,#38a9ff,#a45cff,#ff5cba);-webkit-background-clip:text;background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent;font-weight:900;filter:drop-shadow(0 0 3px #a88cff)}
+canvas{width:100%;background:#2f4a30;border-radius:10px;display:block;cursor:crosshair;box-shadow:inset 0 2px 16px #0008,0 8px 22px #0005}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#000d;padding:9px 16px;border-radius:8px;opacity:0;transition:opacity .25s;pointer-events:none}
+#toast.on{opacity:1}
+.hide{display:none}
+#msg{font-size:18px;color:var(--gold);margin:8px 0}
+.qol-box{width:min(740px,100%);max-height:88vh;overflow-y:auto;overscroll-behavior:contain}
+.qol-section{border-top:1px solid #ffffff25;padding:12px 0}
+.qol-section h3{margin:2px 0 9px;color:#f2d27a}
+.qol-section ul{margin:0;padding-left:23px;line-height:1.55}
+.qol-section li{margin:6px 0}
+.settings-panel{position:fixed;inset:0;background:#080616c9;z-index:20;display:grid;place-items:center;padding:16px}
+.settings-panel.hide{display:none}
+.settings-box{background:var(--panel);border:1px solid #6559a0;border-radius:18px;padding:22px;width:min(420px,100%);box-shadow:0 16px 60px #0009}
+.settings-box h2{margin:0 0 14px}.setting{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid #ffffff20}.setting input{width:21px;height:21px;accent-color:#39ff14;cursor:pointer}.setting small{display:block;color:var(--mut)}
+.profile-button{display:flex;align-items:center;gap:7px;background:#353064;border:1px solid #7166a9;padding:5px 9px}.profile-button canvas{width:38px;height:38px;background:#28234d;border-radius:50%;cursor:pointer}.profile-modal{position:fixed;inset:0;background:#090719db;z-index:35;display:grid;place-items:center;padding:16px}.profile-modal.hide{display:none}.profile-card{background:var(--panel);border:1px solid #7166a9;border-radius:16px;padding:20px;width:min(490px,100%);max-height:90vh;overflow:auto}.profile-bar{height:12px;border-radius:20px;background:#41385f;overflow:hidden}.profile-fill{height:100%;background:linear-gradient(90deg,#39ff14,#00baff)}.avatar-option{padding:5px;border:2px solid transparent;border-radius:12px;background:#322a57;cursor:pointer}.avatar-option.selected{border-color:#39ff14}.avatar-option canvas{width:66px;height:60px;background:#28234d;border-radius:9px}.reward-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0;padding:8px;background:#30294e;border-radius:8px}.profile-card input{padding:8px;background:#16132e;color:white;border:1px solid #7465a3;border-radius:7px;max-width:100%}
+.unit-picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:8px;max-height:275px;overflow:auto;margin:10px 0}.unit-choice{background:var(--card);border:2px solid transparent;border-radius:10px;padding:7px 4px;color:var(--ink);text-align:center;cursor:pointer;min-width:0}.unit-fav{position:absolute;right:3px;top:3px;z-index:2;background:#241b38d9;border:1px solid #a88cb9;border-radius:50%;color:#ff779e;padding:3px 7px;font-size:19px;cursor:pointer;line-height:1.1}.unit-fav.active{color:#ff336f;background:#4c1937}.unit-choice{position:relative;cursor:pointer}.unit-card{position:relative}.unit-sort{max-width:100%;margin:6px 0 10px}.unit-choice.selected{border-color:var(--gold);background:#41386f}.unit-choice canvas{display:block;margin:auto;width:72px;height:64px}.unit-choice small{display:block;color:var(--mut)}.unit-choice b{display:block;overflow-wrap:anywhere}.unit-locked{border-color:#eab308!important}.unit-actions{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:6px}.unit-actions button{font-size:12px;padding:6px 8px}.unit-nickname{color:var(--gem);font-weight:bold}
+ .battle-canvas-wrap{position:relative;width:100%;isolation:isolate;filter:drop-shadow(0 10px 12px #0007)}
+.unit-quick{position:absolute;z-index:5;min-width:190px;max-width:235px;padding:9px;background:#19142ff5;border:1px solid #ffc94d;border-radius:12px;box-shadow:0 6px 22px #000b;color:#fff;font-size:12px;transform:translateY(-50%);pointer-events:auto}
+.unit-quick.hide{display:none}
+.unit-quick strong{display:block;color:#ffc94d;overflow-wrap:anywhere}
+.unit-quick .quick-meta{color:#d5cdef;margin:3px 0 7px}.quick-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:7px 0}.quick-stat{background:#302748;border:1px solid #55456d;border-radius:6px;padding:5px}.quick-stat small{display:block;color:#bfb2d9;font-size:10px}.quick-stat b{color:#fff;font-size:12px}.quick-max{color:#70f3aa;font-weight:bold;margin:5px 0}.quick-next{color:#f6d27b;font-size:11px;margin:5px 0}
+.unit-quick button{display:block;width:100%;font-size:12px;padding:7px 5px;margin-top:5px}
+.unit-quick button.alt{background:#45395c}
+@media(max-width:520px){.unit-quick{min-width:175px;max-width:195px;padding:6px;font-size:11px}.unit-quick button{font-size:11px;padding:5px 4px}}
+
+/* Dimensional UI: tactile bevels, soft specular highlights and layered surfaces. */
+.panel{border:1px solid #ffffff14;box-shadow:inset 0 1px 0 #ffffff13,0 12px 25px #0003;background:linear-gradient(155deg,#302951,#211c3f 72%)}
+.card{box-shadow:inset 0 2px 0 #ffffff14,0 5px 0 #17122d,0 9px 13px #0004;background:linear-gradient(155deg,#403669,#292349)}
+button{box-shadow:inset 0 2px 0 #ffffff2b,0 3px 0 #34246e,0 5px 10px #0004;transition:filter .15s,transform .15s}
+button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px 0 #34246e}
+.battle-canvas-wrap{perspective:1000px;box-shadow:0 22px 40px #0008;border:2px solid #8074b35e;border-radius:12px;overflow:hidden}
+/* Full-screen AFK experience, intentionally black and minimal. */
+.afk-overlay{position:fixed;inset:0;background:#000;color:#fff;z-index:100;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
+.afk-overlay.hide{display:none}.afk-center{max-width:540px;width:100%}.afk-center h2{letter-spacing:5px;font-size:clamp(24px,6vw,40px);margin:8px 0}.afk-center p{color:#a8a8a8}.afk-moon{font-size:56px;color:#e3cc7e}.afk-timer{font-size:clamp(48px,12vw,76px);font-variant-numeric:tabular-nums;font-weight:900;margin:16px 0;color:#e3cc7e}.afk-reward{color:#aaa;margin:16px 0}.afk-reward span{margin:0 8px}.afk-exit{background:#373737;border:1px solid #999;margin-top:22px}.afk-center #afkLatest{min-height:26px;color:#70e8b3;font-weight:bold}
+/* Each map keeps a separate best star rating for every finite difficulty. */
+.stage-choice{display:inline-flex;flex-direction:column;gap:4px;align-items:flex-start;text-align:left;vertical-align:top;min-width:205px}
+.stage-choice small{opacity:.8}
+.mode-star-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 9px;width:100%;margin-top:4px}
+.mode-stars{font-size:11px;white-space:nowrap;opacity:.75}
+.mode-stars.active{color:#facc15;font-weight:800;opacity:1}
+
+/* Three-across unit browsing: collection, trait selection, feeding, and unit index. */
+#coll,#bagGrid,#indexGrid,#traitUnitPicker,#feedPicker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;align-content:start;overflow-y:auto;overscroll-behavior:contain}
+#coll,#bagGrid{max-height:870px}
+#indexGrid{max-height:780px}
+#traitUnitPicker,#feedPicker{width:100%;flex:1 1 100%;max-height:258px;grid-auto-rows:78px}
+#traitUnitPicker .unit-choice,#feedPicker .unit-choice{padding:4px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+#traitUnitPicker .unit-choice canvas,#feedPicker .unit-choice canvas{width:45px;height:40px;margin:0}
+#traitUnitPicker .unit-choice b,#feedPicker .unit-choice b{font-size:11px;line-height:1.1}
+#traitUnitPicker .unit-choice small,#feedPicker .unit-choice small{font-size:10px;line-height:1}
+#coll .card,#bagGrid .card,#indexGrid .card{min-width:0;overflow-wrap:anywhere}
+@media(max-width:520px){#coll,#bagGrid,#indexGrid,#traitUnitPicker,#feedPicker{gap:5px}#coll .card,#bagGrid .card,#indexGrid .card{padding:5px 3px;font-size:11px}#coll .card button,#bagGrid .card button{font-size:10px;padding:5px 4px}}
+
+/* In-battle six-slot vertical dock, overlaid on the left of the map. */
+#battleUnitDock{position:absolute;left:8px;top:8px;bottom:8px;z-index:4;width:clamp(84px,13%,122px);pointer-events:none;display:flex;align-items:center}
+#battleUnitDock #bar{pointer-events:auto;display:flex;flex-direction:column;gap:5px;width:100%;max-height:100%;overflow-y:auto;scrollbar-width:thin;padding:3px}
+#battleUnitDock .card{flex:none;padding:4px 2px;font-size:10px;line-height:1.15;background:#201735e8;border:1px solid #8b78ad;box-shadow:0 2px 7px #000a;cursor:pointer}
+#battleUnitDock .card.sel{border-color:#facc15;background:#453567ee}
+#battleUnitDock .card .ico{width:42px;height:37px;margin:0 auto}
+#battleUnitDock .card b{display:block;font-size:10px;overflow-wrap:anywhere}
+#battleUnitDock .card .placement-count{display:block;font-size:9px;color:#fff4b4}
+#battleUnitDock .card .slot-extra{display:none}
+#arena.map-fullscreen{position:fixed;inset:0;z-index:200;background:#100c20;display:flex;flex-direction:column;padding:6px;overflow:hidden}
+#arena.map-fullscreen>.panel.row:first-child{flex:0 0 auto;margin-bottom:5px;padding:5px;gap:5px;font-size:12px}
+#arena.map-fullscreen>.panel.row:first-child button{font-size:11px;padding:6px}
+#arena.map-fullscreen .battle-canvas-wrap{flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center}
+#arena.map-fullscreen #cv{width:100%;height:100%;object-fit:fill}
+#arena.map-fullscreen #selp,#arena.map-fullscreen #msg{display:none}
+@media(max-width:700px){#battleUnitDock{width:76px;left:4px;top:4px;bottom:4px}#battleUnitDock .card{font-size:9px;padding:2px}#battleUnitDock .card .ico{width:34px;height:30px}#battleUnitDock .card b{font-size:9px}}
+</style>
+
+<style>
+#ggSplash{position:fixed;inset:0;z-index:999999;background:radial-gradient(circle at 50% 45%,#463184 0%,#19132f 58%,#080713 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;color:#fff;transition:opacity .65s ease,visibility .65s ease;pointer-events:all}
+#ggSplash.ggDone{opacity:0;visibility:hidden;pointer-events:none}
+#ggSplash .ggTitle{font-size:clamp(38px,8vw,86px);font-weight:1000;letter-spacing:.08em;text-align:center;text-shadow:0 5px 0 #301a64,0 13px 30px #9b6cff;line-height:1.12;background:linear-gradient(100deg,#fff2b6,#fff,#b6e8ff,#e5bdff);background-clip:text;-webkit-background-clip:text;color:transparent}
+#ggSplash .ggOrb{font-size:clamp(42px,8vw,75px);filter:drop-shadow(0 0 24px #7be6ff);animation:ggPulse 1.6s ease-in-out infinite alternate}
+#ggSplash .ggBar{width:min(330px,65vw);height:12px;border:2px solid #a48bea;border-radius:999px;background:#140e29;overflow:hidden}
+#ggSplash .ggProgress{width:0%;height:100%;border-radius:999px;background:linear-gradient(90deg,#6e56ff,#3ee0c4,#ffd05a);animation:ggFill 2.1s ease-out forwards}
+#ggSplash .ggCaption{color:#c8bce9;font-weight:bold;letter-spacing:.25em;font-size:12px}
+@keyframes ggFill{to{width:100%}}@keyframes ggPulse{to{transform:scale(1.12);filter:drop-shadow(0 0 35px #b8b3ff)}}
+</style>
+</head>
+<body>
+<div id="ggSplash" role="status" aria-label="Gem Guardians loading">
+ <div class="ggOrb">💎</div><div class="ggTitle">GEM GUARDIANS</div>
+ <div class="ggBar"><div class="ggProgress"></div></div><div class="ggCaption">LOADING YOUR ADVENTURE</div>
+</div>
+<script>
+(function(){function hide(){var el=document.getElementById('ggSplash');if(el)el.classList.add('ggDone')}window.addEventListener('load',function(){setTimeout(hide,2200)},{once:true});setTimeout(hide,5500)})();
+</script>
+
+<header>
+  <button id="bProfile" class="profile-button" title="Player profile"><canvas id="headerAvatar" width="48" height="48"></canvas><span id="headerPlayer">Player · Lv 1</span></button>
+  <h1>Gem Guardians</h1>
+  <span class="gems" id="gems"></span>
+  <span id="st">Not saved yet</span>
+  <button class="alt" id="bSettings">⚙ Settings</button>
+  <button class="alt" id="bQol">✨ QOL</button>
+  <button id="bSave">Save game</button>
+</header>
+<div id="unitInfoModal" class="profile-modal hide" role="dialog" aria-modal="true" aria-label="Unit skills and passives"><div class="profile-card"><div class="row" style="justify-content:space-between;align-items:center"><h2 id="unitInfoName">Skills &amp; Passives</h2><button class="alt" id="closeUnitInfo">Close</button></div><p id="unitInfoBody" style="white-space:pre-wrap;line-height:1.7"></p></div></div>
+<div id="profileModal" class="profile-modal hide" role="dialog" aria-modal="true" aria-label="Player profile"><div class="profile-card"><div class="row" style="justify-content:space-between"><h2>👤 Player Profile</h2><button class="alt" id="closeProfile">Close</button></div><label for="playerName">Player name</label><div class="row"><input id="playerName" maxlength="24" placeholder="Player"><button id="savePlayerName">Save name</button></div><h3 id="profileLevel"></h3><div class="profile-bar"><div id="profileFill" class="profile-fill"></div></div><p id="profileExp"></p><h3>Choose an unlocked unit as your avatar</h3><div id="profileAvatars" class="row"></div><h3>Level milestone rewards</h3><p style="color:var(--mut)">Every 5 levels, choose one reward. Each milestone can only be claimed once.</p><div id="profileRewards"></div></div></div>
+<main>
+  <div class="tabs">
+    <button data-tab="summon" class="on">Summon</button>
+    <button data-tab="battle">Battle</button>
+    <button data-tab="raids">⚔️ Raids</button>
+    <button data-tab="units">Units</button>
+    <button data-tab="afk">🌙 AFK</button>
+    <button data-tab="traits">✨ Traits</button>
+    <button data-tab="index">Index</button>
+    <button data-tab="bag">Bag</button>
+  </div>
+
+  <section id="afk" class="hide"><div class="panel"><h2>🌙 AFK Rewards</h2><p>Enter AFK mode to earn 5–10 gems every 60 seconds, with a 5% chance to earn 1 trait reroll per reward.</p><button id="enterAfk">Enter AFK Mode</button><p id="afkSummary">Rewards require 60 uninterrupted seconds in AFK mode. Leaving resets the countdown, but unclaimed rewards stay saved until you claim them.</p><p id="afkStoredSummary">Unclaimed: 0 gems · 0 trait rerolls</p><button id="claimAfkOutside" disabled>💎 Claim Rewards</button></div></section>
+  <div id="afkOverlay" class="afk-overlay hide" role="dialog" aria-modal="true" aria-label="AFK mode"><div class="afk-center"><div class="afk-moon">☾</div><h2>AFK MODE</h2><p>Earn rewards every 60 seconds. Rewards remain unclaimed when you leave. Press Claim Rewards to collect them.</p><div id="afkCountdown" class="afk-timer">01:00</div><div id="afkSession">Session: 0 gems · 0 trait rerolls · 0 rewards</div><div class="afk-reward">💎 5–10 Gems <span>·</span> ✨ 5% chance for 1 Trait Reroll</div><div id="afkLatest" aria-live="polite"></div><p id="afkPending" aria-live="polite">Unclaimed: 0 gems · 0 trait rerolls</p><button id="claimAfk" disabled style="background:#176b4b;border:1px solid #44d79b;color:white;font-weight:800">💎 Claim Rewards</button><p id="afkWakeStatus" style="font-size:12px;opacity:.75">Keeping screen awake where supported</p><button id="exitAfk" class="afk-exit">Leave AFK Mode</button></div></div>
+  <section id="summon">
+    <div class="panel row">
+      <button id="p1">Summon 1 (50 gems)</button>
+      <button id="p10">Summon 10 (450 gems)</button><button id="autoSummonToggle" type="button">▶ Auto Summon ×10</button><small id="autoSummonStatus" style="color:var(--mut)">Requires more than 1,000 gems to start. Stops below 400 gems.</small>
+      <span id="res" style="color:var(--mut)">Rarity odds: Rare 50%, Common 28%, Epic 15%, Legendary 6%, Mythic 1%. Ten pulls guarantee Epic or better.</span>
+    </div>
+    <div class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">⏳ Rotating Summon Banner</h2><b id="bannerTimer" style="color:var(--gem)"></b></div><p style="color:var(--mut)">Only the five featured units can be summoned. The banner changes every 5 minutes. Each banner features one unit from each rarity.</p><div class="grid" id="summonPool"></div><p id="pityInfo" style="color:var(--gold)"></p><small style="color:var(--mut)">Base banner odds: Common 50%, Rare 28%, Epic 15%, Legendary 6%, Mythic 1%. Three Secret units unlock at Player Level 10 (Abyss Summoner, Rift Blade, Chrono Warden). Once unlocked, each pull has a 0.5% Secret chance, guaranteed by 2,500 eligible pulls; otherwise these banner odds apply. Guaranteed Legendary by 100 pulls and Mythic by 500 pulls. Each pity resets when its rarity is obtained. Ten pulls guarantee Epic or better.</small></div>
+  </section>
+
+  <section id="raids" class="hide">
+<div class="panel" id="raidPanel"><h2>⚔️ Raids — Castle Hellsing</h2><p id="raidLevelRequirement" style="font-weight:800;color:var(--gold)"></p><p style="color:var(--mut)">Hell difficulty only · Clear each level to unlock the next · 25% harder per level · Level 5 has 15 waves and a 5% Alucard drop chance.</p><div id="raidLevels" class="row" style="flex-wrap:wrap;gap:8px"></div></div>
+    <div class="panel" id="raidMap2ComingSoon" aria-label="Raid Map 2 coming soon" style="margin-top:12px;text-align:center"><h2 style="margin:0 0 8px">⚔️ Raid Map 2</h2><p style="margin:0;color:var(--mut);font-weight:700">Coming Soon</p></div>
+  </section>
+  <section id="battle" class="hide">
+    <div class="panel row" id="modes"></div>
+<div class="panel" id="modeInfo"></div>
+    <div class="panel"><b>Enemy colors:</b> <span style="color:#ef4444">● Normal</span> · <span style="color:#60a5fa">● Tank</span> · <span style="color:#4ade80">● Runner</span> · <span style="color:#c084fc">● Elite</span> · <span style="color:#aaa">● Black Boss</span></div><div class="panel row" id="stages"></div>
+    <div id="arena" class="hide">
+      <div class="panel row"><b id="hud"></b>
+        <span style="margin-left:auto"></span>
+        <button id="bWave">Start wave</button>
+        <button class="alt" id="bSpd">Speed x1</button>
+        <button class="alt" id="bPause">Pause</button><button class="alt" id="bAutoUpgrade" aria-pressed="false">Auto Upgrade: OFF</button><button class="alt" id="bAutoPlay" aria-pressed="false">🔒 Auto Play</button><button class="alt" id="bFullMap">⛶ Fullscreen Map</button>
+        <button class="alt" id="bQuit">Leave stage</button>
+      </div>
+      <div class="battle-canvas-wrap"><canvas id="cv" width="800" height="450"></canvas><div id="battleUnitDock" aria-label="Battle unit slots"><div id="bar"></div></div><div id="unitQuick" class="unit-quick hide" role="group" aria-label="Selected unit quick actions"></div></div>
+      <div id="msg" class="hide"></div>
+      
+      <div class="panel row" id="selp">Pick a unit above to place it. Tap a placed unit for its nearby upgrade menu.</div>
+    </div>
+  </section>
+<section id="units" class="hide">
+    <div class="panel"><h2>⚔️ Match Loadout <span id="loadoutCount">0/6</span></h2><p style="color:var(--mut)">Equip 4 units initially; unlock slot 5 at Player Level 5 and slot 6 at Player Level 10. Equipped units can be placed repeatedly: Common 5, Rare 4, Epic 3, Legendary 2, Mythic 2, Secret 1, Exclusive Barter 3 per unit name. Limits apply across duplicates of the same character.</p><div id="loadoutSlots" class="grid"></div></div>
+    <div class="panel" style="color:var(--mut)">Prestige a unit once it reaches level 100, or sell units you no longer want for gems.</div>
+    <div class="panel"><label for="collectionSort">Sort units: </label><select id="collectionSort" class="unit-sort"></select><div class="grid" id="coll"></div></div>
+  </section>
+  <section id="traits" class="hide"><div class="panel"><h2>✨ Trait Forge</h2><p style="color:var(--mut)">Each unit has one trait slot. New players receive 25 free trait rerolls; after those are used, each reroll costs 30 gems. Every 150th reroll without a Mythic trait guarantees a random Mythic trait. Legendary and Mythic trait rolls trigger a 3-second reroll cooldown to prevent accidental skipping. Trait effects apply in battle.</p><div class="row"><label for="traitUnit">Choose unit:</label><select id="traitUnitPickerSort" class="unit-sort" aria-label="Sort trait units"></select><div id="traitUnitPicker" class="unit-picker"></div><select id="traitUnit" class="hide" aria-label="Selected trait unit"></select><button id="traitRoll">Reroll trait</button><label for="autoTraitTarget">Target trait:</label><select id="autoTraitTarget" aria-label="Target trait for auto reroll"></select><button id="autoTraitToggle" type="button">▶ Auto Reroll: OFF</button><small id="autoTraitStatus" style="color:var(--mut)">Choose Any trait for normal Auto Reroll with 3-second protection, or a specific trait to reroll without that delay until matched.</small></div><p id="traitPity"></p><div id="traitCurrent" class="panel"></div><h3>Trait possibilities</h3><div class="grid" id="traitList"></div></div></section>
+  <section id="index" class="hide">
+    <div class="panel"><h2>📖 Unit Index</h2><p id="indexProgress" style="color:var(--mut)"></p><div class="row" style="margin:10px 0"><label for="indexSort">Sort units:</label><select id="indexSort" aria-label="Sort unit index"><option value="rarityDesc">Rarity: Highest to Lowest</option><option value="rarityAsc">Rarity: Lowest to Highest</option><option value="damageDesc">Damage: Highest to Lowest</option><option value="damageAsc">Damage: Lowest to Highest</option><option value="discoveredFirst">Discovered First</option><option value="undiscoveredFirst">Undiscovered First</option></select></div><div class="grid" id="indexGrid"></div></div><div class="panel"><h2>🎒 Item Index</h2><p style="color:var(--mut)">Items are recorded permanently after you obtain them. No rewards are granted for discovering items.</p><p id="itemIndexProgress"></p><div class="grid" id="itemIndexGrid"></div></div>
+  </section>
+  <section id="bag" class="hide">
+    <div class="panel"><div class="grid" id="bagGrid"></div></div>
+    <div class="panel" id="bagInfo"></div>
+  </section>
+</main>
+<div id="toast"></div>
+<div id="qolModal" class="settings-panel hide" role="dialog" aria-modal="true" aria-labelledby="qolTitle">
+ <div class="settings-box qol-box">
+  <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
+  <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
+<section class="qol-section"><h3>Installable Offline PWA &amp; Stable Saves</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 02:17 AM MDT</p><ul><li>Install Gem Guardians from a stable HTTPS web address; game code is cached for offline play after the first visit.</li><li>Progress is saved to this edition's browser storage automatically every five seconds, on app hide/exit, and when Save is pressed. The previous valid save is retained as a local backup.</li><li>Future releases must replace the files at the exact same HTTPS origin and /public/ path and keep the save key unchanged (gemGuardiansSave); save migration reads older supported fields without wiping progression.</li><li>Creator and Public are separate installations and save keys; neither accesses the other's data.</li><li>Opening a previously downloaded local HTML file uses a different storage context. Its save cannot automatically migrate into this PWA. Do not delete old files or browser data until your old progress is recovered.</li><li>Offline saves are local to the browser/app; uninstalling, clearing site data or switching browsers/devices can erase or hide progress. This is not cloud sync.</li></ul></section>
+<section class="qol-section"><h3>Starting Coins Increased to 500</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 02:11 AM MDT</p><ul><li>All new battles now begin with 500 coins instead of 300.</li><li>Existing saved player progress remains unchanged.</li></ul></section>
+<section class="qol-section"><h3>Automatic Saves &amp; Future Update Compatibility</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 01:58 AM MDT</p><ul><li>Removed Export and Import controls; kept the Save game button for reassurance.</li><li>Game progress is saved automatically to this browser's local storage every five seconds and when the tab is hidden or closed. A manual save writes the same progress immediately.</li><li>The game keeps a local backup of the previous valid save when changes are written, and tries that backup if the primary save cannot load.</li><li>Future versions of the same edition should keep the same save key and load and migrate existing progress without resetting units, levels, traits, stars, currencies, items, or raid unlocks. Creator and Public editions use separate save keys.</li><li>Progress is stored on this device and browser only, not in a cloud account. Moving to another browser/device, clearing site data, private browsing, or opening files in a different storage context can lose access to progress. Automatic saving cannot guarantee recovery after storage is erased or blocked.</li></ul></section>
+<section class="qol-section"><h3>Bug Fix — Waves Continue After Wave 10</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 01:42 AM MDT</p><ul><li>Fixed an outdated Wave 10 auto-advance condition that caused matches to stall.</li><li>Regular maps now automatically progress through Wave 15; raids use their level-specific final wave (15 or 30).</li><li>Infinite Mode continues without a wave limit.</li></ul></section>
+<section class="qol-section"><h3>15-Wave Maps, 30-Wave Raid Finale and Winding Raid Route</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 01:35 AM MDT</p><ul><li>Regular map victories now finish at wave 15; the Castle Hellsing final raid level has 30 waves, and raid levels 1–4 have 15 waves.</li><li>Later waves progressively increase enemy health and spawn count; raid mini-bosses appear every 10 waves except the final wave.</li><li>Castle Hellsing now has a unique winding path with multiple turns, used by enemy movement, placement rules, AI and rendering.</li><li>Starting battle coins increased from 250 to 300.</li></ul></section>
+<section class="qol-section"><h3>Fruit EXP Rebalance — 1,750 Maximum</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 01:25 AM MDT</p><ul><li>Rebalanced all 11 map fruits into a smooth EXP progression from 40 to 1,750 EXP.</li><li>No single fruit can grant more than 1,750 unit EXP, including fruits added for future maps.</li><li>Existing food inventories remain intact; updated values apply when consumed.</li></ul></section>
+<section class="qol-section"><h3>Trait Reroll in Item Index and Bag</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 01:21 AM MDT</p><ul><li>Trait Reroll appears before food items in the Item Index, with its use and ways to obtain it.</li><li>Bag now shows owned Trait Rerolls and food quantities.</li><li>Use Item? on Trait Reroll navigates to Trait Forge; no reroll is spent until used there.</li></ul></section>
+<section class="qol-section"><h3>Fix — Target Trait Dropdown Selection</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 01:11 AM MDT</p><ul><li>Fixed the Target trait dropdown so each trait has its own selectable value rather than all options sharing the same value.</li><li>Players can switch targets; selecting a new target stops the current auto reroll until restarted.</li><li>Targeted rerolls continue to bypass the three-second high-rarity cooldown.</li></ul></section>
+<section class="qol-section"><h3>Targeted Auto Trait Reroll</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 01:09 AM MDT</p><ul><li>Choose an exact target trait from the Trait Forge menu; Auto Reroll continues until that trait is obtained or reroll currency runs out.</li><li>Targeted Auto Reroll bypasses the 3-second Legendary/Mythic cooldown. Normal auto and manual rerolls retain the protection.</li><li>Stops automatically on success; target choice is saved, and each reroll still consumes a free reroll or 30 gems.</li></ul></section>
+<section class="qol-section"><h3>Auto Replay + Auto Play &amp; Unit Info</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 01:03 AM MDT</p><ul><li>When Auto Replay and Auto Play are enabled together, Auto Play resumes after a map reset and starts Wave 1 after a 3-second countdown.</li><li>Every owned unit card now includes an Info button showing its defined skills/passives. Units without skills have an empty info panel.</li></ul></section>
+<section class="qol-section"><h3>Smart AI Auto Play — Tactical Placement &amp; Support</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 12:53 AM MDT</p><ul><li>Auto Play now analyzes each map path and incoming enemies to position damage units at high-coverage chokepoints.</li><li>Places Barter money generators away from prime firing lanes, and groups buff/support units within range of existing damage towers.</li><li>Prioritizes an opening attacker, balances economy and offense, and chooses upgrades by strategic value rather than cheapest-first.</li><li>Preserves Player Level 5 and per-map/per-mode 3-star requirements. Victory still depends on equipped units.</li></ul></section>
+<section class="qol-section"><h3>Auto Play — Three-Star Map/Mode Unlock</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 12:51 AM MDT</p><ul><li>Unlock Auto Play at Player Level 5 after earning three stars on that exact regular map and difficulty.</li><li>Each map and difficulty unlocks separately; Infinite and Raids are excluded.</li><li>Auto Play starts the first wave, automatically places equipped units using battle coins and normal placement caps, and enables automatic upgrades. Can be toggled off during battle.</li></ul></section>
+<section class="qol-section"><h3>Raid Level 25 Unlock &amp; Alucard Power Upgrade</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 12:48 AM MDT</p><ul><li>Raids are locked until Player Level 25; all raid levels require Level 25.</li><li>Alucard strengthened to 350 base damage, 190 range and 0.55-second attack cooldown, making him the strongest base damage-per-second unit.</li><li>Alucard remains a 5% Level 5 raid reward and is excluded from the summon banner.</li></ul></section>
+<section class="qol-section"><h3>Bug Fix — Raid Maps and Levels Now Visible</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 12:44 AM MDT</p><ul><li>Fixed Raids tab visibility in the main navigation.</li><li>Castle Hellsing levels 1–5 now render in the Raids tab, with Level 1 unlocked by default.</li><li>Raid Map 2 remains marked Coming Soon.</li></ul></section>
+ <section class="qol-section"><h3>Update: Separate Raids Menu</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 12:40 AM MDT</p><ul><li>Moved Raids into its own tab immediately after Battle.</li><li>Castle Hellsing and Raid Map 2 — Coming Soon now appear in the Raids tab.</li><li>Starting a raid opens the Battle arena while preserving raid progress and unlocks.</li></ul></section>
+ <section class="qol-section"><h3>Update: Raid Map 2 Placeholder</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 12:36 AM MDT</p><ul><li>Added a second raid map card labeled “Coming Soon.”</li><li>Raid Map 2 cannot be played yet; Castle Hellsing remains unchanged.</li></ul></section>
+ <section class="qol-section"><h3>Update: Castle Hellsing Raids &amp; Alucard</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 12:26 AM MDT</p><ul><li>One raid map with five progressively unlocked levels, always on Hell difficulty.</li><li>Levels 1–4: 10 waves each; Level 5: 15 waves.</li><li>Enemy strength increases by 25% per raid level, compounded, and scales with waves.</li><li>Boss at the end of each raid level; an Elite appears three seconds before the boss.</li><li>Level 5 completion has a 5% chance to award Alucard, a Secret raid-only unit.</li><li>Raid-only units are excluded from summon banners.</li></ul></section>
+  <section class="qol-section"><h3>🎮 Gameplay &amp; Battles</h3><ul><li>Automatic wave progression: after the final enemy of a wave spawns, the next wave starts 5 seconds later. Maps introduce normal enemies, then tanks (Map 2), runners (Map 3), and elites (Map 4). Every regular map ends with a boss; Infinite Mode has a boss every 10 waves. An elite spawns 3 seconds before each boss.</li><li>Auto Upgrade upgrades placed units using the cheapest affordable upgrade first.</li><li>Fullscreen battlefield option, with equipped unit slots displayed on the left.</li><li>Fixed battlefield camera for simpler controls; no cinematic camera or tilt toggles.</li><li>Automatic unit abilities, distinct attack effects, and a setting to hide attack effects.</li><li>Optional automatic map restart and replay settings.</li><li>Six-unit loadout; slots 5 and 6 unlock at player levels 5 and 10.</li><li>Placement limits depend on unit rarity, while allowing repeat placements of owned units.</li><li>Separate map difficulty modes and star ratings based on lives remaining.</li></ul></section><section class="qol-section"><h3>🎰 Summoning &amp; Banners</h3><ul><li>Auto Summon unlocks above 1,000 gems and performs only ×10 summons for 450 gems per batch.</li><li>Auto Summon stops below 400 gems and waits if another ×10 batch is unaffordable.</li><li>Exclusive units are excluded from every summon banner.</li><li>Featured banner rotation and rarity-specific pity counters.</li><li>Secret summons unlock at player level 10, with a 0.5% chance and a 2,500-summon pity.</li></ul></section><section class="qol-section"><h3>✨ Traits &amp; Unit Management</h3><ul><li>Permanent Auto Trait Reroll toggle alongside the normal single-reroll button.</li><li>A 3-second reroll lock after obtaining Legendary or Mythic traits, including during Auto Reroll.</li><li>Favorite units with a heart and show favorites first in unit selectors.</li><li>Sort units by rarity, damage, or placement cost in ascending or descending order.</li><li>Three-column unit browsers with three visible rows in collection and selection menus.</li><li>Auto-sell newly summoned units of chosen rarities while preserving Index discoveries.</li><li>Unit Index reveals ability descriptions only after the unit has been obtained.</li><li>Unique automatic abilities for Epic, Legendary, Mythic, and Secret units.</li><li>Added the Mythic Midas trait, including bonus income and discounted placement/upgrades.</li></ul></section><section class="qol-section"><h3>💎 Rewards, Progress &amp; Offline Play</h3><ul><li>AFK rewards accumulate and remain unclaimed until the player presses Claim Rewards.</li><li>AFK progress and rewards are saved locally; leaving AFK resets only the unfinished countdown.</li><li>Player profiles, level milestones, and avatar selection.</li><li>Progress saves automatically in browser storage, with a manual Save game button for reassurance.</li><li>Offline gameplay without Firebase, online leaderboards, or required internet access.</li><li>Settings include a progress reset option.</li></ul></section>
+  <p style="color:var(--mut);font-size:12px">Daily Login and online leaderboard features are not included.</p>
+ </div>
+</div>
+<div id="settingsModal" class="settings-panel hide" role="dialog" aria-modal="true" aria-label="Game settings">
+ <div class="settings-box"><div class="row" style="justify-content:space-between"><h2>⚙ Game Settings</h2><button class="alt" id="closeSettings">Close ✕</button></div>
+
+ <label class="setting"><span><b>Auto restart map</b><small>Replay the same map and restore placed units after a run ends</small></span><input type="checkbox" data-setting="autoRestart"></label>
+ <label class="setting"><span><b>Attack effects (FX)</b><small>Show or hide attack effects for all units, including Archers, Snipers, and Apprentices</small></span><input type="checkbox" data-setting="attackFx"></label>
+ <div class="setting" style="display:block"><b>Auto-sell summoned units</b><small>Automatically sell newly summoned units of the selected rarities. New discoveries still count toward the Index.</small><div class="row" id="autoSellOptions" style="margin-top:8px"></div></div>
+ <p style="color:var(--mut);font-size:12px">Settings are saved with your game progress. Automatic actions wait 3 seconds.</p>
+ <div style="margin-top:16px;padding-top:14px;border-top:1px solid #ffffff30"><button id="bRes" style="background:#a12c47">Reset Game Progress</button></div>
+ </div></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const TYPES={Physical:'#f59e0b',Ranged:'#84cc16',Magic:'#60a5fa',True:'#f8fafc'};
+const MIG={scout:'knight',slinger:'apprentice',cannon:'sniper'};
+const UNITS={
+ alucard:{n:'Alucard',t:'True',r:'Secret',raidOnly:true,c:650,d:350,rg:190,cd:.55,col:'#8b1029',g:[.08,.005,.02],ability:'Hellsing Arsenal: dual pistols Jackal and Casull fire alternating empowered shots. Blood Regeneration: restores a life every 20 kills (up to starting lives). Shadow Familiar: unleashes a Baskerville hound strike every 12 seconds. Release Restraint: every fifth attack adds 200% damage and a shadow blast.',special:0},
+ barter:{n:'Barter',t:'Support',r:'Exclusive',c:100,d:0,rg:80,cd:1.5,col:'#d5a548',g:[.04,.003,.01],ability:"Merchant's Dividend: earns 10 coins every 5 seconds at boost 1/5. Each boost reduces the income cooldown by 1 second (minimum 1 second at boost 5/5) and increases the bonus by 5 coins, scaling that bonus by 1.1× per boost.",special:0},
+ rift_blade:{n:'Rift Blade',t:'Physical',r:'Secret',c:340,d:115,rg:145,cd:.85,col:'#181625',g:[.07,.004,.012],ability:'Releases sweeping crescent energy slashes; every fourth strike unleashes a piercing shockwave',special:0},
+ chrono_warden:{n:'Chrono Warden',t:'Magic',r:'Secret',c:360,d:65,rg:130,cd:1.15,col:'#172a39',g:[.045,.004,.012],ability:'Freezes all enemies in its area for 1 second, gaining +0.5 seconds with each boost (3 seconds at 5/5). Activates every 10 seconds',special:0},
+ abyss_summoner:{n:'Abyss Summoner',t:'Magic',r:'Secret',c:320,d:95,rg:135,cd:1.1,col:'#08080c',g:[.065,.004,.014],ability:'Summons three shadow monsters every 5 seconds; at map boost 5/5 summons two Elite Ghouls instead',special:0},
+ knight:{n:'Knight',t:'Physical',r:'Rare',c:55,d:15,rg:55,cd:.5,col:'#94a3b8',g:[.06,0,.01]},
+ archer:{n:'Archer',t:'Ranged',r:'Rare',c:50,d:9,rg:95,cd:.55,col:'#4d9a3a',g:[.04,.006,.012]},
+ apprentice:{n:'Apprentice',t:'Magic',r:'Rare',c:60,d:13,rg:85,cd:.8,col:'#8b5cf6',splash:30,g:[.045,.003,.015]},
+ blade:{n:'Blade Dancer',t:'Physical',r:'Epic',c:120,d:22,rg:62,cd:.3,col:'#22d3ee',g:[.05,0,.025],ability:'Whirling Blades: every 4th hit splashes 30% damage nearby'},
+ sniper:{n:'Sniper',t:'Ranged',r:'Epic',c:140,d:60,rg:180,cd:2,col:'#78716c',g:[.05,.008,.004],ability:'Precision Shot: every 3rd hit deals 35% bonus damage'},
+ mage:{n:'Frost Mage',t:'Magic',r:'Epic',c:115,d:16,rg:105,cd:.8,col:'#3b82f6',slow:1,g:[.04,.004,.01],ability:'Frostbite: every 4th hit slows enemies for 1.5s'},
+ dragon:{n:'Dragon Knight',t:'Physical',r:'Legendary',c:260,d:80,rg:70,cd:.9,col:'#a855f7',splash:38,g:[.07,.002,.005],ability:'Dragon Cleave: every 3rd hit deals 55% splash damage'},
+ warden:{n:'Light Warden',t:'True',r:'Legendary',c:240,d:42,rg:115,cd:.8,col:'#fde68a',g:[.055,.004,.008],ability:'Radiant Verdict: every 4th attack strikes for 65% extra damage'},
+ squire:{n:"Squire",t:'Physical',r:'Rare',c:55,d:12,rg:65,cd:0.75,col:'#c4b5fd',g:[.05,.004,.012],ability:"armor breaker",special:1},
+ slingshot:{n:"Pebble Scout",t:'Ranged',r:'Rare',c:64,d:15,rg:77,cd:0.88,col:'#a3e635',g:[.05,.004,.012],ability:"ricochet",special:2},
+ herbalist:{n:"Herbalist",t:'Magic',r:'Rare',c:73,d:18,rg:89,cd:1.01,col:'#fb923c',g:[.05,.004,.012],ability:"poison",special:3},
+ lancer:{n:"Lancer",t:'Physical',r:'Rare',c:82,d:21,rg:101,cd:1.14,col:'#67e8f9',g:[.05,.004,.012],ability:"piercing strike",special:4},
+ torch:{n:"Torch Bearer",t:'Magic',r:'Rare',c:91,d:24,rg:65,cd:0.75,col:'#fda4af',g:[.05,.004,.012],ability:"burn",special:5},
+ hunter:{n:"Forest Hunter",t:'Ranged',r:'Rare',c:55,d:27,rg:77,cd:0.88,col:'#86efac',g:[.05,.004,.012],ability:"execute",special:6},
+ miner:{n:"Iron Miner",t:'Physical',r:'Rare',c:64,d:30,rg:89,cd:1.01,col:'#fbbf24',g:[.05,.004,.012],ability:"coin finder",special:7},
+ monk:{n:"Wandering Monk",t:'True',r:'Rare',c:73,d:12,rg:101,cd:1.14,col:'#93c5fd',g:[.05,.004,.012],ability:"healing aura",special:8},
+ scout:{n:"Wind Scout",t:'Ranged',r:'Rare',c:82,d:15,rg:65,cd:0.75,col:'#f0abfc',g:[.05,.004,.012],ability:"quick shot",special:9},
+ guard:{n:"Shield Guard",t:'Physical',r:'Rare',c:91,d:18,rg:77,cd:0.88,col:'#fdba74',g:[.05,.004,.012],ability:"stagger",special:10},
+ alchemist:{n:"Alchemist",t:'Magic',r:'Common',c:85,d:28,rg:109,cd:0.94,col:'#c4b5fd',g:[.05,.004,.012],ability:"acid",special:11},
+ falconer:{n:"Falconer",t:'Ranged',r:'Common',c:94,d:31,rg:121,cd:1.07,col:'#a3e635',g:[.05,.004,.012],ability:"falcon double hit",special:12},
+ spearman:{n:"Spear Captain",t:'Physical',r:'Common',c:103,d:34,rg:85,cd:0.68,col:'#fb923c',g:[.05,.004,.012],ability:"long thrust",special:13},
+ druid:{n:"Moss Druid",t:'Magic',r:'Common',c:112,d:37,rg:97,cd:0.81,col:'#67e8f9',g:[.05,.004,.012],ability:"root",special:14},
+ pirate:{n:"Powder Pirate",t:'Ranged',r:'Common',c:121,d:19,rg:109,cd:0.94,col:'#fda4af',g:[.05,.004,.012],ability:"explosive shot",special:15},
+ brawler:{n:"Stone Brawler",t:'Physical',r:'Common',c:85,d:22,rg:121,cd:1.07,col:'#86efac',g:[.05,.004,.012],ability:"heavy blow",special:16},
+ trickster:{n:"Moon Trickster",t:'True',r:'Common',c:94,d:25,rg:85,cd:0.68,col:'#fbbf24',g:[.05,.004,.012],ability:"critical trick",special:17},
+ beekeeper:{n:"Bee Keeper",t:'Ranged',r:'Common',c:103,d:28,rg:97,cd:0.81,col:'#93c5fd',g:[.05,.004,.012],ability:"swarm",special:18},
+ rune:{n:"Rune Scribe",t:'Magic',r:'Common',c:112,d:31,rg:109,cd:0.94,col:'#f0abfc',g:[.05,.004,.012],ability:"arcane echo",special:19},
+ fencer:{n:"Silver Fencer",t:'Physical',r:'Common',c:121,d:34,rg:121,cd:1.07,col:'#fdba74',g:[.05,.004,.012],ability:"rapid combo",special:20},
+ storm:{n:"Storm Caller",t:'Magic',r:'Epic',c:135,d:50,rg:105,cd:0.65,col:'#c4b5fd',g:[.05,.004,.012],ability:'Chain Spark: every 4th hit arcs for 30% damage to a nearby enemy',special:21},
+ assassin:{n:"Night Assassin",t:'Physical',r:'Epic',c:144,d:32,rg:117,cd:0.78,col:'#a3e635',g:[.05,.004,.012],ability:'Shadow Strike: every 3rd hit deals 40% bonus damage',special:22},
+ ballista:{n:"Ballista Engineer",t:'Ranged',r:'Epic',c:153,d:35,rg:129,cd:0.91,col:'#fb923c',g:[.05,.004,.012],ability:'Piercing Bolt: every 4th shot hits another enemy for 30% damage',special:23},
+ witch:{n:"Hex Witch",t:'Magic',r:'Epic',c:162,d:38,rg:141,cd:1.04,col:'#67e8f9',g:[.05,.004,.012],ability:'Hex: every 4th hit weakens an enemy with a 1.5s slow',special:24},
+ berserker:{n:"Red Berserker",t:'Physical',r:'Epic',c:171,d:41,rg:105,cd:0.65,col:'#fda4af',g:[.05,.004,.012],ability:'Blood Fury: every 3rd hit deals 30% extra damage',special:25},
+ oracle:{n:"Star Oracle",t:'True',r:'Epic',c:135,d:44,rg:117,cd:0.78,col:'#86efac',g:[.05,.004,.012],ability:'Fated Spark: every 4th hit deals 35% bonus damage',special:26},
+ ranger:{n:"Thorn Ranger",t:'Ranged',r:'Epic',c:144,d:47,rg:129,cd:0.91,col:'#fbbf24',g:[.05,.004,.012],ability:'Thorn Volley: every 4th attack hits nearby enemies for 25% damage',special:27},
+ pyro:{n:"Pyromancer",t:'Magic',r:'Epic',c:153,d:50,rg:141,cd:1.04,col:'#93c5fd',g:[.05,.004,.012],ability:'Ember Burst: every 4th hit burns nearby enemies for 30% damage',special:28},
+ samurai:{n:"Moon Samurai",t:'Physical',r:'Epic',c:162,d:32,rg:105,cd:0.65,col:'#f0abfc',g:[.05,.004,.012],ability:'Moon Slash: every 3rd attack cleaves for 25% damage',special:29},
+ tinker:{n:"Clockwork Tinker",t:'Ranged',r:'Epic',c:171,d:35,rg:117,cd:0.78,col:'#fdba74',g:[.05,.004,.012],ability:'Gear Burst: every 4th attack hits a second target for 30% damage',special:30},
+ phoenix:{n:"Phoenix Herald",t:'Magic',r:'Legendary',c:235,d:71,rg:149,cd:1.06,col:'#c4b5fd',g:[.05,.004,.012],ability:'Rebirth Flames: every 4th hit ignites nearby enemies for 50% damage',special:31},
+ titan:{n:"Titan Breaker",t:'Physical',r:'Legendary',c:244,d:74,rg:161,cd:1.19,col:'#a3e635',g:[.05,.004,.012],ability:'Earthquake: every 4th attack shakes nearby enemies for 45% damage and a 0.5s stun',special:32},
+ celestial:{n:"Celestial Archer",t:'Ranged',r:'Legendary',c:253,d:77,rg:125,cd:0.8,col:'#fb923c',g:[.05,.004,.012],ability:'Meteor Arrows: every 3rd attack splashes 45% damage',special:33},
+ void:{n:"Void Reaper",t:'True',r:'Legendary',c:262,d:80,rg:137,cd:0.93,col:'#67e8f9',g:[.05,.004,.012],ability:'Void Siphon: every 4th attack deals 60% bonus damage',special:34},
+ leviathan:{n:"Leviathan Sage",t:'Magic',r:'Legendary',c:271,d:83,rg:149,cd:1.06,col:'#fda4af',g:[.05,.004,.012],ability:'Tidal Wave: every 4th attack damages nearby enemies for 45% and slows them for 1.5s',special:35},
+ paladin:{n:"Dawn Paladin",t:'Physical',r:'Legendary',c:235,d:65,rg:161,cd:1.19,col:'#86efac',g:[.05,.004,.012],ability:'Holy Judgment: every 4th hit deals 65% extra damage',special:36},
+ chronos:{n:"Time Weaver",t:'Magic',r:'Legendary',c:244,d:68,rg:125,cd:0.8,col:'#fbbf24',g:[.05,.004,.012],ability:'Time Lock: every 4th hit briefly freezes its target for 0.75s',special:37},
+ seraph:{n:"Seraph Sentinel",t:'True',r:'Legendary',c:253,d:71,rg:137,cd:0.93,col:'#93c5fd',g:[.05,.004,.012],ability:'Radiant Chain: every 3rd attack chains 45% damage to another enemy',special:38},
+ cosmos:{n:"Cosmos Sovereign",t:'Magic',r:'Mythic',c:407,d:114,rg:169,cd:1.16,col:'#f0abfc',g:[.05,.004,.012],ability:"supernova",special:39},
+ abyss:{n:"Abyss Monarch",t:'True',r:'Mythic',c:416,d:117,rg:181,cd:1.29,col:'#fdba74',g:[.05,.004,.012],ability:"abyss collapse",special:40},
+ worldtree:{n:"Worldtree Avatar",t:'Magic',r:'Mythic',c:380,d:120,rg:145,cd:0.9,col:'#c4b5fd',g:[.05,.004,.012],ability:"ancient roots",special:41},
+ dragonlord:{n:"Dragon Emperor",t:'Physical',r:'Mythic',c:389,d:123,rg:157,cd:1.03,col:'#a3e635',g:[.05,.004,.012],ability:"dragonfire",special:42},
+ starlord:{n:"Astral Huntress",t:'Ranged',r:'Mythic',c:398,d:105,rg:169,cd:1.16,col:'#fb923c',g:[.05,.004,.012],ability:"Astral ricochet: 4 extra targets (-10% original damage per bounce)",special:43},
+ eternity:{n:"Eternity Keeper",t:'True',r:'Mythic',c:407,d:108,rg:181,cd:1.29,col:'#67e8f9',g:[.05,.004,.012],ability:"Eternal Blessing: alternating damage / attack speed aura",special:44},
+ lizardscout:{n:'Emerald Lizard Scout',t:'Ranged',r:'Rare',c:65,d:13,rg:100,cd:.65,col:'#39d97b',g:[.05,.004,.012],ability:'venom dart',special:45},
+ moonling:{n:'Moonling Alien',t:'Magic',r:'Common',c:98,d:24,rg:112,cd:.85,col:'#8ddcff',g:[.05,.004,.012],ability:'plasma pulse',special:46},
+ drake:{n:'Cinder Drake',t:'Physical',r:'Epic',c:170,d:50,rg:115,cd:.9,col:'#ff7849',g:[.05,.004,.012],ability:'Ember Breath: every 4th attack splashes 30% damage',special:47},
+ reptileking:{n:'Reptile King',t:'Physical',r:'Legendary',c:255,d:85,rg:140,cd:.95,col:'#b1e35e',g:[.05,.004,.012],ability:'Ancient Venom: every 4th attack splashes 40% damage and slows for 1.5s',special:48},
+ xenowarden:{n:'Xeno Warden',t:'True',r:'Mythic',c:400,d:120,rg:170,cd:1.1,col:'#a78bfa',g:[.05,.004,.012],ability:'Triune Wards: places a ward every 2s (max 3). Each lasts 3s and inflicts 5s slow (50% movement speed), or 0.5s stun or freeze.',special:49},
+};
+const STAGES=[
+ {n:'Green Meadow',hp:1,food:'berry',path:[[-20,90],[620,90],[620,230],[180,230],[180,370],[820,370]]},
+ {n:'Crystal Canyon',hp:1.6,food:'crystal',path:[[-20,60],[700,60],[700,200],[100,200],[100,340],[700,340],[700,470]]},
+ {n:'Ember Peak',hp:2.4,food:'pepper',path:[[-20,225],[150,225],[150,60],[400,60],[400,390],[650,390],[650,225],[820,225]]},
+ {n:'Moonlit Marsh',hp:3.1,food:'lotus',bg:'#233e47',road:'#719da2',path:[[-20,70],[190,70],[190,310],[440,310],[440,110],[710,110],[710,470]]},
+ {n:'Golden Desert',hp:4,food:'date',bg:'#9a6b35',road:'#e9c78b',path:[[-20,360],[250,360],[250,100],[540,100],[540,340],[820,340]]},
+ {n:'Frozen Tundra',hp:5,food:'icefruit',bg:'#426e88',road:'#c3e7f1',path:[[-20,210],[160,210],[160,55],[640,55],[640,390],[320,390],[320,230],[820,230]]},
+ {n:'Poison Jungle',hp:6.5,food:'spore',bg:'#24593e',road:'#91b85e',path:[[-20,55],[350,55],[350,170],[100,170],[100,370],[680,370],[680,150],[820,150]]},
+ {n:'Volcanic Rift',hp:8,food:'embercore',bg:'#622b30',road:'#e07b48',path:[[-20,390],[130,390],[130,95],[310,95],[310,310],[500,310],[500,65],[700,65],[700,390],[820,390]]},
+ {n:'Starlight Nebula',hp:10,food:'starfruit',bg:'#252958',road:'#8880d9',path:[[-20,225],[180,225],[180,65],[610,65],[610,365],[250,365],[250,215],[820,215]]},
+ {n:'Ancient Ruins',hp:13,food:'relicseed',bg:'#5b5845',road:'#c5b78d',path:[[-20,80],[600,80],[600,175],[160,175],[160,290],[690,290],[690,395],[820,395]]},
+ {n:'Alien Hive',hp:17,food:'xenopod',bg:'#37234f',road:'#a575d4',path:[[-20,365],[200,365],[200,90],[410,90],[410,365],[620,365],[620,90],[820,90]]}
+];
+
+/* ---------- Saving ---------- */
+const ITEMS={
+ berry:{n:'Meadow Berry',exp:40,map:0},
+ crystal:{n:'Crystal Fruit',exp:120,map:1},
+ pepper:{n:'Ember Pepper',exp:250,map:2},
+ lotus:{n:'Moon Lotus',exp:400,map:3},date:{n:'Sun Date',exp:550,map:4},
+ icefruit:{n:'Frost Apple',exp:725,map:5},spore:{n:'Jungle Spore',exp:900,map:6},
+ embercore:{n:'Ember Core',exp:1100,map:7},starfruit:{n:'Starfruit',exp:1300,map:8},
+ relicseed:{n:'Relic Seed',exp:1500,map:9},xenopod:{n:'Xeno Pod',exp:1750,map:10}
+};
+const MODES={
+ easy:{n:'Easy',hp:.6,mult:1,xp:1},
+ medium:{n:'Medium',hp:1,mult:2,xp:1.5},
+ hard:{n:'Hard',hp:1.8,mult:4,xp:2.2},
+ hell:{n:'Hell',hp:3.2,mult:8,xp:3.5},
+ infinite:{n:'Infinite',hp:1,mult:0,xp:1}
+};
+let curMode='easy';
+let raidSelection=0;
+const RAID_LEVELS=5;
+function raidMaxWave(level){return level===5?30:15;}
+function raidScale(level){return Math.pow(1.25,level-1);}
+// Dedicated winding raid battlefield. All raid levels share this Castle Hellsing route;
+// future raid maps can provide their own path using the same raidPath hook.
+const RAID_MAPS={hellsing:{n:'Castle Hellsing',bg:'#251a2e',road:'#75617c',path:[[-20,65],[735,65],[735,140],[95,140],[95,215],[690,215],[690,290],[150,290],[150,365],[810,365]]}};
+function battleStage(){return G?.raidLevel?RAID_MAPS.hellsing:STAGES[G.si];}
+
+// Keep this storage key unchanged across releases so older progress is found.
+const KEY='gemGuardiansSave';
+const BACKUP_KEY='gemGuardiansSave_backup';
+const SAVE_VERSION=5;
+const STARTING_LIVES=10;
+function stageStars(lives){return lives>=STARTING_LIVES?3:lives>=Math.ceil(STARTING_LIVES/2)?2:1;}
+function stageStarKey(si,mode){return si+':'+mode;}
+function stageDifficulty(si){return Math.pow(1.12,si);}
+const INDEX_REWARDS={Common:25,Rare:15,Epic:45,Legendary:100,Mythic:250,Secret:500,Exclusive:0};
+const TRAITS={
+ steady:{n:'Steady',rarity:'Common',d:1.08,rg:1,spd:1,desc:'+8% damage'},
+ keen:{n:'Keen Sight',rarity:'Common',d:1,rg:1.12,spd:1,desc:'+12% range'},
+ nimble:{n:'Quickstep',rarity:'Uncommon',d:1,rg:1,spd:1.12,desc:'+12% attack speed'},
+ fierce:{n:'Ferocious',rarity:'Uncommon',d:1.18,rg:1,spd:1,desc:'+18% damage'},
+ hunter:{n:'Eagle Eye',rarity:'Rare',d:1.15,rg:1.18,spd:1,desc:'+15% damage, +18% range'},
+ tempest:{n:'Tempest',rarity:'Rare',d:1.1,rg:1,spd:1.28,desc:'+10% damage, +28% attack speed'},
+ monarch:{n:'War Monarch',rarity:'Legendary',d:1.45,rg:1,spd:1.1,desc:'+45% damage, +10% attack speed'},
+ horizon:{n:'Far Horizon',rarity:'Legendary',d:1.2,rg:1.4,spd:1.15,desc:'+20% damage, +40% range, +15% attack speed'},
+ astral:{n:'Astral Overlord',rarity:'Mythic',d:2.1,rg:1.25,spd:1.25,desc:'+110% damage, +25% range, +25% attack speed'},
+ singularity:{n:'Singularity',rarity:'Mythic',d:1.7,rg:1.6,spd:1.55,desc:'+70% damage, +60% range, +55% attack speed'},
+ cosmic:{n:'Cosmic Ascendant',rarity:'Mythic',d:2.5,rg:1.1,spd:1.1,desc:'+150% damage, +10% range, +10% attack speed'},
+ midas:{n:'Midas',rarity:'Mythic',d:1,rg:1,spd:1,desc:'Golden shimmering aura. +50% coins from kills and money production, plus +25% per boost after the first. Placement and boost costs -25%.'}
+};
+const TRAIT_RATES=[['Common',.40],['Uncommon',.30],['Rare',.20],['Legendary',.09],['Mythic',.01]];
+function pickTrait(forceMythic=false){let rarity='Mythic';if(!forceMythic){let r=Math.random();for(const [name,rate] of TRAIT_RATES){r-=rate;if(r<0){rarity=name;break}}}const pool=Object.keys(TRAITS).filter(k=>TRAITS[k].rarity===rarity);return pool[Math.floor(Math.random()*pool.length)];}
+function unitLabel(u){return (u.nickname?u.nickname+' · ':'')+UNITS[u.id].n+' #'+u.uid;}
+const UNIT_SORT_OPTIONS=[['rarityDesc','Highest rank → lowest'],['rarityAsc','Lowest rank → highest'],['damageDesc','Highest damage → lowest'],['damageAsc','Lowest damage → highest'],['costAsc','Cheapest → most expensive'],['costDesc','Most expensive → cheapest']];
+const UNIT_RANKS={Common:0,Rare:1,Epic:2,Legendary:3,Mythic:4,Secret:5,Exclusive:6};
+const unitSortSettings={collection:'rarityDesc',traitUnitPicker:'rarityDesc',feedPicker:'rarityDesc'};
+function sortedOwnedUnits(units,mode){return [...units].sort((a,b)=>{const f=Number(!!b.favorite)-Number(!!a.favorite);if(f)return f;const A=UNITS[a.id],B=UNITS[b.id];let n=0;switch(mode){case 'rarityAsc':n=(UNIT_RANKS[A.r]??0)-(UNIT_RANKS[B.r]??0);break;case 'damageDesc':n=stats(b).d-stats(a).d;break;case 'damageAsc':n=stats(a).d-stats(b).d;break;case 'costAsc':n=A.c-B.c;break;case 'costDesc':n=B.c-A.c;break;default:n=(UNIT_RANKS[B.r]??0)-(UNIT_RANKS[A.r]??0);}return n||A.n.localeCompare(B.n)||a.uid-b.uid;});}
+function setupUnitSort(id,mode,onUpdate){const el=document.getElementById(id);if(!el)return;const chosen=unitSortSettings[mode]||'rarityDesc';if(!el.options.length)el.innerHTML=UNIT_SORT_OPTIONS.map(([v,t])=>'<option value="'+v+'">'+t+'</option>').join('');el.value=chosen;el.onchange=()=>{unitSortSettings[mode]=el.value;onUpdate();};}
+function toggleUnitFavorite(uid){const u=S.units.find(x=>x.uid===uid);if(!u)return;u.favorite=!u.favorite;save(false);renderAll();}
+function renderUnitPicker(id,units,selected,onSelect){const root=document.getElementById(id);if(!root)return;const ordered=sortedOwnedUnits(units,unitSortSettings[id]||'rarityDesc');root.innerHTML=ordered.map(u=>'<div class="unit-choice'+(String(u.uid)===String(selected)?' selected':'')+'" data-uid="'+u.uid+'"><button type="button" class="unit-fav'+(u.favorite?' active':'')+'" data-fav="'+u.uid+'" title="'+(u.favorite?'Remove favorite':'Add to favorites')+'" aria-label="Toggle favorite">'+(u.favorite?'♥':'♡')+'</button><canvas class="ico" width="72" height="64" data-id="'+u.id+'" data-trait="'+(u.trait||'')+'"></canvas><b class="'+UNITS[u.id].r+'"></b><small>Lv '+u.lv+(u.locked?' 🔒':'')+'</small></div>').join('');root.querySelectorAll('.unit-choice').forEach(b=>{const u=ordered.find(u=>u.uid===+b.dataset.uid);b.querySelector('b').textContent=unitLabel(u);b.onclick=()=>onSelect(String(u.uid));b.querySelector('[data-fav]').onclick=e=>{e.stopPropagation();toggleUnitFavorite(u.uid);};});paintIcons();}
+function renderTraits(){setupUnitSort('traitUnitPickerSort','traitUnitPicker',renderTraits);const sel=$('#traitUnit');if(!sel)return;const old=sel.value;sel.innerHTML=S.units.map(u=>`<option value="${u.uid}">${unitLabel(u)} (Lv ${u.lv})</option>`).join('');if(S.units.some(u=>String(u.uid)===old))sel.value=old;renderUnitPicker("traitUnitPicker",S.units,sel.value,uid=>{sel.value=uid;renderTraits();});const u=S.units.find(u=>String(u.uid)===sel.value);const t=u&&TRAITS[u.trait];$('#traitCurrent').textContent=u?(t?`${t.n} (${t.rarity}): ${t.desc}${MYTHIC_VISUALS[u.trait]?' • Unique visual: '+MYTHIC_VISUALS[u.trait].name:''}`:'No trait yet — reroll to obtain one'):'Summon a unit first.';$('#traitPity').textContent=`Mythic trait pity: ${S.traitPity}/150 rerolls (guaranteed at 150)`;updateTraitRerollButton();$('#traitList').innerHTML=Object.values(TRAITS).map(t=>`<div class="card"><b class="${t.rarity}">${t.n}</b><br><small>${t.rarity}</small><br>${t.desc}${MYTHIC_VISUALS[Object.keys(TRAITS).find(k=>TRAITS[k]===t)]?'<br>✦ Unique animated effect':''}</div>`).join('');}
+// A high-rarity trait locks further rerolls for three seconds, even after changing units.
+const HIGH_TRAIT_REROLL_DELAY_MS=3000;
+function traitRerollSecondsLeft(){return Math.max(0,Math.ceil(((S.traitRollLockUntil||0)-Date.now())/1000));}
+function updateTraitRerollButton(){
+  const btn=document.getElementById('traitRoll');if(!btn)return;
+  const left=traitRerollSecondsLeft();
+  const selected=S.units.some(u=>String(u.uid)===document.getElementById('traitUnit').value);
+  btn.disabled=left>0||!selected||(S.traitRerolls<=0&&S.gems<30);
+  btn.textContent=left>0?'Protected trait — wait '+left+'s':(S.traitRerolls>0?'Reroll trait (free: '+S.traitRerolls+' left)':'Reroll trait (30 gems)');
+}
+setInterval(updateTraitRerollButton,200);
+const DEFAULT_SETTINGS={autoRestart:false,attackFx:true,autoSell:false};
+let S={gems:500,units:[],cleared:0,nid:1,bag:{},settings:{...DEFAULT_SETTINGS},discovered:[],indexClaimed:[],pityLegendary:0,pityMythic:0,pitySecret:0,traitPity:0,traitRerolls:25,autoTraitEnabled:false,autoTraitTarget:"",autoTraitUnitUid:null,autoSellRarities:[],playerLevel:1,playerExp:0,playerName:"Player",playerAvatar:"",playerRewards:[],stageStars:{},equipped:[],afkPendingGems:0,afkPendingRerolls:0,raidCleared:0};
+let lastSaved='';
+function clean(d){
+  if(!d||typeof d!=='object'||Array.isArray(d)) throw Error('Invalid save');
+  // Accept both legacy unversioned saves and versioned save envelopes.
+  if(d.saveVersion&&d.saveVersion>SAVE_VERSION) throw Error('Save from a newer game version');
+  if(d.data&&typeof d.data==='object') d=d.data;
+  const o={...d,gems:Math.max(0,Math.floor(+d.gems||0)),units:[],cleared:Math.min(STAGES.length,Math.max(0,Math.floor(+d.cleared||0))),nid:1,bag:{...(d.bag||{})},settings:Object.fromEntries(Object.keys(DEFAULT_SETTINGS).map(k=>[k,typeof d.settings?.[k]==='boolean'?d.settings[k]:DEFAULT_SETTINGS[k]]))};
+  o.stageStars={};
+  if(d.stageStars&&typeof d.stageStars==='object'&&!Array.isArray(d.stageStars)){
+    for(const [k,v] of Object.entries(d.stageStars)){
+      const [idx,mode]=k.split(':');
+      if(/^\d+$/.test(idx)&&+idx<STAGES.length&&Object.hasOwn(MODES,mode)&&mode!=='infinite'&&Number.isInteger(+v)&&+v>=1&&+v<=3)o.stageStars[k]=+v;
+    }
+  }
+  const add=(u)=>{if(!u||!UNITS[u.id])return;o.units.push({...u,uid:o.nid++,id:u.id,lv:Math.min(100,Math.max(1,Math.floor(+u.lv||1))),xp:Math.max(0,Math.floor(+u.xp||0)),st:Math.min(5,Math.max(0,Math.floor(+u.st||0)))})};
+  if(Array.isArray(d.units)) d.units.forEach(u=>add(u));
+  else if(d.units) for(const k0 in d.units){const k=MIG[k0]||k0;for(let i=0;i<Math.min(500,Math.floor(d.units[k0])||0);i++)add({id:k,lv:1,xp:0,st:0})}
+  for(const k in ITEMS) if(o.bag[k]!=null) o.bag[k]=Math.max(0,Math.floor(+o.bag[k]||0));
+  // Older saves did not track discoveries; owned units count as discovered.
+  const valid=ids=>Array.isArray(ids)?ids.filter(id=>Object.prototype.hasOwnProperty.call(UNITS,id)):[];
+  o.discovered=[...new Set([...valid(d.discovered),...o.units.map(u=>u.id)])];
+  o.discoveredItems=[...new Set([...(Array.isArray(d.discoveredItems)?d.discoveredItems:[]),...Object.keys(o.bag).filter(k=>o.bag[k]>0)].filter(k=>ITEMS[k]))];
+  o.indexClaimed=[...new Set(valid(d.indexClaimed))].filter(id=>o.discovered.includes(id));
+  o.pityLegendary=Math.min(99,Math.max(0,Math.floor(+d.pityLegendary||0)));
+  o.pityMythic=Math.min(499,Math.max(0,Math.floor(+d.pityMythic||0)));
+  o.pitySecret=Math.min(2499,Math.max(0,Math.floor(+d.pitySecret||0)));
+  o.traitPity=Math.min(149,Math.max(0,Math.floor(+d.traitPity||0)));
+  o.traitRerolls=Math.max(0,Math.floor(Number.isFinite(+d.traitRerolls)?+d.traitRerolls:25));
+  o.autoTraitEnabled=d.autoTraitEnabled===true;
+  o.autoTraitTarget=typeof d.autoTraitTarget==='string'&&Object.hasOwn(TRAITS,d.autoTraitTarget)?d.autoTraitTarget:'';
+  o.autoTraitUnitUid=d.autoTraitUnitUid==null?null:Number(d.autoTraitUnitUid);
+  o.traitRollLockUntil=Math.max(0,Math.min(Date.now()+HIGH_TRAIT_REROLL_DELAY_MS,Number(d.traitRollLockUntil)||0));
+  o.afkPendingGems=Math.max(0,Math.floor(+d.afkPendingGems||0));
+  o.afkPendingRerolls=Math.max(0,Math.floor(+d.afkPendingRerolls||0));
+  o.raidCleared=Math.max(0,Math.min(5,Math.floor(+d.raidCleared||0)));
+  o.unitRarityVersion=2;
+  o.autoSellRarities=Array.isArray(d.autoSellRarities)?[...new Set(d.autoSellRarities.map(r=>d.unitRarityVersion===2?r:({Common:'Rare',Uncommon:'Common',Rare:'Epic'}[r]||r)).filter(r=>['Common','Rare','Epic','Legendary','Mythic','Secret','Exclusive'].includes(r)))]:[];
+  o.playerLevel=Math.max(1,Math.min(100,Math.floor(+d.playerLevel||1)));
+  o.playerExp=o.playerLevel>=100?0:Math.min(playerExpNeeded(o.playerLevel)-1,Math.max(0,Math.floor(+d.playerExp||0)));
+  o.playerName=typeof d.playerName==='string'?(d.playerName.trim().slice(0,24)||'Player'):'Player';
+  o.playerAvatar=typeof d.playerAvatar==='string'&&o.discovered.includes(d.playerAvatar)?d.playerAvatar:'';
+  o.playerRewards=[...new Set((Array.isArray(d.playerRewards)?d.playerRewards:[]).map(Number).filter(n=>Number.isInteger(n)&&n>=5&&n%5===0&&n<=o.playerLevel))];
+  const ownedIds=new Set(o.units.map(u=>u.uid));
+  o.equipped=Array.isArray(d.equipped)?[...new Set(d.equipped.map(Number).filter(uid=>ownedIds.has(uid)))].slice(0,o.playerLevel>=10?6:o.playerLevel>=5?5:4):o.units.slice(0,o.playerLevel>=10?6:o.playerLevel>=5?5:4).map(u=>u.uid);
+  o.units.forEach(u=>{if(!TRAITS[u.trait])u.trait='';u.nickname=typeof u.nickname==='string'?u.nickname.trim().slice(0,24):'';u.locked=u.locked===true;u.favorite=u.favorite===true;});
+  return o;
+}
+function grantStarterBarter(){
+  // Only brand-new progress receives this free Exclusive unit.
+  const starter={uid:S.nid++,id:'barter',lv:1,xp:0,st:0,trait:'',nickname:'',locked:false};
+  S.units.push(starter);
+  S.discovered.push('barter');
+  S.equipped.push(starter.uid);
+}
+function load(){
+  try{
+    const current=localStorage.getItem(KEY);
+    const backup=localStorage.getItem(BACKUP_KEY);
+    for(const raw of [current,backup]){
+      if(!raw)continue;
+      try{S=clean(JSON.parse(raw));lastSaved=JSON.stringify(S);return}catch(e){console.warn('Cannot read saved progress:',e)}
+    }
+    if(current||backup) alert('Saved progress could not be loaded. The browser save and local backup could not be read.');
+    else grantStarterBarter();
+  }catch(e){console.warn('Browser storage unavailable:',e);if(!S.units.length)grantStarterBarter()}
+}
+function save(manual){
+  try{
+    const raw=JSON.stringify(S);
+    if(raw!==lastSaved){
+      const old=localStorage.getItem(KEY);
+      // Preserve the last valid save before replacing it, including old versions.
+      if(old&&old!==raw){
+        try{clean(JSON.parse(old));localStorage.setItem(BACKUP_KEY,old)}catch(e){}
+      }
+      localStorage.setItem(KEY,raw);
+      lastSaved=raw;
+    }
+    $('#st').textContent='Saved at '+new Date().toLocaleTimeString();
+    if(manual) toast('Game saved');
+  }catch(e){toast('Unable to save: browser storage is blocked or full. Check browser storage settings.')}
+}
+function syncSettings(){document.querySelectorAll('[data-setting]').forEach(el=>el.checked=S.settings[el.dataset.setting]);}
+$('#bSettings').onclick=()=>{syncSettings();$('#settingsModal').classList.remove('hide')};
+$('#bQol').onclick=()=>$('#qolModal').classList.remove('hide');
+$('#closeQol').onclick=()=>$('#qolModal').classList.add('hide');
+$('#qolModal').onclick=e=>{if(e.target.id==='qolModal')e.currentTarget.classList.add('hide')};
+
+$('#closeSettings').onclick=()=>$('#settingsModal').classList.add('hide');
+$('#settingsModal').onclick=e=>{if(e.target.id==='settingsModal')e.currentTarget.classList.add('hide')};
+document.querySelectorAll('[data-setting]').forEach(el=>el.onchange=()=>{S.settings[el.dataset.setting]=el.checked;save(false);});
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),2200)}
+setInterval(()=>save(false),5000);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)save(false)});
+addEventListener('beforeunload',()=>save(false));
+
+$('#bSave').onclick=()=>save(true);
+$('#bRes').onclick=()=>{leaveAfk();
+  // A confirmed reset starts a completely new game, including settings and pity.
+  S={gems:500,units:[],cleared:0,nid:1,bag:{},settings:{...DEFAULT_SETTINGS},discovered:[],discoveredItems:[],indexClaimed:[],pityLegendary:0,pityMythic:0,pitySecret:0,traitPity:0,traitRerolls:25,autoTraitEnabled:false,autoTraitTarget:"",autoTraitUnitUid:null,autoSellRarities:[],playerLevel:1,playerExp:0,playerName:"Player",playerAvatar:"",playerRewards:[],stageStars:{},equipped:[],afkPendingGems:0,afkPendingRerolls:0,raidCleared:0};
+  grantStarterBarter();afkPendingUI();
+  G=null;
+  lastSaved='';
+  try{
+    localStorage.removeItem(KEY);
+    localStorage.removeItem(BACKUP_KEY);
+  }catch(e){}
+  save(false);
+  // Do not retain a pre-reset backup, which could restore erased progress.
+  try{localStorage.removeItem(BACKUP_KEY)}catch(e){}
+  showArena(false);
+  $('#settingsModal').classList.add('hide');
+  gemUI();renderAll();syncSettings();
+  toast('New game: Barter (Exclusive) equipped, 500 gems and 25 trait rerolls!');
+};
+
+/* ---------- Levels, stats, prestige ---------- */
+const need=lv=>30+lv*8;
+function stats(i){
+  const U=UNITS[i.id],g=U.g,l=i.lv-1,s=i.st,tr=TRAITS[i.trait]||{d:1,rg:1,spd:1};
+  return {d:U.d*(1+l*g[0])*(1+.5*s)*tr.d,rg:U.rg*(1+l*g[1])*(1+.04*s)*tr.rg,cd:Math.max(.1,U.cd/(1+l*g[2])/(1+.06*s)/tr.spd)};
+}
+function addXp(i,x){
+  if(i.lv>=100) return;
+  i.xp+=x;
+  while(i.lv<100&&i.xp>=need(i.lv)){i.xp-=need(i.lv);i.lv++}
+  if(i.lv>=100){i.lv=100;i.xp=0}
+}
+function prestige(uid){
+  const i=S.units.find(x=>x.uid===uid);
+  if(!i||i.lv<100||i.st>=5) return;
+  if(!confirm('Prestige '+UNITS[i.id].n+'? It returns to level 1 and gains a star, which makes it stronger at every level.')) return;
+  i.st++;i.lv=1;i.xp=0;save(false);renderAll();toast(UNITS[i.id].n+' now has '+i.st+' star'+(i.st>1?'s':''));
+}
+
+/* ---------- Modes, bag, selling ---------- */
+function renderRaids(){
+ const el=$('#raidLevels');if(!el)return;
+ const access=S.playerLevel>=25;
+ $('#raidLevelRequirement').textContent=access?'🔓 Raids unlocked — Player Level '+S.playerLevel:'🔒 Raids unlock at Player Level 25 · Current Level '+S.playerLevel;
+ el.innerHTML=Array.from({length:RAID_LEVELS},(_,i)=>{
+   const lv=i+1,cleared=Number(S.raidCleared)||0,locked=S.playerLevel<25||lv>cleared+1,complete=lv<=cleared;
+   return `<button class="alt" data-raid="${lv}" ${locked?'disabled':''}>${complete?'✓ ':locked?'🔒 ':''}Level ${lv} · ${raidMaxWave(lv)} waves · ×${raidScale(lv).toFixed(2)}</button>`;
+ }).join('');
+ el.querySelectorAll('button[data-raid]').forEach(btn=>btn.onclick=()=>{
+   const lv=Number(btn.dataset.raid);
+   if(S.playerLevel<25)return toast('Raids unlock at Player Level 25.');
+   if(lv>S.raidCleared+1)return toast('Clear the previous raid level first.');
+   document.querySelector('button[data-tab="battle"]')?.click();
+   startBattle(0,'hell',lv);
+ });
+}
+function renderModes(){
+ renderRaids();
+  $('#modes').innerHTML=Object.keys(MODES).map(k=>'<button class="alt'+(k===curMode?' on':'')+'" data-m="'+k+'">'+MODES[k].n+' mode</button>').join('');
+  $('#modes').querySelectorAll('button').forEach(b=>b.onclick=()=>{curMode=b.dataset.m;renderAll()});
+  const M=MODES[curMode];
+  $('#modeInfo').textContent=curMode==='infinite'
+    ?'Endless waves that keep getting stronger. Every wave you clear pays 6 gems (31 on each 10th wave) plus food from that map as you go.'
+    :'Clear all 10 waves to earn '+25*M.mult+' gems and '+Math.ceil(2*M.mult)+' of that map\u2019s food. Enemy health x'+M.hp+', unit EXP x'+M.xp+'.';
+}
+function infReward(){
+  const w=G.wave,fd=STAGES[G.si].food,g=6+(w%10===0?25:0),f=(w%2===0?1:0)+(w%10===0?3:0);
+  S.gems+=g;if(f){S.bag[fd]=(S.bag[fd]||0)+f;discoverItem(fd);}G.ig+=g;G.fg+=f;save(false);gemUI();
+  toast('Wave '+w+' cleared: +'+g+' gems'+(f?' and +'+f+' '+ITEMS[fd].n:''));
+}
+function sellVal(i){return Math.round({Common:30,Rare:15,Epic:65,Legendary:160,Mythic:350,Secret:750,Exclusive:65}[UNITS[i.id].r]*(1+i.st*.5)+i.lv*2)}
+function sell(uid){
+  const i=S.units.find(x=>x.uid===uid);if(!i)return;
+  if(G&&G.us.some(x=>x.uid===uid)) return toast('That unit is on the map. Leave the stage first.');
+  if(i.locked)return toast("Unlock this unit before selling it.");
+  const v=sellVal(i);
+  if(!confirm('Sell '+UNITS[i.id].n+' (level '+i.lv+', '+i.st+' stars) for '+v+' gems? This cannot be undone.')) return;
+  S.gems+=v;S.units=S.units.filter(x=>x!==i);S.equipped=(S.equipped||[]).filter(id=>id!==uid);save(false);gemUI();renderAll();toast('Sold for '+v+' gems');
+}
+let bagSel=null;
+function renderBag(){setupUnitSort('feedPickerSort','feedPicker',renderBag);
+  const ks=Object.keys(ITEMS).filter(k=>S.bag[k]>0);
+  const rerollCount=Math.max(0,Number(S.traitRerolls)||0);
+  $('#bagGrid').innerHTML='<div class="card'+(bagSel==='trait_reroll'?' sel':'')+'" data-k="trait_reroll" style="cursor:pointer"><div style="font-size:36px;margin:8px">✨</div><b>Trait Reroll</b><br>Owned: x'+rerollCount+'</div>'+ks.map(k=>'<div class="card'+(k===bagSel?' sel':'')+'" data-k="'+k+'" style="cursor:pointer"><canvas class="ico" width="72" height="64" data-item="'+k+'"></canvas><b>'+ITEMS[k].n+'</b><br>Owned: x'+S.bag[k]+'</div>').join('');
+  $('#bagGrid').querySelectorAll('.card').forEach(c=>c.onclick=()=>{bagSel=c.dataset.k;renderBag()});
+  paintIcons();
+  if(bagSel==='trait_reroll'){
+    const box=$('#bagInfo');
+    box.innerHTML='<h3>✨ Trait Reroll</h3><p>Owned: <b>'+rerollCount+'</b></p><p>Use in Trait Forge to reroll a unit’s trait. One item is spent per reroll; if you have none, a reroll costs 30 gems.</p><p>How to obtain: 25 starting rerolls, AFK rewards (5% chance per completed minute), player-level milestone rewards, and Hard/Hell boss drops.</p><button id="bagUseTraitReroll">Use Item?</button>';
+    $('#bagUseTraitReroll').onclick=()=>{const tab=document.querySelector('.tabs button[data-tab="traits"]');if(tab)tab.click();};
+    return;
+  }
+  const k=bagSel&&S.bag[bagSel]>0?bagSel:null,box=$('#bagInfo');
+  if(!k){bagSel=null;box.textContent='Click an item to see what it does.';return}
+  const it=ITEMS[k],eligible=S.units.filter(u=>u.lv<100),opts=eligible.map(u=>'<option value="'+u.uid+'">'+unitLabel(u)+'</option>').join('');
+  box.innerHTML='<b>'+it.n+'</b> x'+S.bag[k]+'<br>Food from '+STAGES[it.map].n+'. Each one gives a unit '+it.exp+' EXP. Earn more by clearing that map or playing its Infinite mode.<br><br>'
+    +(opts?'<select id="feedPickerSort" class="unit-sort" aria-label="Sort feed units"></select><div id="feedPicker" class="unit-picker"></div><select id="feedTo" class="hide">'+opts+'</select> <button id="f1">Feed 1</button> <button class="alt" id="f10">Feed up to 10</button>':'You have no units below level 100 to feed.');
+  if(opts){const select=$('#feedTo');const old=renderBag.selectedUid;if(eligible.some(u=>String(u.uid)===old))select.value=old;renderUnitPicker('feedPicker',eligible,select.value,uid=>{select.value=uid;renderBag.selectedUid=uid;renderUnitPicker('feedPicker',eligible,uid,v=>{select.value=v;renderBag.selectedUid=v;});});$('#f1').onclick=()=>feed(1);$('#f10').onclick=()=>feed(10)}
+}
+function feed(n){
+  const k=bagSel,i=S.units.find(x=>x.uid===+$('#feedTo').value);
+  if(!k||!i) return toast('Pick a unit first');
+  const b=i.lv;let used=0;
+  while(used<n&&S.bag[k]>0&&i.lv<100){addXp(i,Math.min(1750,ITEMS[k].exp));S.bag[k]--;used++}
+  if(!S.bag[k]) delete S.bag[k];
+  save(false);renderAll();
+  toast(UNITS[i.id].n+' ate '+used+(i.lv>b?' and went from level '+b+' to '+i.lv:' and gained EXP'));
+}
+function itemArt(c,id,x,y,s){
+  c.save();c.translate(x,y);c.scale(s,s);
+  if(ITEMS[id]){const k=ITEMS[id].map;c.fillStyle=['#ef476f','#38bdf8','#fb923c','#b4e0e7','#f7c76c','#b7e7ff','#a3e635','#f97316','#d8b4fe','#e6cc9b','#c084fc'][k];c.beginPath();c.moveTo(0,-19);c.lineTo(13,-4);c.lineTo(8,14);c.lineTo(-8,14);c.lineTo(-13,-4);c.closePath();c.fill();c.restore();return;}
+  if(id==='berry'){C(c,-5,3,8,'#e11d48');C(c,6,5,7,'#f43f5e');C(c,-7,0,2,'#fecdd3');L(c,0,-6,3,-14,2,'#65a30d');T(c,[3,-14,12,-17,8,-9],'#84cc16')}
+  else if(id==='crystal'){T(c,[0,-16,11,-2,0,16,-11,-2],'#38bdf8');T(c,[0,-16,11,-2,0,-2],'#bae6fd');L(c,0,-16,0,-21,2,'#22c55e')}
+  else{T(c,[-9,-8,8,-8,6,4,-1,15,-6,4],'#f97316');T(c,[-9,-8,8,-8,6,-4,-7,-4],'#ef4444');L(c,-1,-8,-1,-15,3,'#16a34a')}
+  c.restore();
+}
+
+/* ---------- Character art ---------- */
+function L(c,x1,y1,x2,y2,w,col){c.strokeStyle=col;c.lineWidth=w;c.lineCap='round';c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke()}
+function C(c,x,y,r,col){c.fillStyle=col;c.beginPath();c.arc(x,y,r,0,7);c.fill()}
+function T(c,p,col){c.fillStyle=col;c.beginPath();c.moveTo(p[0],p[1]);for(let i=2;i<p.length;i+=2)c.lineTo(p[i],p[i+1]);c.closePath();c.fill()}
+const ART={
+ knight:c=>{C(c,0,-10,6.6,'#cbd5e1');T(c,[-6,-9,6,-9,6,-6,-6,-6],'#475569');L(c,9,3,9,-17,3,'#e2e8f0');L(c,5,2,13,2,3,'#fbbf24');C(c,-10,4,6,'#1e3a8a');C(c,-10,4,2.5,'#fbbf24')},
+ blade:c=>{L(c,-6,-14,6,-14,2,'#ef4444');L(c,8,6,17,-12,2.5,'#a5f3fc');L(c,-8,6,-17,-12,2.5,'#a5f3fc');L(c,6,6,10,6,2,'#fbbf24');L(c,-6,6,-10,6,2,'#fbbf24')},
+ archer:c=>{T(c,[-7,-8,0,-21,7,-8],'#2f6b25');c.strokeStyle='#92400e';c.lineWidth=2.5;c.beginPath();c.arc(8,0,13,-1.15,1.15);c.stroke();L(c,13.3,-11.8,13.3,11.8,1,'#e5e7eb');L(c,-2,0,18,0,1.5,'#d6d3d1');T(c,[18,-2.5,23,0,18,2.5],'#e5e7eb')},
+ sniper:c=>{T(c,[-6,-9,6,-9,5,-14,-5,-14],'#57534e');L(c,-8,5,24,-1,3.5,'#27272a');L(c,2,2,2,-3,2.5,'#71717a');C(c,2,-4.5,2.2,'#7dd3fc');L(c,24,-1,27,-1,2,'#a1a1aa');L(c,-8,5,-11,9,3,'#78350f')},
+ apprentice:c=>{T(c,[-7,-9,0,-23,7,-9],'#6d28d9');L(c,-8,-9,8,-9,2.5,'#4c1d95');L(c,9,14,12,-8,2,'#92400e');C(c,12.5,-10,3.2,'#fde047')},
+ mage:c=>{T(c,[-6,-10,-1,-27,6,-10],'#1d4ed8');L(c,-9,-10,9,-10,3,'#1e3a8a');L(c,11,15,11,-12,2,'#a16207');C(c,11,-16,4.2,'#bae6fd');L(c,6,-16,16,-16,1.2,'#e0f2fe');L(c,11,-21,11,-11,1.2,'#e0f2fe')},
+ dragon:c=>{T(c,[-7,0,-24,-12,-14,6],'#7e22ce');T(c,[7,0,24,-12,14,6],'#7e22ce');T(c,[-6,-13,-9,-21,-3,-14],'#fde68a');T(c,[6,-13,9,-21,3,-14],'#fde68a');L(c,9,4,9,-17,3.5,'#fb923c');L(c,9,-17,9,-21,2,'#fef08a');L(c,5,3,13,3,3,'#fbbf24')},
+ warden:c=>{c.strokeStyle='#fde68a';c.lineWidth=2;c.beginPath();c.ellipse(0,-18,6,2.2,0,0,7);c.stroke();for(let a=0;a<8;a++){const r=a*Math.PI/4;L(c,Math.cos(r)*17,Math.sin(r)*17+2,Math.cos(r)*21,Math.sin(r)*21+2,1.5,'#fef9c3')}T(c,[0,-1,4,4,0,9,-4,4],'#fff');L(c,9,2,9,-15,2.5,'#fff');C(c,9,-17,3,'#fde047')}
+};
+// Character-specific silhouettes, equipment and symbols drawn at any scale.
+function characterDesign(c,id){
+ const u=UNITS[id],name=u.n.toLowerCase(),color=u.col;
+ const has=(...words)=>words.some(w=>name.includes(w));
+ const line=(x,y,X,Y,w=2,col='#e2e8f0')=>L(c,x,y,X,Y,w,col);
+ const poly=(points,col)=>T(c,points,col);
+ const circle=(x,y,r,col)=>C(c,x,y,r,col);
+ const wing=(side,col)=>poly([side*5,-5,side*23,-19,side*18,4,side*7,8],col);
+ const crown=(col)=>poly([-9,-18,-7,-26,-2,-21,0,-29,5,-21,10,-26,9,-17],col);
+ const star=(x,y,r,col)=>{for(let i=0;i<8;i++){let a=i*Math.PI/4;line(x,y,x+Math.cos(a)*r,y+Math.sin(a)*r,1.5,col)}};
+ const staff=(col)=>{line(13,13,13,-20,3,'#875b39');circle(13,-21,5,col)};
+ const bow=()=>{c.strokeStyle='#b78a56';c.lineWidth=2.5;c.beginPath();c.arc(13,-1,13,-1.4,1.4);c.stroke();line(15,-14,15,12,1,'#f8fafc');line(-3,0,23,0,2,'#d4d4d8');poly([23,-3,28,0,23,3],'#f8fafc')};
+ const sword=()=>{line(12,11,17,-20,3,'#cbd5e1');line(8,0,21,2,3,'#fbbf24')};
+ const gun=()=>{line(-5,1,24,-5,5,'#4b5563');line(3,-2,3,-8,2,'#d1d5db');circle(4,-9,3,'#67e8f9')};
+ const reptile=has('lizard','reptile','drake','dragon','leviathan');
+ const alien=has('alien','xeno','moonling');
+ const beast=has('phoenix','falcon','bee','worldtree');
+ if(reptile){
+   poly([-8,4,-24,13,-12,11,-4,8],color);
+   wing(-1,has('dragon','drake')?'#a855f7':'#38a169');wing(1,has('dragon','drake')?'#7e22ce':'#16a34a');
+   poly([-10,-11,-6,-22,0,-18,6,-22,11,-10,9,0,-9,0],color);
+   circle(-5,-12,2,'#fef08a');circle(5,-12,2,'#fef08a');
+   poly([-8,-21,-13,-27,-3,-23], '#fbbf24');poly([8,-21,13,-27,3,-23],'#fbbf24');
+   if(has('emperor','king'))crown('#ffd166');
+   if(has('scout'))bow();if(has('knight'))sword();
+   if(has('cinder','fire')){poly([11,-3,25,-10,21,0,30,3,15,7],'#fb923c')}
+   if(has('sage'))staff('#38bdf8');
+   return;
+ }
+ if(alien){
+   circle(0,-11,12,'#94e7c8');poly([-12,-13,-6,-19,-1,-12,-5,-7],'#111827');poly([12,-13,6,-19,1,-12,5,-7],'#111827');
+   line(-7,-23,-11,-29,2,color);line(7,-23,11,-29,2,color);circle(-11,-29,2,'#7dd3fc');circle(11,-29,2,'#7dd3fc');
+   if(has('warden')){staff('#f0abfc');crown('#f0abfc')}else circle(13,0,6,'#22d3ee');return;
+ }
+ if(has('worldtree','druid')){
+   poly([-11,14,-15,-8,-4,-18,5,-8,14,14],'#8b5a2b');
+   for(let j=0;j<5;j++)circle((j-2)*7,-18-(j%2)*5,8,['#166534','#22c55e','#4ade80'][j%3]);
+   if(has('druid'))staff('#86efac');return;
+ }
+ if(has('phoenix','falcon','bee')){
+   wing(-1,has('phoenix')?'#f97316':'#eab308');wing(1,has('phoenix')?'#ef4444':'#facc15');
+   circle(0,-11,8,has('phoenix')?'#fb923c':'#fde047');poly([3,-12,17,-9,3,-5],'#f8fafc');
+   if(has('bee')){line(-7,0,7,0,3,'#111827');line(-7,7,7,7,3,'#111827')};return;
+ }
+ // Humanoid units have recognizable class gear rather than a generic pointed hat.
+ if(has('knight','guard','paladin','sentinel','squire','captain','titan')){
+   poly([-11,-15,-9,-24,9,-24,11,-15],'#94a3b8');line(-9,-13,9,-13,3,'#334155');
+   circle(-12,4,8,has('paladin','celestial')?'#fbbf24':'#475569');circle(-12,4,3,color);
+   if(has('spear','captain'))line(14,14,14,-26,3,'#d1d5db');else sword();
+   if(has('titan')){poly([-15,-12,-20,-24,-8,-18],color);poly([15,-12,20,-24,8,-18],color)}
+ }else if(has('archer','ranger','hunter','scout','falconer','slingshot')){
+   poly([-11,-9,0,-25,11,-9],has('celestial')?'#fbbf24':'#166534');bow();
+   if(has('thorn')){line(-10,-6,-17,-15,3,'#4ade80');line(-8,5,-17,11,3,'#4ade80')}
+   if(has('celestial'))star(0,-25,7,'#fef08a');
+ }else if(has('sniper','pirate','engineer','tinker')){
+   gun();if(has('pirate')){poly([-12,-16,0,-26,12,-16],'#1f2937');circle(0,-19,3,'#f8fafc')}
+   if(has('tinker','engineer')){circle(-9,-11,6,'#fbbf24');circle(-9,-11,3,'#64748b')}
+ }else if(has('mage','witch','apprentice','oracle','alchemist','pyro','storm','caller','weaver','scribe','herbalist','monk','sage')){
+   poly([-12,-13,-1,-29,12,-13],has('witch')?'#312e81':color);line(-12,-13,12,-13,3,'#312e81');
+   staff(has('frost')?'#7dd3fc':has('pyro')?'#fb923c':has('storm')?'#fde047':color);
+   if(has('witch'))circle(-2,-15,3,'#c084fc');
+   if(has('storm'))star(13,-21,9,'#fde047');
+   if(has('time')){circle(13,-21,7,'#fbbf24');line(13,-21,13,-25,1,'#111827');line(13,-21,17,-21,1,'#111827')}
+ }else if(has('samurai','fencer','assassin','blade','reaper','berserker','brawler','lancer')){
+   if(has('assassin','reaper'))poly([-12,-10,0,-26,12,-10],'#111827');
+   if(has('samurai'))poly([-11,-17,0,-26,11,-17],'#b91c1c');
+   sword();if(has('blade','fencer')){line(-12,10,-17,-20,2,'#67e8f9')}
+   if(has('berserker')){poly([-11,-16,-17,-24,-4,-20], '#ef4444')}
+ }else if(has('king','emperor','monarch','sovereign','lord','eternity')){
+   crown('#fbbf24');staff(color);
+ }else if(has('miner')){
+   poly([-10,-15,0,-23,10,-15],'#fbbf24');circle(0,-19,3,'#fef08a');line(10,12,18,-16,4,'#78716c');
+ }else if(has('keeper')){
+   poly([-12,-13,0,-25,12,-13],color);circle(13,-20,7,'#fde047');
+ }else{staff(color);circle(0,-23,5,color)}
+ if(has('star','astral','cosmos','celestial')){star(-14,-23,7,'#fef08a');star(15,-28,5,'#a5f3fc')}
+ if(has('void','abyss','night','hex')){circle(-13,-21,5,'#312e81');circle(-13,-21,2,'#c084fc')}
+ if(has('light','dawn','seraph')){c.strokeStyle='#fde68a';c.lineWidth=2;c.beginPath();c.ellipse(0,-27,11,3,0,0,7);c.stroke()}
+ if(has('torch','fire','ember')){poly([14,-18,8,-28,16,-25,18,-34,24,-20,18,-14],'#fb923c')}
+}
+// Distinct animated auras for the three Mythic traits.
+const MYTHIC_VISUALS={
+ astral:{color:'#ffe66d',secondary:'#60f7ff',symbol:'✦',name:'Solar constellation'},
+ singularity:{color:'#a855f7',secondary:'#45e5ff',symbol:'◈',name:'Gravity vortex'},
+ cosmic:{color:'#ff6fd8',secondary:'#b4fffb',symbol:'✧',name:'Celestial flame'},
+ midas:{color:'#ffdf58',secondary:'#fff8c0',symbol:'✦',name:'Golden shimmer'}
+};
+function traitAura(c,trait,x,y,scale=1,time=Date.now()/1000){
+ const v=MYTHIC_VISUALS[trait];if(!v)return;
+ c.save();c.translate(x,y);c.scale(scale,scale);
+ const phase=time*(trait==='singularity'?-2:1.6);
+ c.globalAlpha=.75;
+ if(trait==='midas'){
+   const shine=.55+.45*Math.sin(time*5);c.shadowColor='#ffd54d';c.shadowBlur=13+8*shine;
+   c.strokeStyle='#ffce32';c.lineWidth=2.5;c.beginPath();c.ellipse(0,-7,19+shine*3,27+shine*2,0,0,Math.PI*2);c.stroke();
+   for(let i=0;i<8;i++){const a=phase*1.6+i*Math.PI/4,r=18+5*Math.sin(time*3+i);C(c,Math.cos(a)*r,Math.sin(a)*r-8,1.6+shine*1.2,i%2?'#fff9b0':'#ffc526')}
+ }else if(trait==='astral'){
+   for(let i=0;i<7;i++){const a=phase+i*Math.PI*2/7,r=22+3*Math.sin(time*3+i);C(c,Math.cos(a)*r,Math.sin(a)*r-8,i%2?2:3,i%2?v.secondary:v.color)}
+   c.strokeStyle=v.color;c.lineWidth=1.6;c.beginPath();c.arc(0,-8,22,0,Math.PI*2);c.stroke();
+ }else if(trait==='singularity'){
+   for(let i=0;i<3;i++){c.strokeStyle=i%2?v.secondary:v.color;c.lineWidth=2.5;c.beginPath();c.ellipse(0,-8,18+i*5,8+i*4,phase+i*.65,0,Math.PI*1.65);c.stroke()}
+   C(c,0,-8,5,'#17092e');C(c,0,-8,2,v.secondary);
+ }else{
+   for(let i=0;i<9;i++){const a=i*2.4+phase,r=12+8*Math.abs(Math.sin(time*1.8+i));C(c,Math.cos(a)*r,8-Math.abs(Math.sin(a))*r,2.5,i%2?v.color:v.secondary)}
+   c.strokeStyle=v.color;c.lineWidth=2;c.beginPath();c.arc(0,-5,20,Math.PI*.15,Math.PI*1.85);c.stroke();
+ }
+ c.restore();
+}
+function unitTrait(uid){return S.units.find(u=>u.uid===uid)?.trait||''}
+// Extra facial expressions and role-specific finishing details for every unit.
+function unitFinishingDetails(c,id,time){
+ const u=UNITS[id],n=u.n.toLowerCase(),has=(...w)=>w.some(t=>n.includes(t));
+ const beast=has('dragon','drake','lizard','reptile','leviathan','phoenix','falcon','bee','worldtree','druid');
+ const alien=has('alien','xeno','moonling');
+ const secret=id==='abyss_summoner';
+ c.save();c.lineCap='round';c.lineJoin='round';
+ // Silhouette ink, seams, arm guards, belt buckle, boots and engraved chest crest.
+ c.strokeStyle='#080d1bbb';c.lineWidth=1.25;
+ // Keep contour strokes on the torso, below the face.
+ L(c,-9,14,-8,2,1.25,'#080d1bbb');L(c,9,14,8,2,1.25,'#080d1bbb');
+ if(!beast&&!alien){
+  L(c,-7,7,7,7,1.6,'#172033');C(c,0,7,2.1,'#e2c179');
+  L(c,-6,12,-6,15,2,'#1c2330');L(c,6,12,6,15,2,'#1c2330');
+  L(c,-9,-1,-12,8,2.5,u.col);L(c,9,-1,12,8,2.5,u.col);
+  C(c,-3,-11.2,1.1,secret?'#ff2445':'#1e293b');C(c,3,-11.2,1.1,secret?'#ff2445':'#1e293b');
+  L(c,-2.2,-6.6,2.2,-6.6,.8,secret?'#c41d38':'#7c4a3d');
+  L(c,-5,-14,-1,-14,.9,'#3a2831');L(c,1,-14,5,-14,.9,'#3a2831');
+  if(has('knight','guard','paladin','sentinel','squire','captain','titan')){
+   L(c,-5,-8,5,-8,1.6,'#475569');L(c,0,-17,0,-9,1,'#e2e8f0');
+   C(c,-12,4,1.5,'#f8fafc');L(c,-6,1,0,4,1,'#e2e8f0');
+  }else if(has('mage','witch','oracle','sage','alchemist','pyro','storm','caller','weaver','scribe','herbalist','monk','apprentice')){
+   C(c,0,1,2.8,'#fde68a');C(c,0,1,1.3,u.col);L(c,-7,9,-3,10,1,'#fef3c7');
+  }else if(has('assassin','reaper','samurai','fencer','blade','berserker')){
+   L(c,-4,-7,4,-7,2,'#1f2937');L(c,-5,3,5,3,1,'#f87171');
+  }else if(has('archer','ranger','hunter','scout','sniper')){
+   L(c,-5,-15,5,-15,2,'#365e42');C(c,0,2,2,'#a3e635');
+  }else if(has('pirate','engineer','tinker','miner')){
+   C(c,4,-11,2.6,'#a5f3fc');C(c,4,-11,1.3,'#0f172a');
+  }else if(has('king','emperor','monarch','sovereign','lord')){
+   C(c,0,1,3,'#fbbf24');C(c,0,1,1.4,'#f43f5e');
+  }else{C(c,0,1,2,'#cbd5e1')}
+ }else if(alien){
+  C(c,-4,-11,3,'#091a25');C(c,4,-11,3,'#091a25');
+  C(c,-3.4,-12,1,'#67e8f9');C(c,4.6,-12,1,'#67e8f9');
+  L(c,-2,-5,2,-5,1,'#165e61');
+ }else if(has('phoenix','falcon','bee')){
+  C(c,-3,-13,1.5,'#111827');C(c,3,-13,1.5,'#111827');
+  L(c,-2,-6,2,-6,1,'#92400e');
+ }else if(has('dragon','drake','lizard','reptile','leviathan')){
+  C(c,-5,-12,1.2,'#0f172a');C(c,5,-12,1.2,'#0f172a');
+  C(c,-5,-11.6,.5,'#fff');C(c,5,-11.6,.5,'#fff');
+  L(c,-4,-5,4,-5,1.2,'#422006');C(c,-5,-4,1,'#334155');C(c,5,-4,1,'#334155');
+  for(let i=0;i<3;i++){T(c,[-6+i*6,-4,-4+i*6,-1,-2+i*6,-4],'#fff7ed')}
+ }else if(has('worldtree','druid')){
+  C(c,-4,-10,1.8,'#fef08a');C(c,4,-10,1.8,'#fef08a');
+  L(c,-3,-5,3,-5,1.3,'#3f6212');
+ }
+ if(secret){
+  C(c,-4,-13,2,'#ff1d36');C(c,4,-13,2,'#ff1d36');
+  for(let i=0;i<4;i++){const a=time*1.7+i*Math.PI/2;C(c,Math.cos(a)*18,Math.sin(a)*12-4,1.4,'#fb2949')}
+ }
+ c.restore();
+}
+function art(c,id,x,y,sc,trait="",time=Date.now()/1000){
+ if(!UNITS[id])return;
+ c.save();c.translate(x,y);c.scale(sc,sc);
+ c.fillStyle='#0005';c.beginPath();c.ellipse(0,15,12,4,0,0,7);c.fill();
+ if(id==='chrono_warden'){c.save();c.strokeStyle='#8cecff';c.shadowColor='#75e5ff';c.shadowBlur=14;c.lineWidth=2;c.beginPath();c.arc(0,-5,23,0,7);c.stroke();c.restore();}
+ if(id==='rift_blade'){c.save();c.strokeStyle='#ffedf8';c.shadowColor='#d855fa';c.shadowBlur=12;c.lineWidth=3;c.beginPath();c.arc(0,-5,22,-1.8,1.6);c.stroke();c.restore();}
+ if(id==='abyss_summoner'){
+   const pulse=.5+.5*Math.sin(time*3);
+   c.save();c.shadowColor='#ff172d';c.shadowBlur=13+8*pulse;c.strokeStyle='#e5142d';c.lineWidth=2.5;
+   c.beginPath();c.ellipse(0,-3,20+pulse*3,27+pulse*2,0,0,Math.PI*2);c.stroke();c.restore();
+ }
+ c.shadowColor='#050816';c.shadowBlur=2.5;c.fillStyle=UNITS[id].col;c.beginPath();c.moveTo(-9,14);c.lineTo(-7,-3);c.quadraticCurveTo(0,-8,7,-3);c.lineTo(9,14);c.closePath();c.fill();
+ C(c,0,-10,7,'#eac5a7');
+ if(id==='abyss_summoner'){
+   // Black hood, crimson mask, horned crown, dark staff, glowing summoning sigil.
+   c.fillStyle='#09070c';c.beginPath();c.moveTo(-12,-7);c.lineTo(-8,-27);c.lineTo(0,-34);c.lineTo(8,-27);c.lineTo(12,-7);c.closePath();c.fill();
+   T(c,[-11,-24,-17,-35,-4,-29],'#25060d');T(c,[11,-24,17,-35,4,-29],'#25060d');
+   C(c,-4,-13,2.1,'#ff273c');C(c,4,-13,2.1,'#ff273c');
+   L(c,15,14,16,-29,3,'#240e16');C(c,16,-31,5,'#fa1837');
+   c.strokeStyle='#ff2445';c.lineWidth=1.7;c.beginPath();c.arc(0,4,10,0,7);c.stroke();
+   for(let i=0;i<5;i++){const a=i*2*Math.PI/5;C(c,Math.cos(a)*10,4+Math.sin(a)*10,1.5,'#ff4961')}
+ }else if(id==='rift_blade'){c.fillStyle='#dedbe9';c.fillRect(-9,-26,18,12);C(c,-4,-17,2,'#d82a64');C(c,4,-17,2,'#d82a64');L(c,12,12,22,-30,5,'#bcb6e9');L(c,22,-30,28,-39,3,'#fff0f7');}else if(id==='chrono_warden'){c.fillStyle='#203c59';c.fillRect(-12,-28,24,12);C(c,-4,-17,2,'#7defff');C(c,4,-17,2,'#7defff');c.strokeStyle='#a2f7ff';c.lineWidth=2;c.beginPath();c.arc(0,3,9,0,7);c.stroke();L(c,14,14,14,-27,3,'#6fd4ec');}else characterDesign(c,id);
+ c.shadowBlur=0;
+ // Restore a clean facial plane above costume and silhouette outlines so the eyes,
+ // mouth and expression stay readable, even on small unit icons.
+ const faceName=UNITS[id].n.toLowerCase();
+ const creatureFace=/dragon|drake|lizard|reptile|leviathan|phoenix|falcon|bee|worldtree|druid|alien|xeno|moonling/.test(faceName);
+ if(id!=='abyss_summoner'&&!creatureFace){
+   c.save();c.shadowBlur=0;
+   c.fillStyle='#eac5a7';c.beginPath();c.ellipse(0,-11,6.4,6.1,0,0,Math.PI*2);c.fill();
+   // Hair/helm rim stays above the brow rather than crossing the eyes.
+   c.strokeStyle='#302637';c.lineWidth=1.2;c.beginPath();c.arc(0,-11,6.3,Math.PI*1.12,Math.PI*1.88);c.stroke();
+   c.restore();
+ }
+ unitFinishingDetails(c,id,time);
+ if(trait==='midas'){c.save();c.globalCompositeOperation='source-atop';c.fillStyle='rgba(255,199,34,.47)';c.fillRect(-38,-52,76,83);c.restore();}
+ if(trait)traitAura(c,trait,0,-1,1,time);
+ c.restore();
+}
+function paintIcons(){document.querySelectorAll('canvas.ico').forEach(k=>{const c=k.getContext('2d');c.clearRect(0,0,72,64);if(k.dataset.item)itemArt(c,k.dataset.item,36,32,1.5);else art(c,k.dataset.id,36,38,1.35,k.dataset.trait||"")})}
+
+/* ---------- Summon ---------- */
+function gemUI(){$('#gems').textContent='◆ '+S.gems+' gems'}
+function discoverItem(id){if(!ITEMS[id])return;if(!Array.isArray(S.discoveredItems))S.discoveredItems=[];if(!S.discoveredItems.includes(id))S.discoveredItems.push(id)}
+function renderItemIndex(){
+ const found=new Set(S.discoveredItems||[]),ids=Object.keys(ITEMS);
+ $('#itemIndexProgress').textContent=`Obtained ${ids.filter(id=>found.has(id)).length} / ${ids.length} items`;
+ const rerollIndex='<div class="card"><div style="font-size:29px">✨</div><b>Trait Reroll</b><br><small>Use: Reroll a unit’s trait in Trait Forge. One item per roll; otherwise 30 gems.</small><br><small>How to obtain: 25 starting rerolls, AFK rewards (5% chance each completed minute), player-level milestone rewards, Hard/Hell boss drops.</small><br><small>Owned: '+Math.max(0,Number(S.traitRerolls)||0)+'</small></div>';
+ $('#itemIndexGrid').innerHTML=ids.map(id=>{const it=ITEMS[id],got=found.has(id),map=STAGES[it.map];return `<div class="card ${got?'':'off'}"><div style="font-size:29px">${got?'✦':'?'}</div><b>${got?it.n:'Undiscovered Item'}</b><br>${got?'✓ Obtained':'Not yet obtained'}<br><small>How to obtain: Clear ${map.n} or earn drops in its Infinite mode.</small><br><small>Gives ${it.exp} unit EXP when fed. Owned: ${S.bag[id]||0}</small></div>`}).join('');
+ $('#itemIndexGrid').insertAdjacentHTML('afterbegin',rerollIndex);
+}
+// Show Trait Reroll first, before the food item cards.
+document.addEventListener('change',e=>{if(e.target.id==='indexSort')renderIndex()});
+function renderIndex(){
+  const ids=Object.keys(UNITS),found=new Set(S.discovered||[]),claimed=new Set(S.indexClaimed||[]);
+  const order={Common:0,Rare:1,Epic:2,Legendary:3,Mythic:4,Secret:5,Exclusive:6};
+  const sort=$('#indexSort')?.value||'rarityDesc';
+  ids.sort((a,b)=>{
+    const A=UNITS[a],B=UNITS[b];
+    let delta=0;
+    if(sort==='rarityDesc')delta=(order[B.r]??0)-(order[A.r]??0);
+    else if(sort==='rarityAsc')delta=(order[A.r]??0)-(order[B.r]??0);
+    else if(sort==='damageDesc')delta=B.d-A.d;
+    else if(sort==='damageAsc')delta=A.d-B.d;
+    else if(sort==='discoveredFirst')delta=Number(found.has(b))-Number(found.has(a));
+    else if(sort==='undiscoveredFirst')delta=Number(found.has(a))-Number(found.has(b));
+    return delta||A.n.localeCompare(B.n);
+  });
+  $('#indexProgress').textContent=`Discovered ${ids.filter(id=>found.has(id)).length} / ${ids.length} units. Claim a one-time gem reward for each new unit!`;
+  $('#indexGrid').innerHTML=ids.map(id=>{const u=UNITS[id],unlocked=found.has(id),done=claimed.has(id);
+    return `<div class="card ${unlocked?'':'off'}"><canvas class="ico" width="72" height="64" data-id="${id}"></canvas><b class="${u.r}">${unlocked?u.n:'???'}</b><br>${u.r}<br>${unlocked?'Unlocked':'Not discovered'}<br><small>${unlocked?(u.ability||'Standard attack'):'🔒 Skills & effects hidden until obtained'}</small><br>${done?'✓ Reward claimed':unlocked?`<button data-claim="${id}">Claim ${INDEX_REWARDS[u.r]} gems</button>`:`Reward: ${INDEX_REWARDS[u.r]} gems`}</div>`;
+  }).join('');
+  $('#indexGrid').querySelectorAll('[data-claim]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.claim;if(!S.discovered.includes(id)||S.indexClaimed.includes(id))return;
+    S.indexClaimed.push(id);S.gems+=INDEX_REWARDS[UNITS[id].r];save(false);gemUI();renderIndex();toast('Index reward: +'+INDEX_REWARDS[UNITS[id].r]+' gems');
+  });
+  paintIcons();
+}
+// Stable five-minute banner: the same five featured units appear on every browser
+// for the same time slot. No server or manual refresh is required.
+const BANNER_MS=5*60*1000;
+const RARITIES=['Common','Rare','Epic','Legendary','Mythic']; // Secret is a separate 0.5% off-banner pull
+let bannerSlot=-1, featured={};
+function bannerUnit(rarity,slot){
+  const ids=Object.keys(UNITS).filter(id=>UNITS[id].r===rarity && UNITS[id].r!=='Exclusive');
+  // Deterministic rotation through every unit of a rarity.
+  const offset=RARITIES.indexOf(rarity)*7;
+  return ids[((slot+offset)%ids.length+ids.length)%ids.length];
+}
+function ensureBanner(){
+  const slot=Math.floor(Date.now()/BANNER_MS);
+  if(slot!==bannerSlot){
+    bannerSlot=slot;
+    featured=Object.fromEntries(RARITIES.map(r=>[r,bannerUnit(r,slot)]));
+    renderSummonPool();
+  }
+}
+function updateBannerClock(){
+  ensureBanner();
+  const remaining=BANNER_MS-Date.now()%BANNER_MS;
+  const mm=Math.floor(remaining/60000),ss=Math.floor(remaining%60000/1000);
+  $('#bannerTimer').textContent=`Refresh in ${mm}:${String(ss).padStart(2,'0')}`;
+}
+function updatePity(){
+  $('#pityInfo').textContent=`Legendary pity: ${S.pityLegendary||0}/100 · Mythic pity: ${S.pityMythic||0}/500 · Secret pity: ${S.playerLevel>=10?(S.pitySecret||0)+"/2500":"🔒 Unlocks at Lv 10"}`;
+}
+function renderSummonPool(){
+  if(bannerSlot<0)return;
+  $('#summonPool').innerHTML=RARITIES.map(r=>{const id=featured[r],u=UNITS[id];return `<div class="card"><canvas class="ico" width="72" height="64" data-id="${id}"></canvas><b class="${u.r}">${u.n}</b><br><span class="${u.r}">${u.r}</span> · ${u.t}<br><small>${u.ability||'Standard attack'}</small></div>`}).join('');
+  $('#summonPool').insertAdjacentHTML('beforeend', S.playerLevel>=10 ? '<div class="card" style="border:1px solid #a82035;background:#140e17"><canvas class="ico" width="72" height="64" data-id="abyss_summoner"></canvas><b class="Secret">Abyss Summoner</b><br><small>Secret • 0.5% chance • Guaranteed by 2,500 pulls • Unlocked</small></div>' : '<div class="card" style="border:1px solid #555;background:#17171e;opacity:.75"><div style="font-size:38px;padding:12px">🔒</div><b class="Secret">Secret Unit</b><br><small>Unlocks at Player Level 10 · Current Level '+S.playerLevel+'</small></div>');
+  if(S.playerLevel>=10){for(const id of ['rift_blade','chrono_warden']){const u=UNITS[id];$('#summonPool').insertAdjacentHTML('beforeend',`<div class="card" style="border:1px solid #a82035;background:#140e17"><canvas class="ico" width="72" height="64" data-id="${id}"></canvas><b class="Secret">${u.n}</b><br><small>Secret • Shared 0.5% chance • Shared 2,500 pity</small><br><small>${u.ability}</small></div>`);}}
+  paintIcons();updatePity();
+}
+function pull(n){
+  ensureBanner();
+  const cost=n===1?50:450;
+  if(S.gems<cost)return toast('You need '+cost+' gems for that');
+  S.gems-=cost;const got=[];
+  for(let i=0;i<n;i++){
+    let k;
+    if(S.playerLevel>=10&&((S.pitySecret||0)>=2499||Math.random()<.005))k='Secret';
+    else if((S.pityMythic||0)>=499)k='Mythic';
+    else if((S.pityLegendary||0)>=99)k='Legendary';
+    else{
+      const r=Math.random();k=r<.01?'Mythic':r<.07?'Legendary':r<.22?'Epic':r<.50?'Rare':'Common';
+      if(n===10&&i===9&&!got.some(g=>['Epic','Legendary','Mythic','Secret'].includes(UNITS[g].r)))k='Epic';
+    }
+    const summonableSecrets=Object.keys(UNITS).filter(id=>UNITS[id].r==='Secret'&&!UNITS[id].raidOnly);
+    const id=k==='Secret'?summonableSecrets[Math.floor(Math.random()*summonableSecrets.length)]:featured[k];
+    // Never award an Exclusive unit from any summon, even if a future banner is misconfigured.
+    if(!id || UNITS[id]?.r==='Exclusive' || UNITS[id]?.raidOnly)throw new Error('Invalid summon pool: Exclusive and raid-only units cannot be summoned');
+    S.pityLegendary=k==='Legendary'?0:(S.pityLegendary||0)+1;
+    S.pityMythic=k==='Mythic'?0:(S.pityMythic||0)+1;
+    if(S.playerLevel>=10)S.pitySecret=k==='Secret'?0:Math.min(2499,(S.pitySecret||0)+1);
+    if(S.settings.autoSell&&S.autoSellRarities.includes(k)){S.gems+=Math.round({Common:30,Rare:15,Epic:65,Legendary:160,Mythic:350,Secret:750,Exclusive:65}[k]+2);}else{S.units.push({uid:S.nid++,id,lv:1,xp:0,st:0,trait:''});}
+    if(!S.discovered.includes(id))S.discovered.push(id);
+    got.push(id);
+  }
+  $('#res').innerHTML='You got: '+got.map(id=>'<b class="'+UNITS[id].r+'">'+UNITS[id].n+'</b>').join(', ');
+  save(false);gemUI();renderAll();updatePity();
+}
+$('#p1').onclick=()=>pull(1);$('#p10').onclick=()=>pull(10);
+// Auto Summon is a session-only toggle. Only ten-pulls (450 gems) are used.
+let autoSummonActive=false;
+function refreshAutoSummonUI(){
+ const btn=$('#autoSummonToggle'),status=$('#autoSummonStatus');
+ btn.textContent=autoSummonActive?'■ Stop Auto Summon':'▶ Auto Summon ×10';
+ btn.disabled=!autoSummonActive&&S.gems<=1000;
+ status.textContent=autoSummonActive?(S.gems<450?'Waiting for 450 gems to summon ×10…':'Auto summoning ×10 for 450 gems'):(S.gems>1000?'Ready — summon ×10 automatically':'Requires more than 1,000 gems to start; stops below 400 gems');
+}
+$('#autoSummonToggle').onclick=()=>{
+ if(autoSummonActive){autoSummonActive=false;toast('Auto Summon stopped');}
+ else if(S.gems>1000){autoSummonActive=true;toast('Auto Summon started: ×10 pulls');}
+ else toast('More than 1,000 gems required to start Auto Summon');
+ refreshAutoSummonUI();
+};
+setInterval(()=>{
+ if(autoSummonActive){
+  if(S.gems<400){autoSummonActive=false;toast('Auto Summon stopped: fewer than 400 gems');}
+  else if(S.gems>=450)pull(10);
+ }
+ refreshAutoSummonUI();
+},1100);
+
+$('#traitUnit').onchange=()=>{if(S.autoTraitEnabled){S.autoTraitEnabled=false;S.autoTraitUnitUid=null;save(false);}renderTraits();refreshAutoTraitUI();};
+$('#autoTraitTarget').innerHTML='<option value=>Any trait (normal cooldown)</option>'+Object.entries(TRAITS).map(([id,t])=>`<option value="${id}">${t.n} (${t.rarity})</option>`).join('');
+$('#autoTraitTarget').value=S.autoTraitTarget||'';
+$('#autoTraitTarget').onchange=()=>{S.autoTraitTarget=$('#autoTraitTarget').value;S.autoTraitEnabled=false;S.autoTraitUnitUid=null;save(false);refreshAutoTraitUI();};
+function rollSelectedTrait(auto=false){
+ const targeted=auto&&Boolean(S.autoTraitTarget);
+ if(!targeted&&traitRerollSecondsLeft()>0){updateTraitRerollButton();if(!auto)toast('Wait for the 3-second high-rarity trait protection to finish');return false;}
+ const u=S.units.find(u=>String(u.uid)===$('#traitUnit').value);
+ if(!u){if(!auto)toast('Summon a unit first');return false;}
+ if(S.traitRerolls>0)S.traitRerolls--;
+ else if(S.gems>=30)S.gems-=30;
+ else {if(!auto)toast('Need 30 gems or a free trait reroll');return false;}
+ const mythic=S.traitPity>=149;u.trait=pickTrait(mythic);
+ const rarity=TRAITS[u.trait].rarity;
+ S.traitPity=rarity==='Mythic'?0:S.traitPity+1;
+ if((rarity==='Legendary'||rarity==='Mythic')&&!targeted)S.traitRollLockUntil=Date.now()+HIGH_TRAIT_REROLL_DELAY_MS;
+ if(targeted&&u.trait===S.autoTraitTarget){S.autoTraitEnabled=false;S.autoTraitUnitUid=null;toast('Target trait found: '+TRAITS[u.trait].n+'! Auto Reroll stopped.');}
+ save(false);gemUI();renderAll();
+ if(!auto)toast('Trait: '+TRAITS[u.trait].n+(rarity==='Legendary'||rarity==='Mythic'?' — rerolls locked for 3 seconds':''));
+ return true;
+}
+$('#traitRoll').onclick=()=>rollSelectedTrait(false);
+function refreshAutoTraitUI(){
+ const target=S.autoTraitTarget&&TRAITS[S.autoTraitTarget];
+ $('#autoTraitTarget').value=S.autoTraitTarget||'';
+ $('#autoTraitToggle').textContent=S.autoTraitEnabled?'■ Auto Reroll: ON':'▶ Auto Reroll: OFF';
+ const u=S.units.find(u=>String(u.uid)===$('#traitUnit').value);
+ $('#autoTraitStatus').textContent=S.autoTraitEnabled?(target?('Searching for '+target.n+' on '+(u?UNITS[u.id].n:'selected unit')+' — no high-rarity cooldown'+(S.traitRerolls<=0&&S.gems<30?' (waiting for currency)':'')):(traitRerollSecondsLeft()>0?'High-rarity trait protection: '+traitRerollSecondsLeft()+'s remaining':(S.traitRerolls<=0&&S.gems<30?'Paused — need rerolls or 30 gems':'Auto rerolling selected unit'))):(target?'Target: '+target.n+'. Start to reroll until found.':'Normal auto reroll uses the 3-second high-rarity protection.');
+}
+$('#autoTraitToggle').onclick=()=>{
+ if(S.autoTraitEnabled){S.autoTraitEnabled=false;S.autoTraitUnitUid=null;}
+ else{
+  const u=S.units.find(u=>String(u.uid)===$('#traitUnit').value);
+  if(!u)return toast('Select a unit first');
+  if(S.autoTraitTarget&&u.trait===S.autoTraitTarget)return toast('This unit already has the target trait!');
+  S.autoTraitEnabled=true;S.autoTraitUnitUid=u.uid;
+ }
+ save(false);refreshAutoTraitUI();toast('Auto Reroll '+(S.autoTraitEnabled?'enabled':'disabled'));
+};
+setInterval(()=>{
+ if(S.autoTraitEnabled){
+  const u=S.units.find(u=>u.uid===S.autoTraitUnitUid);
+  if(!u||String(u.uid)!==$('#traitUnit').value){S.autoTraitEnabled=false;S.autoTraitUnitUid=null;save(false);}
+  else if(S.autoTraitTarget&&u.trait===S.autoTraitTarget){S.autoTraitEnabled=false;S.autoTraitUnitUid=null;save(false);}
+  else if((S.autoTraitTarget||traitRerollSecondsLeft()===0)&&(S.traitRerolls>0||S.gems>=30))rollSelectedTrait(true);
+ }
+ refreshAutoTraitUI();
+},350);
+refreshAutoTraitUI();refreshAutoSummonUI();
+const SELL_RARITIES=['Common','Rare','Epic','Legendary','Mythic','Secret'];
+$('#autoSellOptions').innerHTML='<label><input type="checkbox" data-setting="autoSell"> Enable auto-sell</label>'+SELL_RARITIES.map(r=>`<label class="${r}"><input type="checkbox" data-sell-rarity="${r}"> ${r}</label>`).join('');
+$('#autoSellOptions').querySelectorAll('[data-sell-rarity]').forEach(el=>el.onchange=()=>{S.autoSellRarities=SELL_RARITIES.filter(r=>$('#autoSellOptions [data-sell-rarity="'+r+'"]').checked);save(false)});
+const originalSyncSettings=syncSettings;syncSettings=()=>{originalSyncSettings();$('#autoSellOptions').querySelectorAll('[data-sell-rarity]').forEach(el=>el.checked=S.autoSellRarities.includes(el.dataset.sellRarity));};
+
+// Player progression: EXP requirement increases by 75 per level; regular maps award 50 EXP.
+function playerExpNeeded(level){return 100+75*(level-1);}
+function gainPlayerExp(amount){
+  if(S.playerLevel>=100)return;
+  S.playerExp+=amount;
+  while(S.playerLevel<100&&S.playerExp>=playerExpNeeded(S.playerLevel)){S.playerExp-=playerExpNeeded(S.playerLevel);S.playerLevel++;if(S.playerLevel%5===0)toast('Level '+S.playerLevel+'! Open Profile to choose your reward.');}
+  if(S.playerLevel>=100)S.playerExp=0;
+  renderSummonPool();
+  renderRaids();
+}
+function milestoneRewards(level){const tier=Math.max(1,Math.min(20,Math.floor(level/5)));return {gems:Math.min(1000,5*2**(tier-1)),rerolls:Math.min(50,2**(tier-1))};}
+function renderProfile(){
+  $('#headerPlayer').textContent=S.playerName+' · Lv '+S.playerLevel;
+  $('#profileLevel').textContent='Level '+S.playerLevel;
+  $('#profileFill').style.width=Math.min(100,100*S.playerExp/playerExpNeeded(S.playerLevel))+'%';
+  $('#profileExp').textContent=S.playerLevel>=100?'MAX LEVEL · 100':S.playerExp+'/'+playerExpNeeded(S.playerLevel)+' EXP · Complete a regular map for +50 EXP';
+  $('#playerName').value=S.playerName;
+  const avatar=$('#headerAvatar'),c=avatar.getContext('2d');c.clearRect(0,0,48,48);
+  if(S.playerAvatar&&UNITS[S.playerAvatar])art(c,S.playerAvatar,24,30,.8);else{c.fillStyle='#8e83c7';c.font='bold 27px sans-serif';c.textAlign='center';c.fillText('★',24,33)}
+  const ids=[...new Set(S.discovered||[])].filter(id=>UNITS[id]);
+  $('#profileAvatars').innerHTML=ids.length?ids.map(id=>'<button class="avatar-option '+(S.playerAvatar===id?'selected':'')+'" data-avatar="'+id+'" title="'+UNITS[id].n+'"><canvas width="66" height="60" data-avatar-art="'+id+'"></canvas><small>'+UNITS[id].n+'</small></button>').join(''):'<p style="color:var(--mut)">Summon a new unit to unlock its avatar.</p>';
+  $('#profileAvatars').querySelectorAll('[data-avatar]').forEach(b=>b.onclick=()=>{S.playerAvatar=b.dataset.avatar;save(false);renderProfile()});
+  $('#profileAvatars').querySelectorAll('canvas').forEach(cv=>{const ctx=cv.getContext('2d');art(ctx,cv.dataset.avatarArt,33,38,1.05)});
+  const pending=[];for(let lv=5;lv<=S.playerLevel;lv+=5)if(!S.playerRewards.includes(lv))pending.push(lv);
+  $('#profileRewards').innerHTML=pending.length?pending.map(lv=>{const r=milestoneRewards(lv);return '<div class="reward-row"><b>Level '+lv+'</b><button data-reward="'+lv+'" data-kind="gems">+'+r.gems+' gems</button><span>or</span><button data-reward="'+lv+'" data-kind="rerolls">+'+r.rerolls+' Trait Reroll'+(r.rerolls===1?'':'s')+'</button></div>'}).join(''):'<p style="color:var(--mut)">No unclaimed rewards. Next milestone: Level '+(Math.floor(S.playerLevel/5)+1)*5+'</p>';
+  $('#profileRewards').querySelectorAll('[data-reward]').forEach(b=>b.onclick=()=>{const lv=+b.dataset.reward;if(lv>S.playerLevel||S.playerRewards.includes(lv))return;const r=milestoneRewards(lv);if(b.dataset.kind==='gems')S.gems+=r.gems;else S.traitRerolls+=r.rerolls;S.playerRewards.push(lv);save(false);gemUI();renderProfile();renderTraits();toast('Level '+lv+' reward claimed!')});
+}
+$('#bProfile').onclick=()=>{$('#profileModal').classList.remove('hide');renderProfile()};
+$('#closeProfile').onclick=()=>$('#profileModal').classList.add('hide');
+$('#profileModal').onclick=e=>{if(e.target.id==='profileModal')$('#profileModal').classList.add('hide')};
+$('#savePlayerName').onclick=()=>{S.playerName=$('#playerName').value.trim().slice(0,24)||'Player';save(false);renderProfile();toast('Player name saved')};
+function unlockedLoadoutSlots(){return S.playerLevel>=10?6:S.playerLevel>=5?5:4;}
+function toggleEquip(uid){
+  if(G&&!G.over)return toast("Change your loadout between matches.");
+  if(!S.units.some(u=>u.uid===uid))return;
+  S.equipped=Array.isArray(S.equipped)?S.equipped:[];
+  if(S.equipped.includes(uid))S.equipped=S.equipped.filter(id=>id!==uid);
+  else if(S.equipped.length>=unlockedLoadoutSlots())return toast("Only "+unlockedLoadoutSlots()+" slots unlocked. Slot 5 unlocks at Level 5; slot 6 at Level 10.");
+  else S.equipped.push(uid);
+  save(false);renderAll();
+}
+function renderLoadout(){
+  const slots=document.getElementById("loadoutSlots");if(!slots)return;
+  const equipped=(S.equipped||[]).map(uid=>S.units.find(u=>u.uid===uid)).filter(Boolean);
+  const available=unlockedLoadoutSlots();
+  document.getElementById("loadoutCount").textContent=equipped.length+"/"+available+" unlocked";
+  slots.innerHTML=Array.from({length:6},(_,j)=>{const u=equipped[j];return j>=available?`<div class="card" style="opacity:.65;border:1px solid #776a43"><div style="font-size:30px">🔒</div><b>Slot ${j+1} Locked</b><p>Unlock at Player Level ${j===4?5:10}</p></div>`:u?`<div class="card"><canvas class="ico" width="72" height="64" data-id="${u.id}" data-trait="${u.trait||''}"></canvas><b class="${UNITS[u.id].r}"></b><br><small>Slot ${j+1} · Lv ${u.lv}</small><br><button class="alt" data-remove="${u.uid}">Remove</button></div>`:`<div class="card" style="opacity:.65"><b>Slot ${j+1}</b><p>Empty</p></div>`}).join("");
+  slots.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>toggleEquip(+b.dataset.remove));
+  equipped.forEach((u,j)=>{slots.querySelectorAll(".card b")[j].textContent=u.nickname||UNITS[u.id].n});
+}
+function showUnitInfo(uid){
+  const inst=S.units.find(i=>i.uid===uid);if(!inst)return;
+  const unit=UNITS[inst.id],desc=typeof unit.ability==='string'?unit.ability.trim():'';
+  const modal=$('#unitInfoModal');
+  $('#unitInfoName').textContent=unit.n+' — Skills & Passives';
+  $('#unitInfoBody').textContent=desc;
+  $('#unitInfoBody').classList.toggle('hide',!desc);
+  modal.classList.remove('hide');
+}
+$('#closeUnitInfo').onclick=()=>$('#unitInfoModal').classList.add('hide');
+$('#unitInfoModal').addEventListener('click',e=>{if(e.target.id==='unitInfoModal')e.currentTarget.classList.add('hide')});
+function renderAll(){
+  const order=Object.keys(UNITS);
+  setupUnitSort('collectionSort','collection',renderAll);const list=sortedOwnedUnits(S.units,unitSortSettings.collection);
+  $('#coll').innerHTML=list.length?list.map(i=>{
+    const u=UNITS[i.id],t=stats(i),can=i.lv>=100&&i.st<5;
+    return '<div class="card unit-card"><button class="unit-fav'+(i.favorite?' active':'')+'" data-fav="'+i.uid+'" title="Toggle favorite">'+(i.favorite?'♥':'♡')+'</button><canvas class="ico" width="72" height="64" data-id="'+i.id+'" data-trait="'+(i.trait||'')+'"></canvas><b class="'+u.r+'">'+u.n+'</b>'+(i.nickname?'<br><span class="unit-nickname"></span>':'')+'<br><span style="color:#ffc94d">'+'★'.repeat(i.st)+'☆'.repeat(5-i.st)+'</span><br><span style="color:'+TYPES[u.t]+'">'+u.t+'</span>, level '+i.lv+(i.lv<100?'<br>EXP '+i.xp+'/'+need(i.lv):'<br>Max level')+'<br>Damage '+t.d.toFixed(0)+', range '+t.rg.toFixed(0)+'<br>Attacks per second '+(1/t.cd).toFixed(1)+'<br>Trait: '+(TRAITS[i.trait]?.n||'None')+(can?'<br><button data-p="'+i.uid+'">Prestige</button>':'')+'<div class="unit-actions"><button class="alt" data-info="'+i.uid+'" title="Unit skills and passives" aria-label="Information about '+u.n+'">ⓘ Info</button><button class="alt" data-equip="'+i.uid+'">'+((S.equipped||[]).includes(i.uid)?'✓ Equipped · Remove':'＋ Equip')+'</button><button class="alt" data-lock="'+i.uid+'">'+(i.locked?'🔒 Unlock':'🔓 Lock')+'</button><button class="alt" data-sell="'+i.uid+'"'+(i.locked?' disabled title="Unlock before selling"':'')+'>Sell for '+sellVal(i)+' gems</button></div></div>';
+  }).join(''):'<span style="color:var(--mut)">No units yet. Summon some to get started.</span>';
+  $('#coll').querySelectorAll('.card').forEach((card,j)=>{const i=list[j];if(i.locked)card.classList.add('unit-locked');const nick=card.querySelector('.unit-nickname');if(nick)nick.textContent=i.nickname;});
+  $('#coll').querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>showUnitInfo(+b.dataset.info));
+  $('#coll').querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>toggleUnitFavorite(+b.dataset.fav));
+  $('#coll').querySelectorAll('[data-equip]').forEach(b=>b.onclick=()=>toggleEquip(+b.dataset.equip));
+  renderLoadout();
+  $('#coll').querySelectorAll('[data-lock]').forEach(b=>b.onclick=()=>{const u=S.units.find(u=>u.uid===+b.dataset.lock);if(!u)return;u.locked=!u.locked;save(false);renderAll();toast(u.locked?'Unit locked':'Unit unlocked');});
+  $('#coll').querySelectorAll('button[data-p]').forEach(b=>b.onclick=()=>prestige(+b.dataset.p));
+  $('#coll').querySelectorAll('button[data-sell]').forEach(b=>b.onclick=()=>sell(+b.dataset.sell));
+  renderProfile();renderModes();renderBag();renderIndex();renderItemIndex();renderSummonPool();renderTraits();paintIcons();$('#stages').innerHTML=STAGES.map((s,i)=>{const ratings=['easy','medium','hard','hell'].map(mode=>{const stars=S.stageStars?.[stageStarKey(i,mode)]||0;return '<span class="mode-stars'+(curMode===mode?' active':'')+'">'+MODES[mode].n+': '+('★'.repeat(stars)+'☆'.repeat(3-stars))+'</span>';}).join('');return '<button class="stage-choice" data-s="'+i+'"'+(i>S.cleared?' disabled':'')+'><strong>'+s.n+'</strong><small>'+ITEMS[s.food].n+'</small><span class="mode-star-grid">'+ratings+'</span>'+(autoPlayEligible(i,curMode)?'<small style="color:#86efac">▶ Auto Play unlocked</small>':'')+(curMode==='infinite'?'<small>∞ Infinite mode selected</small>':'')+'</button>';}).join('');
+  $('#stages').querySelectorAll('button').forEach(b=>b.onclick=()=>startBattle(+b.dataset.s,curMode));
+}
+
+/* ---------- AFK rewards ---------- */
+// AFK rewards accrue only while this screen is open. No offline earnings.
+// performance.now() avoids rewards from manually changing the system clock.
+const AFK_INTERVAL=60000;
+let afkActive=false,afkStart=0,afkPaid=0,afkGems=0,afkRerolls=0;
+function afkPendingUI(){
+  const label='Unclaimed: '+S.afkPendingGems+' gems · '+S.afkPendingRerolls+' trait rerolls';
+  $('#afkPending').textContent=label;
+  $('#afkStoredSummary').textContent=label;
+  $('#claimAfk').disabled=$('#claimAfkOutside').disabled=S.afkPendingGems===0&&S.afkPendingRerolls===0;
+}
+function claimAfkRewards(silent=false){
+  if(!S.afkPendingGems&&!S.afkPendingRerolls)return;
+  const gems=S.afkPendingGems,rerolls=S.afkPendingRerolls;
+  S.gems+=gems;S.traitRerolls+=rerolls;
+  S.afkPendingGems=0;S.afkPendingRerolls=0;afkPendingUI();gemUI();save(false);
+  if(!silent)toast('Claimed '+gems+' gems and '+rerolls+' trait rerolls!');
+}
+$('#claimAfk').onclick=()=>{afkUpdate();claimAfkRewards();};
+$('#claimAfkOutside').onclick=()=>claimAfkRewards();
+// Request the browser's screen wake lock only while AFK is active.
+let afkWakeLock=null;
+async function requestAfkWakeLock(){
+  if(!afkActive || document.visibilityState!=='visible' || !('wakeLock' in navigator) || afkWakeLock)return;
+  try{
+    const lock=await navigator.wakeLock.request('screen');
+    if(!afkActive || document.visibilityState!=='visible') {await lock.release();return;}
+    afkWakeLock=lock;
+    lock.addEventListener('release',()=>{if(afkWakeLock===lock)afkWakeLock=null;});
+    $('#afkWakeStatus').textContent='Screen awake protection active';
+  }catch(err){
+    $('#afkWakeStatus').textContent='Screen wake lock unavailable — check browser or power settings';
+  }
+}
+function releaseAfkWakeLock(){
+  const lock=afkWakeLock;afkWakeLock=null;
+  if(lock)lock.release().catch(()=>{});
+}
+
+function afkUpdate(){
+  if(!afkActive)return;
+  const elapsed=Math.max(0,performance.now()-afkStart);
+  const due=Math.floor(elapsed/AFK_INTERVAL);
+  // Process elapsed minutes even if browser timers were throttled in background.
+  while(afkPaid<due){
+    afkPaid++;
+    const gems=5+Math.floor(Math.random()*6);
+    const reroll=Math.random()<0.05?1:0;
+    S.afkPendingGems+=gems;S.afkPendingRerolls+=reroll;
+    save(false);
+    afkGems+=gems;afkRerolls+=reroll;
+    $('#afkLatest').textContent='+'+gems+' gems'+(reroll?' · +1 trait reroll!':'');
+  }
+  afkPendingUI();
+  const remaining=Math.max(0,Math.ceil((AFK_INTERVAL-(elapsed%AFK_INTERVAL))/1000));
+  $('#afkCountdown').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0');
+  $('#afkSession').textContent='Session: '+afkGems+' gems · '+afkRerolls+' trait rerolls · '+afkPaid+' rewards';
+}
+function leaveAfk(){
+  if(!afkActive)return;
+  afkUpdate();afkActive=false;releaseAfkWakeLock();
+  // Leaving AFK forfeits any incomplete 60-second cycle.
+  const completed=afkPaid;afkStart=0;afkPaid=0;
+  $('#afkCountdown').textContent='01:00';
+  $('#afkOverlay').classList.add('hide');
+  $('#afkSummary').textContent='Last AFK session: '+afkGems+' gems, '+afkRerolls+' trait rerolls in '+completed+' reward cycles. Rewards remain unclaimed until you press Claim Rewards.';
+  afkPendingUI();
+  save(false);renderAll();
+}
+$('#enterAfk').onclick=()=>{
+  if(afkActive)return;
+  afkActive=true;afkStart=performance.now();afkPaid=0;afkGems=0;afkRerolls=0;afkPendingUI();
+  $('#afkLatest').textContent='';$('#afkOverlay').classList.remove('hide');afkUpdate();requestAfkWakeLock();
+};
+$('#exitAfk').onclick=leaveAfk;
+setInterval(afkUpdate,1000);
+document.addEventListener('visibilitychange',()=>{if(afkActive){afkUpdate();if(document.visibilityState==='visible')requestAfkWakeLock();}});
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
+  // Switching to any other tab ends AFK and resets its reward countdown.
+  if(b.dataset.tab!=='afk' && afkActive)leaveAfk();
+  document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  if(b.dataset.tab==='raids')renderRaids();
+  ['summon','battle','raids','units','afk','traits','index','bag'].forEach(t=>$('#'+t).classList.toggle('hide',b.dataset.tab!==t));
+});
+
+/* ---------- Battle ---------- */
+const cv=$('#cv'),cx=cv.getContext('2d');
+let G=null;
+function showArena(v){$('#arena').classList.toggle('hide',!v)}
+function dSeg(px,py,a,b){
+  const dx=b[0]-a[0],dy=b[1]-a[1];let t=((px-a[0])*dx+(py-a[1])*dy)/(dx*dx+dy*dy);t=Math.max(0,Math.min(1,t));
+  return Math.hypot(px-a[0]-t*dx,py-a[1]-t*dy);
+}
+// Per-unit-name battlefield limits; duplicates share the same rarity cap.
+const PLACEMENT_CAPS={Common:5,Rare:4,Epic:3,Legendary:2,Mythic:2,Secret:1,Exclusive:3};
+function unitPlacementCap(id){return PLACEMENT_CAPS[UNITS[id]?.r]??1}
+function placedNameCount(id){return G?G.us.filter(u=>u.id===id).length:0}
+function isMidas(uid){return S.units.find(i=>i.uid===uid)?.trait==='midas'}
+function placementCost(inst){return Math.round(UNITS[inst.id].c*(isMidas(inst.uid)?.75:1))}
+function boostCost(u){return Math.round(UNITS[u.id].c*.8*u.bl*(isMidas(u.uid)?.75:1))}
+function midasIncomeMultiplier(uid,boost){return isMidas(uid)?1.5+.25*(boost-1):1}
+
+function refreshPlacementBar(){
+  if(!G)return;
+  document.querySelectorAll('#bar .card[data-uid]').forEach(card=>{
+    const inst=S.units.find(u=>u.uid===Number(card.dataset.uid));if(!inst)return;
+    const count=placedNameCount(inst.id),max=unitPlacementCap(inst.id);
+    card.classList.toggle('off',count>=max);
+    let badge=card.querySelector('.placement-count');
+    if(!badge){badge=document.createElement('small');badge.className='placement-count';card.appendChild(badge)}
+    badge.textContent='Placed '+count+'/'+max+' (same unit name)';
+  });
+}
+function autoPlayEligible(si,mode,raidLevel=0){
+  return !raidLevel&&mode!=='infinite'&&S.playerLevel>=5&&(S.stageStars?.[stageStarKey(si,mode)]||0)>=3;
+}
+function startBattle(si,mode,raidLevel=0){
+  if(raidLevel&&S.playerLevel<25)return toast('Raids unlock at Player Level 25.');
+  if(raidLevel&&(raidLevel<1||raidLevel>5||raidLevel>S.raidCleared+1))return toast('This raid level is locked.');
+  if(!(S.equipped||[]).some(uid=>S.units.some(u=>u.uid===uid)))return toast('Equip at least one unit in Units before starting a match');
+  const p=(raidLevel?RAID_MAPS.hellsing:STAGES[si]).path,L=[];let tot=0;
+  for(let i=1;i<p.length;i++){const l=Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1]);L.push(l);tot+=l}
+  G={si,L,tot,raidLevel,raidKills:0,lives:STARTING_LIVES,coins:500,wave:0,q:[],sp:0,run:false,over:false,en:[],us:[],fx:[],sel:null,pl:null,speed:1,boss:false,mode,hpm:STAGES[si].hp*stageDifficulty(si)*MODES[mode].hp*(raidLevel?raidScale(raidLevel):1),ig:0,fg:0,paused:false,autoUpgrade:false,autoUpgradeTimer:0,autoPlay:false,autoPlayTimer:0,waveSpawnCountdown:null,restartTimer:0};
+  $('#bAutoPlay').textContent=autoPlayEligible(si,mode,raidLevel)?'Auto Play: OFF':(raidLevel?'🔒 Auto Play (regular maps only)':S.playerLevel<5?'🔒 Auto Play (Player Lv 5)':'🔒 Auto Play (3★ required)');
+  $('#bAutoPlay').disabled=!autoPlayEligible(si,mode,raidLevel);
+  $('#bAutoPlay').setAttribute('aria-pressed','false');
+  $('#bAutoUpgrade').textContent='Auto Upgrade: OFF';$('#bAutoUpgrade').setAttribute('aria-pressed','false');
+  $('#bWave').classList.remove('hide');$('#bWave').disabled=false;$('#bWave').textContent='Start wave';
+  hideQuick();$('#msg').classList.add('hide');$('#bSpd').textContent='Speed x1';$('#bPause').textContent='Pause';
+  $('#bar').innerHTML=(S.equipped||[]).map(uid=>S.units.find(u=>u.uid===uid)).filter(Boolean).map(i=>{const u=UNITS[i.id];
+    return '<div class="card" data-uid="'+i.uid+'" style="cursor:pointer"><canvas class="ico" width="72" height="64" data-id="'+i.id+'" data-trait="'+(i.trait||'')+'"></canvas><b class="'+u.r+'">'+u.n+'</b><br><span style="color:#ffc94d">'+'★'.repeat(i.st)+'</span> level '+i.lv+'<br><span style="color:'+TYPES[u.t]+'">'+u.t+'</span>, '+u.c+' coins</div>'}).join('');paintIcons();
+  $('#bar').querySelectorAll('.card').forEach(c=>c.onclick=()=>{
+    const uid=+c.dataset.uid,i=S.units.find(x=>x.uid===uid);
+    if(placedNameCount(i.id)>=unitPlacementCap(i.id)) return toast('Placement limit reached for '+UNITS[i.id].n+' ('+unitPlacementCap(i.id)+')');
+    G.pl=uid;G.sel=null;hideQuick();
+    $('#bar').querySelectorAll('.card').forEach(x=>x.classList.toggle('sel',x===c));
+    $('#selp').textContent='Placing '+UNITS[i.id].n+' (level '+i.lv+'). Click the map to build it (not on the path).';
+  });
+  $('#selp').textContent='Pick a unit above to place it. Tap a placed unit for its nearby upgrade menu.';
+  showArena(true);hud();refreshPlacementBar();
+}
+function posAt(d){
+  const p=battleStage().path;let i=0;
+  while(i<G.L.length-1&&d>G.L[i]){d-=G.L[i];i++}
+  const a=p[i],b=p[i+1],t=Math.min(1,d/G.L[i]);
+  return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
+}
+function hud(){if(G)$('#hud').textContent=(G.raidLevel?'Castle Hellsing · Raid Level '+G.raidLevel+' · ':'')+'Wave '+G.wave+(G.mode==='infinite'?'':'/'+(G.raidLevel?raidMaxWave(G.raidLevel):15))+'   '+MODES[G.mode].n+'   Lives '+G.lives+'   Coins '+G.coins+'   Units '+G.us.length}
+function nextWave(force=false){
+  if(!G||G.over||(G.run&&!force)) return;
+  G.wave++;G.run=true;
+  if(G.wave>=2)$('#bWave').classList.add('hide');
+  else {$('#bWave').disabled=true;$('#bWave').textContent='Wave started';}G.boss=G.raidLevel?G.wave===raidMaxWave(G.raidLevel):G.mode==='infinite'?G.wave%10===0:G.wave===15;
+  const n=Math.min(110,5+3*G.wave+Math.floor(G.wave*G.wave/14)),hp=22*G.hpm*Math.pow(1.24,G.wave);
+  // Each map introduces enemy classes progressively: Map 1 normal, Map 2 tanks,
+  // Map 3 runners, Map 4 elites; later maps use the classes introduced so far.
+  // Boss waves always end with one elite, then the boss exactly 3 seconds later.
+  const available=['normal'];
+  if(G.si>=1||G.raidLevel)available.push('tank');
+  if(G.si>=2||G.raidLevel)available.push('runner');
+  if(G.si>=3||G.raidLevel)available.push('elite');
+  const miniBoss=!!G.raidLevel&&G.wave%10===0&&!G.boss;
+  const ordinaryCount=G.boss?Math.max(0,n-2):miniBoss?Math.max(0,n-1):n;
+  G.q=Array.from({length:ordinaryCount},(_,i)=>{
+    const kind=available[i%available.length];
+    const hpMult={tank:3,runner:.65,elite:1.8,normal:1}[kind];
+    return {hp:hp*hpMult,kind};
+  });
+  if(G.boss){
+    G.q.push({hp:hp*1.8,kind:'elite'});
+    G.q.push({hp:hp*7,kind:'boss',delayBefore:3});
+  }
+  if(miniBoss)G.q.push({hp:hp*5.5,kind:'miniboss'});
+  G.sp=0;G.waveSpawnCountdown=null;hud();
+}
+$('#bWave').onclick=()=>{
+  // A manual click can only start the first wave once per battle.
+  if(!G||G.over||G.wave!==0)return;
+  nextWave();
+};
+$('#bSpd').onclick=()=>{if(!G)return;G.speed=G.speed%3+1;$('#bSpd').textContent='Speed x'+G.speed};
+$('#bPause').onclick=()=>{if(!G||G.over)return;G.paused=!G.paused;$('#bPause').textContent=G.paused?'Resume':'Pause'};
+function upgradePlacedUnit(u){
+  if(!G||G.over||u.bl>=5)return false;
+  const cost=boostCost(u);
+  if(G.coins<cost)return false;
+  G.coins-=cost;u.spent+=cost;u.bl++;u.d*=1.35;u.rg+=4;
+  hud();if(G.sel===u)selUI();return true;
+}
+
+// Smart Auto Play: deterministic tactical planner using actual battle resources.
+function autoPlaySupport(inst){return UNITS[inst.id].d<=0||inst.id==='eternity';}
+function autoPlayCoverage(x,y,r){
+  const path=battleStage().path;let coverage=0;
+  for(let i=1;i<path.length;i++){
+    const a=path[i-1],b=path[i],length=Math.hypot(b[0]-a[0],b[1]-a[1]);
+    for(let j=0;j<=10;j++){
+      const t=j/10,px=a[0]+(b[0]-a[0])*t,py=a[1]+(b[1]-a[1])*t;
+      if(Math.hypot(x-px,y-py)<=r)coverage+=length/11*(1.12-t*.12);
+    }
+  }
+  return coverage;
+}
+function autoPlayPosition(inst){
+  const U=UNITS[inst.id],range=stats(inst).rg,support=autoPlaySupport(inst);
+  const isEconomy=inst.id==='barter';
+  let best=null,bestScore=-Infinity;
+  for(let y=35;y<=415;y+=20)for(let x=35;x<=765;x+=20){
+    if(G.us.some(u=>Math.hypot(u.x-x,u.y-y)<36))continue;
+    if(battleStage().path.some((p,i)=>i>0&&dSeg(x,y,battleStage().path[i-1],p)<35))continue;
+    const coverage=autoPlayCoverage(x,y,range);
+    let score=coverage;
+    if(isEconomy){
+      // Keep money generators away from prime firing positions and enemy path.
+      score=90-coverage*.55+Math.min(...battleStage().path.slice(1).map((p,i)=>dSeg(x,y,STAGES[G.si].path[i],p)))*.09;
+      score-=G.us.filter(u=>u.id==='barter'&&Math.hypot(u.x-x,u.y-y)<95).length*30;
+    }else if(support){
+      // Cluster buff/heal supports close to several damage towers, not alone.
+      const allies=G.us.filter(u=>UNITS[u.id].d>0);
+      const boosted=allies.reduce((sum,u)=>sum+(Math.hypot(u.x-x,u.y-y)<=range?u.d/Math.max(.1,u.cd):0),0);
+      score=boosted*1.8+coverage*.18;
+      if(!allies.length)score=-1000;
+    }else{
+      // Favor high-coverage chokepoints; spread damage coverage across the path.
+      const covered=G.us.filter(u=>UNITS[u.id].d>0).reduce((n,u)=>n+(Math.hypot(u.x-x,u.y-y)<Math.min(range,u.rg)*.85?1:0),0);
+      score=coverage-covered*24;
+      if(G.en.length){
+        const pressure=G.en.reduce((sum,e)=>sum+(Math.hypot(x-e.x,y-e.y)<range?Math.min(e.hp,stats(inst).d*5):0),0);
+        score+=Math.min(80,pressure/Math.max(1,stats(inst).d)*6);
+      }
+    }
+    score-=Math.abs(x-400)*.0001;
+    if(score>bestScore){bestScore=score;best={x,y};}
+  }
+  return bestScore>0?best:null;
+}
+function autoPlayBuild(){
+  if(!G||G.over||!G.autoPlay)return false;
+  const equipped=(S.equipped||[]).map(uid=>S.units.find(u=>u.uid===uid)).filter(Boolean);
+  const candidates=equipped.filter(i=>placedNameCount(i.id)<unitPlacementCap(i.id)&&placementCost(i)<=G.coins);
+  const damagePlaced=G.us.filter(u=>UNITS[u.id].d>0),barters=G.us.filter(u=>u.id==='barter');
+  const incoming=G.en.length+G.q.length;
+  const late=G.wave>=7;
+  const options=[];
+  for(const inst of candidates){
+    const U=UNITS[inst.id],st=stats(inst),cost=placementCost(inst),support=autoPlaySupport(inst);
+    if(inst.id==='barter'&&(late||barters.length>=3))continue;
+    if(support&&inst.id!=='barter'&&damagePlaced.length===0)continue;
+    const pos=autoPlayPosition(inst);if(!pos)continue;
+    const dps=st.d/Math.max(.1,st.cd);
+    let priority=dps*(1+Math.min(220,st.rg)/280)/Math.max(65,cost);
+    if(inst.id==='barter'){
+      priority=(!damagePlaced.length?0:barters.length===0?2.7:barters.length===1?1.6:.8);
+      if(G.wave>=5)priority*=.35;
+    }else if(support){
+      const near=damagePlaced.filter(u=>Math.hypot(pos.x-u.x,pos.y-u.y)<=st.rg);
+      priority=near.reduce((v,u)=>v+u.d/Math.max(.1,u.cd),0)/Math.max(90,cost)*.6;
+      if(inst.id==='eternity')priority*=1.5;
+    }
+    if(!damagePlaced.length&&U.d>0)priority+=100;
+    if(incoming>10&&U.d>0)priority*=1.5;
+    options.push({inst,pos,priority,cost,st});
+  }
+  options.sort((a,b)=>b.priority-a.priority);
+  const pick=options[0];if(!pick)return false;
+  const {inst,pos,cost,st}=pick,U=UNITS[inst.id];
+  G.coins-=cost;
+  G.us.push({summonTimer:5,chronoTimer:10,uid:inst.uid,id:inst.id,x:pos.x,y:pos.y,bl:1,pl:inst.lv,d:st.d,rg:st.rg,cd:st.cd,t:0,col:U.col,slow:U.slow,splash:U.splash,spent:cost});
+  refreshPlacementBar();hud();return true;
+}
+function autoPlayUpgrade(){
+  if(!G||!G.autoPlay||G.over)return;
+  const choices=G.us.filter(u=>u.bl<5&&boostCost(u)<=G.coins);
+  if(!choices.length)return;
+  choices.sort((a,b)=>{
+    const priority=u=>{
+      if(u.id==='barter')return G.wave<=6?(7-G.wave)*22/(boostCost(u)+30):0;
+      const coverage=autoPlayCoverage(u.x,u.y,u.rg);
+      const damage=u.d/Math.max(.1,u.cd);
+      return (damage*.35+coverage*.2)/(boostCost(u)+30);
+    };
+    return priority(b)-priority(a);
+  });
+  // Invest in damage and economy without exhausting the opening build budget.
+  const first=choices[0];
+  if(G.us.filter(u=>UNITS[u.id].d>0).length<2&&G.wave<=3&&G.coins<boostCost(first)+110)return;
+  upgradePlacedUnit(first);
+}
+$('#bAutoPlay').onclick=()=>{
+  if(!G||G.over)return;
+  if(!autoPlayEligible(G.si,G.mode,G.raidLevel))return toast('Auto Play requires Player Level 5 and a 3-star clear of this exact map and mode.');
+  G.autoPlay=!G.autoPlay;G.autoPlayTimer=0;G.autoPlayStartDelay=0;
+  if(!G.autoPlay){$('#bAutoUpgrade').textContent='Auto Upgrade: OFF';$('#bAutoUpgrade').setAttribute('aria-pressed','false');}
+  if(G.autoPlay){G.pl=null;G.sel=null;hideQuick();G.autoUpgrade=false;G.autoUpgradeTimer=0;
+    $('#bAutoUpgrade').textContent='Smart Upgrades: ON';$('#bAutoUpgrade').setAttribute('aria-pressed','true');
+    autoPlayBuild();if(G.wave===0)nextWave();
+  }
+  $('#bAutoPlay').textContent='Auto Play: '+(G.autoPlay?'ON':'OFF');
+  $('#bAutoPlay').setAttribute('aria-pressed',String(G.autoPlay));
+  toast(G.autoPlay?'Auto Play enabled: deploying and upgrading units automatically.':'Auto Play disabled.');
+};
+
+$('#bAutoUpgrade').onclick=()=>{
+  if(!G||G.over)return;
+  if(G.autoPlay)return toast('Smart Auto Play manages upgrades automatically.');
+  G.autoUpgrade=!G.autoUpgrade;G.autoUpgradeTimer=0;
+  $('#bAutoUpgrade').textContent='Auto Upgrade: '+(G.autoUpgrade?'ON':'OFF');
+  $('#bAutoUpgrade').setAttribute('aria-pressed',String(G.autoUpgrade));
+};
+function setMapFullscreen(on){
+  $('#arena').classList.toggle('map-fullscreen',on);
+  $('#bFullMap').textContent=on?'⛶ Exit Fullscreen':'⛶ Fullscreen Map';
+  if(!on&&document.fullscreenElement=== $('#arena'))document.exitFullscreen().catch(()=>{});
+  if(on&&$('#arena').requestFullscreen)$('#arena').requestFullscreen().catch(()=>{});
+  if(G&&G.sel)requestAnimationFrame(positionQuick);
+}
+$('#bFullMap').onclick=()=>setMapFullscreen(!$('#arena').classList.contains('map-fullscreen'));
+document.addEventListener('fullscreenchange',()=>{
+  if(!document.fullscreenElement&&$('#arena').classList.contains('map-fullscreen'))setMapFullscreen(false);
+});
+
+$('#bQuit').onclick=()=>{
+  if(G&&G.mode==='infinite'&&!G.over&&G.wave>0){finish(false);return}
+  setMapFullscreen(false);G=null;hideQuick();showArena(false);
+};
+
+function hideQuick(){const q=$('#unitQuick');q.classList.add('hide');q.innerHTML=''}
+function positionQuick(){
+  if(!G||!G.sel){hideQuick();return}
+  const q=$('#unitQuick'),u=G.sel,wrap=q.parentElement;
+  const sx=wrap.clientWidth/800,sy=wrap.clientHeight/450;
+  // Keep the panel alongside the tower, switching sides near the map edge.
+  const panelW=q.offsetWidth||160,panelH=q.offsetHeight||120;
+  const [screenX,screenY]=[u.x,u.y];
+  let left=screenX*sx+23*sx;
+  if(left+panelW>wrap.clientWidth-5)left=screenX*sx-23*sx-panelW;
+  left=Math.max(4,Math.min(wrap.clientWidth-panelW-4,left));
+  const centerY=Math.max(panelH/2+4,Math.min(wrap.clientHeight-panelH/2-4,screenY*sy));
+  q.style.left=left+'px';q.style.top=centerY+'px';
+}
+function selUI(){
+  const u=G&&G.sel;
+  $('#selp').textContent='Tap a placed unit to inspect its live stats and boost it beside the unit.';
+  if(!u){hideQuick();return}
+  const cost=boostCost(u);
+  const q=$('#unitQuick');q.classList.remove('hide');
+  const owned=S.units.find(i=>i.uid===u.uid),base=UNITS[u.id];
+  const fmt=n=>Number(n).toLocaleString(undefined,{maximumFractionDigits:1});
+  const stat=(name,val)=>'<div class="quick-stat"><small>'+name+'</small><b>'+val+'</b></div>';
+  const dps=u.d/Math.max(.1,u.cd);
+  const nextD=u.d*1.35,nextRg=u.rg+4;
+  q.innerHTML='<strong id="quickName"></strong>'
+    +'<div class="quick-meta">'+base.r+' · '+base.t+' · Unit Lv '+(owned?owned.lv:u.pl)+'<br>Boost '+u.bl+'/5</div>'
+    +'<div class="quick-stats">'
+    +stat('Damage',fmt(u.id==='worldtree'?u.d*Math.max(0,1-.03*(G.us.length-1)):u.d))+stat('Range',u.id==='worldtree'?'∞':fmt(u.rg))
+    +stat('Attack interval',fmt(u.cd)+'s')+stat('Damage / sec',fmt(dps))
+    +'</div>'
+    +(u.bl>=5?'<div class="quick-max">★ MAX BOOST 5/5 — Final upgrade stats</div>'
+      :'<div class="quick-next">Next boost: '+fmt(nextD)+' DMG · '+fmt(nextRg)+' range</div>')
+    +(u.id==='barter'?'<div class="quick-meta">Merchant income: +'+Math.round(10+(u.bl<=1?0:5*(Math.pow(1.1,u.bl-2)-1)/.1))+' coins every '+Math.max(1,6-u.bl)+' second(s) · automatic</div>':'')
+    +(u.id==='starlord'?'<div class="quick-meta">Astral Ricochet: hits 4 additional enemies · each bounce loses 10% of original damage</div>':'')
+    +(u.id==='eternity'?'<div class="quick-meta">Eternal Blessing: alternates +20% damage and +25% attack speed for nearby units · lasts 7.5s · recasts every '+(15-1.5*(u.bl-1))+'s</div>':'')
+    +(u.id==='xenowarden'?'<div class="quick-meta">Triune Wards: every 2s · max 3 active · 3s duration · Slow 5s (50% speed) · Stun / Freeze 0.5s</div>':'')
+    +(isMidas(u.uid)?'<div class="quick-meta">✦ Midas: +'+Math.round((midasIncomeMultiplier(u.uid,u.bl)-1)*100)+'% kill/production coins · 25% cheaper placement and boosts</div>':'')
+    +(u.id==='cosmos'?'<div class="quick-meta">3 mud piles · 30% damage · 5s duration · cooldown '+Math.max(1,5-(u.bl-1))+'s</div>':'')
+    +(u.id==='abyss'?'<div class="quick-meta">2 Hell Wolves every 15s · 125% damage each</div>':'')
+    +(u.id==='worldtree'?'<div class="quick-meta">Infinite range · -3% damage per other placed unit (minimum 0%)</div>':'')
+    +(u.id==='dragonlord'?'<div class="quick-meta">AOE on every hit'+(u.bl===5?' · Burns path 5s every 8s':' · MAX unlocks burning path')+'</div>':'')
+    +(u.id==='abyss_summoner'?'<div class="quick-meta">'+(u.bl>=5?'2 Elite Ghouls every 5s · each 150% DMG / 125% HP':'3 shadow monsters every 5s')+'</div>':'')
+    +'<button id="bUp"'+(u.bl>=5?' disabled':'')+'>'+(u.bl>=5?'✓ Max boost':'⬆ Boost · '+cost+' coins')+'</button>'
+    +'<button class="alt" id="bSell">Sell · '+Math.floor(u.spent/2)+' coins</button>';
+  $('#quickName').textContent=(owned&&owned.nickname)||base.n;
+  $('#bUp').onclick=()=>{
+    if(!upgradePlacedUnit(u))toast('Not enough coins or already max boosted');
+  };
+  $('#bSell').onclick=()=>{G.coins+=Math.floor(u.spent/2);G.us=G.us.filter(x=>x!==u);G.sel=null;hud();selUI();refreshPlacementBar()};
+  positionQuick();
+}
+window.addEventListener('resize',()=>{if(G&&G.sel)positionQuick()});
+cv.onclick=e=>{
+  if(!G||G.over||G.autoPlay) return;
+  const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*cv.width/r.width,y=(e.clientY-r.top)*cv.height/r.height;
+  const hit=G.us.find(u=>Math.hypot(u.x-x,u.y-y)<18);
+  if(hit){G.sel=hit;G.pl=null;$('#bar').querySelectorAll('.card').forEach(c=>c.classList.remove('sel'));selUI();return}
+  if(!G.pl){G.sel=null;selUI();return}
+  const inst=S.units.find(x=>x.uid===G.pl),U=UNITS[inst.id],t=stats(inst);
+  if(placedNameCount(inst.id)>=unitPlacementCap(inst.id)) return toast(UNITS[inst.id].n+' has reached its '+unitPlacementCap(inst.id)+' placement limit');
+  if(G.coins<placementCost(inst)) return toast('Not enough coins');
+  const p=battleStage().path;
+  for(let i=1;i<p.length;i++) if(dSeg(x,y,p[i-1],p[i])<30) return toast("You can't build on the path");
+  G.coins-=placementCost(inst);
+  hideQuick();G.us.push({summonTimer:5,chronoTimer:10,uid:inst.uid,id:inst.id,x,y,bl:1,pl:inst.lv,d:t.d,rg:t.rg,cd:t.cd,t:0,col:U.col,slow:U.slow,splash:U.splash,spent:placementCost(inst)});G.pl=null;
+  $('#bar').querySelectorAll('.card').forEach(x=>x.classList.remove('sel'));refreshPlacementBar();hud();
+};
+function finish(win){
+  const M=MODES[G.mode],inf=G.mode==='infinite',fd=STAGES[G.si].food;
+  G.over=true;let m,first=false;
+  if(win&&G.raidLevel){
+    const lv=G.raidLevel;
+    S.raidCleared=Math.max(S.raidCleared,lv);
+    const gems=100*lv;
+    S.gems+=gems;
+    let drop='';
+    if(lv===5&&Math.random()<.05){
+      const u={uid:S.nid++,id:'alucard',lv:1,xp:0,st:0,trait:'',nickname:'',locked:false};
+      S.units.push(u);
+      S.discovered=S.discovered||[];
+      if(!S.discovered.includes('alucard'))S.discovered.push('alucard');
+      drop=' SECRET DROP: Alucard obtained!';
+    }
+    gainPlayerExp(50);
+    m='Castle Hellsing Raid Level '+lv+' cleared! +'+gems+' gems. '+(lv<5?'Next raid level unlocked. ':'')+(lv===5&&!drop?'Alucard drop roll: not obtained (5% chance).':'')+drop;
+  }else if(win){
+    first=S.cleared<=G.si;const g=25*M.mult,f=Math.ceil(2*M.mult);
+    S.gems+=g;S.bag[fd]=(S.bag[fd]||0)+f;discoverItem(fd);S.cleared=Math.max(S.cleared,G.si+1);
+    const stars=stageStars(G.lives),key=stageStarKey(G.si,G.mode);
+    if(!inf)S.stageStars[key]=Math.max(S.stageStars[key]||0,stars);
+    gainPlayerExp(50);m='Stage cleared on '+M.n+'! '+(inf?'':('Rating: '+ '★'.repeat(stars)+'☆'.repeat(3-stars)+' (best: '+'★'.repeat(S.stageStars[key])+'☆'.repeat(3-S.stageStars[key])+'). '))+'You earned '+g+' gems, '+f+' '+ITEMS[fd].n+' and 50 player EXP.';
+  }else if(inf) m='Run over at wave '+G.wave+'. This run earned '+G.ig+' gems and '+G.fg+' '+ITEMS[fd].n+'.';
+  else{S.gems+=10;m='Your base fell. You earned 10 gems for trying.'}
+  const bx=150+G.si*190;
+  const xp=Math.round((inf?bx*G.wave/10:bx*M.xp*(win?1:.3*G.wave/10))*(first?1.5:1)),ups=[];
+  G.us.forEach(u=>{const i=S.units.find(x=>x.uid===u.uid);if(!i)return;const b=i.lv;addXp(i,xp);if(i.lv>b)ups.push(UNITS[i.id].n+' '+b+' to '+i.lv)});
+  m+=' Placed units earned '+xp+' EXP.'+(ups.length?' Level ups: '+ups.slice(0,4).join(', ')+(ups.length>4?' and more':'')+'.':'');
+  $('#msg').textContent=m;$('#msg').classList.remove('hide');
+  save(false);gemUI();renderAll();
+  if(S.settings.autoRestart){
+    G.replayAutoPlay=!!G.autoPlay;
+    G.restartTimer=3;
+    G.restartSnapshot=G.us.map(u=>({uid:u.uid,x:u.x,y:u.y,bl:u.bl}));
+    toast('Map restarting in 3 seconds');
+  }
+}
+function restartMap(){
+  if(!G||!G.over)return;
+  const {si,mode,raidLevel=0,restartSnapshot=[],replayAutoPlay=false}=G;
+  startBattle(si,mode,raidLevel);
+  // Restore affordable placed units in original order; any unaffordable units remain available to place.
+  for(const old of restartSnapshot){
+    const inst=S.units.find(i=>i.uid===old.uid);if(!inst)continue;
+    const U=UNITS[inst.id],t=stats(inst);
+    if(G.coins<placementCost(inst)||placedNameCount(inst.id)>=unitPlacementCap(inst.id))continue;
+    G.coins-=placementCost(inst);
+    const u={summonTimer:5,chronoTimer:10,uid:inst.uid,id:inst.id,x:old.x,y:old.y,bl:1,pl:inst.lv,d:t.d,rg:t.rg,cd:t.cd,t:0,col:U.col,slow:U.slow,splash:U.splash,spent:placementCost(inst)};
+    for(let j=1;j<old.bl;j++){
+      const cost=boostCost(u);
+      if(G.coins<cost)break;
+      G.coins-=cost;u.spent+=cost;u.bl++;u.d*=1.35;u.rg+=4;
+    }
+    G.us.push(u);
+    refreshPlacementBar();
+  }
+  if(replayAutoPlay&&S.settings.autoRestart&&autoPlayEligible(si,mode,raidLevel)){
+    G.autoPlay=true;G.autoPlayTimer=0;G.autoPlayStartDelay=3;
+    G.autoUpgrade=false;
+    $('#bAutoPlay').textContent='Auto Play: ON';
+    $('#bAutoPlay').setAttribute('aria-pressed','true');
+    toast('Auto Replay + Auto Play: next match begins in 3 seconds');
+  }
+  hud();
+
+}
+function grantTraitReroll(source, quantity=1){
+  S.traitRerolls=(S.traitRerolls||0)+quantity;
+  save(false);renderTraits();
+  toast('+'+quantity+' Trait Reroll'+(quantity===1?'':'s')+'! '+source);
+}
+// Visual-only projectiles: damage is still resolved by the existing combat engine.
+function shotStyle(u){
+ const id=u.id,n=UNITS[id].n.toLowerCase(),a=(UNITS[id].ability||'').toLowerCase();
+ if(id==='rift_blade')return 'rift';
+ if(id==='chrono_warden')return 'ice';
+ if(id==='pyro'||n.includes('pyromancer')||a.includes('firestorm'))return 'fireball';
+ if(id==='monk'||n.includes('wandering monk'))return 'wind';
+ if(id==='dragonlord'||n.includes('dragon emperor'))return 'dragonfire';
+ if(n.includes('dragon')||a.includes('flame')||a.includes('fire'))return 'flame';
+ if(n.includes('archer')||n.includes('ranger')||n.includes('sniper')||n.includes('hunter'))return 'arrow';
+ if(n.includes('wizard')||n.includes('mage')||n.includes('witch')||n.includes('sorcer')||n.includes('oracle'))return 'magic';
+ if(n.includes('alien')||n.includes('robot')||n.includes('cyber')||n.includes('laser'))return 'plasma';
+ if(n.includes('ice')||n.includes('frost')||n.includes('snow'))return 'ice';
+ if(n.includes('lightning')||n.includes('storm')||n.includes('thunder'))return 'lightning';
+ if(n.includes('poison')||n.includes('venom')||n.includes('lizard'))return 'venom';
+ if(n.includes('shadow')||n.includes('abyss')||n.includes('dark'))return 'shadow';
+ if(n.includes('bird')||n.includes('phoenix'))return 'feather';
+ if(UNITS[id].t==='Physical')return 'arrow';
+ if(UNITS[id].t==='Magic')return 'magic';
+ return 'pulse';
+}
+function renderShot(f){
+ const t=1-f.l/f.max, x=f.a[0]+(f.b[0]-f.a[0])*t,y=f.a[1]+(f.b[1]-f.a[1])*t;
+ const dx=f.b[0]-f.a[0],dy=f.b[1]-f.a[1],angle=Math.atan2(dy,dx);
+ const palette={rift:['#fff0ff','#e45cff'],fireball:['#ffcf49','#f04417'],wind:['#d7fff5','#77e0d3'],dragonfire:['#fff16a','#fa2c0a'],flame:['#ffbd4c','#fa5424'],arrow:['#e8d6a3','#735039'],magic:['#e0b3ff','#934eff'],plasma:['#86faff','#1f91fc'],ice:['#f0ffff','#4dc8ff'],lightning:['#ffff8a','#b5a0ff'],venom:['#caff65','#52b829'],shadow:['#f368ab','#722154'],feather:['#fbe7a3','#f38a41'],pulse:['#ffffff',f.c||'#83baff']}[f.style]||['#fff','#99f'];
+ cx.save();cx.globalAlpha=Math.min(1,f.l*12);cx.translate(x,y);cx.rotate(angle);
+ cx.shadowBlur=f.style==='dragonfire'?19:10;cx.shadowColor=palette[1];
+ if(f.style==='rift'){cx.strokeStyle=palette[0];cx.lineWidth=4;cx.beginPath();cx.arc(0,0,14,-1.25,1.25);cx.stroke();cx.strokeStyle=palette[1];cx.lineWidth=2;cx.beginPath();cx.arc(-3,0,11,-1.4,1.4);cx.stroke();}else if(f.style==='wind'){
+   cx.strokeStyle=palette[0];cx.lineWidth=2.5;
+   for(let k=-1;k<=1;k++){cx.beginPath();cx.moveTo(-15,k*5);cx.quadraticCurveTo(-4,k*5-8,9,k*5);cx.stroke()}
+ }else if(f.style==='dragonfire'){
+   for(let k=0;k<5;k++){const r=7+k*3;cx.fillStyle=k%2?palette[1]:palette[0];cx.beginPath();cx.ellipse(-k*8,Math.sin(k*2+t*12)*4,r,5+k,0,0,Math.PI*2);cx.fill()}
+ }else if(f.style==='arrow'||f.style==='feather'){
+   cx.strokeStyle=palette[0];cx.lineWidth=2.5;cx.beginPath();cx.moveTo(-13,0);cx.lineTo(12,0);cx.stroke();cx.fillStyle=palette[1];cx.beginPath();cx.moveTo(13,0);cx.lineTo(4,-5);cx.lineTo(4,5);cx.fill();
+ }else if(f.style==='lightning'){
+   cx.strokeStyle=palette[0];cx.lineWidth=3;cx.beginPath();cx.moveTo(-15,-5);cx.lineTo(-5,3);cx.lineTo(0,-5);cx.lineTo(12,3);cx.stroke();
+ }else{
+   const r=f.style==='fireball'?8:6;
+   cx.fillStyle=palette[1];cx.beginPath();cx.arc(-4,0,r+3,0,7);cx.fill();
+   cx.fillStyle=palette[0];cx.beginPath();cx.arc(3,0,r,0,7);cx.fill();
+   if(f.style==='fireball'||f.style==='flame'){cx.fillStyle='#ff8b25';cx.beginPath();cx.moveTo(-5,-6);cx.lineTo(-20,0);cx.lineTo(-5,6);cx.fill()}
+ }
+ cx.restore();
+}
+// Mythic battlefield abilities. Ground effects use path distance so bends are supported.
+function mythicGround(u,kind,count,duration,damage,spacing){
+  G.ground=G.ground||[];
+  for(let i=0;i<count;i++){
+    const center=Math.max(0,Math.min(G.tot,(G.tot*(i+1)/(count+1))));
+    G.ground.push({kind,owner:u.uid,d:center,radius:spacing,ttl:duration,tick:0,damage});
+  }
+}
+function mythicAbilities(dt){
+  G.ground=G.ground||[];G.wolves=G.wolves||[];G.xenoWards=G.xenoWards||[];
+  for(const ward of G.xenoWards){
+    ward.ttl-=dt;ward.pulse=(ward.pulse||0)-dt;
+    if(ward.pulse<=0){
+      ward.pulse=.25;
+      for(const e of G.en){
+        if(e.hp<=0||Math.abs(e.d-ward.d)>ward.radius)continue;
+        if(ward.effect==='slow')e.sl=Math.max(e.sl||0,5);
+        else if(ward.effect==='stun')e.stunned=Math.max(e.stunned||0,0.5);
+        else e.frozen=Math.max(e.frozen||0,0.5);
+      }
+    }
+  }
+  G.xenoWards=G.xenoWards.filter(w=>w.ttl>0);
+  for(const u of G.us){
+    if(u.id==='xenowarden'){
+      u.wardTimer=(u.wardTimer??0)-dt;
+      if(u.wardTimer<=0){
+        u.wardTimer+=2;
+        const ownedWards=G.xenoWards.filter(w=>w.owner===u.uid);
+        if(ownedWards.length<3){
+          const target=G.en.filter(e=>e.hp>0&&Math.hypot(e.x-u.x,e.y-u.y)<=u.rg).sort((a,b)=>b.d-a.d)[0];
+          const d=target?target.d:Math.max(0,Math.min(G.tot,G.tot*.25));
+          const effect=['slow','stun','freeze'][(u.wardIndex||0)%3];u.wardIndex=(u.wardIndex||0)+1;
+          G.xenoWards.push({owner:u.uid,d,radius:55,effect,ttl:3,pulse:0});
+        }
+      }
+    }
+    if(u.id==='cosmos'){
+      u.mudTimer=(u.mudTimer??0)-dt;
+      if(u.mudTimer<=0){u.mudTimer+=Math.max(1,5-(u.bl-1));mythicGround(u,'mud',3,5,u.d*.30,32);}
+    }
+    if(u.id==='abyss'){
+      u.wolfTimer=(u.wolfTimer??0)-dt;
+      if(u.wolfTimer<=0){u.wolfTimer+=15;
+        for(let i=0;i<2;i++)G.wolves.push({owner:u.uid,d:Math.max(0,G.tot*.04),damage:u.d*1.25,offset:i*12,ttl:15});
+      }
+    }
+    if(u.id==='dragonlord'&&u.bl===5){
+      u.burnTimer=(u.burnTimer??0)-dt;
+      if(u.burnTimer<=0){u.burnTimer+=8;
+        const target=G.en.filter(e=>e.hp>0).sort((a,b)=>b.d-a.d)[0];
+        if(target)G.ground.push({kind:'fire',owner:u.uid,d:target.d,radius:65,ttl:5,tick:0,damage:u.d*.35});
+      }
+    }
+  }
+  for(const g of G.ground){
+    g.ttl-=dt;g.tick+=dt;
+    while(g.tick>=.5){g.tick-=.5;
+      for(const e of G.en)if(e.hp>0&&Math.abs(e.d-g.d)<=g.radius)e.hp-=g.damage*.5;
+    }
+  }
+  G.ground=G.ground.filter(g=>g.ttl>0);
+  for(const w of G.wolves){
+    w.ttl-=dt;w.d+=175*dt;
+    const victim=G.en.filter(e=>e.hp>0&&Math.abs(e.d-w.d)<19).sort((a,b)=>Math.abs(a.d-w.d)-Math.abs(b.d-w.d))[0];
+    if(victim){victim.hp-=w.damage;w.ttl=0;if(S.settings.attackFx)G.fx.push({kind:'wolfhit',x:victim.x,y:victim.y,l:.35,max:.35});}
+  }
+  G.wolves=G.wolves.filter(w=>w.ttl>0&&w.d<G.tot);
+}
+
+// Character-specific Epic and Legendary auto-skills: limited periodic procs,
+// intentionally weaker than Mythic battlefield abilities.
+const RANKED_ATTACK_SKILLS = {"blade": [4, "splash", 0.3, 42], "sniper": [3, "burst", 0.35, 0], "mage": [4, "slow", 1.5, 0], "storm": [4, "chain", 0.3, 80], "assassin": [3, "burst", 0.4, 0], "ballista": [4, "chain", 0.3, 95], "witch": [4, "slow", 1.5, 0], "berserker": [3, "burst", 0.3, 0], "oracle": [4, "burst", 0.35, 0], "ranger": [4, "splash", 0.25, 55], "pyro": [4, "splash", 0.3, 50], "samurai": [3, "splash", 0.25, 42], "tinker": [4, "chain", 0.3, 80], "drake": [4, "splash", 0.3, 55], "dragon": [3, "splash", 0.55, 65], "warden": [4, "burst", 0.65, 0], "phoenix": [4, "splash", 0.5, 70], "titan": [4, "quake", 0.45, 75], "celestial": [3, "splash", 0.45, 65], "void": [4, "burst", 0.6, 0], "leviathan": [4, "tidal", 0.45, 80], "paladin": [4, "burst", 0.65, 0], "chronos": [4, "freeze", 0.75, 0], "seraph": [3, "chain", 0.45, 100], "reptileking": [4, "tidal", 0.4, 65]};
+function applyRankedAttackSkill(u, target, hits){
+  const skill=RANKED_ATTACK_SKILLS[u.id];
+  if(!skill || hits%skill[0]!==0)return;
+  const [,kind,power,radius]=skill;
+  const others=G.en.filter(e=>e!==target&&e.hp>0);
+  function strike(e,amount){e.hp-=amount;e.lastHitUid=u.uid;e.lastHitBoost=u.bl;}
+  if(kind==='burst')strike(target,u.d*power);
+  else if(kind==='slow')target.sl=Math.max(target.sl||0,power);
+  else if(kind==='freeze')target.frozen=Math.max(target.frozen||0,power);
+  else if(kind==='chain'){
+    const e=others.filter(e=>Math.hypot(e.x-target.x,e.y-target.y)<=radius).sort((a,b)=>Math.hypot(a.x-target.x,a.y-target.y)-Math.hypot(b.x-target.x,b.y-target.y))[0];
+    if(e)strike(e,u.d*power);
+  }else{
+    for(const e of others){
+      if(Math.hypot(e.x-target.x,e.y-target.y)>radius)continue;
+      strike(e,u.d*power);
+      if(kind==='quake')e.stunned=Math.max(e.stunned||0,.5);
+      if(kind==='tidal')e.sl=Math.max(e.sl||0,1.5);
+    }
+  }
+  if(S.settings.attackFx)G.fx.push({kind:'riftburst',x:target.x,y:target.y,l:.22,max:.22});
+}
+
+function step(dt){
+  if(G.autoPlay){
+    if(G.autoPlayStartDelay>0){G.autoPlayStartDelay=Math.max(0,G.autoPlayStartDelay-dt);}
+    else {G.autoPlayTimer-=dt;if(G.autoPlayTimer<=0){G.autoPlayTimer=.65;autoPlayBuild();autoPlayUpgrade();if(G.wave===0)nextWave();}}
+  }
+  // Spend available battle coins on the cheapest affordable upgrade first.
+  if(G.autoUpgrade){
+    G.autoUpgradeTimer=(G.autoUpgradeTimer||0)-dt;
+    if(G.autoUpgradeTimer<=0){
+      G.autoUpgradeTimer=.3;
+      const affordable=G.us.filter(u=>u.bl<5&&boostCost(u)<=G.coins)
+        .sort((a,b)=>boostCost(a)-boostCost(b));
+      if(affordable.length)upgradePlacedUnit(affordable[0]);
+    }
+  }
+  if(G.q.length){G.sp-=dt;if(G.sp<=0){const spawn=G.q.shift();const kind=typeof spawn==='number'?'normal':spawn.kind,hp=typeof spawn==='number'?spawn:spawn.hp;G.en.push({d:0,hp,mx:hp,kind,boss:kind==='boss'||kind==='miniboss',v:kind==='boss'?32:kind==='miniboss'?37:kind==='tank'?27:kind==='runner'?105:kind==='elite'?57:44+Math.random()*18,sl:0,x:-30,y:-30});G.sp=G.q[0]?.delayBefore??.75;if(!G.q.length)G.waveSpawnCountdown=5;}}
+  // Start the next wave 5 game-seconds after the final enemy of this wave is spawned.
+  // The countdown is independent of whether earlier enemies are still alive.
+  if(G.run&&G.waveSpawnCountdown!==null){
+    G.waveSpawnCountdown-=dt;
+    if(G.waveSpawnCountdown<=0){
+      G.waveSpawnCountdown=null;
+      if(G.mode==='infinite'){infReward();nextWave(true)}else if(G.wave<(G.raidLevel?raidMaxWave(G.raidLevel):15))nextWave(true);
+    }
+  }
+  for(const e of G.en){
+    e.sl-=dt;e.frozen=Math.max(0,(e.frozen||0)-dt);e.stunned=Math.max(0,(e.stunned||0)-dt);e.d+=e.v*(e.frozen>0||e.stunned>0?0:(e.sl>0?.5:1))*dt;
+    if(e.d>=G.tot){e.hp=0;e.leak=1;G.lives--}else{[e.x,e.y]=posAt(e.d)}
+  }
+  mythicAbilities(dt);
+  // Eternity Keeper alternates between a damage blessing and an attack-speed blessing.
+  // Each aura lasts 7.5s, recasts every (15 - 1.5 per boost) seconds.
+  for(const keeper of G.us){
+    if(keeper.id!=='eternity')continue;
+    keeper.auraTimer=(keeper.auraTimer??0)-dt;
+    if(keeper.auraTimer<=0){
+      keeper.auraTimer=15-1.5*(keeper.bl-1);
+      keeper.auraType=keeper.auraType==='damage'?'speed':'damage';
+      keeper.auraRemaining=7.5;
+      if(S.settings.attackFx)G.fx.push({kind:'timefreeze',x:keeper.x,y:keeper.y,rg:keeper.rg,l:.65,max:.65});
+    }
+    keeper.auraRemaining=Math.max(0,(keeper.auraRemaining||0)-dt);
+  }
+  for(const u of G.us){
+    if(u.id==='barter' && G.wave>0){
+      // Economy timers begin only after the first wave has been started.
+      const barterCD=Math.max(1,6-u.bl);
+      u.barterTimer=Math.min(u.barterTimer??barterCD,barterCD)-dt;
+      while(u.barterTimer<=0){
+        u.barterTimer+=barterCD;
+        const bonus=u.bl<=1?0:5*(Math.pow(1.1,u.bl-2)-1)/.1;
+        const payout=Math.round(10+bonus);
+        G.coins+=Math.round(payout*midasIncomeMultiplier(u.uid,u.bl));
+        if(S.settings.attackFx)G.fx.push({kind:'summon',x:u.x,y:u.y,l:.45,max:.45});
+      }
+    }
+    if(u.id==='chrono_warden'){
+      u.chronoTimer=(u.chronoTimer??10)-dt;
+      if(u.chronoTimer<=0){u.chronoTimer+=10;const duration=1+.5*(u.bl-1);let hit=0;for(const e of G.en){if(e.hp>0&&Math.hypot(e.x-u.x,e.y-u.y)<=u.rg){e.frozen=Math.max(e.frozen||0,duration);hit++;}}if(hit&&S.settings.attackFx)G.fx.push({kind:'timefreeze',x:u.x,y:u.y,rg:u.rg,l:.65,max:.65});}
+    }
+    if(u.id==='alucard'){
+      // Baskerville familiar: a periodic shadow-hound attack on the leading enemy.
+      u.baskervilleTimer=(u.baskervilleTimer??12)-dt;
+      if(u.baskervilleTimer<=0){
+        u.baskervilleTimer+=12;
+        const prey=G.en.filter(e=>e.hp>0).sort((a,b)=>b.d-a.d)[0];
+        if(prey){
+          prey.hp-=u.d*2.5;prey.lastHitUid=u.uid;prey.lastHitBoost=u.bl;
+          if(S.settings.attackFx)G.fx.push({kind:'riftburst',x:prey.x,y:prey.y,l:.5,max:.5});
+        }
+      }
+    }
+    if(u.id==='abyss_summoner'){
+      u.summonTimer=(u.summonTimer??5)-dt;
+      if(u.summonTimer<=0){
+        u.summonTimer+=5;
+        G.allies=G.allies||[];
+        const elite=u.bl>=5,count=elite?2:3;
+        // Summoner HP is a unit-specific stat for its minions, not a tower life bar.
+        const summonerHp=100+u.pl*12+u.bl*35;
+        for(let i=0;i<count;i++)G.allies.push({owner:u.uid,elite,x:u.x+(i-1)*13,y:u.y+18,life:elite?summonerHp*1.25:summonerHp*.75,maxLife:elite?summonerHp*1.25:summonerHp*.75,damage:u.d*(elite?1.5:.55),cooldown:0,ttl:18});
+        if(S.settings.attackFx)G.fx.push({kind:'summon',x:u.x,y:u.y,l:.65,max:.65});
+      }
+    }
+    // Barter is a non-combat Exclusive economy unit; never attacks enemies.
+    if(u.id==='barter')continue;
+    u.t-=dt;if(u.t>0)continue;
+    let b=null;
+    for(const e of G.en) if(e.hp>0&&(u.id==='worldtree'||Math.hypot(e.x-u.x,e.y-u.y)<=u.rg)&&(!b||e.d>b.d)) b=e;
+    if(!b)continue;
+    const activeAuras=G.us.filter(k=>k.id==='eternity'&&k.auraRemaining>0&&Math.hypot(k.x-u.x,k.y-u.y)<=k.rg);
+    const damageBlessed=activeAuras.some(k=>k.auraType==='damage');
+    const speedBlessed=activeAuras.some(k=>k.auraType==='speed');
+    u.t=u.cd*(speedBlessed?.8:1);
+    const blessingDamage=damageBlessed?1.2:1;
+    // Every additional unit has a distinct attack modifier determined by its unique special ID.
+    const spec=UNITS[u.id].special||0;
+    const hits=(u.hits=(u.hits||0)+1);
+    const multiplier=spec ? 1+(spec%9)*.035 : 1;
+    const primaryDamage=u.d*multiplier*blessingDamage*(u.id==='worldtree'?Math.max(0,1-.03*(G.us.length-1)):1);
+    b.hp-=primaryDamage;b.lastHitUid=u.uid;b.lastHitBoost=u.bl;
+    if(u.id==='alucard'){
+      // Jackal / Casull alternating rounds, with a restraint-release finisher.
+      if(hits%2===0)b.hp-=primaryDamage*.4;
+      if(hits%5===0){
+        b.hp-=primaryDamage*2;
+        for(const e of G.en)if(e!==b&&e.hp>0&&Math.hypot(e.x-b.x,e.y-b.y)<65){
+          e.hp-=primaryDamage*.8;e.lastHitUid=u.uid;e.lastHitBoost=u.bl;
+        }
+        if(S.settings.attackFx)G.fx.push({kind:'riftburst',x:b.x,y:b.y,l:.5,max:.5});
+      }
+    }
+    applyRankedAttackSkill(u,b,hits);
+    // Astral Huntress ricochets to four DISTINCT additional enemies.
+    // Bounces deal 90%, 80%, 70%, then 60% of the original hit.
+    if(u.id==='starlord'){
+      const hitEnemies=new Set([b]);let last=b;
+      for(let bounce=1;bounce<=4;bounce++){
+        const next=G.en.filter(e=>e.hp>0&&!hitEnemies.has(e))
+          .sort((a,c)=>Math.hypot(a.x-last.x,a.y-last.y)-Math.hypot(c.x-last.x,c.y-last.y))[0];
+        if(!next)break;
+        next.hp-=primaryDamage*(1-.1*bounce);next.lastHitUid=u.uid;next.lastHitBoost=u.bl;
+        if(S.settings.attackFx)G.fx.push({kind:'shot',style:'magic',a:[last.x,last.y],b:[next.x,next.y],l:.28,max:.28,c:'#c6a2ff'});
+        hitEnemies.add(next);last=next;
+      }
+    }
+    if(u.id==='dragonlord')for(const e of G.en)if(e!==b&&e.hp>0&&Math.hypot(e.x-b.x,e.y-b.y)<=75)e.hp-=u.d*.65;
+    if(u.id==='rift_blade'&&hits%4===0){for(const e of G.en){if(e!==b&&e.hp>0&&Math.hypot(e.x-b.x,e.y-b.y)<100)e.hp-=u.d*1.4;}b.hp-=u.d*1.4;if(S.settings.attackFx)G.fx.push({kind:'riftburst',x:b.x,y:b.y,l:.45,max:.45});}
+    if(u.slow)b.sl=1.5;
+    if(spec){
+      if(spec%4===0) b.sl=Math.max(b.sl, .5+(spec%5)*.25);
+      if(spec%5===0 && hits%3===0) b.hp-=u.d*(.35+(spec%7)*.12);
+      if(spec%6===0 && hits%4===0) G.coins+=1+(spec%5);
+      if(spec%3===0) for(const e of G.en) if(e!==b&&e.hp>0&&Math.hypot(e.x-b.x,e.y-b.y)<25+(spec%7)*8) e.hp-=u.d*(.08+(spec%5)*.06);
+      if(spec%7===0 && hits%5===0) for(const e of G.en) if(e!==b&&e.hp>0&&Math.hypot(e.x-b.x,e.y-b.y)<90) e.sl=Math.max(e.sl,1.2);
+    }
+    if(u.splash) for(const e of G.en) if(e!==b&&e.hp>0&&Math.hypot(e.x-b.x,e.y-b.y)<=u.splash) e.hp-=u.d*.6;
+    if(S.settings.attackFx){
+      G.fx.push({kind:'shot',style:shotStyle(u),a:[u.x,u.y],b:[b.x,b.y],l:.24,max:.24,c:u.col});
+      const trait=unitTrait(u.uid);
+      if(MYTHIC_VISUALS[trait])G.fx.push({kind:'mythic',trait,x:b.x,y:b.y,l:.5,max:.5});
+    }
+  }
+  // Allied summons defend the map and expire after 18 seconds.
+  G.allies=G.allies||[];
+  for(const a of G.allies){
+    a.ttl-=dt;a.cooldown-=dt;
+    if(a.cooldown<=0){
+      const target=G.en.filter(e=>e.hp>0).sort((x,y)=>Math.hypot(x.x-a.x,x.y-a.y)-Math.hypot(y.x-a.x,y.y-a.y))[0];
+      if(target&&Math.hypot(target.x-a.x,target.y-a.y)<110){
+        target.hp-=a.damage;a.cooldown=a.elite?.7:1.05;
+        if(S.settings.attackFx)G.fx.push({a:[a.x,a.y],b:[target.x,target.y],l:.12,c:a.elite?'#ff173d':'#a52a40'});
+      }
+    }
+  }
+  G.allies=G.allies.filter(a=>a.ttl>0);
+  for(const e of G.en) if(e.hp<=0&&!e.leak){
+    if(G.us.some(u=>u.id==='alucard')){G.raidKills=(G.raidKills||0)+1;if(G.raidKills%20===0)G.lives=Math.min(STARTING_LIVES,G.lives+1);}
+    G.coins+=Math.round((4+G.wave)*midasIncomeMultiplier(e.lastHitUid,e.lastHitBoost||1));
+    // Every defeated enemy in Infinite mode has an independent 1% chance.
+    if(G.mode==='infinite'){
+      if(Math.random()<.01)grantTraitReroll('Infinite enemy drop');
+    }else if(!G.raidLevel&&e.kind==='boss'&&G.wave===15&&G.mode==='hell'){
+      // Hell mode: the final-wave boss awards 1–10 trait rerolls.
+      grantTraitReroll('Hell final-wave boss defeated',1+Math.floor(Math.random()*10));
+    }else if(e.kind==='boss'&&G.mode==='hard'){
+      // Hard mode: a defeated boss awards 1–3 trait rerolls.
+      grantTraitReroll('Hard boss defeated',1+Math.floor(Math.random()*3));
+    }
+  }
+  G.en=G.en.filter(e=>e.hp>0);
+  G.fx.forEach(f=>f.l-=dt);G.fx=G.fx.filter(f=>f.l>0);
+  hud();
+  if(G.lives<=0) return finish(false);
+  if(G.run&&!G.q.length&&!G.en.length){if(G.mode!=='infinite'&&G.wave>=(G.raidLevel?raidMaxWave(G.raidLevel):15))finish(true);}
+}
+// Lightweight pseudo-3D shading, keeping the original 2D battle rules and hitboxes.
+function raisedDisc(x,y,r,top,edge,height=7){
+  cx.save();cx.fillStyle='#080b16aa';cx.beginPath();cx.ellipse(x+4,y+height+4,r*1.15,r*.48,0,0,Math.PI*2);cx.fill();
+  const side=cx.createLinearGradient(x-r,y,x+r,y+height);side.addColorStop(0,edge);side.addColorStop(.65,top);side.addColorStop(1,edge);
+  cx.fillStyle=side;cx.beginPath();cx.ellipse(x,y+height,r,r*.62,0,0,7);cx.fill();
+  const grad=cx.createRadialGradient(x-r*.35,y-r*.25,1,x,y,r*1.6);grad.addColorStop(0,'#ffffff99');grad.addColorStop(.3,top);grad.addColorStop(1,edge);
+  cx.fillStyle=grad;cx.beginPath();cx.ellipse(x,y,r,r*.62,0,0,7);cx.fill();cx.strokeStyle='#ffffff66';cx.lineWidth=1.4;cx.stroke();cx.restore();
+}
+function shadedEnemy(e){
+  const r=e.boss?18:e.kind==='tank'?14:e.kind==='runner'?8:10;
+  const palette={tank:['#4b9aff','#173a8e'],runner:['#65f58a','#12672b'],boss:['#595367','#05030b'],elite:['#ca86ff','#552288'],normal:['#ff8a83','#8e1922']}[e.kind]||['#ff8a83','#8e1922'];
+  cx.save();cx.fillStyle='#090b15aa';cx.beginPath();cx.ellipse(e.x+3,e.y+r*.6+4,r*1.1,r*.4,0,0,7);cx.fill();
+  const g=cx.createRadialGradient(e.x-r*.35,e.y-r*.4,1,e.x,e.y,r*1.4);g.addColorStop(0,'#ffffff');g.addColorStop(.18,palette[0]);g.addColorStop(1,palette[1]);
+  cx.fillStyle=g;cx.beginPath();cx.arc(e.x,e.y,r,0,7);cx.fill();cx.strokeStyle='#101525';cx.lineWidth=2;cx.stroke();
+  cx.fillStyle='#101525';cx.beginPath();cx.ellipse(e.x-r*.28,e.y-r*.08,Math.max(1.5,r*.12),Math.max(2,r*.18),0,0,7);cx.ellipse(e.x+r*.28,e.y-r*.08,Math.max(1.5,r*.12),Math.max(2,r*.18),0,0,7);cx.fill();
+  cx.restore();cx.fillStyle='#070b17';cx.fillRect(e.x-12,e.y-r-10,24,4);cx.fillStyle='#4ade80';cx.fillRect(e.x-12,e.y-r-10,24*Math.max(0,e.hp/e.mx),4);
+}
+function draw(){
+  cx.setTransform(1,0,0,1,0,0);
+  cx.clearRect(0,0,800,450);
+  cx.fillStyle='#0b1020';cx.fillRect(0,0,800,450);
+  if(!G) return;
+  const stage=battleStage();cx.fillStyle=stage.bg||['#2f4a30','#405267','#62423b'][G.si];cx.fillRect(0,0,800,450);
+  // Directional lighting and subtle perspective grid add depth without moving paths.
+  const sunlight=cx.createLinearGradient(0,0,800,450);sunlight.addColorStop(0,'#ffffff26');sunlight.addColorStop(.45,'#ffffff00');sunlight.addColorStop(1,'#06071766');cx.fillStyle=sunlight;cx.fillRect(0,0,800,450);
+  cx.save();cx.strokeStyle='#ffffff0b';cx.lineWidth=1;for(let y=25;y<450;y+=38){cx.beginPath();cx.moveTo(0,y);cx.lineTo(800,y);cx.stroke()}cx.restore();
+  const p=battleStage().path;
+  cx.lineCap='round';cx.lineJoin='round';cx.strokeStyle=stage.road||'#cdb98a';cx.lineWidth=40;
+  cx.beginPath();p.forEach((q,i)=>i?cx.lineTo(q[0],q[1]):cx.moveTo(q[0],q[1]));
+  cx.save();cx.translate(3,8);cx.strokeStyle='#11121ba8';cx.lineWidth=46;cx.stroke();cx.restore();
+  cx.save();cx.translate(0,5);cx.strokeStyle='#7c644d';cx.lineWidth=43;cx.stroke();cx.restore();
+  cx.strokeStyle=stage.road||'#cdb98a';cx.lineWidth=38;cx.stroke();
+  cx.strokeStyle='#ffffff36';cx.lineWidth=2;cx.stroke();
+  if(G.sel){cx.strokeStyle='#ffc94d88';cx.lineWidth=2;cx.beginPath();cx.arc(G.sel.x,G.sel.y,G.sel.rg,0,7);cx.stroke()}
+  for(const g of (G.ground||[])){
+    const [x,y]=posAt(g.d);cx.save();cx.globalAlpha=Math.min(.75,g.ttl/2);
+    cx.fillStyle=g.kind==='mud'?'#704629':'#ff5a16';cx.shadowColor=g.kind==='mud'?'#4b2b18':'#ff2700';cx.shadowBlur=13;
+    cx.beginPath();cx.ellipse(x,y,g.radius,15,0,0,Math.PI*2);cx.fill();cx.restore();
+  }
+  for(const ward of (G.xenoWards||[])){
+    const [x,y]=posAt(ward.d);cx.save();cx.globalAlpha=Math.min(1,ward.ttl);
+    const color={slow:'#ffd166',stun:'#d6a5ff',freeze:'#65e9ff'}[ward.effect];
+    cx.strokeStyle=color;cx.fillStyle=color;cx.shadowColor=color;cx.shadowBlur=12;cx.lineWidth=2;
+    cx.beginPath();cx.arc(x,y,12,0,Math.PI*2);cx.stroke();
+    cx.beginPath();cx.arc(x,y,4,0,Math.PI*2);cx.fill();
+    cx.globalAlpha*=.35;cx.beginPath();cx.arc(x,y,ward.radius,0,Math.PI*2);cx.stroke();cx.restore();
+  }
+  for(const w of (G.wolves||[])){
+    const [x,y]=posAt(w.d);cx.save();cx.shadowBlur=10;cx.shadowColor='#ff2d2d';
+    C(cx,x,y,10,'#2a1015');C(cx,x-4,y-2,2,'#ff3b32');C(cx,x+4,y-2,2,'#ff3b32');cx.restore();
+  }
+  for(const a of (G.allies||[])){
+    cx.save();cx.shadowColor=a.elite?'#ff1d3c':'#8e2238';cx.shadowBlur=a.elite?15:7;
+    C(cx,a.x,a.y,a.elite?10:7,a.elite?'#2a0b14':'#17121d');
+    C(cx,a.x-3,a.y-2,1.8,'#ff334b');C(cx,a.x+3,a.y-2,1.8,'#ff334b');
+    cx.strokeStyle='#ff3651';cx.lineWidth=1.4;cx.beginPath();cx.arc(a.x,a.y,a.elite?12:9,0,7);cx.stroke();cx.restore();
+  }
+  for(const u of G.us){
+    raisedDisc(u.x,u.y+13,18,'#48516b','#181e32',8);
+    cx.strokeStyle=TYPES[UNITS[u.id].t];cx.lineWidth=2;cx.beginPath();cx.ellipse(u.x,u.y+13,18,11,0,0,7);cx.stroke();
+    cx.save();cx.shadowColor='#050510';cx.shadowBlur=8;art(cx,u.id,u.x,u.y-5,1,unitTrait(u.uid));cx.restore();
+    cx.fillStyle='#000c';cx.beginPath();cx.arc(u.x+13,u.y+14,8,0,7);cx.fill();
+    cx.fillStyle='#fff';cx.font='bold 9px sans-serif';cx.textAlign='center';cx.fillText(u.pl,u.x+13,u.y+17);
+  }
+  for(const f of G.fx){
+    if(f.kind==='wolfhit'){cx.save();cx.globalAlpha=f.l/f.max;C(cx,f.x,f.y,22*(1-f.l/f.max)+5,'#f43f5e');cx.restore();continue;}
+    if(f.kind==='timefreeze'||f.kind==='riftburst'){cx.save();cx.globalAlpha=Math.max(0,f.l/f.max)*.8;cx.strokeStyle=f.kind==='timefreeze'?'#80f0ff':'#f07aff';cx.lineWidth=4;cx.shadowBlur=15;cx.shadowColor=cx.strokeStyle;cx.beginPath();cx.arc(f.x,f.y,f.kind==='timefreeze'?f.rg:80*(1-f.l/f.max),0,7);cx.stroke();cx.restore();continue;}
+    if(f.kind==='summon'){cx.save();cx.globalAlpha=f.l/f.max;cx.strokeStyle='#ff1939';cx.lineWidth=3;cx.beginPath();cx.arc(f.x,f.y,36*(1-f.l/f.max)+8,0,7);cx.stroke();cx.restore();continue;}
+    if(f.kind==='mythic'){
+      cx.save();cx.globalAlpha=Math.max(0,f.l/f.max);
+      const v=MYTHIC_VISUALS[f.trait],r=13+(1-f.l/f.max)*24;
+      if(f.trait==='astral'){
+        cx.strokeStyle=v.color;cx.lineWidth=3;for(let i=0;i<8;i++){const a=i*Math.PI/4;cx.beginPath();cx.moveTo(f.x+Math.cos(a)*r*.4,f.y+Math.sin(a)*r*.4);cx.lineTo(f.x+Math.cos(a)*r,f.y+Math.sin(a)*r);cx.stroke()}
+      }else if(f.trait==='singularity'){
+        cx.strokeStyle=v.color;cx.lineWidth=3;for(let i=0;i<3;i++){cx.beginPath();cx.ellipse(f.x,f.y,r,r*.45,i*1.05+f.l*8,0,Math.PI*1.7);cx.stroke()}
+      }else{
+        for(let i=0;i<10;i++){const a=i*2.4+f.l*6;C(cx,f.x+Math.cos(a)*r*.65,f.y+Math.sin(a)*r*.65,3+i%3,i%2?v.color:v.secondary)}
+      }
+      cx.restore();continue;
+    }
+    if(f.kind==='shot'){renderShot(f);continue;}
+    cx.strokeStyle=f.c;cx.lineWidth=3;cx.beginPath();cx.moveTo(...f.a);cx.lineTo(...f.b);cx.stroke()
+  }
+  for(const e of G.en){shadedEnemy(e);
+  }
+  // Atmospheric light shafts, lens glow and vignette are drawn above the game world.
+  const glow=cx.createRadialGradient(150,30,5,170,65,510);
+  glow.addColorStop(0,'#fff9cc22');glow.addColorStop(.5,'#d8c5ff0b');glow.addColorStop(1,'#00000000');
+  cx.fillStyle=glow;cx.fillRect(0,0,800,450);
+  cx.setTransform(1,0,0,1,0,0);
+  const vignette=cx.createRadialGradient(400,215,150,400,225,540);
+  vignette.addColorStop(0,'#00000000');vignette.addColorStop(1,'#020412aa');
+  cx.fillStyle=vignette;cx.fillRect(0,0,800,450);
+}
+let last=0;
+function loop(ts){
+  const dt=Math.min(.05,(ts-last)/1000||0);last=ts;
+  if(G&&!G.paused){
+    if(G.over&&G.restartTimer>0){G.restartTimer-=dt;if(G.restartTimer<=0)restartMap()}
+    else if(!G.over){
+      for(let k=0;k<G.speed&&G&&!G.over;k++)step(dt);
+    }
+  }
+  draw();if(G&&G.sel)positionQuick();requestAnimationFrame(loop);
+}
+
+load();afkPendingUI();syncSettings();ensureBanner();updateBannerClock();setInterval(updateBannerClock,1000);gemUI();renderAll();save(false);requestAnimationFrame(loop);
+</script>
+
+<script>
+// The PWA and its save store require a secure, stable origin (HTTPS or localhost).
+if ('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost')) {
+  addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'})
+    .catch(err=>console.warn('Offline installation unavailable:',err)));
+}
+</script>
+</body>
+</html>
