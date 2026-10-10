@@ -173,7 +173,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
   </div>
 
   <section id="afk" class="hide"><div class="panel"><h2>🌙 AFK Rewards</h2><p>Enter AFK mode to earn 5–10 gems every 60 seconds, with a 5% chance to earn 1 trait reroll per reward.</p><button id="enterAfk">Enter AFK Mode</button><p id="afkSummary">Rewards require 60 uninterrupted seconds in AFK mode. Leaving resets the countdown, but unclaimed rewards stay saved until you claim them.</p><p id="afkStoredSummary">Unclaimed: 0 gems · 0 trait rerolls</p><button id="claimAfkOutside" disabled>💎 Claim Rewards</button></div></section>
-  <div id="afkOverlay" class="afk-overlay hide" role="dialog" aria-modal="true" aria-label="AFK mode"><div class="afk-center"><div class="afk-moon">☾</div><h2>AFK MODE</h2><p>Earn rewards every 60 seconds. Rewards remain unclaimed when you leave. Press Claim Rewards to collect them.</p><div id="afkCountdown" class="afk-timer">01:00</div><div id="afkSession">Session: 0 gems · 0 trait rerolls · 0 rewards</div><div class="afk-reward">💎 5–10 Gems <span>·</span> ✨ 5% chance for 1 Trait Reroll</div><div id="afkLatest" aria-live="polite"></div><p id="afkPending" aria-live="polite">Unclaimed: 0 gems · 0 trait rerolls</p><button id="claimAfk" disabled style="background:#176b4b;border:1px solid #44d79b;color:white;font-weight:800">💎 Claim Rewards</button><p id="afkWakeStatus" style="font-size:12px;opacity:.75">Keeping screen awake where supported</p><button id="exitAfk" class="afk-exit">Leave AFK Mode</button></div></div>
+  <div id="afkOverlay" class="afk-overlay hide" role="dialog" aria-modal="true" aria-label="AFK mode"><div class="afk-center"><div class="afk-moon">☾</div><h2>AFK MODE</h2><p>Earn rewards every 60 seconds. Rewards remain unclaimed when you leave. Press Claim Rewards to collect them.</p><div id="afkCountdown" class="afk-timer">01:00</div><div id="afkSession">Session: 0 gems · 0 trait rerolls · 0 rewards</div><div class="afk-reward">💎 5–10 Gems <span>·</span> ✨ 5% chance for 1 Trait Reroll</div><div id="afkLatest" aria-live="polite"></div><p id="afkPending" aria-live="polite">Unclaimed: 0 gems · 0 trait rerolls</p><button id="claimAfk" disabled style="background:#176b4b;border:1px solid #44d79b;color:white;font-weight:800">💎 Claim Rewards</button><p id="afkWakeStatus" style="font-size:12px;opacity:.75">Keeping screen awake where supported</p><button id="retryAfkWake" style="background:#26374d;border:1px solid #7288a7">↻ Retry Keep Screen Awake</button><button id="exitAfk" class="afk-exit">Leave AFK Mode</button></div></div>
   <section id="summon">
     <div class="panel row">
       <button id="p1">Summon 1 (50 gems)</button>
@@ -237,6 +237,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <div class="settings-box qol-box">
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
+<section class="qol-section"><h3>AFK Screen Awake Reliability</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:47 AM MDT</p><ul><li>AFK mode requests an Android screen wake lock, attempts to restore it when the game regains focus or the browser releases it, and shows the current status.</li><li>Added a Retry Keep Screen Awake button for browsers that initially reject the request.</li><li>Wake lock is released when leaving AFK mode. Android battery saver and browser restrictions can still turn off the screen; the game cannot override phone security or power settings.</li></ul></section>
 <section class="qol-section"><h3>Infinite Mode Completed-Wave EXP &amp; Wave Description Fix</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:39 AM MDT</p><ul><li>Infinite Mode now awards gems, food and player EXP only after every enemy from that specific wave has been defeated or escaped, rather than when the next wave starts. Overlapping waves are tracked separately.</li><li>Infinite player EXP remains +1 per completed wave for waves 1–10, +2 for waves 11–20, +3 for waves 21–30, increasing by one per ten waves.</li><li>Corrected regular map difficulty information to say 15 waves instead of 10.</li></ul></section>
 <section class="qol-section"><h3>Collapsible Battle Unit Slots, Barter Prestige Income &amp; Economy-First Auto Upgrade</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:35 AM MDT</p><ul><li>Tap the small arrow beside the left-side unit slots to hide the entire loadout dock and see more of the map; tap the arrow again to restore your unit slots. Works on phones and in fullscreen.</li><li>Every prestige star on an owned Barter permanently increases that Barter’s generated coins by 10% (1 star +10%, up to 5 stars +50%). The bonus stacks multiplicatively with Midas income effects and remains after battles and reloads.</li><li>Auto Upgrade and Smart Auto Play now always prioritize affordable Barter money-generation upgrades before damage and other support upgrades. When no affordable Barter upgrade exists, they upgrade other units based on tactical value.</li></ul></section>
 <section class="qol-section"><h3>Victory &amp; Defeat Battle Headers</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 03:27 AM MDT</p><ul><li>When a battle ends, a large centered VICTORY header appears in bright yellow for a win, or a DEFEAT header appears in red with black outlining and shadow for a loss.</li><li>The result stays visible over the battlefield until the next battle begins or you leave the stage; existing rewards, Next Map button, and saved progress are unchanged.</li><li>Works on mobile and desktop, including regular maps, Infinite Mode, and raids.</li></ul></section>
@@ -1143,24 +1144,41 @@ function claimAfkRewards(silent=false){
 }
 $('#claimAfk').onclick=()=>{afkUpdate();claimAfkRewards();};
 $('#claimAfkOutside').onclick=()=>claimAfkRewards();
-// Request the browser's screen wake lock only while AFK is active.
-let afkWakeLock=null;
+// Keep the screen awake while the AFK overlay is visible. Browsers may revoke
+// the lock on visibility changes, low battery, or system power restrictions.
+let afkWakeLock=null,afkWakeRequesting=false,afkWakeRetry=null;
+function afkWakeStatus(message){$('#afkWakeStatus').textContent=message;}
+function stopAfkWakeRetry(){if(afkWakeRetry!==null){clearInterval(afkWakeRetry);afkWakeRetry=null;}}
 async function requestAfkWakeLock(){
-  if(!afkActive || document.visibilityState!=='visible' || !('wakeLock' in navigator) || afkWakeLock)return;
+  if(!afkActive || document.visibilityState!=='visible' || afkWakeLock || afkWakeRequesting)return;
+  if(!window.isSecureContext || !('wakeLock' in navigator)){
+    afkWakeStatus('Screen-awake feature unavailable in this browser. Try the installed HTTPS app or Chrome.');return;
+  }
+  afkWakeRequesting=true;
   try{
     const lock=await navigator.wakeLock.request('screen');
-    if(!afkActive || document.visibilityState!=='visible') {await lock.release();return;}
+    if(!afkActive || document.visibilityState!=='visible'){await lock.release();return;}
     afkWakeLock=lock;
-    lock.addEventListener('release',()=>{if(afkWakeLock===lock)afkWakeLock=null;});
-    $('#afkWakeStatus').textContent='Screen awake protection active';
+    lock.addEventListener('release',()=>{
+      if(afkWakeLock!==lock)return;
+      afkWakeLock=null;
+      if(afkActive){
+        afkWakeStatus('Screen-awake protection was released. Tap Retry if your screen dims.');
+        // Some Android browsers release the lock on focus changes; try to reacquire.
+        if(document.visibilityState==='visible')setTimeout(requestAfkWakeLock,700);
+      }
+    });
+    afkWakeStatus('Screen-awake protection active ✓');
   }catch(err){
-    $('#afkWakeStatus').textContent='Screen wake lock unavailable — check browser or power settings';
-  }
+    afkWakeStatus('Could not keep screen awake (battery saver/browser restriction). Tap Retry.');
+  }finally{afkWakeRequesting=false;}
 }
 function releaseAfkWakeLock(){
+  stopAfkWakeRetry();
   const lock=afkWakeLock;afkWakeLock=null;
   if(lock)lock.release().catch(()=>{});
 }
+$('#retryAfkWake').onclick=()=>requestAfkWakeLock();
 
 function afkUpdate(){
   if(!afkActive)return;
@@ -1195,11 +1213,12 @@ function leaveAfk(){
 $('#enterAfk').onclick=()=>{
   if(afkActive)return;
   afkActive=true;afkStart=performance.now();afkPaid=0;afkGems=0;afkRerolls=0;afkPendingUI();
-  $('#afkLatest').textContent='';$('#afkOverlay').classList.remove('hide');afkUpdate();requestAfkWakeLock();
+  $('#afkLatest').textContent='';$('#afkOverlay').classList.remove('hide');afkWakeStatus('Requesting screen-awake protection…');afkUpdate();requestAfkWakeLock();stopAfkWakeRetry();afkWakeRetry=setInterval(()=>{if(afkActive && document.visibilityState==='visible' && !afkWakeLock)requestAfkWakeLock();},15000);
 };
 $('#exitAfk').onclick=leaveAfk;
 setInterval(afkUpdate,1000);
-document.addEventListener('visibilitychange',()=>{if(afkActive){afkUpdate();if(document.visibilityState==='visible')requestAfkWakeLock();}});
+document.addEventListener('visibilitychange',()=>{if(afkActive){afkUpdate();if(document.visibilityState==='visible')requestAfkWakeLock();else afkWakeStatus('Screen-awake protection paused while app is in background');}});
+window.addEventListener('focus',()=>{if(afkActive)requestAfkWakeLock();});
 
 /* ---------- Tabs ---------- */
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
