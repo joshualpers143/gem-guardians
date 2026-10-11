@@ -2,7 +2,7 @@
   "id": "./?edition=public",
   "name": "Gem Guardians \u2014 Public Edition",
   "short_name": "Gem Guardians Public",
-  "description": "Offline tower defense game",
+  "description": "Offline tower defense and gacha game: summon guardians, choose upgrade paths and defend 12 hand-drawn maps.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -22,5 +22,10 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "categories": [
+    "games",
+    "entertainment"
+  ],
+  "prefer_related_applications": false
 }

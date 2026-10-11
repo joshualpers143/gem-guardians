@@ -1,5 +1,5 @@
-const CACHE='gem-guardians-public-coins-visible-2026101110';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
+const CACHE='gem-guardians-public-big-update-2026101111';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./privacy.html','./gg-sound.js?v=2026.10.11.11','./gg-art.js?v=2026.10.11.11','./gg-game.js?v=2026.10.11.11'];
 self.addEventListener('install', event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
@@ -17,6 +17,6 @@ self.addEventListener('fetch', event=>{
       return response;
     }).catch(()=>caches.open(CACHE).then(cache=>cache.match('./index.html'))));
   }else{
-    event.respondWith(caches.open(CACHE).then(cache=>cache.match(event.request).then(cached=>cached||fetch(event.request))));
+    event.respondWith(caches.open(CACHE).then(cache=>cache.match(event.request).then(cached=>cached||fetch(event.request).then(response=>{if(response.ok)cache.put(event.request,response.clone());return response;}))));
   }
 });
