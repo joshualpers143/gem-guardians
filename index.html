@@ -179,7 +179,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
   <span class="gems" id="gems"></span>
   <span id="st">Not saved yet</span>
   <button class="alt" id="bSettings">⚙ Settings</button>
-  <button class="alt" id="bQol">✨ QOL</button>
+  <button class="alt" id="bQol">📰 Update Info</button>
   <button class="alt" id="bInstallGuide">📲 App Guide</button>
   <button class="alt" id="bTutorial">📖 Tutorial</button>
   <button id="bSave">Save game</button>
@@ -217,9 +217,9 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
     <div class="panel row">
       <button id="p1">Summon 1 (50 gems)</button>
       <button id="p10">Summon 10 (450 gems)</button><button id="autoSummonToggle" type="button">▶ Auto Summon ×10</button><small id="autoSummonStatus" style="color:var(--mut)">Requires more than 1,000 gems to start. Stops below 400 gems.</small>
-      <span id="res" style="color:var(--mut)">Rarity odds: Rare 50%, Common 28%, Epic 15%, Legendary 6%, Mythic 1%. Ten pulls guarantee Epic or better.</span>
+      <span id="res" style="color:var(--mut)">Rarity odds: Common 65%, Rare 20%, Epic 7.5%, Legendary 5%, Mythic 2%, Secret 0.5% (unlocks at Level 10). Ten pulls guarantee Epic or better.</span>
     </div>
-    <div class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">⏳ Rotating Summon Banner</h2><b id="bannerTimer" style="color:var(--gem)"></b></div><p style="color:var(--mut)">Only the five featured units can be summoned. The banner changes every 5 minutes. Each banner features one unit from each rarity.</p><div class="grid" id="summonPool"></div><p id="pityInfo" style="color:var(--gold)"></p><small style="color:var(--mut)">Base banner odds: Common 50%, Rare 28%, Epic 15%, Legendary 6%, Mythic 1%. Three Secret units unlock at Player Level 10 (Abyss Summoner, Rift Blade, Chrono Warden). Once unlocked, each pull has a 0.5% Secret chance, guaranteed by 2,500 eligible pulls; otherwise these banner odds apply. Guaranteed Legendary by 100 pulls and Mythic by 500 pulls. Each pity resets when its rarity is obtained. Ten pulls guarantee Epic or better.</small></div>
+    <div class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">⏳ Rotating Summon Banner</h2><b id="bannerTimer" style="color:var(--gem)"></b></div><p style="color:var(--mut)">The five featured Common-to-Mythic units rotate every 5 minutes. Secret units enter the shared pool at Player Level 10.</p><div class="grid" id="summonPool"></div><p id="pityInfo" style="color:var(--gold)"></p><small style="color:var(--mut)">Base banner odds: Common 65%, Rare 20%, Epic 7.5%, Legendary 5%, Mythic 2%, Secret 0.5% (Level 10+). Three Secret units unlock at Player Level 10 (Abyss Summoner, Rift Blade, Chrono Warden). Once unlocked, each pull has a 0.5% Secret chance, guaranteed by 2,500 eligible pulls; otherwise these banner odds apply. Guaranteed Legendary by 100 pulls and Mythic by 500 pulls. Each pity resets when its rarity is obtained. Ten pulls guarantee Epic or better.</small></div>
   </section>
 
   <section id="raids" class="hide">
@@ -263,7 +263,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
 <div id="installGuideModal" class="settings-panel hide" role="dialog" aria-modal="true" aria-labelledby="installGuideTitle">
  <div class="settings-box qol-box">
   <div class="row" style="justify-content:space-between;align-items:center;gap:10px"><h2 id="installGuideTitle">📲 Install &amp; Game Information</h2><button class="alt" id="closeInstallGuide">Close ✕</button></div>
-  <p style="color:var(--mut);margin:8px 0 14px">Everything about installing, updating, offline play, and keeping your progress. This guide is separate from the QOL update history.</p>
+  <p style="color:var(--mut);margin:8px 0 14px">Everything about installing, updating, offline play, and keeping your progress. This guide is separate from Update Info.</p>
 <section class="qol-section"><h3>How to Install Gem Guardians on Android (Brave / Chrome)</h3><ul><li>Public game website: <a href="https://joshualpers143.github.io/gem-guardians/" target="_blank" rel="noopener noreferrer">https://joshualpers143.github.io/gem-guardians/</a>. Open this HTTPS link on your Android phone in Brave or Google Chrome, and wait for the game to load.</li><li>In Brave: tap the three-dot menu (&#8942;), choose <strong>Install app</strong> or <strong>Add to Home screen</strong>, and confirm. In Chrome: tap the three-dot menu (&#8942;), choose <strong>Install app</strong> or <strong>Add to Home screen</strong>, and confirm. The exact wording may vary by browser and device.</li><li>Find the Gem Guardians icon on your home screen or in your app drawer, then tap it to play. If you only see Add to Home screen, it may create a shortcut instead of a standalone app.</li><li>After a successful first online load and caching, the game can be played offline. Open the game online after an update so the latest files can download before going offline.</li><li>To publish future Public Edition updates, upload the updated website files to the same GitHub repository (gem-guardians), replacing the existing files without changing the website address or the saved-data key. Do not upload Creator Edition files to the public repository.</li><li>Progress automatically saves locally in the current browser or installed app every five seconds and on app hide/exit; you can also press Save. Test by making progress, pressing Save, reopening the game and checking that progress remains.</li><li>Old downloaded HTML files, Brave, Chrome, other phones, and the Creator Edition may use different storage. Saves do not automatically sync or transfer between them. Keep old files, and do not clear browser/site data or uninstall the app if you need its local progress.</li><li>If Install app is missing, try Add to Home screen, reload the HTTPS page, or open the link in Chrome. An installed shortcut does not necessarily guarantee full offline/PWA behavior.</li></ul></section>
 
 <section class="qol-section"><h3>Important: Installing Future Game Updates &amp; Keeping Your Progress</h3><ul><li><strong>Every new Gem Guardians update must be loaded to receive its new features and fixes.</strong> Open your installed game while connected to the internet, then close and reopen it if needed to activate the latest update. You normally do <strong>not</strong> need to uninstall or reinstall the app.</li><li><strong>Your game progress is designed to stay saved across updates</strong> on the same installed game and browser, including your units, gems, levels, and other progression. Updates preserve the same website address and save keys.</li><li><strong>Important:</strong> Progress is saved locally on your device, not in an online account. Clearing browser/app data, uninstalling, changing browsers or devices, or a storage failure may erase it. Updates cannot guarantee recovery from those events.</li><li>Always use the official Public Edition website: <a href="https://joshualpers143.github.io/gem-guardians/" target="_blank" rel="noopener noreferrer">https://joshualpers143.github.io/gem-guardians/</a>. Do not download a separate HTML file for each update.</li><li>If a new feature does not appear, connect to the internet, open the game website, refresh once, then fully close and reopen the installed game. Avoid clearing site data, as this may delete progress.</li></ul></section>
@@ -274,8 +274,8 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
 </div>
 <div id="qolModal" class="settings-panel hide" role="dialog" aria-modal="true" aria-labelledby="qolTitle">
  <div class="settings-box qol-box">
-  <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">✨ Quality of Life Updates</h2><button class="alt" id="closeQol">Close ✕</button></div>
-  <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p>
+  <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
+  <p style="color:var(--mut);margin:6px 0 16px">Updates listed newest first, with implementation timestamps.</p><section class="qol-section"><h3>Summoning Odds &amp; Gem Economy Balance — October 10, 2026</h3><p>This single balance update includes the new summon rarity chances, fixed unit selling prices, and anti-gem-loop safeguards.</p><ul><li><strong>Base summon odds:</strong> Common 65%, Rare 20%, Epic 7.5%, Legendary 5%, Mythic 2%, Secret 0.5%. Before Player Level 10, Secret's 0.5% transfers to Common. Existing pity and ten-pull guarantees still apply.</li><li><strong>Fixed manual resale values:</strong> Common 5, Rare 10, Epic 15, Legendary 20, Mythic 25, Secret 35, Exclusive 40 gems. Level and prestige stars do not increase selling prices.</li><li><strong>Auto Sell:</strong> Applies a 25% tax, rounded down, giving payouts of 3, 7, 11, 15, 18, 26, and 30 gems respectively. Automatic refunds are additionally capped at 80% of the summon purchase; units that would exceed the cap are kept.</li><li><strong>Gem-loop protection:</strong> A single summon costs 50 gems and a ten-pull costs 450 gems. Even selling ten maximum-value units manually yields at most 400 gems, so purchased summons cannot generate net gems through resale alone.</li></ul><p style="color:var(--mut);font-size:12px">Balance changes; categorized as Update Info rather than a QoL improvement.</p></section>
 <section class="qol-section"><h3>New Player Quick Tutorial</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 11:09 AM MDT</p><ul><li>First-time players see a six-step interactive beginner guide explaining summoning, equipping, battles, leveling, prestige, progression and save backups.</li><li>Back, Next, Start Playing and Skip controls; completion is remembered independently per edition and does not change game progress.</li><li>Added a permanent 📖 Tutorial header button so anyone can replay the guide.</li></ul></section>
 <section class="qol-section"><h3>Unique Enemy &amp; Summoned Creature Designs</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 10:59 AM MDT</p><ul><li>Replaced enemy orb visuals with unique silhouettes for horned imps, armored beetle tanks, fast goblin runners, spiked elite knights, and crowned demon bosses, while retaining their existing rarity/type colors and battle hitboxes.</li><li>Abyss Summoner now displays hooded shadow specters and larger horned armored Elite Ghouls; allied wolf summons also have recognizable wolf-like bodies instead of plain circles.</li><li>Creature artwork follows its summon skill identity; combat movement, damage, balance and save data remain unchanged.</li></ul></section>
 <section class="qol-section"><h3>Prestige Star Display &amp; Summoner Route Repair</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 10:54 AM MDT</p><ul><li>Owned unit cards show filled gold prestige stars, gray unearned stars, and an explicit 0–5 numerical count, so maxed-out units cannot be mistaken for zero-star units.</li><li>Abyss Summoner's shadow monsters and Elite Ghouls now spawn at the player's base and march backward along the enemy route toward the enemy entrance, rather than remaining beside the tower.</li><li>Added a reusable reverse-path summoning helper for future allied summoner units, including raid maps.</li></ul></section>
@@ -284,7 +284,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
 <section class="qol-section"><h3>Save Backup &amp; Recovery — Stability Update</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:51 AM MDT</p><ul><li>Added manual JSON save export and import to Settings, with edition/version validation and explicit overwrite confirmation.</li><li>Existing save keys remain unchanged; imports keep a local backup of the previous save.</li><li>Improved player progress safety; browser/device compatibility and full balance still require hands-on testing.</li></ul></section>
 <section class="qol-section"><h3>Map &amp; Difficulty Player EXP Scaling</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:42 AM MDT</p><ul><li>Regular map victories start at 50 player EXP on Map 1 Easy and increase by 1.5% per subsequent map, compounded.</li><li>For each map, Medium awards 2.5%, Hard 5%, and Hell 10% more player EXP than Easy on that same map. Final rewards are rounded to whole EXP.</li><li>Infinite Mode wave EXP and raid player EXP remain unchanged. Unit-leveling EXP is separate.</li></ul></section>
 <section class="qol-section"><h3>Fullscreen Battle Screen-Awake Protection</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:34 AM MDT</p><ul><li>Fullscreen battles now request the same Android screen wake lock used by AFK mode, helping prevent the display from sleeping while playing.</li><li>The game retries if the browser releases the lock and attempts to restore it after returning to the app. A small fullscreen status shows whether protection is active or blocked.</li><li>Exiting fullscreen or finishing the battle releases protection unless AFK mode still needs it. Android battery settings and browser restrictions may override the request.</li></ul></section>
-<section class="qol-section"><h3>Consistent Unit Gem Sell Values</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:31 AM MDT</p><ul><li>Corrected reversed Common and Rare gem resale values. Rarity tiers now increase consistently: Common 10, Rare 40, Epic 100, Legendary 250, Mythic 600, Secret 1,400, Exclusive 2,500 gems for a newly summoned level-1 unit.</li><li>Manual selling and summon Auto-Sell now share exactly the same pricing function. Level and prestige increase manual resale value, but never beyond the starting price of the next rarity tier.</li><li>Existing owned units and save keys are unchanged; only their displayed future sale value is recalculated.</li></ul></section>
+<section class="qol-section"><h3>Consistent Unit Gem Sell Values</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:31 AM MDT</p><ul><li>Corrected reversed Common and Rare gem resale values. Rarity tiers now increase consistently: Common 10, Rare 40, Epic 100, Legendary 250, Mythic 600, Secret 1,400, Exclusive 2,500 gems for a newly summoned level-1 unit.</li><li>Manual selling and summon Auto-Sell now share exactly the same pricing function. Level and prestige do not affect resale value; each rarity has one fixed gem price.</li><li>Existing owned units and save keys are unchanged; only their displayed future sale value is recalculated.</li></ul></section>
 
 <section class="qol-section"><h3>Auto-Sell Verified &amp; Summon Results Improved</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:29 AM MDT</p><ul><li>Fixed a second bug: brand-new saves lacked the rarity schema version, which could change Common auto-sell selection into Rare after reopening the game. Rechecked checkbox and summon handling.</li><li>Summon results now explicitly mark auto-sold pulls and display the number of units sold and gems refunded, including duplicate pulls.</li><li>Only newly summoned units of enabled rarities are sold; owned units and other rarities remain untouched.</li></ul></section>
 <section class="qol-section"><h3>Auto-Sell Summon Settings Fix</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 09:23 AM MDT</p><ul><li>Fixed Enable auto-sell checkbox not saving its setting because its handler was bound before the dynamically created control existed.</li><li>Auto-sell now works for newly summoned units of selected rarities during single, ten-pull, and automatic summoning; unselected rarities and existing units remain untouched.</li><li>Added a clear live status message reminding players to choose at least one rarity; auto-sold units still count toward Index discoveries.</li></ul></section>
@@ -323,7 +323,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  <label class="setting"><span><b>Attack effects (FX)</b><small>Show or hide attack effects for all units, including Archers, Snipers, and Apprentices</small></span><input type="checkbox" data-setting="attackFx"></label>
  <div class="setting" style="display:block"><b>Auto-sell summoned units</b><small>Automatically sell newly summoned units of the selected rarities. New discoveries still count toward the Index.</small><div class="row" id="autoSellOptions" style="margin-top:8px"></div></div>
  <p style="color:var(--mut);font-size:12px">Settings are saved with your game progress. Automatic actions wait 3 seconds.</p>
- <div style="margin-top:16px;padding-top:14px;border-top:1px solid #ffffff30"><b>Save Backup &amp; Recovery</b><p style="color:var(--mut);font-size:12px">Download a copy of your progress before clearing browser data or changing devices. Import replaces this edition’s current progress after confirmation.</p><div class="row" style="margin-top:8px"><button type="button" id="exportSave">⬇ Export Save</button><button type="button" class="alt" id="importSave">⬆ Import Save</button><button type="button" class="alt" id="restorePreImport">↶ Restore Before Import</button><input type="file" id="importSaveFile" accept=".json,application/json" style="display:none" aria-label="Choose Gem Guardians save backup"></div></div>
+ <div style="margin-top:16px;padding-top:14px;border-top:1px solid #ffffff30"><b>Save Backup &amp; Recovery</b><p style="color:var(--mut);font-size:12px">Download a copy of your progress before clearing browser data or changing devices. Import replaces this edition’s current progress after confirmation.</p><div class="row" style="margin-top:8px"><button type="button" id="exportSave">⬇ Export Save</button><button type="button" class="alt" id="importSave">⬆ Import Save</button><button type="button" class="alt" id="restorePreImport">↶ Restore Before Import</button><input type="file" id="importSaveFile" accept=".json,application/json,text/plain" style="display:none" aria-label="Choose Gem Guardians save backup"></div></div>
  <div style="margin-top:16px;padding-top:14px;border-top:1px solid #ffffff30"><button id="bRes" style="background:#a12c47">Reset Game Progress</button></div>
  </div></div>
 
@@ -485,6 +485,8 @@ setInterval(updateTraitRerollButton,200);
 const DEFAULT_SETTINGS={autoRestart:false,attackFx:true,autoSell:false};
 let S={gems:500,units:[],cleared:0,nid:1,bag:{},settings:{...DEFAULT_SETTINGS},discovered:[],indexClaimed:[],pityLegendary:0,pityMythic:0,pitySecret:0,traitPity:0,traitRerolls:25,autoTraitEnabled:false,autoTraitTarget:"",autoTraitUnitUid:null,autoSellRarities:[],unitRarityVersion:2,playerLevel:1,playerExp:0,playerName:"Player",playerAvatar:"",playerRewards:[],stageStars:{},equipped:[],afkPendingGems:0,afkPendingRerolls:0,raidCleared:0};
 let lastSaved='';
+let saveTransitionPending=false; // Prevent pagehide/autosave from overwriting an imported or restored save.
+
 function clean(d){
   if(!d||typeof d!=='object'||Array.isArray(d)) throw Error('Invalid save');
   // Accept both legacy unversioned saves and versioned save envelopes.
@@ -543,15 +545,27 @@ function load(){
   try{
     const current=localStorage.getItem(KEY);
     const backup=localStorage.getItem(BACKUP_KEY);
-    for(const raw of [current,backup]){
+    for(const [index,raw] of [current,backup].entries()){
       if(!raw)continue;
-      try{S=clean(JSON.parse(raw));lastSaved=JSON.stringify(S);return}catch(e){console.warn('Cannot read saved progress:',e)}
+      try{
+        const recovered=clean(JSON.parse(raw));
+        const normalized=JSON.stringify(recovered);
+        if(index===1){
+          // A valid fallback must replace the broken primary; otherwise the
+          // next reload will keep encountering the corrupted primary save.
+          localStorage.setItem(KEY,normalized);
+        }
+        S=recovered;
+        lastSaved=normalized;
+        return;
+      }catch(e){console.warn('Cannot read saved progress:',e)}
     }
     if(current||backup) alert('Saved progress could not be loaded. The browser save and local backup could not be read.');
     else grantStarterBarter();
   }catch(e){console.warn('Browser storage unavailable:',e);if(!S.units.length)grantStarterBarter()}
 }
 function save(manual){
+  if(saveTransitionPending)return true;
   try{
     const raw=JSON.stringify(S);
     if(raw!==lastSaved){
@@ -565,14 +579,15 @@ function save(manual){
     }
     $('#st').textContent='Saved at '+new Date().toLocaleTimeString();
     if(manual) toast('Game saved');
-  }catch(e){toast('Unable to save: browser storage is blocked or full. Check browser storage settings.')}
+    return true;
+  }catch(e){toast('Unable to save: browser storage is blocked or full. Check browser storage settings.');return false}
 }
 function syncSettings(){document.querySelectorAll('[data-setting]').forEach(el=>el.checked=S.settings[el.dataset.setting]);}
 const GG_EDITION='public';
 // Save portability: never change the existing localStorage keys. Import validates before replacement.
 $('#exportSave').onclick=()=>{
   try{
-    save(false);
+    if(!save(false))throw Error('Browser storage is unavailable or full; export cancelled to avoid an unreliable backup');
     const payload={game:'Gem Guardians',edition:GG_EDITION,saveVersion:SAVE_VERSION,exportedAt:new Date().toISOString(),data:S};
     const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob),a=document.createElement('a');
@@ -606,7 +621,9 @@ $('#importSaveFile').onchange=async e=>{
       try{localStorage.setItem(KEY,previous)}catch(rollbackError){console.error('Save rollback failed',rollbackError)}
       throw writeError;
     }
+    S=restored;
     lastSaved=imported;
+    saveTransitionPending=true;
     alert('Save imported successfully. The game will reload to apply it.');location.reload();
   }catch(err){console.error('Import failed',err);alert('Could not import backup: '+err.message)}
   finally{input.value=''}
@@ -622,7 +639,9 @@ $('#restorePreImport').onclick=()=>{
     const current=JSON.stringify(clean(S));
     const restored=JSON.stringify(recovered);
     localStorage.setItem(KEY,restored);
+    S=recovered;
     lastSaved=restored;
+    saveTransitionPending=true;
     // Keep the prior current state available through the standard fallback slot.
     try{localStorage.setItem(BACKUP_KEY,current)}catch(e){console.warn('Unable to store fallback backup',e)}
     alert('Pre-import progress restored. The game will reload now.');location.reload();
@@ -721,17 +740,14 @@ function infReward(w){
   S.gems+=g;if(f){S.bag[fd]=(S.bag[fd]||0)+f;discoverItem(fd);}G.ig+=g;G.fg+=f;G.infinitePlayerXp=(G.infinitePlayerXp||0)+playerXp;gainPlayerExp(playerXp);save(false);gemUI();
   toast('Wave '+w+' cleared: +'+g+' gems, +'+playerXp+' player EXP'+(f?' and +'+f+' '+ITEMS[fd].n:''));
 }
-// Centralized gem resale values. Rarity bands never overlap, even after leveling/prestige.
-const UNIT_SELL_BASE={Common:10,Rare:40,Epic:100,Legendary:250,Mythic:600,Secret:1400,Exclusive:2500};
+// Centralized fixed gem resale values; levels and prestige have no effect.
+const UNIT_SELL_BASE={Common:5,Rare:10,Epic:15,Legendary:20,Mythic:25,Secret:35,Exclusive:40};
 const UNIT_SELL_NEXT={Common:'Rare',Rare:'Epic',Epic:'Legendary',Legendary:'Mythic',Mythic:'Secret',Secret:'Exclusive'};
 function sellVal(i){
+  // Fixed resale value determined only by rarity; leveling and prestige never change it.
   const rarity=UNITS[i.id].r,base=UNIT_SELL_BASE[rarity];
   if(!Number.isFinite(base))throw new Error('Unknown unit rarity: '+rarity);
-  const level=Math.max(1,Math.min(100,Number(i.lv)||1));
-  const stars=Math.max(0,Math.min(5,Number(i.st)||0));
-  const value=Math.round(base*(1+stars*.5)+(level-1)*2);
-  const next=UNIT_SELL_NEXT[rarity];
-  return next?Math.min(value,UNIT_SELL_BASE[next]-1):value;
+  return base;
 }
 function sell(uid){
   const i=S.units.find(x=>x.uid===uid);if(!i)return;
@@ -1102,14 +1118,16 @@ function pull(n){
   ensureBanner();
   const cost=n===1?50:450;
   if(S.gems<cost)return toast('You need '+cost+' gems for that');
-  S.gems-=cost;const got=[];const sold=[];const soldFlags=[];let autoSellRefund=0;
+  S.gems-=cost;const got=[];const sold=[];const soldFlags=[];let autoSellRefund=0;let autoSellProtected=0;const autoSellRefundLimit=Math.floor(cost*.8);
   for(let i=0;i<n;i++){
     let k;
-    if(S.playerLevel>=10&&((S.pitySecret||0)>=2499||Math.random()<.005))k='Secret';
+    if(S.playerLevel>=10&&(S.pitySecret||0)>=2499)k='Secret';
     else if((S.pityMythic||0)>=499)k='Mythic';
     else if((S.pityLegendary||0)>=99)k='Legendary';
     else{
-      const r=Math.random();k=r<.01?'Mythic':r<.07?'Legendary':r<.22?'Epic':r<.50?'Rare':'Common';
+      // One rarity roll: 65% Common, 20% Rare, 7.5% Epic, 5% Legendary, 2% Mythic, 0.5% Secret.
+      // Before level 10, the locked Secret slice becomes Common instead.
+      const r=Math.random();k=r<.65?'Common':r<.85?'Rare':r<.925?'Epic':r<.975?'Legendary':r<.995?'Mythic':(S.playerLevel>=10?'Secret':'Common');
       if(n===10&&i===9&&!got.some(g=>['Epic','Legendary','Mythic','Secret'].includes(UNITS[g].r)))k='Epic';
     }
     const summonableSecrets=Object.keys(UNITS).filter(id=>UNITS[id].r==='Secret'&&!UNITS[id].raidOnly);
@@ -1119,11 +1137,11 @@ function pull(n){
     S.pityLegendary=k==='Legendary'?0:(S.pityLegendary||0)+1;
     S.pityMythic=k==='Mythic'?0:(S.pityMythic||0)+1;
     if(S.playerLevel>=10)S.pitySecret=k==='Secret'?0:Math.min(2499,(S.pitySecret||0)+1);
-    if(S.settings.autoSell&&S.autoSellRarities.includes(k)){const refund=sellVal({id,lv:1,st:0});S.gems+=refund;autoSellRefund+=refund;sold.push(id);soldFlags.push(true);}else{soldFlags.push(false);S.units.push({uid:S.nid++,id,lv:1,xp:0,st:0,trait:''});}
+    if(S.settings.autoSell&&S.autoSellRarities.includes(k)&&autoSellRefund+Math.floor(sellVal({id,lv:1,st:0})*.75)<=autoSellRefundLimit){const refund=Math.floor(sellVal({id,lv:1,st:0})*.75);S.gems+=refund;autoSellRefund+=refund;sold.push(id);soldFlags.push(true);}else{if(S.settings.autoSell&&S.autoSellRarities.includes(k))autoSellProtected++;soldFlags.push(false);S.units.push({uid:S.nid++,id,lv:1,xp:0,st:0,trait:''});}
     if(!S.discovered.includes(id))S.discovered.push(id);
     got.push(id);
   }
-  $('#res').innerHTML='You got: '+got.map((id,i)=>'<b class="'+UNITS[id].r+'">'+UNITS[id].n+(soldFlags[i]?' (auto-sold)':'')+'</b>').join(', ')+(sold.length?'<div style="margin-top:8px;color:#a5f3bd">Auto-sold '+sold.length+' unit(s) for +'+autoSellRefund+' gems.</div>':'');
+  $('#res').innerHTML='You got: '+got.map((id,i)=>'<b class="'+UNITS[id].r+'">'+UNITS[id].n+(soldFlags[i]?' (auto-sold)':'')+'</b>').join(', ')+(sold.length?'<div style="margin-top:8px;color:#a5f3bd">Auto-sold '+sold.length+' unit(s) (25% tax) for +'+autoSellRefund+' gems.</div>':'')+(autoSellProtected?'<div style="margin-top:6px;color:#f6d18b">Kept '+autoSellProtected+' unit(s): auto-sell refunds after 25% tax are limited to 80% of summon cost per batch. These units retain their full manual resale value.</div>':'');
   save(false);gemUI();renderAll();updatePity();
 }
 $('#p1').onclick=()=>pull(1);$('#p10').onclick=()=>pull(10);
