@@ -293,6 +293,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>All 62 Units Redesigned in the New Art Style</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 01:24 AM MDT</p><ul><li>The remaining 44 units now use the new hand-drawn style, so every unit looks like its name. Some examples:<ul><li>Shield Guard carries a big tower shield, and Squire a small buckler and a bowl helmet.</li><li>Pebble Scout has a slingshot, Herbalist a sickle and herb satchel, and Lancer a pennant lance.</li><li>Torch Bearer holds a burning torch, Wandering Monk prayer beads, and Wind Scout a wind-trail cape.</li><li>Moss Druid wears an antler crown, Stone Brawler has stone skin and gauntlets, and Moon Trickster a jester hat and cards.</li><li>Rune Scribe writes glowing runes with a quill, Silver Fencer fights with a rapier, and Storm Caller carries a lightning staff.</li><li>Night Assassin has a mask and twin daggers, Ballista Engineer a crossbow, and Hex Witch a witch hat.</li><li>Red Berserker wields twin axes, Star Oracle a crystal ball, Thorn Ranger a leaf hood, and Pyromancer a fire wand.</li><li>Clockwork Tinker wears a gear top hat, Titan Breaker swings a war hammer, and Celestial Archer and Astral Huntress carry golden star bows.</li><li>Void Reaper carries a scythe, Dawn Paladin a sun shield, Time Weaver an hourglass staff, and Seraph Sentinel has angel wings.</li><li>Cosmos Sovereign wears a star gown and crown, Abyss Monarch a dark crown, and Eternity Keeper a lantern and infinity halo.</li><li>Cinder Drake and Dragon Emperor are real dragons, Reptile King and Emerald Lizard Scout are lizardfolk, and Leviathan Sage is a sea serpent.</li><li>Xeno Warden is a crowned alien, Blade Dancer has twin blades, Light Warden a halo, Rift Blade a glowing rift sword, and Chrono Warden a clock shield.</li></ul></li><li>The new designs appear everywhere: battles, Summon banner, Units, Index, loadout and profile avatars.</li><li>Only visuals changed: stats, balance, hitboxes and saves are untouched.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>New Art Style: Maps, Roads, Enemies, Attack Effects &amp; First 18 Unit Designs</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 01:11 AM MDT</p><ul><li><strong>All 11 maps and the raid map</strong> are redrawn with a hand-drawn cartoon look and decorated to match their names: meadow trees, fences and flowers; canyon crystals; lava pools and smoking vents; a marsh boardwalk with glowing mushrooms; desert cacti, palms and a pyramid; snowy pines; jungle ferns and toxic pools; volcanic lava rivers; a starry nebula path; ruined columns and statues; alien egg pods; and a moonlit graveyard for the raid.</li><li>Every road is textured (dirt, cobblestone, wooden planks, sand, snow, basalt, starlight or chitin), with an enemy cave or portal at the start and a gem castle at your base.</li><li><strong>Enemies</strong> are redrawn as Horned Imps, Goblin Runners, Iron Beetles, Void Knights and the crowned Demon Overlord, with walking animations. They turn to face where they walk, and show frost or slow markers.</li><li><strong>Attack effects:</strong> units turn toward their target and lunge when they attack. Archers fire arcing arrows, gunners fire bullets with muzzle flashes, and mages cast glowing bolts. Fire units hurl fireballs that explode, frost units shoot ice shards, and poison and void units fire glowing orbs. Melee units leave slash marks. Every hit has an impact effect and defeated enemies vanish in a puff of smoke.</li><li><strong>18 units redesigned</strong> to look like their names: Barter (a medieval merchant with scales, coin pouch and pack), Knight, Archer, Apprentice, Iron Miner, Alchemist, Falconer, Powder Pirate, Bee Keeper, Moonling Alien, Frost Mage, Sniper, Moon Samurai, Dragon Knight, Phoenix Herald, Worldtree Avatar, Abyss Summoner and Count Vesper. The remaining units keep their current look until the next art update.</li><li>Barter now shows floating “+coins” whenever it earns income. Abyss Summoner’s shadow specters and the shadow hounds are redrawn too.</li><li><strong>Original names:</strong> Alucard is now <strong>Count Vesper</strong>, an original vampire noble, and Castle Hellsing is now <strong>Duskmoor Castle</strong>. His abilities are now Twin Moon Pistols, Shadow Hound and Moonlit Fury. If you own him you keep him, with exactly the same stats and abilities. Older Update Info entries now use the new names.</li><li>Only visuals changed: stats, balance, hitboxes, rewards and saves are untouched. Maps are drawn once per battle and characters are cached, so performance stays smooth. Turning off Attack effects (FX) in Settings hides the new attack animations as before.</li></ul></section>
 <section class="qol-section" data-category="Bug Fix"><span class="update-tag tag-bug-fix">Bug Fix</span><h3>Reset Protection, Storage Protection &amp; Stable Unit IDs</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 11:32 PM MDT</p><ul><li><strong>Reset Game Progress</strong> now requires typing RESET and automatically downloads a backup file before anything is erased. Previously a single tap erased progress, the local backup and the pre-import recovery save.</li><li>The game now asks the browser for <strong>persistent storage</strong>, so the browser is much less likely to clear your save when the device runs low on space. Settings shows whether protection was granted.</li><li>Units now keep the same ID number across reloads. Previously IDs were renumbered every time the game loaded; existing saves load exactly as before.</li><li>Offline mode can now also be tested at http://127.0.0.1 as well as http://localhost.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Share, Copy &amp; Paste Save Backups</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 11:32 PM MDT</p><ul><li><strong>📤 Share Save</strong> opens your device share sheet (Files, Drive, email or messages). This helps in installed apps where downloads do not work, especially on iPhone and iPad.</li><li><strong>📋 Copy Save Text</strong> copies the full backup so you can paste it into Notes or a message.</li><li><strong>📥 Paste Save Text</strong> imports a pasted backup with the same checks, confirmation and pre-import recovery as Import Save.</li></ul></section>
@@ -344,7 +345,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  </div></div>
 
 <script>
-/* Gem Guardians Art Engine v2 (2026.10.11.1) */
+/* Gem Guardians Art Engine v2 (2026.10.11.2) */
 /* ===================================================================
    Gem Guardians Art Engine v2 — core helpers + map renderer
    Original hand-drawn cartoon style (thick ink outlines, hard cel
@@ -762,11 +763,13 @@ const BEASTS={
   alien:(c,L)=>{
     fillInk(c,P.rrect(-6,2,5,11,2),L.outfit,-3,7,4,1.2);fillInk(c,P.rrect(1,2,5,11,2),L.outfit,3,7,4,1.2);
     fillInk(c,P.smooth([-7,-3,7,-3,8,6,-8,6]),L.outfit,0,1,8,1.4);line(c,[-7,1.5,7,1.5],L.trim,1.4);
-    arm(c,{...L,sleeve:L.outfit,skin:L.skin},-1,[-10,5]);WEAPONS.blaster(c,{col:L.glow});arm(c,{...L,sleeve:L.outfit,skin:L.skin},1,[10,4]);
+    arm(c,{...L,sleeve:L.outfit,skin:L.skin},-1,[-10,5]);if(L.weapon)WEAPONS[L.weapon.type](c,L.weapon);else WEAPONS.blaster(c,{col:L.glow});arm(c,{...L,sleeve:L.outfit,skin:L.skin},1,[10,4]);
     for(const s of[-1,1]){line(c,[s*4,-20,s*8,-29],L.skin,1.4,.6);glow(c,s*8,-29,5,L.glow,.9);fillInk(c,P.circle(s*8,-29,1.8),L.glow,s*8,-29,2,.7);}
     fillInk(c,P.smooth([-10,-14,-9,-22,0,-25,9,-22,10,-14,6,-6,0,-4,-6,-6]),L.skin,0,-14,10,1.5,{dark:-.15});
     for(const s of[-1,1]){const e=P.ellipse(s*4,-14,3,4.4,s*.35);fillInk(c,e,'#0f1020',s*4,-14,3,.8,{flat:true,dark:0});c.fillStyle='#fff';c.beginPath();c.arc(s*4-1,-16,.9,0,7);c.fill();}
     c.strokeStyle='#2a4a3a';c.lineWidth=.8;c.beginPath();c.arc(0,-8.6,1.4,.3,Math.PI-.3);c.stroke();
+    if(L.crown)HATS.crown(c,{col:L.crown,gem:L.glow});
+    if(L.extra)L.extra(c);
   },
   dragon:(c,L)=>{
     const col=L.outfit,belly=L.trim;
@@ -780,6 +783,7 @@ const BEASTS={
     c.fillStyle=INK;c.beginPath();c.arc(9,-9,.7,0,7);c.arc(11,-8.4,.7,0,7);c.fill();
     if(L.crown)HATS.crown(c,{col:'#f2c84b',gem:'#e2453c'});
     if(L.fire){glow(c,16,-8,12,'#ff8a2a',.8);c.fillStyle='#ff7a1a';c.fill(P.smooth([12,-9,18,-13,26,-10,22,-8,27,-5,18,-5]));}
+    if(L.extra)L.extra(c);
   },
   serpent:(c,L)=>{ // leviathan sage
     const col=L.outfit;const p=new Path2D();p.moveTo(-14,13);p.bezierCurveTo(-20,2,-4,4,-6,-6);p.bezierCurveTo(-8,-14,6,-18,6,-10);p.lineTo(10,-10);p.bezierCurveTo(10,-22,-12,-20,-11,-6);p.bezierCurveTo(-10,2,-20,0,-18,13);p.closePath();
@@ -839,11 +843,12 @@ function drawHumanoid(c,L){
   torso(c,L);
   if(off){arm(c,L,-1,L.off.type==='falcon'?[-11,0]:[-10,3]);}
   if(L.weapon?.type==='twinpistols')arm(c,L,-1,[-10,3]);
-  head(c,L);hair(c,L);
+  head(c,L);if(L.snout)reptileFace(c,L);if(L.stone)stoneSkin(c);hair(c,L);
   if(L.hat)HATS[L.hat.type](c,L.hat);
   if(off)OFFHAND[L.off.type](c,L.off);
   if(L.weapon)WEAPONS[L.weapon.type](c,L.weapon);
-  arm(c,L,1,[10,3]);
+  arm(c,L,1,L.handR||[10,3]);
+  if(L.extra)L.extra(c);
   if(L.bees)for(const [x,y] of[[-14,-20],[16,-22],[-18,-6]]){c.fillStyle='#f2c84b';c.beginPath();c.ellipse(x,y,2,1.4,0,0,7);c.fill();c.strokeStyle=INK;c.lineWidth=.6;c.stroke();c.fillStyle='rgba(255,255,255,.8)';c.beginPath();c.ellipse(x-.4,y-1.6,1,1.4,0,0,7);c.fill();}
 }
 
@@ -982,6 +987,157 @@ function drawImpact(c,kind,x,y,t,col){ // t: 0..1 life progress
   else{for(let i=0;i<8;i++){const an=i*Math.PI/4,r=3+t*12;c.strokeStyle=col||'#fff3a0';c.lineWidth=1.8;c.beginPath();c.moveTo(x+Math.cos(an)*r*.4,y+Math.sin(an)*r*.4);c.lineTo(x+Math.cos(an)*r,y+Math.sin(an)*r);c.stroke();}}
   c.restore();
 }
+
+/* ---------------- Art Update B: parts and looks for the remaining 44 units ---------------- */
+function reptileFace(c,L){
+  fillInk(c,P.smooth([-3,-9,-2,-6,4,-5,9,-7,8,-10,2,-11]),L.skin,3,-8,6,1.1,{dark:-.15});
+  c.fillStyle=INK;c.beginPath();c.arc(6.8,-8.6,.55,0,7);c.arc(8.2,-8.2,.55,0,7);c.fill();
+  for(let i=0;i<4;i++)fillInk(c,P.poly([-6+i*3.6,-18.6+Math.abs(i-1.5)*.6,-4.6+i*3.6,-24+Math.abs(i-1.5)*1.2,-3+i*3.6,-18.8]),L.frill||shade(L.skin,-.25),-4.6+i*3.6,-21,2,.9);
+  c.fillStyle=rgba(shade(L.skin,-.3),.6);[[-4,-15],[-1,-17],[2,-15.4]].forEach(([x,y])=>{c.beginPath();c.arc(x,y,.9,0,7);c.fill();});
+}
+function stoneSkin(c){c.strokeStyle=rgba('#3a3a44',.7);c.lineWidth=.8;c.beginPath();c.moveTo(-6,-16);c.lineTo(-3,-13);c.lineTo(-5,-9);c.moveTo(5,-17);c.lineTo(3,-14);c.stroke();}
+const sparkle=(c,x,y,r,col)=>{c.fillStyle=col;c.fill(P.poly([x,y-r,x+r*.3,y-r*.3,x+r,y,x+r*.3,y+r*.3,x,y+r,x-r*.3,y+r*.3,x-r,y,x-r*.3,y-r*.3]));};
+
+Object.assign(HATS,{
+  bowl:(c,h)=>{fillInk(c,P.smooth([-9,-12,-9,-20,0,-23,9,-20,9,-12]),h.col||'#a9b2bf',0,-17,9,1.4);fillInk(c,P.rrect(-10.5,-13.4,21,2.4,1),shade(h.col||'#a9b2bf',-.12),0,-12,10,1.1);},
+  jester:(c,h)=>{for(const s of[-1,1]){const p=new Path2D();p.moveTo(s*1,-17);p.quadraticCurveTo(s*10,-30,s*15,-24);p.quadraticCurveTo(s*9,-22,s*8,-16);p.closePath();fillInk(c,p,s<0?h.col:h.col2,s*8,-22,7,1.3);glow(c,s*15,-24,4,'#fff3a0',.7);fillInk(c,P.circle(s*15,-24,1.8),'#f2c84b',s*15,-24,2,.8);}
+    fillInk(c,P.rrect(-9,-18.5,18,3.4,1.5),h.col2,0,-17,9,1.1);const m=new Path2D();m.arc(0,-25,3.6,Math.PI*.3,Math.PI*1.7);m.arc(1.4,-25,2.8,Math.PI*1.6,Math.PI*.4,true);m.closePath();fillInk(c,m,'#fff1a8',0,-25,3,.8);},
+  antlers:(c,h)=>{for(const s of[-1,1]){line(c,[s*4,-19,s*9,-28,s*13,-31],'#8a6a48',1.8,.6);line(c,[s*7.5,-25,s*12,-24],'#8a6a48',1.4,.5);line(c,[s*10,-29.5,s*9,-34],'#8a6a48',1.4,.5);}
+    fillInk(c,P.smooth([-9,-14,-8,-19,0,-21,8,-19,9,-14,0,-16]),h.col||'#4f9a3d',0,-17,9,1.2);for(let i=0;i<5;i++){c.fillStyle=i%2?'#7cc95a':'#3f8a33';c.beginPath();c.ellipse(-7+i*3.5,-17.5-(i%2),2.4,1.5,i,0,7);c.fill();}},
+  tophat:(c,h)=>{fillInk(c,P.ellipse(0,-17.5,11,2.6),h.col||'#2b2b35',0,-17,11,1.3);fillInk(c,P.rrect(-6.5,-31,13,14,1.5),h.col||'#2b2b35',0,-24,8,1.3);line(c,[-6.3,-20,6.3,-20],h.band||'#b8864a',2);
+    if(h.gears){fillInk(c,P.circle(5.5,-26,3.6),'#c9a227',5.5,-26,3.6,1);c.fillStyle=INK;c.beginPath();c.arc(5.5,-26,1.2,0,7);c.fill();for(let i=0;i<8;i++){const a=i*Math.PI/4;c.fillStyle='#c9a227';c.fillRect(5.5+Math.cos(a)*4-0.8,-26+Math.sin(a)*4-0.8,1.6,1.6);}
+      for(const s of[-1,1]){fillInk(c,P.circle(s*3.4,-17.6,2.4),'#c9a227',s*3.4,-17.6,2.4,.9);c.fillStyle='#8ff0d8';c.beginPath();c.arc(s*3.4,-17.6,1.4,0,7);c.fill();}}},
+  cavalier:(c,h)=>{fillInk(c,P.smooth([-14,-15,-9,-19,-4,-24,5,-24,10,-19,14,-15,0,-17]),h.col,0,-19,13,1.4);line(c,[-11,-16.4,11,-16.4],h.band||'#e9c46a',1.4);fillInk(c,P.smooth([-4,-22,-12,-29,-17,-28,-11,-25,-6,-20]),h.feather||'#ffffff',-10,-25,6,1);},
+  leafhood:(c,h)=>{HATS.hood(c,h);for(let i=0;i<4;i++){c.fillStyle=i%2?'#5aa846':'#3f8a33';c.beginPath();c.ellipse(-7+i*4.6,-21+Math.abs(i-1.5)*1.4,2.6,1.4,.6*i,0,7);c.fill();c.strokeStyle=INK;c.lineWidth=.5;c.stroke();}},
+  starhood:(c,h)=>{HATS.hood(c,h);for(const [x,y,r] of[[-5,-19,2.2],[3,-21,1.6],[7,-15,1.4]])sparkle(c,x,y,r,'#fff3a0');},
+  witch:(c,h)=>{const p=new Path2D();p.moveTo(-8,-17);p.lineTo(-1,-38);p.quadraticCurveTo(2,-40,5,-37);p.lineTo(8,-17);p.closePath();fillInk(c,p,h.col,0,-27,10,1.4);fillInk(c,P.ellipse(0,-17.5,14,3),shade(h.col,-.1),0,-17,14,1.4);fillInk(c,P.rrect(-7.5,-21.6,15,3,1),h.band||'#7a2a9a',0,-20,7,1);fillInk(c,P.rrect(-2.2,-22,4.4,3.8,.8),'#f2c84b',0,-20,2,.8);},
+  turban:(c,h)=>{fillInk(c,P.smooth([-9.5,-12,-9.5,-20,-3,-24,4,-24,9.5,-20,9.5,-12,0,-15]),h.col,0,-18,10,1.4);c.strokeStyle=rgba(shade(h.col,-.3),.8);c.lineWidth=1;c.beginPath();c.moveTo(-8,-18);c.quadraticCurveTo(0,-14,8,-20);c.moveTo(-8,-21);c.quadraticCurveTo(0,-17,7,-23);c.stroke();fillInk(c,P.circle(0,-18,2),h.gem||'#7ef0ff',0,-18,2,.8);},
+  laurel:(c,h)=>{for(const s of[-1,1])for(let i=0;i<4;i++){c.fillStyle=h.col||'#f2c84b';c.beginPath();c.ellipse(s*(3+i*1.8),-18.5+i*1.3,2.2,1.1,s*(.5+i*.3),0,7);c.fill();c.strokeStyle=INK;c.lineWidth=.5;c.stroke();}},
+});
+Object.assign(WEAPONS,{
+  lance:(c,w)=>{line(c,[9,10,16,-30],w.shaft||'#c9cdd6',2.4,.8);fillInk(c,P.poly([15.6,-30,18.4,-29,17.4,-37]),'#e9eef5',17,-32,3,1);fillInk(c,P.poly([15.2,-26,9,-24,15.4,-21.6]),w.pennant||'#e2453c',13,-24,4,.9);fillInk(c,P.poly([8,4,13,4,12,-2,9,-2]),'#a9b2bf',10,1,3,1);},
+  slingshot:(c,w)=>{line(c,[10,6,10,-3],'#8a5a32',2,.6);line(c,[10,-3,7,-9],'#8a5a32',1.8,.6);line(c,[10,-3,13,-9],'#8a5a32',1.8,.6);line(c,[7,-9,5,-4,13,-9],'#d9b38c',.8);fillInk(c,P.circle(5,-4,1.6),'#9aa3b0',5,-4,1.6,.7);},
+  sickle:(c,w)=>{line(c,[10,6,12,-4],'#8a5a32',2,.6);const p=new Path2D();p.moveTo(12,-4);p.quadraticCurveTo(22,-8,18,-18);p.quadraticCurveTo(18,-10,11.6,-6.4);p.closePath();fillInk(c,p,'#cfd6de',16,-10,5,1);for(const [x,y] of[[-14,-6],[-17,-10],[-12,-11]]){c.fillStyle='#5aa846';c.beginPath();c.ellipse(x,y,2.2,1.2,.8,0,7);c.fill();}},
+  crossbow:(c,w)=>{fillInk(c,P.rrect(4,-2,18,3,1),'#6b4a2e',13,0,9,1.1);const b=new Path2D();b.moveTo(18,-9);b.quadraticCurveTo(14,0,18,9);stroke(c,b,INK,3);stroke(c,b,'#9aa3b0',1.8);line(c,[18,-9,10,0,18,9],'#e8e0d0',.6);line(c,[10,-.5,25,-.5],'#c9a27a',1);fillInk(c,P.poly([24,-2,27,-.5,24,1]),'#dfe6ee',25,-.5,2,.6);},
+  wrench:(c,w)=>{line(c,[10,6,16,-10],'#9aa3b0',2.6,.7);const p=new Path2D();p.arc(16.6,-12,3.4,Math.PI*.9,Math.PI*2.4);fillInk(c,p,'#9aa3b0',16,-12,3,1);},
+  rapier:(c,w)=>{line(c,[10.6,1,20,-24],'#e9eef5',1.4,.6);const g=new Path2D();g.arc(10.4,1.6,3,Math.PI*1.1,Math.PI*2.1);stroke(c,g,INK,2.6);stroke(c,g,'#e9c46a',1.4);line(c,[10.4,1.8,9.6,5.6],'#6b4a2e',1.6,.5);},
+  gauntlets:(c,w)=>{for(const x of[-10.5,10.5]){fillInk(c,P.rrect(x-4,0,8,7,2.4),w.col||'#8a8f9a',x,3.5,4,1.3);c.strokeStyle=rgba(INK,.6);c.lineWidth=.7;c.beginPath();c.moveTo(x-2,1);c.lineTo(x-2,6);c.moveTo(x+1,1);c.lineTo(x+1,6);c.stroke();}},
+  axes:(c,w)=>{for(const s of[1,-1]){c.save();c.scale(s,1);line(c,[10,6,13,-12],'#6b4a2e',1.8,.6);const p=P.smooth([12,-14,19,-17,21,-10,18,-7,13,-8]);fillInk(c,p,'#cfd6de',17,-12,4,1);c.restore();}},
+  cards:(c,w)=>{for(let i=0;i<3;i++){c.save();c.translate(13+i*1.2,-6-i*.6);c.rotate(-.4+i*.35);fillInk(c,P.rrect(-2.2,-3.2,4.4,6.4,.7),'#f8f4ea',0,0,3,.8);c.fillStyle=i===1?'#e2453c':'#2b1d3a';c.beginPath();c.arc(0,0,1,0,7);c.fill();c.restore();}},
+  quill:(c,w)=>{line(c,[10,4,15,-8],'#f4ead2',1.2,.5);fillInk(c,P.smooth([14,-6,13,-14,17,-19,17.6,-12,15.4,-7]),'#f4ead2',15,-12,3,.9);glow(c,10,4,4,'#c9a8ff',.8);},
+  hourglass:(c,w)=>{line(c,[11,13,12.5,-17],w.shaft||'#c9a227',2,.7);fillInk(c,P.rrect(8.5,-29,8,2,.6),'#c9a227',12.5,-28,4,.8);fillInk(c,P.rrect(8.5,-18,8,2,.6),'#c9a227',12.5,-17,4,.8);fillInk(c,P.poly([9.5,-27,15.5,-27,12.5,-22.5,15.5,-18,9.5,-18,12.5,-22.5]),'#bfefff',12.5,-22.5,3,.8);c.fillStyle='#f2c84b';c.fill(P.poly([10.8,-19,14.2,-19,12.5,-21.2]));glow(c,12.5,-22.5,8,w.glow||'#ffe27a',.5);},
+  blowgun:(c,w)=>{line(c,[-2,-6,22,-10],'#6b8a3a',2.2,.7);c.fillStyle='#7cff6b';glow(c,23,-10,4,'#7cff6b',.8);},
+  bigbow:(c,w)=>{const p=new Path2D();p.moveTo(12,-20);p.quadraticCurveTo(24,-1,12,18);stroke(c,p,INK,3.8);stroke(c,p,w.col||'#f2c84b',2.4);line(c,[12,-20,10.5,18],'#fff7c2',.7);line(c,[3,-1,20,-1],'#fff7c2',1.1);sparkle(c,21,-1,3,w.glow||'#fff3a0');glow(c,21,-1,7,w.glow||'#fff3a0',.7);},
+  orbstaff:(c,w)=>{WEAPONS.staff(c,w);for(let i=0;i<3;i++){const a=i*2.1;sparkle(c,12.6+Math.cos(a)*7,-25+Math.sin(a)*7,1.6,w.spark||'#fff3a0');}},
+  lightningstaff:(c,w)=>{WEAPONS.staff(c,{orb:'#fde047',shaft:w.shaft||'#5a4a7a'});line(c,[12.6,-25,18,-30,15,-31,21,-36],'#fff7a0',1.2);line(c,[12.6,-25,7,-31,9.6,-32,5,-37],'#fff7a0',1.2);},
+  firewand:(c,w)=>{line(c,[10,4,14,-9],'#6b2a1a',1.8,.6);glow(c,14.6,-12,10,'#ff8a2a',.9);c.fillStyle='#ff6a1a';c.fill(P.smooth([12,-9,11.4,-13,14.6,-18,17.6,-13,17,-9]));c.fillStyle='#ffe27a';c.fill(P.smooth([13.4,-10,13.4,-12.6,14.6,-15,15.8,-12.6,15.6,-10]));},
+  warhammer:(c,w)=>{line(c,[8,12,14,-16],'#6b4a2e',2.8,.8);fillInk(c,P.rrect(7,-25,16,10,2),w.col||'#9aa3b0',15,-20,8,1.4);if(w.glow){glow(c,15,-20,12,w.glow,.5);sparkle(c,15,-20,3,'#fff7c2');}},
+  spearglow:(c,w)=>{WEAPONS.spear(c,{shaft:w.shaft,col:w.col});glow(c,16,-30,8,w.glow||'#fff3a0',.7);},
+});
+Object.assign(OFFHAND,{
+  towershield:(c,o)=>{fillInk(c,P.rrect(-19,-9,12,22,3),o.col,-13,2,8,1.6);fillInk(c,P.circle(-13,2,2.8),o.trim||'#e9c46a',-13,2,2.8,1);for(const [x,y] of[[-17,-7],[-9,-7],[-17,11],[-9,11]]){c.fillStyle='#d9dee8';c.beginPath();c.arc(x,y,.9,0,7);c.fill();}},
+  sunshield:(c,o)=>{OFFHAND.shield(c,{col:o.col||'#f2c84b',emblem:(c,x,y)=>{glow(c,x,y,5,'#fff3a0',.7);fillInk(c,P.circle(x,y,2.4),'#fff7c2',x,y,2.4,.8);for(let i=0;i<8;i++){const a=i*Math.PI/4;line(c,[x+Math.cos(a)*3.4,y+Math.sin(a)*3.4,x+Math.cos(a)*5,y+Math.sin(a)*5],'#fff7c2',.9);}}});},
+  clockshield:(c,o)=>{fillInk(c,P.circle(-11,2,7.4),o.col||'#2a5a6a',-11,2,7,1.5);fillInk(c,P.circle(-11,2,5),'#e8fbff',-11,2,5,1);line(c,[-11,2,-11,-1.6],INK,.9);line(c,[-11,2,-8.4,3],INK,.9);glow(c,-11,2,10,'#7defff',.35);},
+  crystalball:(c,o)=>{fillInk(c,P.rrect(-14,6,7,2.4,1),'#c9a227',-10.5,7,4,.9);glow(c,-10.5,1,9,o.glow||'#a8b4ff',.7);fillInk(c,P.circle(-10.5,1,4.6),o.col||'#c9d1ff',-10.5,1,4.6,1.1,{dark:-.15});sparkle(c,-11.6,0,1.6,'#ffffff');},
+  shieldbuckler:(c,o)=>{fillInk(c,P.circle(-10.5,3,5.4),o.col||'#8a5a32',-10.5,3,5,1.3);fillInk(c,P.circle(-10.5,3,1.8),'#c9cdd6',-10.5,3,2,.8);},
+  satchel:(c,o)=>{fillInk(c,P.rrect(-15,2,8,7,2),o.col||'#8a6a3a',-11,5.5,4,1.1);line(c,[-13,-4,-9,4],'#5a3a22',1);for(const [x,y] of[[-13,1],[-10,0.4]]){c.fillStyle='#5aa846';c.beginPath();c.ellipse(x,y,1.8,1,.5,0,7);c.fill();}},
+  scroll2:(c,o)=>{OFFHAND.scroll(c,o);glow(c,-12,3,8,'#c9a8ff',.4);},
+  lantern2:(c,o)=>{OFFHAND.lantern(c,o);glow(c,-11,5,12,o.glow||'#7ef0ff',.5);},
+});
+
+const U2={pale:'#e9e4f2',stone:'#9aa3b0',lizard:'#6fcf6a',lizard2:'#9bd35a'};
+Object.assign(LOOKS,{
+  // Secret
+  rift_blade:{skin:'#d9d6e6',hair:'#1a1626',hairStyle:'swept',outfit:'#1d1a2b',trim:'#e45cff',sleeve:'#262238',pants:'#15121f',boots:'#0d0b14',mood:'fierce',mask:'#2a1f3a',eyeGlow:'#f07aff',
+    weapon:{type:'greatsword',col:'#f2d8ff',flame:'#d855fa'},back:{cape:'#2a1f3a'},aura:'#d855fa',extra:c=>{c.strokeStyle='rgba(240,122,255,.8)';c.lineWidth=1.6;c.beginPath();c.arc(14,-12,16,-1.9,-.6);c.stroke();}},
+  chrono_warden:{skin:SKIN.light,outfit:'#203c59',metal:'#5fb6cc',body:'heavy',trim:'#7defff',sleeve:'#26506e',pants:'#1a2f45',boots:'#122236',face:'visor',eyeGlow:'#7defff',
+    hat:{type:'helm',col:'#2a5a7a',crest:c=>{glow(c,0,-24,6,'#7defff',.8);fillInk(c,P.circle(0,-24,2.4),'#bff7ff',0,-24,2,.8);}},weapon:{type:'hourglass',shaft:'#5fb6cc',glow:'#7defff'},off:{type:'clockshield',col:'#2a5a7a'},aura:'#75e5ff'},
+  // Epic / Legendary / Mythic humanoids
+  blade:{skin:SKIN.light,hair:'#22313f',hairStyle:'bun',outfit:'#1f8a9e',trim:'#a5f3fc',sleeve:'#26a3b8',pants:'#155e6e',boots:'#0f3a44',mood:'fierce',
+    weapon:{type:'daggers',col:'#bff4fc'},back:{cape:'#22d3ee'},extra:c=>{c.strokeStyle='rgba(165,243,252,.75)';c.lineWidth=1.2;c.beginPath();c.arc(0,-2,18,2.6,3.6);c.stroke();c.beginPath();c.arc(0,-2,18,-.4,.5);c.stroke();}},
+  warden:{skin:SKIN.light,hair:'#f6e7b0',hairStyle:'long',outfit:'#f4ecd2',metal:'#f2d98a',body:'armor',trim:'#f2c84b',sleeve:'#efe2b8',pants:'#d9c99a',boots:'#8a6a32',mood:'calm',
+    hat:{type:'halo',col:'#ffe27a'},weapon:{type:'orbstaff',orb:'#fff7c2',shaft:'#c9a227',spark:'#fff7c2'},back:{cape:'#f2d98a'},aura:'#fde68a'},
+  storm:{skin:SKIN.light,hair:'#c9c4e6',beard:'full',beardCol:'#c9c4e6',outfit:'#4a3f8a',trim:'#fde047',body:'robe',sleeve:'#5a4f9a',boots:'#2a2450',mood:'fierce',
+    hat:{type:'wizard',col:'#3a3078',band:'#fde047',sym:c=>{c.strokeStyle='#fde047';c.lineWidth=1.2;c.beginPath();c.moveTo(0,-30);c.lineTo(3,-26);c.lineTo(0,-25);c.lineTo(3,-21);c.stroke();}},weapon:{type:'lightningstaff'}},
+  assassin:{skin:SKIN.tan,hair:'#111',outfit:'#1f2a1f',trim:'#a3e635',sleeve:'#26332a',pants:'#181f18',boots:'#0d120d',mood:'fierce',mask:'#141a14',
+    hat:{type:'hood',col:'#1a221a'},weapon:{type:'daggers',col:'#d9f99d'},back:{cape:'#141a14'}},
+  ballista:{skin:SKIN.tan,hair:'#6b3a1a',beard:'goatee',outfit:'#9a5a2a',trim:'#e9c46a',sleeve:'#b06a32',pants:'#5a4030',boots:'#3a2a1a',mood:'happy',
+    hat:{type:'goggles',lens:'#ffd27a'},weapon:{type:'crossbow'},back:{pack:'#6b4a2e'}},
+  witch:{skin:'#c9f0e6',hair:'#2a1a3a',hairStyle:'long',outfit:'#3a2a5a',trim:'#67e8f9',body:'robe',sleeve:'#4a3a6a',boots:'#1d1426',mood:'fierce',iris:'#67e8f9',
+    hat:{type:'witch',col:'#2a1f45',band:'#67e8f9'},weapon:{type:'staff',orb:'#67e8f9',shaft:'#3a2a20'},extra:c=>{for(const [x,y] of[[-16,-20],[18,-6]])sparkle(c,x,y,2,'#a5f3fc');}},
+  berserker:{skin:SKIN.tan,hair:'#c8323a',beard:'full',beardCol:'#c8323a',outfit:'#7a3a2a',metal:'#9aa3b0',body:'armor',trim:'#e9c46a',sleeve:SKIN.tan,pants:'#4a2a1e',boots:'#2a1a12',mood:'fierce',
+    hat:{type:'helm',col:'#9aa3b0',horns:'#f4e6c8'},weapon:{type:'axes'},back:{cape:'#8a2a2a'}},
+  oracle:{skin:SKIN.brown,hair:'#e8e2d6',outfit:'#2a5a4a',trim:'#86efac',body:'robe',sleeve:'#346a58',boots:'#1d3a30',mood:'calm',iris:'#86efac',
+    hat:{type:'starhood',col:'#24493d'},off:{type:'crystalball',col:'#c9ffe0',glow:'#86efac'},weapon:{type:'wand',orb:'#b7ffd0'}},
+  ranger:{skin:SKIN.light,hair:'#a86a2a',outfit:'#5a6a2a',trim:'#fbbf24',sleeve:'#6a7a32',pants:'#4a3a22',boots:'#2a2014',mood:'fierce',ears:'pointy',
+    hat:{type:'leafhood',col:'#3f6a2a'},weapon:{type:'bow',col:'#4f7a2a'},back:{quiver:true},extra:c=>{line(c,[12,-14,16,-18],'#4caf50',1);line(c,[12,12,16,15],'#4caf50',1);}},
+  pyro:{skin:SKIN.light,hair:'#e2453c',hairStyle:'spiky',outfit:'#9a2a1a',trim:'#ffb347',body:'robe',sleeve:'#b0321f',boots:'#3a1a12',mood:'fierce',iris:'#ff8a2a',
+    weapon:{type:'firewand'},off:{type:'flask',col:'#ff8a2a'},extra:c=>{glow(c,-16,-14,6,'#ff8a2a',.7);c.fillStyle='#ff9a3a';c.beginPath();c.arc(-16,-14,2,0,7);c.fill();}},
+  tinker:{skin:SKIN.light,hair:'#8a5a32',mustache:true,beardCol:'#8a5a32',outfit:'#6a4a2a',trim:'#c9a227',sleeve:'#7a5a3a',pants:'#3a3048',boots:'#2a2014',mood:'happy',
+    hat:{type:'tophat',col:'#3a2a20',band:'#c9a227',gears:true},weapon:{type:'pistol',col:'#8a6a3a',metal:'#c9a227'},off:{type:'satchel',col:'#5a4030'}},
+  titan:{skin:SKIN.tan,outfit:'#5a6a3a',metal:'#8a9a6a',body:'heavy',trim:'#a3e635',sleeve:'#6a7a4a',pants:'#3a4428',boots:'#262c1a',face:'visor',eyeGlow:'#d9f99d',
+    hat:{type:'helm',col:'#6a7a4a',horns:'#c9cdd6'},weapon:{type:'warhammer',col:'#8a8f9a'},extra:c=>{for(const x of[-9,9]){c.strokeStyle='rgba(60,40,20,.6)';c.lineWidth=1;c.beginPath();c.moveTo(x-3,15);c.lineTo(x,13);c.lineTo(x+3,15);c.stroke();}}},
+  celestial:{skin:SKIN.light,hair:'#f6e7b0',hairStyle:'long',outfit:'#e9a23a',metal:'#f2d98a',body:'armor',trim:'#fff7c2',sleeve:'#f0b04a',pants:'#8a5a2a',boots:'#5a3a1a',mood:'calm',ears:'pointy',
+    hat:{type:'circlet',col:'#f2c84b',gem:'#fff7c2'},weapon:{type:'bigbow',col:'#f2c84b',glow:'#fff3a0'},back:{cape:'#fb923c'},aura:'#ffd27a'},
+  void:{skin:'#1a1426',outfit:'#0f1a24',trim:'#67e8f9',body:'robe',sleeve:'#14222e',boots:'#0a0f14',eyeGlow:'#67e8f9',mask:'#0a1218',
+    hat:{type:'hood',col:'#0d1820'},weapon:{type:'scythe',col:'#a5f3fc'},aura:'#22d3ee'},
+  paladin:{skin:SKIN.brown,hair:'#2a1a12',beard:'goatee',outfit:'#e8e2d6',metal:'#f2d98a',body:'heavy',tabard:'#3f9a5a',emblem:(c,x,y)=>sparkle(c,x,y,3,'#fff3a0'),sleeve:'#d8cdb8',pants:'#8a7a5a',boots:'#5a4a2a',mood:'calm',
+    hat:{type:'helm',col:'#f2d98a',plume:'#86efac'},weapon:{type:'warhammer',col:'#f2d98a',glow:'#fff3a0'},off:{type:'sunshield'}},
+  chronos:{skin:SKIN.light,hair:'#c9c4b0',beard:'full',beardCol:'#e8e2d6',outfit:'#8a6a1a',trim:'#fbbf24',body:'robe',sleeve:'#9a7a2a',boots:'#4a3a12',mood:'calm',
+    hat:{type:'wizard',col:'#6a5014',band:'#fbbf24',sym:c=>{fillInk(c,P.circle(1,-26,3),'#fff7c2',1,-26,3,.8);line(c,[1,-26,1,-28],INK,.7);line(c,[1,-26,2.6,-26],INK,.7);}},weapon:{type:'hourglass'}},
+  seraph:{skin:SKIN.light,hair:'#f6f2e6',hairStyle:'long',outfit:'#cfe6ff',metal:'#e8f4ff',body:'armor',trim:'#93c5fd',sleeve:'#bfdcff',pants:'#8aaedc',boots:'#4a6a9a',mood:'calm',
+    hat:{type:'halo',col:'#cfe9ff'},weapon:{type:'spearglow',shaft:'#e8f4ff',col:'#ffffff',glow:'#cfe9ff'},back:{wings:'#f4f9ff'},aura:'#bfe0ff'},
+  cosmos:{skin:SKIN.pale,hair:'#f0abfc',hairStyle:'long',outfit:'#2a1a5a',trim:'#f0abfc',body:'gown',sleeve:'#3a2a6a',boots:'#1a1238',mood:'calm',iris:'#f0abfc',
+    hat:{type:'crown',col:'#f0c8ff',gem:'#ffffff'},weapon:{type:'orbstaff',orb:'#ffd6fb',shaft:'#c9a8ff',spark:'#ffffff'},back:{cape:'#1d1446'},aura:'#e879f9',extra:c=>{for(const [x,y,r] of[[-6,4,1.4],[4,8,1.2],[-2,11,1],[6,0,1]])sparkle(c,x,y,r,'#fff7c2');}},
+  abyss:{skin:'#2a2033',outfit:'#1a1426',trim:'#fdba74',body:'heavy',metal:'#3a2f4a',sleeve:'#241c33',pants:'#141020',boots:'#0d0a14',eyeGlow:'#fdba74',mask:'#120d1a',
+    hat:{type:'crown',col:'#3a2f4a',gem:'#fdba74'},weapon:{type:'staff',orb:'#1a0d24',shaft:'#3a2f4a',crystal:'#fdba74'},back:{cape:'#2a1033'},aura:'#fb923c'},
+  starlord:{skin:SKIN.pale,hair:'#dfe3ee',hairStyle:'long',outfit:'#2a3a7a',trim:'#fb923c',sleeve:'#3a4a8a',pants:'#1d2a5a',boots:'#121a3a',mood:'fierce',ears:'pointy',iris:'#fb923c',
+    hat:{type:'circlet',col:'#e9eef5',gem:'#fb923c'},weapon:{type:'bigbow',col:'#c9d1ff',glow:'#ffd27a'},back:{cape:'#1d2a5a',quiver:true},aura:'#fb923c'},
+  eternity:{skin:SKIN.light,hair:'#e8f8ff',hairStyle:'long',outfit:'#155e75',trim:'#67e8f9',body:'gown',sleeve:'#1a6e88',boots:'#0d3a48',mood:'calm',iris:'#67e8f9',
+    hat:{type:'halo',col:'#a5f3fc'},weapon:{type:'staff',orb:'#cffafe',shaft:'#67e8f9',crystal:'#67e8f9'},off:{type:'lantern2',glow:'#67e8f9'},aura:'#22d3ee',
+    extra:c=>{c.strokeStyle='#a5f3fc';c.lineWidth=1.4;c.beginPath();c.ellipse(-4,-27,3,2,0,0,7);c.ellipse(2,-27,3,2,0,0,7);c.stroke();}},
+  // Rare (stronger) units
+  spearman:{skin:SKIN.tan,hair:'#3a2a20',mustache:true,outfit:'#a83a2a',metal:'#b8c2d0',body:'armor',trim:'#e9c46a',sleeve:'#8a96a8',pants:'#4a3a2a',boots:'#2a1f14',mood:'fierce',
+    hat:{type:'helm',col:'#b8c2d0',plume:'#e2453c'},weapon:{type:'spear',col:'#e9eef5'},back:{cape:'#c8423a'}},
+  druid:{skin:SKIN.light,hair:'#4a6a2a',hairStyle:'long',outfit:'#3f7a4a',trim:'#a7f3d0',body:'robe',sleeve:'#4a8a56',boots:'#2a3a20',mood:'calm',
+    hat:{type:'antlers',col:'#4f9a3d'},weapon:{type:'staff',orb:'#86efac',shaft:'#6b4a2e'},extra:c=>{for(const [x,y] of[[-12,10],[12,12],[-3,12.6]]){c.fillStyle='#5aa846';c.beginPath();c.ellipse(x,y,2.4,1.2,.3,0,7);c.fill();}}},
+  brawler:{skin:U2.stone,stone:true,hair:'#5a5a64',hairStyle:'bald',outfit:'#6a5a4a',trim:'#86efac',sleeve:U2.stone,pants:'#4a4038',boots:'#2a2620',belt:'#3a3028',mood:'fierce',
+    hat:{type:'headband',col:'#4caf50'},weapon:{type:'gauntlets',col:'#7a808c'}},
+  trickster:{skin:SKIN.pale,hair:'#2a1a3a',outfit:'#3a2a6a',trim:'#fbbf24',sleeve:'#fbbf24',pants:'#2a1f4a',boots:'#1d1426',mood:'happy',blush:true,
+    hat:{type:'jester',col:'#3a2a6a',col2:'#fbbf24'},weapon:{type:'cards'},extra:c=>{fillInk(c,P.poly([-7,-5,7,-5,4,-1,0,1,-4,-1]),'#fbbf24',0,-3,6,1);}},
+  rune:{skin:SKIN.light,hair:'#5a3a6a',outfit:'#6a3a8a',trim:'#f0abfc',body:'robe',sleeve:'#7a4a9a',boots:'#2a1a3a',mood:'calm',
+    hat:{type:'turban',col:'#8a5aa8',gem:'#f0abfc'},weapon:{type:'quill'},off:{type:'scroll2'},extra:c=>{for(const [x,y] of[[-17,-16],[-20,-8],[17,-20]]){glow(c,x,y,4,'#f0abfc',.7);c.strokeStyle='#f0abfc';c.lineWidth=.9;c.beginPath();c.moveTo(x-1.5,y+2);c.lineTo(x,y-2);c.lineTo(x+1.5,y+2);c.moveTo(x-1,y);c.lineTo(x+1,y);c.stroke();}}},
+  fencer:{skin:SKIN.light,hair:'#e8e2d6',hairStyle:'swept',mustache:true,beardCol:'#e8e2d6',outfit:'#3f5a8a',trim:'#fdba74',sleeve:'#e8e2d6',pants:'#2a3a5a',boots:'#1d1426',mood:'happy',
+    hat:{type:'cavalier',col:'#2a3a5a',feather:'#fdba74'},weapon:{type:'rapier'},back:{cape:'#5a7ab0'}},
+  // Common (weaker) units
+  squire:{skin:SKIN.light,hair:'#b8864a',outfit:'#7a6aa8',trim:'#c4b5fd',sleeve:'#8a7ab8',pants:'#5a4a3a',boots:'#3a2a1a',mood:'happy',blush:true,
+    hat:{type:'bowl',col:'#a9b2bf'},weapon:{type:'sword'},off:{type:'shieldbuckler',col:'#8a5a32'}},
+  slingshot:{skin:SKIN.tan,hair:'#5a3a22',hairStyle:'spiky',outfit:'#6a8a2a',trim:'#a3e635',sleeve:'#7a9a3a',pants:'#5a4030',boots:'#3a2a1a',mood:'happy',blush:true,
+    hat:{type:'bandana',col:'#a3e635'},weapon:{type:'slingshot'}},
+  herbalist:{skin:SKIN.light,hair:'#8a4a2a',hairStyle:'bun',outfit:'#a86a3a',trim:'#fde68a',body:'robe',sleeve:'#b87a4a',boots:'#4a2e1e',mood:'happy',
+    hat:{type:'laurel',col:'#5aa846'},weapon:{type:'sickle'},off:{type:'satchel',col:'#7a5a2a'}},
+  lancer:{skin:SKIN.light,hair:'#3a2a20',outfit:'#2a7a8a',metal:'#b8c2d0',body:'armor',trim:'#67e8f9',sleeve:'#8a96a8',pants:'#3a4a5a',boots:'#22303a',mood:'fierce',
+    hat:{type:'helm',col:'#b8c2d0',plume:'#67e8f9'},weapon:{type:'lance',pennant:'#67e8f9'}},
+  torch:{skin:SKIN.tan,hair:'#3a2a20',outfit:'#a84a5a',trim:'#fda4af',sleeve:'#b85a6a',pants:'#4a3030',boots:'#2a1a1a',mood:'fierce',
+    hat:{type:'hood',col:'#8a3a4a'},weapon:{type:'torch'}},
+  hunter:{skin:SKIN.tan,hair:'#5a3a22',beard:'goatee',outfit:'#3f7a4a',trim:'#86efac',sleeve:'#4a8a56',pants:'#5a4030',boots:'#3a2a1a',mood:'fierce',
+    hat:{type:'hood',col:'#2f5a36'},weapon:{type:'bow',col:'#6b4428'},back:{quiver:true,cape:'#6b4a2e'}},
+  monk:{skin:SKIN.tan,hair:'#3a2a20',hairStyle:'bald',outfit:'#e0a23a',trim:'#93c5fd',body:'robe',sleeve:'#f0b24a',boots:'#6b4a2e',mood:'calm',
+    hat:{type:'headband',col:'#3b82f6'},weapon:{type:'staff',orb:'#bfe0ff',shaft:'#8a5a32'},extra:c=>{for(let i=0;i<7;i++){c.fillStyle='#6b3a1a';c.beginPath();c.arc(-5+i*1.7,-3+Math.abs(i-3)*.7,.9,0,7);c.fill();}glow(c,0,-4,18,'#93c5fd',.18);}},
+  scout:{skin:SKIN.light,hair:'#c9802f',hairStyle:'swept',outfit:'#b05ac0',trim:'#f0abfc',sleeve:'#c06ad0',pants:'#4a3a5a',boots:'#2a1f3a',mood:'happy',
+    hat:{type:'feather',col:'#9a4aa8',feather:'#f0abfc'},weapon:{type:'bow',col:'#c9a27a'},back:{cape:'#f0abfc'},extra:c=>{c.strokeStyle='rgba(255,255,255,.7)';c.lineWidth=1;for(const y of[-6,0,6]){c.beginPath();c.moveTo(-22,y);c.quadraticCurveTo(-17,y-3,-13,y);c.stroke();}}},
+  guard:{skin:SKIN.light,hair:'#5a3a22',outfit:'#9a6a3a',metal:'#b8c2d0',body:'armor',trim:'#fdba74',sleeve:'#8a96a8',pants:'#5a4a3a',boots:'#3a2a1a',mood:'fierce',
+    hat:{type:'helm',col:'#b8c2d0'},weapon:{type:'spear'},off:{type:'towershield',col:'#c8742a',trim:'#fdba74'}},
+  lizardscout:{skin:U2.lizard,snout:true,frill:'#1f8a4a',outfit:'#3a6a2a',trim:'#a3e635',sleeve:U2.lizard,pants:'#4a3a22',boots:'#2a2014',iris:'#ffd166',mood:'fierce',
+    weapon:{type:'blowgun'},back:{quiver:true}},
+  // Reptile / beast builders
+  drake:{beast:'dragon',outfit:'#ff6a3a',trim:'#ffd0a0',wing:'#d8462a',fire:true},
+  dragonlord:{beast:'dragon',outfit:'#4f9a2a',trim:'#e9f5a0',wing:'#2f7a1a',fire:true,crown:true,extra:c=>{glow(c,0,-4,26,'#a3e635',.25);}},
+  reptileking:{skin:U2.lizard2,snout:true,frill:'#5a8a1a',outfit:'#5a7a1a',metal:'#c9a227',body:'armor',trim:'#f2c84b',sleeve:U2.lizard2,pants:'#3a4a14',boots:'#2a3010',iris:'#ffd166',mood:'fierce',
+    hat:{type:'crown',col:'#f2c84b',gem:'#7cff6b'},weapon:{type:'spear',col:'#b1e35e',shaft:'#5a3a1a'},back:{cape:'#3a6a1a'},extra:c=>glow(c,16,-30,6,'#7cff6b',.7)},
+  leviathan:{beast:'serpent',outfit:'#e86a8a',trim:'#ffd0dc'},
+  xenowarden:{beast:'alien',skin:'#c9b8ff',outfit:'#3a2a6a',trim:'#a78bfa',glow:'#d6a5ff',crown:'#a78bfa',weapon:{type:'staff',orb:'#d6a5ff',shaft:'#5a4a8a'},aura:'#a78bfa'},
+});
 
 Object.assign(G,{LOOKS,DISPLAY_NAMES,unitSprite,drawUnit,drawEnemy,ENEMY_LOOK,drawSpecter,drawWolf,drawProjectile,drawImpact,HATS,WEAPONS,BEASTS});
 })(GGA);
@@ -1249,7 +1405,7 @@ function save(manual){
 }
 function syncSettings(){document.querySelectorAll('[data-setting]').forEach(el=>el.checked=S.settings[el.dataset.setting]);}
 const GG_EDITION='public';
-const GAME_VERSION='2026.10.11.1';
+const GAME_VERSION='2026.10.11.2';
 // Save portability: never change the existing localStorage keys. Import validates before replacement.
 function buildSaveExport(){
   if(!save(false))throw Error('Browser storage is unavailable or full; export cancelled to avoid an unreliable backup');
