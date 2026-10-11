@@ -164,6 +164,28 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
 @keyframes ggFill{to{width:100%}}@keyframes ggPulse{to{transform:scale(1.12);filter:drop-shadow(0 0 35px #b8b3ff)}}
 <style>
 .ico{width:72px}
+/* 2026.10.11.3: results card, reward chips, inline item icons */
+#battleOutcome .outcome-card{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:min(560px,94%);max-height:100%;overflow:auto;padding:10px 18px 14px;border-radius:18px;border:2px solid #f2c84b;background:radial-gradient(ellipse at top,rgba(46,34,92,.94),rgba(12,9,28,.92));box-shadow:0 12px 40px #000b,inset 0 0 30px #ffffff10;animation:outcomeReveal .45s ease-out both}
+#battleOutcome.defeat .outcome-card{border-color:#b3122a;background:radial-gradient(ellipse at top,rgba(78,12,24,.94),rgba(16,6,10,.92))}
+#battleOutcome .outcome-ribbon{position:relative;padding:2px 42px 4px;margin-top:2px;background:linear-gradient(#d83a3a,#8e1b25);clip-path:polygon(0 0,100% 0,94% 50%,100% 100%,0 100%,6% 50%);box-shadow:0 4px 0 #0006}
+#battleOutcome.defeat .outcome-ribbon{background:linear-gradient(#3a3348,#151020)}
+#battleOutcome .outcome-card .outcome-title{font-size:clamp(28px,6.2vw,64px);letter-spacing:.07em;animation:none}
+.outcome-stars{display:flex;gap:4px;min-height:0}
+.outcome-stars span{font-size:clamp(26px,5vw,46px);line-height:1;color:#4a4560;-webkit-text-stroke:1px #0009;display:inline-block;animation:starPop .45s ease-out both}
+.outcome-stars span.on{color:#ffd84a;text-shadow:0 0 12px #ffc400,0 2px 0 #9d6a00}
+.outcome-sub{color:#e2dcff;font-weight:800;font-size:clamp(12px,1.8vw,15px);text-align:center}
+.outcome-rewards{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.reward-chip{display:flex;align-items:center;gap:6px;background:#ffffff16;border:1px solid #ffffff30;border-radius:999px;padding:3px 11px 3px 4px;font-weight:800;font-size:clamp(11px,1.7vw,14px);color:#fff;animation:outcomeReveal .4s ease-out both}
+.reward-chip .ri{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#2c2655;font-size:13px;color:#fde68a}
+.reward-chip .ri.gem{color:#5eead4}
+.reward-chip canvas.ri-can{width:30px;height:auto;margin:0;background:transparent;box-shadow:none;border-radius:0;cursor:default}
+.reward-drop{width:100%;text-align:center;color:#f0abfc;font-weight:900}
+.reward-ups,.reward-best{width:100%;text-align:center;color:#cfc9ef;font-size:12px}
+.outcome-note{color:#facc15;font-size:12px;font-weight:700;min-height:0}
+@keyframes starPop{from{transform:scale(0) rotate(-35deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+@media(max-width:600px){#battleOutcome .outcome-card{padding:6px 10px 8px;gap:3px}.reward-chip{padding:2px 8px 2px 3px}.reward-chip .ri{width:18px;height:18px;font-size:11px}.reward-chip canvas.ri-can{width:22px}}
+canvas.inline-ico{display:inline-block;width:38px;height:auto;vertical-align:middle;margin:0 6px 0 0;background:transparent;box-shadow:none;border-radius:0;cursor:default}
+.card canvas.reroll-ico{background:transparent}
 /* 2026.10.10.2: save tools, update banner, Update Info labels */
 #pasteSaveText{width:100%;box-sizing:border-box;font:12px ui-monospace,Menlo,monospace;background:#0d1426;color:#e2e8f0;border:1px solid #475569;border-radius:8px;padding:8px;margin-bottom:6px}
 #pasteSaveBox.hide{display:none}
@@ -255,7 +277,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
         <button class="alt" id="bPause">Pause</button><button class="alt" id="bAutoUpgrade" aria-pressed="false">Auto Upgrade: OFF</button><button class="alt" id="bAutoPlay" aria-pressed="false">🔒 Auto Play</button><button class="alt" id="bFullMap">⛶ Fullscreen Map</button><span id="battleWakeStatus" style="font-size:11px;color:#9fe5bb" aria-live="polite"></span>
         <button class="alt" id="bQuit">Leave stage</button>
       </div>
-      <div class="battle-canvas-wrap"><canvas id="cv" width="800" height="450"></canvas><div id="battleOutcome" class="hide" role="status" aria-live="polite" aria-label="Battle result"><div class="outcome-title" id="battleOutcomeTitle"></div></div><div id="battleUnitDock" aria-label="Battle unit slots"><div id="bar"></div></div><button type="button" id="battleDockToggle" aria-label="Hide unit slots" aria-expanded="true" title="Hide unit slots">◀</button><div id="unitQuick" class="unit-quick hide" role="group" aria-label="Selected unit quick actions"></div></div>
+      <div class="battle-canvas-wrap"><canvas id="cv" width="800" height="450"></canvas><div id="battleOutcome" class="hide" role="status" aria-live="polite" aria-label="Battle result"><div class="outcome-card"><div class="outcome-ribbon"><div class="outcome-title" id="battleOutcomeTitle"></div></div><div class="outcome-stars" id="battleOutcomeStars"></div><div class="outcome-sub" id="battleOutcomeSub"></div><div class="outcome-rewards" id="battleOutcomeRewards"></div><div class="outcome-note" id="battleOutcomeNote"></div></div></div><div id="battleUnitDock" aria-label="Battle unit slots"><div id="bar"></div></div><button type="button" id="battleDockToggle" aria-label="Hide unit slots" aria-expanded="true" title="Hide unit slots">◀</button><div id="unitQuick" class="unit-quick hide" role="group" aria-label="Selected unit quick actions"></div></div>
       <div id="msg" class="hide"></div>
       
       <div class="panel row" id="selp">Pick a unit above to place it. Tap a placed unit for its nearby upgrade menu.</div>
@@ -266,7 +288,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
     <div class="panel" style="color:var(--mut)">Prestige a unit once it reaches level 100, or sell units you no longer want for gems.</div>
     <div class="panel"><label for="collectionSort">Sort units: </label><select id="collectionSort" class="unit-sort"></select><div class="grid" id="coll"></div></div>
   </section>
-  <section id="traits" class="hide"><div class="panel"><h2>✨ Trait Forge</h2><p style="color:var(--mut)">Each unit has one trait slot. New players receive 25 free trait rerolls; after those are used, each reroll costs 30 gems. Every 150th reroll without a Mythic trait guarantees a random Mythic trait. Legendary and Mythic trait rolls trigger a 3-second reroll cooldown to prevent accidental skipping. Trait effects apply in battle.</p><div class="row"><label for="traitUnit">Choose unit:</label><select id="traitUnitPickerSort" class="unit-sort" aria-label="Sort trait units"></select><div id="traitUnitPicker" class="unit-picker"></div><select id="traitUnit" class="hide" aria-label="Selected trait unit"></select><button id="traitRoll">Reroll trait</button><label for="autoTraitTarget">Target trait:</label><select id="autoTraitTarget" aria-label="Target trait for auto reroll"></select><button id="autoTraitToggle" type="button">▶ Auto Reroll: OFF</button><small id="autoTraitStatus" style="color:var(--mut)">Choose Any trait for normal Auto Reroll with 3-second protection, or a specific trait to reroll without that delay until matched.</small></div><p id="traitPity"></p><div id="traitCurrent" class="panel"></div><h3>Trait possibilities</h3><div class="grid" id="traitList"></div></div></section>
+  <section id="traits" class="hide"><div class="panel"><h2><canvas class="ico inline-ico" width="72" height="64" data-item="trait_reroll"></canvas>Trait Forge</h2><p style="color:var(--mut)">Each unit has one trait slot. New players receive 25 free trait rerolls; after those are used, each reroll costs 30 gems. Every 150th reroll without a Mythic trait guarantees a random Mythic trait. Legendary and Mythic trait rolls trigger a 3-second reroll cooldown to prevent accidental skipping. Trait effects apply in battle.</p><div class="row"><label for="traitUnit">Choose unit:</label><select id="traitUnitPickerSort" class="unit-sort" aria-label="Sort trait units"></select><div id="traitUnitPicker" class="unit-picker"></div><select id="traitUnit" class="hide" aria-label="Selected trait unit"></select><button id="traitRoll">Reroll trait</button><label for="autoTraitTarget">Target trait:</label><select id="autoTraitTarget" aria-label="Target trait for auto reroll"></select><button id="autoTraitToggle" type="button">▶ Auto Reroll: OFF</button><small id="autoTraitStatus" style="color:var(--mut)">Choose Any trait for normal Auto Reroll with 3-second protection, or a specific trait to reroll without that delay until matched.</small></div><p id="traitPity"></p><div id="traitCurrent" class="panel"></div><h3>Trait possibilities</h3><div class="grid" id="traitList"></div></div></section>
   <section id="index" class="hide">
     <div class="panel"><h2>📖 Unit Index</h2><p id="indexProgress" style="color:var(--mut)"></p><div class="row" style="margin:10px 0"><label for="indexSort">Sort units:</label><select id="indexSort" aria-label="Sort unit index"><option value="rarityDesc">Rarity: Highest to Lowest</option><option value="rarityAsc">Rarity: Lowest to Highest</option><option value="damageDesc">Damage: Highest to Lowest</option><option value="damageAsc">Damage: Lowest to Highest</option><option value="discoveredFirst">Discovered First</option><option value="undiscoveredFirst">Undiscovered First</option></select></div><div class="grid" id="indexGrid"></div></div><div class="panel"><h2>🎒 Item Index</h2><p style="color:var(--mut)">Items are recorded permanently after you obtain them. No rewards are granted for discovering items.</p><p id="itemIndexProgress"></p><div class="grid" id="itemIndexGrid"></div></div>
   </section>
@@ -293,6 +315,9 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Prestige Star Perks &amp; Battle Star Auras</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 01:39 AM MDT</p><ul><li>Each prestige star still gives every unit <strong>+50% damage, +4% range and +6% attack speed</strong>, and these add up: a 5★ unit has 3.5× damage, +20% range and +30% attack speed. Barter still gains +10% coin income per star.</li><li><strong>New 3★ perk: Awakened Strike.</strong> Every 5th attack deals +50% bonus damage.</li><li><strong>New 5★ perk: Ascended Strike.</strong> Every 5th attack deals +100% bonus damage and sends out a shockwave that hits nearby enemies for 30%.</li><li><strong>Barter perks:</strong> +5 extra coins per payout at 3★ and +15 at 5★.</li><li>In battle, placed units show their prestige stars under their platform. 3★ units get a glowing golden ring, and 5★ units get a radiant golden aura with rising sparkles.</li><li>The Prestige confirmation now lists the star bonuses and perks.</li></ul></section>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>New Fruit Art &amp; Trait Reroll Crystal Icon</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 01:39 AM MDT</p><ul><li>All 11 fruits are redrawn in the new art style: Meadow Berry, Crystal Fruit, Ember Pepper, Moon Lotus, Sun Date, Frost Apple, Jungle Spore, Ember Core, Starfruit, Relic Seed and Xeno Pod.</li><li>Trait Rerolls now have their own prismatic crystal icon. It appears in the Bag, the Item Index and the Trait Forge.</li><li>The Item Index now shows the picture of each fruit you have found instead of a plain symbol.</li></ul></section>
+<section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>New Victory &amp; Defeat Results Card</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 01:39 AM MDT</p><ul><li>The VICTORY and DEFEAT header is now a results card with a ribbon banner. Victories also show your 1–3 star rating with an animation.</li><li>Your rewards appear right under the header instead of below the map: gems, fruit (with its picture), player EXP and unit EXP, plus level-ups, your best rating and any raid drop.</li><li>When Auto restart is on, the card shows when the map is about to replay.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>All 62 Units Redesigned in the New Art Style</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 01:24 AM MDT</p><ul><li>The remaining 44 units now use the new hand-drawn style, so every unit looks like its name. Some examples:<ul><li>Shield Guard carries a big tower shield, and Squire a small buckler and a bowl helmet.</li><li>Pebble Scout has a slingshot, Herbalist a sickle and herb satchel, and Lancer a pennant lance.</li><li>Torch Bearer holds a burning torch, Wandering Monk prayer beads, and Wind Scout a wind-trail cape.</li><li>Moss Druid wears an antler crown, Stone Brawler has stone skin and gauntlets, and Moon Trickster a jester hat and cards.</li><li>Rune Scribe writes glowing runes with a quill, Silver Fencer fights with a rapier, and Storm Caller carries a lightning staff.</li><li>Night Assassin has a mask and twin daggers, Ballista Engineer a crossbow, and Hex Witch a witch hat.</li><li>Red Berserker wields twin axes, Star Oracle a crystal ball, Thorn Ranger a leaf hood, and Pyromancer a fire wand.</li><li>Clockwork Tinker wears a gear top hat, Titan Breaker swings a war hammer, and Celestial Archer and Astral Huntress carry golden star bows.</li><li>Void Reaper carries a scythe, Dawn Paladin a sun shield, Time Weaver an hourglass staff, and Seraph Sentinel has angel wings.</li><li>Cosmos Sovereign wears a star gown and crown, Abyss Monarch a dark crown, and Eternity Keeper a lantern and infinity halo.</li><li>Cinder Drake and Dragon Emperor are real dragons, Reptile King and Emerald Lizard Scout are lizardfolk, and Leviathan Sage is a sea serpent.</li><li>Xeno Warden is a crowned alien, Blade Dancer has twin blades, Light Warden a halo, Rift Blade a glowing rift sword, and Chrono Warden a clock shield.</li></ul></li><li>The new designs appear everywhere: battles, Summon banner, Units, Index, loadout and profile avatars.</li><li>Only visuals changed: stats, balance, hitboxes and saves are untouched.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>New Art Style: Maps, Roads, Enemies, Attack Effects &amp; First 18 Unit Designs</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 01:11 AM MDT</p><ul><li><strong>All 11 maps and the raid map</strong> are redrawn with a hand-drawn cartoon look and decorated to match their names: meadow trees, fences and flowers; canyon crystals; lava pools and smoking vents; a marsh boardwalk with glowing mushrooms; desert cacti, palms and a pyramid; snowy pines; jungle ferns and toxic pools; volcanic lava rivers; a starry nebula path; ruined columns and statues; alien egg pods; and a moonlit graveyard for the raid.</li><li>Every road is textured (dirt, cobblestone, wooden planks, sand, snow, basalt, starlight or chitin), with an enemy cave or portal at the start and a gem castle at your base.</li><li><strong>Enemies</strong> are redrawn as Horned Imps, Goblin Runners, Iron Beetles, Void Knights and the crowned Demon Overlord, with walking animations. They turn to face where they walk, and show frost or slow markers.</li><li><strong>Attack effects:</strong> units turn toward their target and lunge when they attack. Archers fire arcing arrows, gunners fire bullets with muzzle flashes, and mages cast glowing bolts. Fire units hurl fireballs that explode, frost units shoot ice shards, and poison and void units fire glowing orbs. Melee units leave slash marks. Every hit has an impact effect and defeated enemies vanish in a puff of smoke.</li><li><strong>18 units redesigned</strong> to look like their names: Barter (a medieval merchant with scales, coin pouch and pack), Knight, Archer, Apprentice, Iron Miner, Alchemist, Falconer, Powder Pirate, Bee Keeper, Moonling Alien, Frost Mage, Sniper, Moon Samurai, Dragon Knight, Phoenix Herald, Worldtree Avatar, Abyss Summoner and Count Vesper. The remaining units keep their current look until the next art update.</li><li>Barter now shows floating “+coins” whenever it earns income. Abyss Summoner’s shadow specters and the shadow hounds are redrawn too.</li><li><strong>Original names:</strong> Alucard is now <strong>Count Vesper</strong>, an original vampire noble, and Castle Hellsing is now <strong>Duskmoor Castle</strong>. His abilities are now Twin Moon Pistols, Shadow Hound and Moonlit Fury. If you own him you keep him, with exactly the same stats and abilities. Older Update Info entries now use the new names.</li><li>Only visuals changed: stats, balance, hitboxes, rewards and saves are untouched. Maps are drawn once per battle and characters are cached, so performance stays smooth. Turning off Attack effects (FX) in Settings hides the new attack animations as before.</li></ul></section>
 <section class="qol-section" data-category="Bug Fix"><span class="update-tag tag-bug-fix">Bug Fix</span><h3>Reset Protection, Storage Protection &amp; Stable Unit IDs</h3><p style="color:var(--mut);font-size:12px">Implemented Saturday, October 10, 2026 at 11:32 PM MDT</p><ul><li><strong>Reset Game Progress</strong> now requires typing RESET and automatically downloads a backup file before anything is erased. Previously a single tap erased progress, the local backup and the pre-import recovery save.</li><li>The game now asks the browser for <strong>persistent storage</strong>, so the browser is much less likely to clear your save when the device runs low on space. Settings shows whether protection was granted.</li><li>Units now keep the same ID number across reloads. Previously IDs were renumbered every time the game loaded; existing saves load exactly as before.</li><li>Offline mode can now also be tested at http://127.0.0.1 as well as http://localhost.</li></ul></section>
@@ -345,7 +370,7 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
  </div></div>
 
 <script>
-/* Gem Guardians Art Engine v2 (2026.10.11.2) */
+/* Gem Guardians Art Engine v2 (2026.10.11.3) */
 /* ===================================================================
    Gem Guardians Art Engine v2 — core helpers + map renderer
    Original hand-drawn cartoon style (thick ink outlines, hard cel
@@ -1139,7 +1164,68 @@ Object.assign(LOOKS,{
   xenowarden:{beast:'alien',skin:'#c9b8ff',outfit:'#3a2a6a',trim:'#a78bfa',glow:'#d6a5ff',crown:'#a78bfa',weapon:{type:'staff',orb:'#d6a5ff',shaft:'#5a4a8a'},aura:'#a78bfa'},
 });
 
-Object.assign(G,{LOOKS,DISPLAY_NAMES,unitSprite,drawUnit,drawEnemy,ENEMY_LOOK,drawSpecter,drawWolf,drawProjectile,drawImpact,HATS,WEAPONS,BEASTS});
+/* ---------------- Fruit and item icons (2026.10.11.3) ---------------- */
+// Local size ≈ ±20 units, matching the old itemArt footprint (drawn at 36,32 ×1.5 in 72×64 icons).
+const leaf=(c,x,y,rot,len=9,col='#4caf50')=>{c.save();c.translate(x,y);c.rotate(rot);fillInk(c,P.smooth([0,0,len*.35,-len*.32,len,0,len*.35,len*.32]),col,len/2,0,len/2,1.1);line(c,[1,0,len*.8,0],shade(col,-.3),.7);c.restore();};
+const shine=(c,x,y,rx,ry,a=.75)=>{c.fillStyle=`rgba(255,255,255,${a})`;c.beginPath();c.ellipse(x,y,rx,ry,-.5,0,Math.PI*2);c.fill();};
+const ground=(c,w=14)=>{c.fillStyle='rgba(10,6,20,.3)';c.beginPath();c.ellipse(0,18,w,3.4,0,0,Math.PI*2);c.fill();};
+const FRUITS={
+  berry:c=>{ground(c);line(c,[0,-12,-2,-18],'#5a3a22',1.6,.6);leaf(c,-1,-16,-2.6,10,'#4caf50');leaf(c,0,-16,-.5,9,'#5cc45a');
+    for(const [x,y,r,col] of[[-7,4,7.4,'#c81e4a'],[6,5,7.4,'#e2345e'],[0,-4,7.6,'#d9264f']]){fillInk(c,P.circle(x,y,r),col,x,y,r,1.4);shine(c,x-2.4,y-2.8,2.2,1.4);
+      c.fillStyle='rgba(80,0,20,.35)';for(const [dx,dy] of[[2,2],[-1,3],[3,-1]]){c.beginPath();c.arc(x+dx,y+dy,.8,0,7);c.fill();}}},
+  crystal:c=>{ground(c);glow(c,0,-1,22,'#5ee7f0',.45);const p=P.poly([0,-19,11,-6,8,13,-8,13,-11,-6]);fillInk(c,p,'#4fd0f5',0,-2,13,1.5,{dark:-.25});
+    c.fillStyle='rgba(235,252,255,.85)';c.fill(P.poly([0,-19,11,-6,0,1]));c.fillStyle='rgba(20,110,170,.45)';c.fill(P.poly([0,1,8,13,-8,13]));stroke(c,P.poly([0,-19,0,1,-11,-6]),'rgba(255,255,255,.6)',.8);
+    leaf(c,1,-18,-2.2,8,'#5cc45a');for(const [x,y] of[[-12,-12],[13,6]]){c.fillStyle='#ffffff';c.fill(P.poly([x,y-3,x+.8,y-.8,x+3,y,x+.8,y+.8,x,y+3,x-.8,y+.8,x-3,y,x-.8,y-.8]));}},
+  pepper:c=>{ground(c,12);glow(c,6,-12,10,'#ff9a3a',.6);const p=new Path2D();p.moveTo(-3,-10);p.bezierCurveTo(-12,-6,-12,10,4,18);p.bezierCurveTo(1,8,6,-4,5,-10);p.closePath();fillInk(c,p,'#e8392a',-1,3,12,1.5);shine(c,-5,-2,1.6,5,.55);
+    fillInk(c,P.smooth([-5,-11,0,-14,6,-12,3,-9,-2,-9]),'#3f9a3a',0,-11,5,1.1);line(c,[0,-13,3,-19],'#2f7a2a',1.8,.6);c.fillStyle='#ffd166';c.fill(P.smooth([3,-16,5,-21,8,-19,9,-23,10,-17,7,-14]));},
+  lotus:c=>{ground(c);glow(c,0,-2,22,'#c8d8ff',.45);fillInk(c,P.ellipse(0,12,16,4.5),'#3f8a5a',0,12,16,1.2);
+    for(const [a,col] of[[-1.15,'#f4b8f2'],[1.15,'#f4b8f2'],[-.6,'#fbd3f8'],[.6,'#fbd3f8'],[0,'#ffe8fd']]){c.save();c.translate(0,8);c.rotate(a);fillInk(c,P.smooth([0,0,-5,-8,0,-19,5,-8]),col,0,-9,6,1.2);c.restore();}
+    fillInk(c,P.circle(0,2,3.4),'#ffe27a',0,2,3,1);const m=new Path2D();m.arc(10,-15,5,Math.PI*.4,Math.PI*1.6);m.arc(12,-15,4,Math.PI*1.5,Math.PI*.5,true);m.closePath();fillInk(c,m,'#fff4b0',10,-15,4,.9);},
+  date:c=>{ground(c);glow(c,-10,-14,9,'#ffd84a',.6);line(c,[0,-16,0,-10],'#7a5a2a',2,.6);line(c,[0,-16,-6,-6],'#7a5a2a',1.4,.5);line(c,[0,-16,7,-5],'#7a5a2a',1.4,.5);
+    for(const [x,y,r] of[[-7,2,.2],[7,3,-.2],[0,6,0]]){fillInk(c,P.ellipse(x,y,5.4,10,r),'#b8682a',x,y,8,1.3);shine(c,x-1.8,y-4,1.4,3.4,.55);}
+    c.strokeStyle='#ffe27a';c.lineWidth=1.2;for(let i=0;i<6;i++){const a=i*Math.PI/3;c.beginPath();c.moveTo(-10+Math.cos(a)*4,-14+Math.sin(a)*4);c.lineTo(-10+Math.cos(a)*6.5,-14+Math.sin(a)*6.5);c.stroke();}fillInk(c,P.circle(-10,-14,3),'#ffd84a',-10,-14,3,.9);},
+  icefruit:c=>{ground(c);glow(c,0,0,20,'#bfefff',.45);const p=P.smooth([0,-11,8,-14,14,-6,14,6,8,15,0,13,-8,15,-14,6,-14,-6,-8,-14]);fillInk(c,p,'#8fdcff',0,1,14,1.5,{dark:-.2});shine(c,-6,-5,3,4.6,.75);
+    c.strokeStyle='rgba(255,255,255,.8)';c.lineWidth=1;c.beginPath();c.moveTo(4,4);c.lineTo(9,0);c.moveTo(6.5,2);c.lineTo(7,7);c.stroke();line(c,[0,-11,2,-18],'#6b8a9a',1.6,.6);leaf(c,2,-16,-.6,8,'#bfe8f0');
+    for(const [x,y] of[[-14,-14],[15,-11]]){c.strokeStyle='#e8fbff';c.lineWidth=1;for(let i=0;i<3;i++){const a=i*Math.PI/3;c.beginPath();c.moveTo(x-Math.cos(a)*3,y-Math.sin(a)*3);c.lineTo(x+Math.cos(a)*3,y+Math.sin(a)*3);c.stroke();}}},
+  spore:c=>{ground(c);for(const [x,y] of[[-12,-14],[12,-16],[14,-4]])glow(c,x,y,4,'#c4ff9a',.8);fillInk(c,P.rrect(-4,0,8,16,3),'#efe6c6',0,8,5,1.3);
+    const cap=P.smooth([-16,2,-15,-8,-7,-15,7,-15,15,-8,16,2,0,4]);fillInk(c,cap,'#7fc23a',0,-5,16,1.6);c.fillStyle='#e9ffb0';for(const [x,y,r] of[[-7,-7,2.4],[3,-10,1.8],[8,-4,2.2],[-1,-3,1.4]]){c.beginPath();c.arc(x,y,r,0,7);c.fill();}},
+  embercore:c=>{ground(c);glow(c,0,0,24,'#ff6a1a',.6);fillInk(c,P.smooth([0,-16,11,-10,15,2,9,13,-3,16,-13,9,-15,-3,-9,-13]),'#4a1f1f',0,0,15,1.6);
+    c.save();c.strokeStyle='#ff8a2a';c.lineWidth=2;c.shadowColor='#ff5a00';c.shadowBlur=6;c.beginPath();c.moveTo(-9,-8);c.lineTo(-2,-2);c.lineTo(-6,6);c.moveTo(-2,-2);c.lineTo(6,-6);c.lineTo(10,2);c.moveTo(-6,6);c.lineTo(2,11);c.stroke();c.restore();
+    glow(c,0,0,8,'#ffd166',.9);fillInk(c,P.circle(0,0,3),'#fff1b0',0,0,3,.8);},
+  starfruit:c=>{ground(c);glow(c,0,0,22,'#fff3a0',.5);const pts=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?8:18;pts.push(Math.cos(a)*r,Math.sin(a)*r+1);}
+    fillInk(c,P.poly(pts),'#f7d23e',0,1,16,1.6);for(let i=0;i<5;i++){const a=-Math.PI/2+i*Math.PI*2/5;line(c,[0,1,Math.cos(a)*13,Math.sin(a)*13+1],'rgba(200,140,20,.6)',1);}shine(c,-4,-5,2,3.4,.7);fillInk(c,P.circle(0,1,2.4),'#fff7c2',0,1,2,.8);},
+  relicseed:c=>{ground(c);glow(c,0,1,18,'#ffe27a',.3);fillInk(c,P.smooth([0,-17,9,-10,12,4,6,15,-6,15,-12,4,-9,-10]),'#a8916a',0,0,13,1.6);
+    c.strokeStyle='rgba(70,55,35,.6)';c.lineWidth=1;c.beginPath();c.moveTo(-7,-8);c.lineTo(-4,-2);c.moveTo(7,6);c.lineTo(4,10);c.stroke();
+    glow(c,0,0,7,'#ffd84a',.8);c.strokeStyle='#ffe27a';c.lineWidth=1.5;c.beginPath();c.moveTo(0,-8);c.lineTo(0,8);c.moveTo(-4,-4);c.lineTo(0,0);c.lineTo(4,-4);c.moveTo(-4,4);c.lineTo(4,4);c.stroke();leaf(c,2,-15,-1.1,8,'#6fae4a');},
+  xenopod:c=>{ground(c);glow(c,0,0,22,'#7cff6b',.4);for(const s of[-1,1])line(c,[s*6,12,s*10,19],'#8a4fb8',2,.6);
+    fillInk(c,P.smooth([0,-18,10,-11,13,2,8,14,-8,14,-13,2,-10,-11]),'#7a3fd0',0,-1,13,1.6);fillInk(c,P.ellipse(0,0,7,11),'#b48cff',0,0,8,1,{dark:-.15});
+    for(const [x,y,r] of[[0,-5,2.6],[-2.5,3,2],[3,5,1.8]]){glow(c,x,y,r+3,'#7cff6b',.9);c.fillStyle='#d9ffd0';c.beginPath();c.arc(x,y,r,0,7);c.fill();}
+    for(const s of[-1,1]){line(c,[s*4,-16,s*8,-23],'#7a3fd0',1.3,.5);glow(c,s*8,-23,3,'#7cff6b',1);}},
+  trait_reroll:c=>{ // prismatic reroll crystal with orbiting arrows
+    ground(c,12);glow(c,0,-2,24,'#c084fc',.55);
+    c.save();c.strokeStyle='#ffe27a';c.lineWidth=1.8;c.lineCap='round';c.beginPath();c.arc(0,-1,17,Math.PI*1.1,Math.PI*1.75);c.stroke();c.beginPath();c.arc(0,-1,17,Math.PI*.1,Math.PI*.75);c.stroke();
+    c.fillStyle='#ffe27a';c.fill(P.poly([12.6,-13.8,16.2,-9.4,10.4,-9.4]));c.fill(P.poly([-12.6,11.8,-16.2,7.4,-10.4,7.4]));c.restore();
+    const p=P.poly([0,-17,9,-6,6,12,-6,12,-9,-6]);const g=c.createLinearGradient(-9,-17,9,12);g.addColorStop(0,'#ffd6fb');g.addColorStop(.35,'#c084fc');g.addColorStop(.7,'#60a5fa');g.addColorStop(1,'#34d399');
+    c.fillStyle=g;c.fill(p);c.lineWidth=1.5;c.strokeStyle=INK;c.lineJoin='round';c.stroke(p);
+    c.fillStyle='rgba(255,255,255,.75)';c.fill(P.poly([0,-17,9,-6,0,-1]));c.fillStyle='rgba(40,20,90,.35)';c.fill(P.poly([0,-1,6,12,-6,12]));stroke(c,P.poly([0,-17,0,-1,-9,-6]),'rgba(255,255,255,.55)',.8);
+    for(const [x,y,r] of[[-13,-15,2.6],[14,2,2],[-4,-21,1.6]]){c.fillStyle='#ffffff';c.fill(P.poly([x,y-r,x+r*.3,y-r*.3,x+r,y,x+r*.3,y+r*.3,x,y+r,x-r*.3,y+r*.3,x-r,y,x-r*.3,y-r*.3]));}},
+};
+function drawItem(c,id,x,y,s){const f=FRUITS[id];if(!f)return false;c.save();c.translate(x,y);c.scale(s,s);f(c);c.restore();return true;}
+
+/* Prestige star aura under placed units: 1–2★ silver sparkle, 3–4★ golden ring, 5★ radiant gold. */
+function drawStarAura(c,x,y,stars,time){
+  if(!stars)return;
+  c.save();
+  if(stars>=3){const pulse=.5+.5*Math.sin(time*3);c.strokeStyle=stars>=5?'#ffe27a':'#f2c84b';c.lineWidth=stars>=5?2.6:1.8;c.shadowColor=stars>=5?'#ffcf33':'#f2c84b';c.shadowBlur=8+pulse*8;
+    c.beginPath();c.ellipse(x,y+13,21,9.5,0,0,Math.PI*2);c.stroke();c.shadowBlur=0;}
+  if(stars>=5){for(let i=0;i<6;i++){const a=time*1.4+i*Math.PI/3,r=19;const px=x+Math.cos(a)*r,py=y+13+Math.sin(a)*8.6-((time*14+i*7)%18);c.globalAlpha=.85;c.fillStyle=i%2?'#fff7c2':'#ffd84a';c.fill(P.poly([px,py-2.4,px+.7,py-.7,px+2.4,py,px+.7,py+.7,px,py+2.4,px-.7,py+.7,px-2.4,py,px-.7,py-.7]));}c.globalAlpha=1;}
+  // star pips under the pad
+  const w=stars*8.5;for(let i=0;i<stars;i++){const sx=x-w/2+4.25+i*8.5,sy=y+28;const pts=[];for(let k=0;k<10;k++){const a=-Math.PI/2+k*Math.PI/5,r=k%2?1.8:4.2;pts.push(sx+Math.cos(a)*r,sy+Math.sin(a)*r);}
+    const p=P.poly(pts);c.fillStyle=stars>=5?'#ffe27a':stars>=3?'#f2c84b':'#e5e7eb';c.fill(p);c.lineWidth=.8;c.strokeStyle=INK;c.stroke(p);}
+  c.restore();
+}
+
+Object.assign(G,{drawItem,FRUITS,drawStarAura,LOOKS,DISPLAY_NAMES,unitSprite,drawUnit,drawEnemy,ENEMY_LOOK,drawSpecter,drawWolf,drawProjectile,drawImpact,HATS,WEAPONS,BEASTS});
 })(GGA);
 
 </script>
@@ -1405,7 +1491,7 @@ function save(manual){
 }
 function syncSettings(){document.querySelectorAll('[data-setting]').forEach(el=>el.checked=S.settings[el.dataset.setting]);}
 const GG_EDITION='public';
-const GAME_VERSION='2026.10.11.2';
+const GAME_VERSION='2026.10.11.3';
 // Save portability: never change the existing localStorage keys. Import validates before replacement.
 function buildSaveExport(){
   if(!save(false))throw Error('Browser storage is unavailable or full; export cancelled to avoid an unreliable backup');
@@ -1572,7 +1658,7 @@ function prestige(uid){
   if(!i)return toast('Unit not found');
   if(i.st>=5)return toast('This unit already has the maximum 5 prestige stars');
   if(i.lv<100)return toast('Reach unit level 100 before prestiging');
-  if(!confirm('Prestige '+UNITS[i.id].n+'? It returns to level 1 and gains a star, which makes it stronger at every level.'+(i.id==='barter'?' Each star permanently increases this Barter’s coin generation by 10%.':''))) return;
+  if(!confirm('Prestige '+UNITS[i.id].n+'? It returns to level 1 and gains a star ('+(i.st+1)+'/5), which makes it stronger at every level.\n\nEvery star: +50% damage, +4% range, +6% attack speed.\n3★ perk: Awakened Strike (every 5th attack +50% damage).\n5★ perk: Ascended Strike (every 5th attack +100% damage and a shockwave).'+(i.id==='barter'?' Each star permanently increases this Barter’s coin generation by 10%.':''))) return;
   i.st++;i.lv=1;i.xp=0;save(false);renderAll();toast(UNITS[i.id].n+' now has '+i.st+' star'+(i.st>1?'s':''));
 }
 
@@ -1629,13 +1715,14 @@ let bagSel=null;
 function renderBag(){setupUnitSort('feedPickerSort','feedPicker',renderBag);
   const ks=Object.keys(ITEMS).filter(k=>S.bag[k]>0);
   const rerollCount=Math.max(0,Number(S.traitRerolls)||0);
-  $('#bagGrid').innerHTML='<div class="card'+(bagSel==='trait_reroll'?' sel':'')+'" data-k="trait_reroll" style="cursor:pointer"><div style="font-size:36px;margin:8px">✨</div><b>Trait Reroll</b><br>Owned: x'+rerollCount+'</div>'+ks.map(k=>'<div class="card'+(k===bagSel?' sel':'')+'" data-k="'+k+'" style="cursor:pointer"><canvas class="ico" width="72" height="64" data-item="'+k+'"></canvas><b>'+ITEMS[k].n+'</b><br>Owned: x'+S.bag[k]+'</div>').join('');
+  $('#bagGrid').innerHTML='<div class="card'+(bagSel==='trait_reroll'?' sel':'')+'" data-k="trait_reroll" style="cursor:pointer"><canvas class="ico reroll-ico" width="72" height="64" data-item="trait_reroll"></canvas><b>Trait Reroll</b><br>Owned: x'+rerollCount+'</div>'+ks.map(k=>'<div class="card'+(k===bagSel?' sel':'')+'" data-k="'+k+'" style="cursor:pointer"><canvas class="ico" width="72" height="64" data-item="'+k+'"></canvas><b>'+ITEMS[k].n+'</b><br>Owned: x'+S.bag[k]+'</div>').join('');
   $('#bagGrid').querySelectorAll('.card').forEach(c=>c.onclick=()=>{bagSel=c.dataset.k;renderBag()});
   paintIcons();
   if(bagSel==='trait_reroll'){
     const box=$('#bagInfo');
-    box.innerHTML='<h3>✨ Trait Reroll</h3><p>Owned: <b>'+rerollCount+'</b></p><p>Use in Trait Forge to reroll a unit’s trait. One item is spent per reroll; if you have none, a reroll costs 30 gems.</p><p>How to obtain: 25 starting rerolls, AFK rewards (5% chance per completed minute), player-level milestone rewards, and Hard/Hell boss drops.</p><button id="bagUseTraitReroll">Use Item?</button>';
+    box.innerHTML='<h3><canvas class="ico inline-ico" width="72" height="64" data-item="trait_reroll"></canvas>Trait Reroll</h3><p>Owned: <b>'+rerollCount+'</b></p><p>Use in Trait Forge to reroll a unit’s trait. One item is spent per reroll; if you have none, a reroll costs 30 gems.</p><p>How to obtain: 25 starting rerolls, AFK rewards (5% chance per completed minute), player-level milestone rewards, and Hard/Hell boss drops.</p><button id="bagUseTraitReroll">Use Item?</button>';
     $('#bagUseTraitReroll').onclick=()=>{const tab=document.querySelector('.tabs button[data-tab="traits"]');if(tab)tab.click();};
+    paintIcons();
     return;
   }
   renderBagPrestigeTools();
@@ -1672,6 +1759,7 @@ function feed(n){
   toast(UNITS[i.id].n+' ate '+used+(i.lv>b?' and went from level '+b+' to '+i.lv:' and gained EXP'));
 }
 function itemArt(c,id,x,y,s){
+  if(typeof GGA!=='undefined'&&GGA.drawItem(c,id,x,y,s))return;
   c.save();c.translate(x,y);c.scale(s,s);
   const ellipse=(x,y,rx,ry,col,rot=0)=>{c.fillStyle=col;c.beginPath();c.ellipse(x,y,rx,ry,rot,0,Math.PI*2);c.fill()};
   const poly=(pts,col)=>{c.fillStyle=col;c.beginPath();c.moveTo(pts[0],pts[1]);for(let i=2;i<pts.length;i+=2)c.lineTo(pts[i],pts[i+1]);c.closePath();c.fill()};
@@ -1927,8 +2015,8 @@ function discoverItem(id){if(!ITEMS[id])return;if(!Array.isArray(S.discoveredIte
 function renderItemIndex(){
  const found=new Set(S.discoveredItems||[]),ids=Object.keys(ITEMS);
  $('#itemIndexProgress').textContent=`Obtained ${ids.filter(id=>found.has(id)).length} / ${ids.length} items`;
- const rerollIndex='<div class="card"><div style="font-size:29px">✨</div><b>Trait Reroll</b><br><small>Use: Reroll a unit’s trait in Trait Forge. One item per roll; otherwise 30 gems.</small><br><small>How to obtain: 25 starting rerolls, AFK rewards (5% chance each completed minute), player-level milestone rewards, Hard/Hell boss drops.</small><br><small>Owned: '+Math.max(0,Number(S.traitRerolls)||0)+'</small></div>';
- $('#itemIndexGrid').innerHTML=ids.map(id=>{const it=ITEMS[id],got=found.has(id),map=STAGES[it.map];return `<div class="card ${got?'':'off'}"><div style="font-size:29px">${got?'✦':'?'}</div><b>${got?it.n:'Undiscovered Item'}</b><br>${got?'✓ Obtained':'Not yet obtained'}<br><small>How to obtain: Clear ${map.n} or earn drops in its Infinite mode.</small><br><small>Gives ${it.exp} unit EXP when fed. Owned: ${S.bag[id]||0}</small></div>`}).join('');
+ const rerollIndex='<div class="card"><canvas class="ico reroll-ico" width="72" height="64" data-item="trait_reroll"></canvas><b>Trait Reroll</b><br><small>Use: Reroll a unit’s trait in Trait Forge. One item per roll; otherwise 30 gems.</small><br><small>How to obtain: 25 starting rerolls, AFK rewards (5% chance each completed minute), player-level milestone rewards, Hard/Hell boss drops.</small><br><small>Owned: '+Math.max(0,Number(S.traitRerolls)||0)+'</small></div>';
+ $('#itemIndexGrid').innerHTML=ids.map(id=>{const it=ITEMS[id],got=found.has(id),map=STAGES[it.map];return `<div class="card ${got?'':'off'}">${got?'<canvas class="ico" width="72" height="64" data-item="'+id+'"></canvas>':'<div style="font-size:29px">?</div>'}<b>${got?it.n:'Undiscovered Item'}</b><br>${got?'✓ Obtained':'Not yet obtained'}<br><small>How to obtain: Clear ${map.n} or earn drops in its Infinite mode.</small><br><small>Gives ${it.exp} unit EXP when fed. Owned: ${S.bag[id]||0}</small></div>`}).join('');
  $('#itemIndexGrid').insertAdjacentHTML('afterbegin',rerollIndex);
 }
 // Show Trait Reroll first, before the food item cards.
@@ -2346,6 +2434,10 @@ function isMidas(uid){return S.units.find(i=>i.uid===uid)?.trait==='midas'}
 function placementCost(inst){return Math.round(UNITS[inst.id].c*(isMidas(inst.uid)?.75:1))}
 function boostCost(u){return Math.round(UNITS[u.id].c*.8*u.bl*(isMidas(u.uid)?.75:1))}
 function midasIncomeMultiplier(uid,boost){return isMidas(uid)?1.5+.25*(boost-1):1}
+// Prestige stars of a placed unit (cached on the placed copy; stars cannot change mid-battle).
+function prestigeStars(u){if(u._st==null){const inst=S.units.find(i=>i.uid===u.uid);u._st=Math.max(0,Math.min(5,Number(inst?.st)||0));}return u._st;}
+// Barter's 3★/5★ perk: a flat bonus on every payout.
+function barterStarBonus(u){const s=prestigeStars(u);return s>=5?15:s>=3?5:0;}
 function barterPrestigeMultiplier(uid){const inst=S.units.find(i=>i.uid===uid);return 1+Math.max(0,Math.min(5,Number(inst?.st)||0))*.10}
 
 function refreshPlacementBar(){
@@ -2374,7 +2466,7 @@ function startBattle(si,mode,raidLevel=0){
   $('#bAutoPlay').setAttribute('aria-pressed','false');
   $('#bAutoUpgrade').textContent='Auto Upgrade: OFF';$('#bAutoUpgrade').setAttribute('aria-pressed','false');
   $('#bWave').classList.remove('hide');$('#bWave').disabled=false;$('#bWave').textContent='Start wave';
-  hideQuick();$('#msg').classList.add('hide');$('#battleOutcome').className='hide';$('#battleOutcomeTitle').textContent='';$('#bNextMap').classList.add('hide');$('#bSpd').textContent='Speed x1';$('#bPause').textContent='Pause';
+  hideQuick();$('#msg').classList.add('hide');$('#battleOutcome').className='hide';$('#battleOutcomeTitle').textContent='';['#battleOutcomeStars','#battleOutcomeSub','#battleOutcomeRewards','#battleOutcomeNote'].forEach(q=>{const el=$(q);if(el)el.innerHTML='';});$('#bNextMap').classList.add('hide');$('#bSpd').textContent='Speed x1';$('#bPause').textContent='Pause';
   $('#bar').innerHTML=(S.equipped||[]).map(uid=>S.units.find(u=>u.uid===uid)).filter(Boolean).map(i=>{const u=UNITS[i.id];
     return '<div class="card" data-uid="'+i.uid+'" style="cursor:pointer"><canvas class="ico" width="72" height="64" data-id="'+i.id+'" data-trait="'+(i.trait||'')+'"></canvas><b class="'+u.r+'">'+u.n+'</b><br><span style="color:#ffc94d">'+'★'.repeat(i.st)+'</span> level '+i.lv+'<br><span style="color:'+TYPES[u.t]+'">'+u.t+'</span>, '+u.c+' coins</div>'}).join('');paintIcons();
   $('#bar').querySelectorAll('.card').forEach(c=>c.onclick=()=>{
@@ -2702,6 +2794,7 @@ cv.onclick=e=>{
 function finish(win){
   const M=MODES[G.mode],inf=G.mode==='infinite',fd=STAGES[G.si].food;
   G.over=true;syncScreenWake();G.victory=!!win;$('#bNextMap').classList.add('hide');const outcome=$('#battleOutcome');outcome.className=win?'victory':'defeat';$('#battleOutcomeTitle').textContent=win?'VICTORY':'DEFEAT';let m,first=false;
+  const R={gems:0,food:0,foodId:fd,pxp:0,stars:0,best:0,drop:'',sub:'',unitXp:0,ups:[]};
   if(win&&G.raidLevel){
     const lv=G.raidLevel;
     S.raidCleared=Math.max(S.raidCleared,lv);
@@ -2715,21 +2808,24 @@ function finish(win){
       if(!S.discovered.includes('alucard'))S.discovered.push('alucard');
       drop=' SECRET DROP: Count Vesper obtained!';
     }
-    gainPlayerExp(50);
+    gainPlayerExp(50);R.gems=gems;R.pxp=50;R.drop=drop.trim()||(lv===5?'Count Vesper drop roll: not obtained (5% chance)':'');R.sub='Duskmoor Castle · Raid Level '+lv+(lv<5?' · next level unlocked':'');
     m='Duskmoor Castle Raid Level '+lv+' cleared! +'+gems+' gems. '+(lv<5?'Next raid level unlocked. ':'')+(lv===5&&!drop?'Count Vesper drop roll: not obtained (5% chance).':'')+drop;
   }else if(win){
     first=S.cleared<=G.si;const g=25*M.mult,f=Math.ceil(2*M.mult);
     S.gems+=g;S.bag[fd]=(S.bag[fd]||0)+f;discoverItem(fd);S.cleared=Math.max(S.cleared,G.si+1);
     const stars=stageStars(G.lives),key=stageStarKey(G.si,G.mode);
     if(!inf)S.stageStars[key]=Math.max(S.stageStars[key]||0,stars);
-    const playerXp=regularMapPlayerExp(G.si,G.mode);gainPlayerExp(playerXp);m='Stage cleared on '+M.n+'! '+(inf?'':('Rating: '+ '★'.repeat(stars)+'☆'.repeat(3-stars)+' (best: '+'★'.repeat(S.stageStars[key])+'☆'.repeat(3-S.stageStars[key])+'). '))+'You earned '+g+' gems, '+f+' '+ITEMS[fd].n+' and '+playerXp+' player EXP.';
-  }else if(inf) m='Run over at wave '+G.wave+'. This run earned '+G.ig+' gems, '+(G.infinitePlayerXp||0)+' player EXP and '+G.fg+' '+ITEMS[fd].n+'.';
-  else{S.gems+=10;m='Your base fell. You earned 10 gems for trying.'}
+    const playerXp=regularMapPlayerExp(G.si,G.mode);gainPlayerExp(playerXp);m='Stage cleared on '+M.n+'! '+(inf?'':('Rating: '+ '★'.repeat(stars)+'☆'.repeat(3-stars)+' (best: '+'★'.repeat(S.stageStars[key])+'☆'.repeat(3-S.stageStars[key])+'). '))+'You earned '+g+' gems, '+f+' '+ITEMS[fd].n+' and '+playerXp+' player EXP.';R.gems=g;R.food=f;R.pxp=playerXp;if(!inf){R.stars=stars;R.best=S.stageStars[key];}R.sub=STAGES[G.si].n+' · '+M.n+' · '+G.lives+'/'+STARTING_LIVES+' lives left';
+  }else if(inf){R.gems=G.ig;R.food=G.fg;R.pxp=G.infinitePlayerXp||0;R.sub=STAGES[G.si].n+' · Infinite · reached wave '+G.wave;m='Run over at wave '+G.wave+'. This run earned '+G.ig+' gems, '+(G.infinitePlayerXp||0)+' player EXP and '+G.fg+' '+ITEMS[fd].n+'.';}
+  else{S.gems+=10;R.gems=10;R.sub=(G.raidLevel?'Duskmoor Castle · Raid Level '+G.raidLevel:STAGES[G.si].n+' · '+M.n)+' · your base fell on wave '+G.wave;m='Your base fell. You earned 10 gems for trying.'}
   const bx=150+G.si*190;
   const xp=Math.round((inf?bx*G.wave/10:bx*M.xp*(win?1:.3*G.wave/10))*(first?1.5:1)),ups=[];
   G.us.forEach(u=>{const i=S.units.find(x=>x.uid===u.uid);if(!i)return;const b=i.lv;addXp(i,xp);if(i.lv>b)ups.push(UNITS[i.id].n+' '+b+' to '+i.lv)});
   m+=' Placed units earned '+xp+' EXP.'+(ups.length?' Level ups: '+ups.slice(0,4).join(', ')+(ups.length>4?' and more':'')+'.':'');
-  $('#msg').textContent=m;$('#msg').classList.remove('hide');
+  R.unitXp=G.us.length?xp:0;R.ups=ups;
+  $('#msg').textContent=m;
+  // Rewards are shown on the Victory/Defeat card, directly under the header.
+  if(document.getElementById('battleOutcomeRewards'))renderOutcomeCard(win,R,m);else $('#msg').classList.remove('hide');
   // Normal-map victories only: the next unlocked map keeps the same difficulty.
   // No next-map action for losses, raids, Infinite Mode, or the final map.
   if(win&&!G.raidLevel&&!inf&&G.si+1<STAGES.length&&G.si+1<=S.cleared){
@@ -2742,7 +2838,22 @@ function finish(win){
     G.restartTimer=3;
     G.restartSnapshot=G.us.map(u=>({uid:u.uid,x:u.x,y:u.y,bl:u.bl}));
     toast('Map restarting in 3 seconds');
+    const note=$('#battleOutcomeNote');if(note)note.textContent='Auto restart: replaying this map in 3 seconds…';
   }
+}
+function renderOutcomeCard(win,R,m){
+  const box=$('#battleOutcomeRewards'),st=$('#battleOutcomeStars'),sub=$('#battleOutcomeSub');
+  sub.textContent=R.sub||'';
+  st.innerHTML=win&&R.stars?[0,1,2].map(i=>'<span class="'+(i<R.stars?'on':'')+'" style="animation-delay:'+(.25+i*.18)+'s" aria-hidden="true">★</span>').join(''):'';
+  const chip=(icon,label,i)=>'<div class="reward-chip" style="animation-delay:'+(.35+i*.08)+'s">'+icon+'<span>'+label+'</span></div>';
+  const parts=[];let n=0;
+  if(R.gems)parts.push(chip('<b class="ri gem">◆</b>','+'+R.gems+' gems',n++));
+  if(R.food&&ITEMS[R.foodId])parts.push(chip('<canvas class="ico ri-can" width="72" height="64" data-item="'+R.foodId+'"></canvas>','+'+R.food+' '+ITEMS[R.foodId].n,n++));
+  if(R.pxp)parts.push(chip('<b class="ri">▲</b>','+'+R.pxp+' player EXP',n++));
+  if(R.unitXp)parts.push(chip('<b class="ri">⚔</b>','+'+R.unitXp+' unit EXP',n++));
+  box.innerHTML=parts.join('')+(R.drop?'<div class="reward-drop">'+R.drop+'</div>':'')+(R.ups&&R.ups.length?'<div class="reward-ups">Level up: '+R.ups.slice(0,4).join(', ')+(R.ups.length>4?' and more':'')+'</div>':'')+(win&&R.stars?'<div class="reward-best">Best rating on '+MODES[G.mode].n+': '+'★'.repeat(R.best)+'☆'.repeat(3-R.best)+'</div>':'');
+  box.setAttribute('aria-label',m);
+  paintIcons();
 }
 function restartMap(){
   if(!G||!G.over)return;
@@ -2984,7 +3095,7 @@ function step(dt){
         u.barterTimer+=barterCD;
         const bonus=u.bl<=1?0:5*(Math.pow(1.1,u.bl-2)-1)/.1;
         const payout=Math.round(10+bonus);
-        const earned=Math.round(payout*midasIncomeMultiplier(u.uid,u.bl)*barterPrestigeMultiplier(u.uid));G.coins+=earned;
+        const earned=Math.round(payout*midasIncomeMultiplier(u.uid,u.bl)*barterPrestigeMultiplier(u.uid))+barterStarBonus(u);G.coins+=earned;
         if(S.settings.attackFx)G.fx.push(typeof GGA!=='undefined'?{kind:'coin',txt:'+'+earned,x:u.x,y:u.y-30,l:1,max:1}:{kind:'summon',x:u.x,y:u.y,l:.45,max:.45});
       }
     }
@@ -3033,6 +3144,14 @@ function step(dt){
     const multiplier=spec ? 1+(spec%9)*.035 : 1;
     const primaryDamage=u.d*multiplier*blessingDamage*(u.id==='worldtree'?Math.max(0,1-.03*(G.us.length-1)):1);
     b.hp-=primaryDamage;b.lastHitUid=u.uid;b.lastHitBoost=u.bl;
+    // Prestige perks: 3★ Awakened Strike (every 5th attack +50% damage);
+    // 5★ Ascended Strike (every 5th attack +100% damage and a shockwave hitting nearby enemies for 30%).
+    const pst=prestigeStars(u);
+    if(pst>=3&&hits%5===0){
+      b.hp-=primaryDamage*(pst>=5?1:.5);
+      if(pst>=5)for(const e of G.en)if(e!==b&&e.hp>0&&Math.hypot(e.x-b.x,e.y-b.y)<45){e.hp-=primaryDamage*.3;e.lastHitUid=u.uid;e.lastHitBoost=u.bl;}
+      if(S.settings.attackFx)G.fx.push({kind:'impact2',imp:pst>=5?'explode':'burst',x:b.x,y:b.y-6,col:'#ffd84a',delay:.18,l:.6,max:.6});
+    }
     if(u.id==='alucard'){
       // twin moon pistol alternating rounds, with a restraint-release finisher.
       if(hits%2===0)b.hp-=primaryDamage*.4;
@@ -3250,6 +3369,8 @@ function draw(){
     if(typeof GGA!=='undefined')cx.drawImage(GGA.unitPad(artThemeKey()),u.x-24,u.y,48,30);
     else raisedDisc(u.x,u.y+13,18,'#48516b','#181e32',8);
     cx.strokeStyle=TYPES[UNITS[u.id].t]||'#cbd5e1';cx.globalAlpha=.75;cx.lineWidth=1.6;cx.beginPath();cx.ellipse(u.x,u.y+13,18,8.5,0,0,7);cx.stroke();cx.globalAlpha=1;
+    // Prestige stars: pips under the pad, golden ring at 3★, radiant sparkles at 5★.
+    if(typeof GGA!=='undefined')GGA.drawStarAura(cx,u.x,u.y,prestigeStars(u),performance.now()/1000);
     // Small lunge toward the target on each attack; units face the enemy they shoot.
     const atkAge=u.atkT?performance.now()-u.atkT:999,lunge=atkAge<160?(u.face||1)*3*(1-atkAge/160):0;
     art(cx,u.id,u.x+lunge,u.y-5,1,unitTrait(u.uid),performance.now()/1000,{flip:(u.face||1)<0});
