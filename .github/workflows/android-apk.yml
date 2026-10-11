@@ -1,0 +1,47 @@
+name: Android test APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'gg-*.js'
+      - 'android-build.py'
+      - '.github/workflows/android-apk.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Create Android project
+        env:
+          GG_VERSION_CODE: ${{ github.run_number }}
+        run: python3 android-build.py "$GITHUB_WORKSPACE" build/android
+      - name: Build APK
+        working-directory: build/android
+        run: gradle assembleRelease --no-daemon --stacktrace
+      - name: Publish test release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp build/android/app/build/outputs/apk/release/app-release.apk GemGuardians-test.apk
+          gh release delete test-apk -y --cleanup-tag || true
+          gh release create test-apk GemGuardians-test.apk --prerelease \
+            --title "Gem Guardians - Android test app" \
+            --notes "Tap GemGuardians-test.apk on your Android phone to install. Test build only (not the Play Store version)."
