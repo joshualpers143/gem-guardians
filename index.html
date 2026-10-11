@@ -185,6 +185,80 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
 @keyframes ggBlink{0%,100%{opacity:.35}50%{opacity:.9}}
 @media (max-height:560px){#ggSplash .ggGemWrap{width:64px;height:64px}#ggSplash .ggTip{display:none}#ggSplash .ggStage{gap:6px}}
 @media (prefers-reduced-motion:reduce){#ggSplash *{animation:none!important}}
+/* 2026.10.11.7: Android / phone layout */
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+button,select,.tabs,.card,canvas,#bar{touch-action:manipulation}
+button,.tabs,#bar,canvas{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#bMore{display:none}
+.hdr-lbl{display:inline}
+.dock-cost{display:none}
+@media (max-width:640px){
+  main{padding:8px}
+  .panel{padding:10px}
+  .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .tabs button{min-height:46px;padding:6px 2px;font-size:13px;line-height:1.15;white-space:normal;margin:0}
+  /* bigger tap targets in lists */
+  #coll .card button,#bagGrid .card button,#indexGrid .card button,#traitUnitPicker .card button,#feedPicker .card button{min-height:36px;font-size:12px!important;padding:6px 5px!important}
+  .unit-fav{min-width:34px;min-height:34px;display:flex;align-items:center;justify-content:center;padding:2px 6px}
+  select,.unit-sort{min-height:40px;font-size:14px}
+  /* battle controls (portrait) */
+  #arena>.panel.row:first-child{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;align-items:stretch}
+  #arena>.panel.row:first-child>#hud{grid-column:1/-1;font-size:14px}
+  #arena>.panel.row:first-child>span:not(#battleWakeStatus){display:none}
+  #arena>.panel.row:first-child>#battleWakeStatus{grid-column:1/-1}
+  #arena>.panel.row:first-child>button{min-height:42px;padding:6px 4px;font-size:12px;margin:0;white-space:normal;line-height:1.15}
+  #arena>.panel.row:first-child>#bFullMap{grid-column:1/-1;font-size:14px;background:linear-gradient(180deg,#7b5cff,#5a3fd6);color:#fff}
+  #arena>.panel.row:first-child>.hide{display:none!important}
+}
+@media (max-width:640px),(max-height:520px){
+  #battleUnitDock .card br,#battleUnitDock .card .dock-det{display:none}
+  #battleUnitDock .card .dock-cost{display:block;font-size:10px;color:#ffd36e;font-weight:800}
+  #battleUnitDock .card .placement-count{font-size:9px}
+  #battleUnitDock{width:76px;left:4px;top:4px;bottom:4px}
+  #battleUnitDock .card .ico{width:34px;height:30px}
+  #battleUnitDock .card b{font-size:9px}
+  #battleDockToggle{left:82px;top:5px}
+}
+@media (max-width:640px),(max-height:520px) and (pointer:coarse){
+  header{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;align-items:center;gap:6px;padding:8px max(10px,env(safe-area-inset-left)) 8px max(10px,env(safe-area-inset-right));position:relative}
+  header>*{margin:0!important}
+  #bProfile{grid-column:1;grid-row:1;justify-self:start;min-width:0;max-width:100%;padding:4px 8px 4px 4px;overflow:hidden}
+  #bProfile #headerAvatar{width:34px;height:34px;flex:none}
+  #headerPlayer{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px}
+  header .gems{grid-column:1;grid-row:2;font-size:15px;white-space:nowrap}
+  #bSound{grid-column:2;grid-row:1}
+  #bSettings{grid-column:3;grid-row:1}
+  #bMore{display:inline-flex;grid-column:4;grid-row:1}
+  #bSound,#bSettings,#bMore{min-width:42px;min-height:42px;padding:6px 9px;justify-content:center;align-items:center;font-size:18px}
+  #bSettings .hdr-lbl{display:none}
+  header h1{display:none}
+  header #st{grid-column:2/5;grid-row:2;font-size:11px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  header .hdr-more{display:none}
+  header.more-open .hdr-more{display:block;grid-column:1/-1;width:100%;min-height:44px;text-align:left;padding:10px 14px}
+  header.more-open{box-shadow:0 10px 30px #000c;z-index:50}
+}
+@media (min-width:641px) and (max-height:520px) and (pointer:coarse){
+  header{grid-template-columns:auto minmax(0,1fr) auto auto auto auto;padding-top:4px;padding-bottom:4px}
+  header .gems{grid-column:2;grid-row:1;justify-self:start}
+  header #st{grid-column:3;grid-row:1}
+  #bSound{grid-column:4}#bSettings{grid-column:5}#bMore{grid-column:6}
+}
+/* full-screen battle on phones in landscape: controls in a side column, map as large as possible */
+#arena.map-fullscreen .battle-canvas-wrap{flex:none;margin:auto}
+#arena.map-fullscreen #cv{object-fit:contain}
+@media (orientation:landscape) and (max-height:520px){
+  #arena.map-fullscreen{flex-direction:row;padding:4px max(4px,env(safe-area-inset-right)) 4px max(4px,env(safe-area-inset-left));gap:6px}
+  #arena.map-fullscreen>.panel.row:first-child{order:2;flex:0 0 132px;display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;margin:0;padding:5px;gap:4px;overflow-y:auto;max-height:100%}
+  #arena.map-fullscreen>.panel.row:first-child>#hud{font-size:11px;line-height:1.25}
+  #arena.map-fullscreen>.panel.row:first-child>span:not(#battleWakeStatus){display:none}
+  #arena.map-fullscreen>.panel.row:first-child>button{font-size:11px;padding:7px 4px;min-height:34px;margin:0;white-space:normal;line-height:1.1}
+  #arena.map-fullscreen>.panel.row:first-child>.hide{display:none!important}
+  #arena.map-fullscreen .battle-canvas-wrap{order:1}
+}
+.gg-rotate-hint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9;background:#140e29ee;border:1px solid #a48bea;border-radius:14px;padding:14px 18px;color:#fff;text-align:center;font-weight:700;pointer-events:none;box-shadow:0 8px 24px #000c}
+.gg-rotate-hint .ph{display:inline-block;font-size:34px;animation:ggRot 1.8s ease-in-out infinite}
+@keyframes ggRot{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
+.gg-back-toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:999998;background:#140e29f2;color:#fff;border:1px solid #a48bea;border-radius:999px;padding:10px 18px;font-weight:700;font-size:14px;box-shadow:0 8px 24px #000c;pointer-events:none}
 /* 2026.10.11.6: sound settings */
 .sound-box{padding:12px 0;border-bottom:1px solid #ffffff20}
 .sound-row{display:grid;grid-template-columns:92px 1fr 44px;align-items:center;gap:10px;margin-top:8px;font-size:14px}
@@ -371,11 +445,11 @@ window.ggSplashHide=hide;
   <h1>Gem Guardians</h1>
   <span class="gems" id="gems"></span>
   <span id="st">Not saved yet</span>
-  <button class="alt" id="bSound" title="Sound" aria-pressed="true">🔊</button><button class="alt" id="bSettings">⚙ Settings</button>
-  <button class="alt" id="bQol">📰 Update Info</button>
-  <button class="alt" id="bInstallGuide">📲 App Guide</button>
-  <button class="alt" id="bTutorial">📖 Tutorial</button>
-  <button id="bSave">Save game</button>
+  <button class="alt" id="bSound" title="Sound" aria-pressed="true">🔊</button><button class="alt" id="bSettings">⚙<span class="hdr-lbl"> Settings</span></button><button class="alt" id="bMore" aria-label="More options" aria-expanded="false">☰</button>
+  <button class="alt hdr-more" id="bQol">📰 Update Info</button>
+  <button class="alt hdr-more" id="bInstallGuide">📲 App Guide</button>
+  <button class="alt hdr-more" id="bTutorial">📖 Tutorial</button>
+  <button id="bSave" class="hdr-more">💾 Save game</button>
 </header>
 
 <div id="ggTutorial" class="gg-tutorial-overlay hide" role="dialog" aria-modal="true" aria-labelledby="ggTutorialTitle">
@@ -395,14 +469,14 @@ window.ggSplashHide=hide;
 <div id="profileModal" class="profile-modal hide" role="dialog" aria-modal="true" aria-label="Player profile"><div class="profile-card"><div class="row" style="justify-content:space-between"><h2>👤 Player Profile</h2><button class="alt" id="closeProfile">Close</button></div><label for="playerName">Player name</label><div class="row"><input id="playerName" maxlength="24" placeholder="Player"><button id="savePlayerName">Save name</button></div><h3 id="profileLevel"></h3><div class="profile-bar"><div id="profileFill" class="profile-fill"></div></div><p id="profileExp"></p><h3>Choose an unlocked unit as your avatar</h3><div id="profileAvatars" class="row"></div><h3>Level milestone rewards</h3><p style="color:var(--mut)">Every 5 levels, choose one reward. Each milestone can only be claimed once.</p><div id="profileRewards"></div></div></div>
 <main>
   <div class="tabs">
-    <button data-tab="summon" class="on">Summon</button>
-    <button data-tab="battle">Battle</button>
+    <button data-tab="summon" class="on">💎 Summon</button>
+    <button data-tab="battle">🗺️ Battle</button>
     <button data-tab="raids">⚔️ Raids</button>
-    <button data-tab="units">Units</button>
+    <button data-tab="units">🛡️ Units</button>
     <button data-tab="afk">🌙 AFK</button>
     <button data-tab="traits">✨ Traits</button>
-    <button data-tab="index">Index</button>
-    <button data-tab="bag">Bag</button>
+    <button data-tab="index">📖 Index</button>
+    <button data-tab="bag">🎒 Bag</button>
   </div>
 
   <section id="afk" class="hide"><div class="panel"><h2>🌙 AFK Rewards</h2><p>Enter AFK mode to earn 5–10 gems every 60 seconds, with a 5% chance to earn 1 trait reroll per reward.</p><button id="enterAfk">Enter AFK Mode</button><p id="afkSummary">Rewards require 60 uninterrupted seconds in AFK mode. Leaving resets the countdown, but unclaimed rewards stay saved until you claim them.</p><p id="afkStoredSummary">Unclaimed: 0 gems · 0 trait rerolls</p><button id="claimAfkOutside" disabled>💎 Claim Rewards</button></div></section>
@@ -477,6 +551,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Android &amp; Phone Layout</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:17 AM MDT</p><ul><li><strong>No more sideways scrolling:</strong> the page now fits phone screens exactly. The 8 tabs sit in two neat rows of four, each with its own icon.</li><li><strong>Compact header:</strong> on phones the header shows your profile, gems, sound and settings in one row. Update Info, App Guide, Tutorial and Save are in the new ☰ menu.</li><li><strong>Full-screen landscape battles:</strong> on phones, starting a battle opens the map full screen and turns it sideways (Android). The battle buttons move to a side column so the map is as big as possible, and the map keeps its true shape instead of stretching. You can turn this off in Settings.</li><li><strong>Bigger buttons:</strong> unit card buttons, favorites, sort menus and battle controls are easier to tap. The battle unit panel is more compact on small screens.</li><li><strong>Android back button:</strong> closes the open menu, unit menu or window first, exits full screen, returns to the Summon tab, and only leaves the game if you press it twice.</li><li><strong>Feels like an app:</strong> no accidental zoom on double-tap, no text highlighting when holding buttons, and support for screens with camera cutouts.</li><li>The installed app can now be used in portrait or landscape (it was locked to landscape before).</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Original Music &amp; Sound Effects</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 09:47 AM MDT</p><ul><li>Gem Guardians now has its own soundtrack and sound effects. Everything is composed for this game and created live by your device, so it works offline and adds almost nothing to the download.</li><li><strong>A theme for every place:</strong> the menu, each of the 11 maps, the Duskmoor Castle raids, AFK mode and boss fights each have their own music. Battle music gets fuller as the waves go on.</li><li><strong>Jingles:</strong> victory and defeat, level ups, prestige stars, Mythic traits, the boss warning, and a summon fanfare that gets grander with rarity, up to Secret.</li><li><strong>Battle sounds:</strong> arrows, bullets, magic bolts, fire, frost, poison, void, beams, slashes and explosions match each unit’s attack. Placing, upgrading, Barter coins, new waves, lost lives and defeated enemies have sounds too.</li><li><strong>Controls:</strong> use the 🔊 button in the header to mute or unmute. Settings → Music &amp; Sound has separate Music and Effects volumes.</li><li>Sound settings are stored on this device, separately from your save, so exporting, importing and recovery are unchanged. Music pauses while the game is in the background.</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>New Loading Screen</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 09:47 AM MDT</p><ul><li>A new animated loading screen with a shining crystal, a starry sky with floating sparkles, and a parade of guardians chasing enemies along a road.</li><li>The progress bar shows real loading steps and a percentage, and a new gameplay tip appears every few seconds.</li><li>The game version and edition are shown at the bottom. Tap anywhere to skip once the game is ready.</li><li>Respects the device’s “reduce motion” setting.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Tactician Auto Play AI &amp; Auto Speed</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 09:22 AM MDT</p><ul><li>Auto Play has a brand-new, much smarter AI.</li><li><strong>Studies the map:</strong> it measures how much of the road every build spot can reach with each unit’s range, so it can find corners and loops where one unit hits enemies twice.</li><li><strong>Places units by role:</strong> freeze and slow units go near the start of the road, damage dealers cover the most road, and Barter is placed away from the best firing spots.</li><li><strong>Compares every option:</strong> it weighs placing a new unit against upgrading an existing one by the damage gained per coin, and it briefly saves up when a much better option is only a few seconds away.</li><li><strong>Reacts to danger:</strong> when enemies get close to your castle or a life is lost, it stops spending on income and strengthens the end of the road.</li><li><strong>Auto speed:</strong> Auto Play now picks the battle speed: ×3 when the wave is under control, ×2 under pressure, and ×1 when enemies are near your castle or a boss is advancing. If you press Speed yourself, it keeps your choice for that battle.</li><li>Auto Play unlock rules are unchanged: Player Level 5 and 3★ on that map and difficulty.</li></ul></section>
@@ -531,6 +606,7 @@ window.ggSplashHide=hide;
 <div id="settingsModal" class="settings-panel hide" role="dialog" aria-modal="true" aria-label="Game settings">
  <div class="settings-box"><div class="row" style="justify-content:space-between"><h2>⚙ Game Settings</h2><button class="alt" id="closeSettings">Close ✕</button></div>
 
+ <label class="setting"><span><b>📱 Phone battles in full screen</b><small>On phones, battles open full screen in landscape for a bigger map. The Android back button closes menus first. Saved on this device only.</small></span><input type="checkbox" id="ggAutoFull"></label>
  <div class="sound-box"><label class="setting" style="border:0;padding:0"><span><b>🎵 Music &amp; Sound</b><small>Original music and effects, created live by the game. Saved on this device only.</small></span><input type="checkbox" id="ggMute" aria-label="Sound on"></label><div class="sound-row"><label for="ggMusicVol">Music</label><input type="range" id="ggMusicVol" min="0" max="100" step="5"><output id="ggMusicVal">50%</output></div><div class="sound-row"><label for="ggSfxVol">Effects</label><input type="range" id="ggSfxVol" min="0" max="100" step="5"><output id="ggSfxVal">70%</output></div></div>
  <label class="setting"><span><b>Auto restart map</b><small>Replay the same map and restore placed units after a run ends</small></span><input type="checkbox" data-setting="autoRestart"></label>
  <label class="setting"><span><b>Attack effects (FX)</b><small>Show or hide attack effects for all units, including Archers, Snipers, and Apprentices</small></span><input type="checkbox" data-setting="attackFx"></label>
@@ -1854,7 +1930,7 @@ function save(manual){
 }
 function syncSettings(){document.querySelectorAll('[data-setting]').forEach(el=>el.checked=S.settings[el.dataset.setting]);}
 const GG_EDITION='public';
-const GAME_VERSION='2026.10.11.6';
+const GAME_VERSION='2026.10.11.7';
 // Save portability: never change the existing localStorage keys. Import validates before replacement.
 function buildSaveExport(){
   if(!save(false))throw Error('Browser storage is unavailable or full; export cancelled to avoid an unreliable backup');
@@ -2868,7 +2944,7 @@ function refreshPlacementBar(){
     card.classList.toggle('off',count>=max);
     let badge=card.querySelector('.placement-count');
     if(!badge){badge=document.createElement('small');badge.className='placement-count';card.appendChild(badge)}
-    badge.textContent='Placed '+count+'/'+max+' (same unit name)';
+    badge.textContent='Placed '+count+'/'+max;badge.title='Placed '+count+' of '+max+' (the limit counts every copy of the same unit)';
   });
 }
 function autoPlayEligible(si,mode,raidLevel=0){
@@ -2889,7 +2965,7 @@ function startBattle(si,mode,raidLevel=0){
   $('#bWave').classList.remove('hide');$('#bWave').disabled=false;$('#bWave').textContent='Start wave';
   hideQuick();$('#msg').classList.add('hide');$('#battleOutcome').className='hide';$('#battleOutcomeTitle').textContent='';['#battleOutcomeStars','#battleOutcomeSub','#battleOutcomeRewards','#battleOutcomeNote'].forEach(q=>{const el=$(q);if(el)el.innerHTML='';});$('#bNextMap').classList.add('hide');$('#bSpd').textContent='Speed x1';$('#bPause').textContent='Pause';
   $('#bar').innerHTML=(S.equipped||[]).map(uid=>S.units.find(u=>u.uid===uid)).filter(Boolean).map(i=>{const u=UNITS[i.id];
-    return '<div class="card" data-uid="'+i.uid+'" style="cursor:pointer"><canvas class="ico" width="72" height="64" data-id="'+i.id+'" data-trait="'+(i.trait||'')+'"></canvas><b class="'+u.r+'">'+u.n+'</b><br><span style="color:#ffc94d">'+'★'.repeat(i.st)+'</span> level '+i.lv+'<br><span style="color:'+TYPES[u.t]+'">'+u.t+'</span>, '+u.c+' coins</div>'}).join('');paintIcons();
+    return '<div class="card" data-uid="'+i.uid+'" style="cursor:pointer"><canvas class="ico" width="72" height="64" data-id="'+i.id+'" data-trait="'+(i.trait||'')+'"></canvas><b class="'+u.r+'">'+u.n+'</b><span class="dock-cost">💰 '+u.c+'</span><span class="dock-det"><br><span style="color:#ffc94d">'+'★'.repeat(i.st)+'</span> level '+i.lv+'<br><span style="color:'+TYPES[u.t]+'">'+u.t+'</span>, '+u.c+' coins</span></div>'}).join('');paintIcons();
   $('#bar').querySelectorAll('.card').forEach(c=>c.onclick=()=>{
     const uid=+c.dataset.uid,i=S.units.find(x=>x.uid===uid);
     if(placedNameCount(i.id)>=unitPlacementCap(i.id)) return toast('Placement limit reached for '+UNITS[i.id].n+' ('+unitPlacementCap(i.id)+')');
@@ -4232,6 +4308,106 @@ function ggAudioSyncUI(){
   }
   setInterval(tick,250);
 })();
+// ---------- Android / phone support (2026.10.11.7) ----------
+// Phone layout helpers, landscape full-screen battles and the Android back button.
+// Device preferences are stored on this device only (not in the save).
+const GG_DEVICE_KEY='gemGuardiansDevice-'+KEY;
+const ggDevice=(()=>{let p={};try{p=JSON.parse(localStorage.getItem(GG_DEVICE_KEY)||'{}')||{}}catch(e){}return p;})();
+function ggSaveDevice(){try{localStorage.setItem(GG_DEVICE_KEY,JSON.stringify(ggDevice))}catch(e){}}
+function ggIsPhone(){return !!(window.matchMedia&&matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<=600);}
+function ggAutoFullscreen(){return ggDevice.autoFull!==undefined?!!ggDevice.autoFull:ggIsPhone();}
+// Keep the battle map at its true 16:9 shape in full screen (no stretching) and keep taps accurate.
+function ggFitArena(){
+  const a=$('#arena'),w=a&&a.querySelector('.battle-canvas-wrap');if(!w)return;
+  if(!a.classList.contains('map-fullscreen')){w.style.width='';w.style.height='';return;}
+  const hud=a.querySelector('.panel.row'),side=getComputedStyle(a).flexDirection==='row';
+  const cs=getComputedStyle(a),padX=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight),padY=parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom);
+  let aw=a.clientWidth-padX,ah=a.clientHeight-padY;
+  if(hud){if(side)aw-=hud.offsetWidth+6;else ah-=hud.offsetHeight+5;}
+  let ww=Math.max(160,Math.min(aw,ah*16/9)),hh=ww*9/16;
+  w.style.width=Math.floor(ww)+'px';w.style.height=Math.floor(hh)+'px';
+  if(G&&G.sel)requestAnimationFrame(positionQuick);
+}
+addEventListener('resize',()=>requestAnimationFrame(ggFitArena));
+if(screen.orientation&&screen.orientation.addEventListener)screen.orientation.addEventListener('change',()=>setTimeout(ggFitArena,250));
+function ggRotateHint(){
+  const a=$('#arena'),w=a&&a.querySelector('.battle-canvas-wrap');if(!w)return;
+  let h=w.querySelector('.gg-rotate-hint');
+  const want=a.classList.contains('map-fullscreen')&&ggIsPhone()&&innerHeight>innerWidth;
+  if(want&&!h){h=document.createElement('div');h.className='gg-rotate-hint';h.innerHTML='<span class="ph">📱</span><br>Turn your phone sideways<br><small style="font-weight:400;color:#c8bce9">for a bigger battle map</small>';w.appendChild(h);setTimeout(()=>h&&h.remove(),3500);}
+  else if(!want&&h)h.remove();
+}
+// Wrap the original full-screen switch: also lock landscape on Android and size the map.
+(function(){
+  const orig=setMapFullscreen;
+  setMapFullscreen=function(on){
+    orig(on);
+    if(on){const lock=()=>{try{const p=screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape');if(p&&p.catch)p.catch(()=>{});}catch(e){}};
+      if(document.fullscreenElement)lock();else document.addEventListener('fullscreenchange',lock,{once:true});
+      ggBackArm();}
+    else{try{screen.orientation&&screen.orientation.unlock&&screen.orientation.unlock()}catch(e){}}
+    requestAnimationFrame(()=>{ggFitArena();ggRotateHint();});setTimeout(ggFitArena,350);
+  };
+  const b=$('#bFullMap');if(b)b.onclick=()=>setMapFullscreen(!$('#arena').classList.contains('map-fullscreen'));
+  document.addEventListener('fullscreenchange',()=>setTimeout(ggFitArena,120));
+})();
+// Phones: open battles full screen in landscape when the player starts one (needs a tap, so Auto Restart is unaffected).
+(function(){
+  const orig=startBattle;
+  startBattle=function(...a){
+    const r=orig.apply(this,a);
+    try{const tapped=!navigator.userActivation||navigator.userActivation.isActive;
+      const guiding=$('#ggGuide')&&!$('#ggGuide').classList.contains('hide');
+      if(ggAutoFullscreen()&&tapped&&!guiding&&!$('#arena').classList.contains('map-fullscreen')&&!$('#arena').classList.contains('hide'))setMapFullscreen(true);}catch(e){}
+    return r;
+  };
+})();
+// Header "More" menu on phones
+(function(){
+  const h=document.querySelector('header'),m=$('#bMore');if(!h||!m)return;
+  const close=()=>{h.classList.remove('more-open');m.textContent='☰';m.setAttribute('aria-expanded','false');};
+  m.onclick=e=>{e.stopPropagation();const open=!h.classList.contains('more-open');h.classList.toggle('more-open',open);m.textContent=open?'✕':'☰';m.setAttribute('aria-expanded',String(open));if(open)ggBackArm();};
+  h.querySelectorAll('.hdr-more').forEach(b=>b.addEventListener('click',()=>setTimeout(close,0)));
+  document.addEventListener('click',e=>{if(h.classList.contains('more-open')&&!h.contains(e.target))close();});
+  window.ggCloseMore=()=>{if(h.classList.contains('more-open')){close();return true}return false;};
+})();
+// Settings: phone battle preference
+(function(){
+  const el=$('#ggAutoFull');if(!el)return;
+  el.checked=ggAutoFullscreen();
+  el.onchange=()=>{ggDevice.autoFull=el.checked;ggSaveDevice();toast(el.checked?'Battles will open full screen in landscape':'Battles will open in the normal page view');};
+})();
+// Android back button: close the top-most panel first instead of leaving the game.
+let ggBackArmed=false,ggBackExitAt=0;
+function ggBackArm(){if(ggBackArmed)return;try{history.pushState({gg:1},'');ggBackArmed=true;}catch(e){}}
+function ggToast(t){let el=document.querySelector('.gg-back-toast');if(!el){el=document.createElement('div');el.className='gg-back-toast';document.body.appendChild(el);}el.textContent=t;el.style.display='block';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',1900);}
+function ggVisible(el){return !!(el&&!el.classList.contains('hide')&&getComputedStyle(el).display!=='none'&&getComputedStyle(el).visibility!=='hidden');}
+function ggCloseTop(){
+  if(window.ggCloseMore&&ggCloseMore())return true;
+  const q=$('#unitQuick');if(ggVisible(q)&&q.innerHTML){hideQuick();if(G)G.sel=null;return true;}
+  if(G&&G.pl){G.pl=null;if(typeof refreshPlacementBar==='function')refreshPlacementBar();return true;}
+  const dialogs=[...document.querySelectorAll('[role=dialog]')].filter(ggVisible);
+  const d=dialogs.sort((a,b)=>(parseInt(getComputedStyle(b).zIndex)||0)-(parseInt(getComputedStyle(a).zIndex)||0))[0];
+  if(d){
+    if(d.id==='afkOverlay'){const x=$('#exitAfk');if(x)x.click();return true;}
+    const btn=d.querySelector('button[id^=close],.gg-tutorial-skip,[data-close]')||[...d.querySelectorAll('button')].find(b=>/✕|×|^close$|close/i.test(b.textContent.trim()));
+    if(btn)btn.click();else d.classList.add('hide');return true;
+  }
+  if($('#arena')&&$('#arena').classList.contains('map-fullscreen')){setMapFullscreen(false);return true;}
+  if(G&&ggVisible($('#arena'))&&!G.over){ggToast('Use “Leave stage” to exit the battle');return true;}
+  const cur=document.querySelector('.tabs button.on');
+  if(cur&&cur.dataset.tab!=='summon'){const s=document.querySelector('.tabs [data-tab=summon]');if(s){s.click();scrollTo({top:0,behavior:'smooth'});return true;}}
+  return false;
+}
+addEventListener('popstate',()=>{
+  ggBackArmed=false;
+  if(ggCloseTop()){ggBackArm();return;}
+  const now=Date.now();
+  if(now-ggBackExitAt<2000){try{save(false)}catch(e){}history.back();return;}
+  ggBackExitAt=now;ggToast('Press back again to exit');ggBackArm();
+});
+// Arm on the first interaction (browsers ignore history entries added without a user gesture).
+['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>ggBackArm(),{capture:true,passive:true}));
 setTimeout(guideAutoStart,1200);
 renderVersionLabels();requestPersistentStorage();
 </script>
