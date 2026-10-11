@@ -1,4 +1,4 @@
-const CACHE='gem-guardians-public-prestige-fruit-results-2026101103';
+const CACHE='gem-guardians-public-balance-guide-maps-2026101104';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install', event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));

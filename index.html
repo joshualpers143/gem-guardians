@@ -164,6 +164,37 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
 @keyframes ggFill{to{width:100%}}@keyframes ggPulse{to{transform:scale(1.12);filter:drop-shadow(0 0 35px #b8b3ff)}}
 <style>
 .ico{width:72px}
+/* 2026.10.11.4: battle menu, map cards, guided tutorial */
+.battle-pick-title{margin:0 0 2px}.battle-pick-hint{margin:0 0 10px;color:var(--mut);font-size:13px}
+#stages{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:12px}
+@media(max-width:600px){#stages{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.stage-body{padding:6px 8px 8px}.stage-body strong{font-size:13px}.mode-star-grid{grid-template-columns:1fr}.stage-food{font-size:11px}}
+.stage-card{display:flex;flex-direction:column;padding:0;overflow:hidden;text-align:left;border-radius:14px;border:2px solid #6d5fd0;background:linear-gradient(#262052,#1a1538);color:#fff;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s;box-shadow:0 6px 16px #0006;font:inherit}
+.stage-card:hover:not(:disabled),.stage-card:focus-visible{transform:translateY(-3px);border-color:#facc15;box-shadow:0 10px 24px #0008,0 0 0 2px #facc1555}
+.stage-card.cleared{border-color:#4ade80}
+.stage-card.locked{filter:grayscale(.9) brightness(.75);cursor:not-allowed}
+.stage-thumb{position:relative;display:block;aspect-ratio:16/9;background:linear-gradient(135deg,#2f4a30,#1d2e20);overflow:hidden}
+.stage-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.stage-num{position:absolute;left:8px;top:8px;background:#000b;color:#fde68a;font-weight:900;border-radius:999px;padding:1px 9px;font-size:12px}
+.stage-badge{position:absolute;right:8px;top:8px;background:#16a34acc;color:#fff;font-weight:800;border-radius:999px;padding:1px 8px;font-size:11px}
+.stage-lock{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;background:#0008}
+.stage-body{display:flex;flex-direction:column;gap:3px;padding:8px 10px 10px}
+.stage-body strong{font-size:15px}
+.stage-food{display:flex;align-items:center;gap:4px;font-size:12px;color:#d6d0f5}
+canvas.stage-fruit{width:24px;height:auto;margin:0;background:transparent;box-shadow:none;border-radius:0;cursor:inherit}
+#enemyLegend .legend-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+#enemyLegend .legend-item{display:flex;align-items:center;gap:6px;background:#ffffff10;border:1px solid #ffffff22;border-radius:12px;padding:4px 10px 4px 4px;font-size:13px}
+canvas.enemy-ico{width:40px;height:auto;margin:0;background:#2f4a30;border-radius:10px;box-shadow:none;cursor:default}
+#ggGuide{position:fixed;right:12px;bottom:12px;z-index:99980;width:min(370px,calc(100vw - 24px));background:linear-gradient(#2b2360,#191437);border:2px solid #facc15;border-radius:16px;padding:10px 14px 12px;box-shadow:0 12px 36px #000a;color:#fff}
+#ggGuide.hide{display:none}
+#ggGuide .gg-guide-top{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:800;letter-spacing:.06em;color:#fde68a;text-transform:uppercase}
+#ggGuide .gg-guide-top button{padding:3px 8px;font-size:11px}
+#ggGuide h3{margin:6px 0 4px;font-size:16px}#ggGuide p{margin:0 0 8px;font-size:13px;line-height:1.45;color:#e6e1ff}
+#ggGuide .gg-guide-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+#ggGuide .gg-guide-skip{background:transparent;border:0;color:#a9a3cf;text-decoration:underline;margin-left:auto;padding:4px}
+#ggGuide.mini h3,#ggGuide.mini p,#ggGuide.mini .gg-guide-actions{display:none}
+.guide-glow{outline:3px solid #facc15!important;outline-offset:2px;box-shadow:0 0 0 6px #facc1544,0 0 26px #facc15!important;animation:guidePulse 1.2s ease-in-out infinite}
+@keyframes guidePulse{50%{outline-color:#fff7c2;box-shadow:0 0 0 9px #facc1522,0 0 34px #facc15}}
+@media(max-width:600px){#ggGuide{right:8px;left:8px;bottom:8px;width:auto;padding:8px 12px 10px}#ggGuide p{font-size:12px}}
 /* 2026.10.11.3: results card, reward chips, inline item icons */
 #battleOutcome .outcome-card{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:min(560px,94%);max-height:100%;overflow:auto;padding:10px 18px 14px;border-radius:18px;border:2px solid #f2c84b;background:radial-gradient(ellipse at top,rgba(46,34,92,.94),rgba(12,9,28,.92));box-shadow:0 12px 40px #000b,inset 0 0 30px #ffffff10;animation:outcomeReveal .45s ease-out both}
 #battleOutcome.defeat .outcome-card{border-color:#b3122a;background:radial-gradient(ellipse at top,rgba(78,12,24,.94),rgba(16,6,10,.92))}
@@ -210,6 +241,7 @@ canvas.inline-ico{display:inline-block;width:38px;height:auto;vertical-align:mid
 (function(){function hide(){var el=document.getElementById('ggSplash');if(el)el.classList.add('ggDone')}window.addEventListener('load',function(){setTimeout(hide,2200)},{once:true});setTimeout(hide,5500)})();
 </script>
 
+<div id="ggGuide" class="hide" role="region" aria-label="Tutorial guide" aria-live="polite"><div class="gg-guide-top"><span id="ggGuideStep"></span><button type="button" id="ggGuideMin" class="alt">▼ Hide</button></div><h3 id="ggGuideTitle"></h3><p id="ggGuideText"></p><div class="gg-guide-actions"><button type="button" id="ggGuideBack" class="alt">← Back</button><button type="button" id="ggGuideNext">Next →</button><button type="button" id="ggGuideSkip" class="gg-guide-skip">Skip tutorial</button></div></div>
 <div id="updateReady" class="hide" role="status" aria-live="polite"><span id="updateReadyText">A new version is available.</span><button type="button" id="updateReload">Save &amp; Reload</button><button type="button" class="alt" id="updateLater">Later</button></div>
 <header>
   <button id="bProfile" class="profile-button" title="Player profile"><canvas id="headerAvatar" width="48" height="48"></canvas><span id="headerPlayer">Player · Lv 1</span></button>
@@ -231,7 +263,8 @@ canvas.inline-ico{display:inline-block;width:38px;height:auto;vertical-align:mid
   <div class="gg-tutorial-actions">
    <button type="button" id="ggTutorialBack" class="alt">← Back</button>
    <button type="button" id="ggTutorialNext">Next →</button>
-   <button type="button" id="ggTutorialSkip" class="gg-tutorial-skip">Skip tutorial</button>
+   <button type="button" id="ggStartGuide" class="alt">🎓 Guided tutorial</button>
+   <button type="button" id="ggTutorialSkip" class="gg-tutorial-skip">Close</button>
   </div>
  </div>
 </div>
@@ -265,9 +298,15 @@ canvas.inline-ico{display:inline-block;width:38px;height:auto;vertical-align:mid
     <div class="panel" id="raidMap2ComingSoon" aria-label="Raid Map 2 coming soon" style="margin-top:12px;text-align:center"><h2 style="margin:0 0 8px">⚔️ Raid Map 2</h2><p style="margin:0;color:var(--mut);font-weight:700">Coming Soon</p></div>
   </section>
   <section id="battle" class="hide">
-    <div class="panel row" id="modes"></div>
-<div class="panel" id="modeInfo"></div>
-    <div class="panel"><b>Enemy colors:</b> <span style="color:#ef4444">● Normal</span> · <span style="color:#60a5fa">● Tank</span> · <span style="color:#4ade80">● Runner</span> · <span style="color:#c084fc">● Elite</span> · <span style="color:#aaa">● Black Boss</span></div><div class="panel row" id="stages"></div>
+    <div class="panel"><h2 class="battle-pick-title">🗺️ Choose a map</h2><p class="battle-pick-hint" id="stageModeHint"></p><div id="stages"></div></div>
+    <div class="panel"><h3 style="margin:0 0 6px">⚔️ Difficulty</h3><div class="row" id="modes"></div><p id="modeInfo" style="margin:8px 0 0;color:var(--mut)"></p></div>
+    <div class="panel" id="enemyLegend"><b>Enemies</b><div class="legend-row">
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="normal"></canvas><span><b style="color:#ef4444">Horned Imp</b><br><small>Normal</small></span></span>
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="runner"></canvas><span><b style="color:#4ade80">Goblin Runner</b><br><small>Fast, low health</small></span></span>
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="tank"></canvas><span><b style="color:#60a5fa">Iron Beetle</b><br><small>Tank, high health</small></span></span>
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="elite"></canvas><span><b style="color:#c084fc">Void Knight</b><br><small>Elite</small></span></span>
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="boss"></canvas><span><b style="color:#d4d4d8">Demon Overlord</b><br><small>Boss, final wave</small></span></span>
+    </div><p style="margin:8px 0 0;color:var(--mut);font-size:12px">Enemy strength adapts to your equipped team: new teams face normal enemies, while very strong teams (high levels, prestige stars and traits) face tougher enemies on easier maps.</p></div>
     <div id="arena" class="hide">
       <div class="panel row"><b id="hud"></b>
         <span style="margin-left:auto"></span>
@@ -315,6 +354,9 @@ canvas.inline-ico{display:inline-block;width:38px;height:auto;vertical-align:mid
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="Balance Update"><span class="update-tag tag-balance-update">Balance Update</span><h3>Enemies Now Match Your Team’s Strength</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 02:01 AM MDT</p><ul><li>Enemy health now adapts to your equipped team’s damage, including unit levels, prestige stars and traits.</li><li><strong>New players are not affected:</strong> beginner teams always face normal enemies.</li><li>Teams far stronger than the map and difficulty face tougher enemies, up to ×25 health. Taking a maxed team to an early map no longer wipes everything instantly. Playing maps that fit your team’s strength is unchanged.</li><li>The extra health builds up over the waves, so you always have time to place your units first. Raids and Infinite mode scale the same way.</li><li>The battle bar shows the current enemy strength (for example “Enemy ×3.2”) whenever it is above normal.</li><li>Rewards are unchanged.</li></ul></section>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Guided Tutorial for New Players</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 02:01 AM MDT</p><ul><li>New players are now taught by the game itself. A guide panel highlights the real buttons and moves on as you complete each action. It covers:<ul><li>summoning, equipping a team, choosing a map, placing units and starting waves</li><li>upgrading, speed controls, rewards, feeding fruits and rerolling traits</li><li>how to earn Trait Rerolls, Index rewards, AFK mode, prestige stars and save backups</li></ul></li><li>The guide can be hidden, stepped back, skipped, or replayed from the 📖 Tutorial button. It remembers your progress if you close the game.</li><li>The quick tutorial no longer pops up by itself. It is still available from 📖 Tutorial, with updated information.</li></ul></section>
+<section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>New Battle Menu Layout &amp; Illustrated Map Cards</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 02:01 AM MDT</p><ul><li>The Battle tab now lists the maps first, with the difficulty options below the maps and the enemy guide below the difficulty.</li><li>Each map card shows a picture of the map, its number, its fruit (with icon), your stars for every difficulty and a ✓ Cleared badge. Locked maps are greyed out and show which map unlocks them.</li><li>The old enemy-color legend is replaced by pictures and names of each enemy type.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Prestige Star Perks &amp; Battle Star Auras</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 01:39 AM MDT</p><ul><li>Each prestige star still gives every unit <strong>+50% damage, +4% range and +6% attack speed</strong>, and these add up: a 5★ unit has 3.5× damage, +20% range and +30% attack speed. Barter still gains +10% coin income per star.</li><li><strong>New 3★ perk: Awakened Strike.</strong> Every 5th attack deals +50% bonus damage.</li><li><strong>New 5★ perk: Ascended Strike.</strong> Every 5th attack deals +100% bonus damage and sends out a shockwave that hits nearby enemies for 30%.</li><li><strong>Barter perks:</strong> +5 extra coins per payout at 3★ and +15 at 5★.</li><li>In battle, placed units show their prestige stars under their platform. 3★ units get a glowing golden ring, and 5★ units get a radiant golden aura with rising sparkles.</li><li>The Prestige confirmation now lists the star bonuses and perks.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>New Fruit Art &amp; Trait Reroll Crystal Icon</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 01:39 AM MDT</p><ul><li>All 11 fruits are redrawn in the new art style: Meadow Berry, Crystal Fruit, Ember Pepper, Moon Lotus, Sun Date, Frost Apple, Jungle Spore, Ember Core, Starfruit, Relic Seed and Xeno Pod.</li><li>Trait Rerolls now have their own prismatic crystal icon. It appears in the Bag, the Item Index and the Trait Forge.</li><li>The Item Index now shows the picture of each fruit you have found instead of a plain symbol.</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>New Victory &amp; Defeat Results Card</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 01:39 AM MDT</p><ul><li>The VICTORY and DEFEAT header is now a results card with a ribbon banner. Victories also show your 1–3 star rating with an animation.</li><li>Your rewards appear right under the header instead of below the map: gems, fruit (with its picture), player EXP and unit EXP, plus level-ups, your best rating and any raid drop.</li><li>When Auto restart is on, the card shows when the map is about to replay.</li></ul></section>
@@ -1491,7 +1533,7 @@ function save(manual){
 }
 function syncSettings(){document.querySelectorAll('[data-setting]').forEach(el=>el.checked=S.settings[el.dataset.setting]);}
 const GG_EDITION='public';
-const GAME_VERSION='2026.10.11.3';
+const GAME_VERSION='2026.10.11.4';
 // Save portability: never change the existing localStorage keys. Import validates before replacement.
 function buildSaveExport(){
   if(!save(false))throw Error('Browser storage is unavailable or full; export cancelled to avoid an unreliable backup');
@@ -2283,9 +2325,53 @@ function renderAll(){
   $('#coll').querySelectorAll('[data-lock]').forEach(b=>b.onclick=()=>{const u=S.units.find(u=>u.uid===+b.dataset.lock);if(!u)return;u.locked=!u.locked;save(false);renderAll();toast(u.locked?'Unit locked':'Unit unlocked');});
   $('#coll').querySelectorAll('button[data-p]').forEach(b=>b.onclick=()=>prestige(+b.dataset.p));
   $('#coll').querySelectorAll('button[data-sell]').forEach(b=>b.onclick=()=>sell(+b.dataset.sell));
-  renderProfile();renderModes();renderBag();renderIndex();renderItemIndex();renderSummonPool();renderTraits();paintIcons();$('#stages').innerHTML=STAGES.map((s,i)=>{const ratings=['easy','medium','hard','hell'].map(mode=>{const stars=S.stageStars?.[stageStarKey(i,mode)]||0;return '<span class="mode-stars'+(curMode===mode?' active':'')+'">'+MODES[mode].n+': '+('★'.repeat(stars)+'☆'.repeat(3-stars))+'</span>';}).join('');return '<button class="stage-choice" data-s="'+i+'"'+(i>S.cleared?' disabled':'')+'><strong>'+s.n+'</strong><small>'+ITEMS[s.food].n+'</small><span class="mode-star-grid">'+ratings+'</span>'+(autoPlayEligible(i,curMode)?'<small style="color:#86efac">▶ Auto Play unlocked</small>':'')+(curMode==='infinite'?'<small>∞ Infinite mode selected</small>':'')+'</button>';}).join('');
-  $('#stages').querySelectorAll('button').forEach(b=>b.onclick=()=>startBattle(+b.dataset.s,curMode));
+  renderProfile();renderModes();renderBag();renderIndex();renderItemIndex();renderSummonPool();renderTraits();paintIcons();renderStageCards();
 }
+
+/* ---------- Map selection cards (2026.10.11.4) ---------- */
+const stageThumbs=[];let stageThumbBusy=false;
+function renderStageCards(){
+  const el=$('#stages');if(!el)return;
+  el.innerHTML=STAGES.map((s,i)=>{
+    const locked=i>S.cleared,cleared=i<S.cleared;
+    const ratings=['easy','medium','hard','hell'].map(mode=>{const stars=S.stageStars?.[stageStarKey(i,mode)]||0;return '<span class="mode-stars'+(curMode===mode?' active':'')+'">'+MODES[mode].n+': '+('★'.repeat(stars)+'☆'.repeat(3-stars))+'</span>';}).join('');
+    return '<button type="button" class="stage-card'+(locked?' locked':'')+(cleared?' cleared':'')+'" data-s="'+i+'"'+(locked?' disabled':'')+' aria-label="'+s.n+(locked?' (locked)':'')+'">'
+      +'<span class="stage-thumb"><img alt="" data-thumb="'+i+'"'+(stageThumbs[i]?' src="'+stageThumbs[i]+'"':'')+'><span class="stage-num">'+(i+1)+'</span>'+(cleared?'<span class="stage-badge">✓ Cleared</span>':'')+(locked?'<span class="stage-lock">🔒</span>':'')+'</span>'
+      +'<span class="stage-body"><strong>'+s.n+'</strong><span class="stage-food"><canvas class="ico stage-fruit" width="72" height="64" data-item="'+s.food+'"></canvas>Drops '+ITEMS[s.food].n+'</span><span class="mode-star-grid">'+ratings+'</span>'
+      +(autoPlayEligible(i,curMode)?'<small style="color:#86efac">▶ Auto Play unlocked</small>':'')+(curMode==='infinite'?'<small>∞ Infinite mode selected</small>':'')+(locked?'<small style="color:#fca5a5">Clear '+STAGES[i-1].n+' to unlock</small>':'')+'</span></button>';
+  }).join('');
+  el.querySelectorAll('button[data-s]').forEach(b=>b.onclick=()=>startBattle(+b.dataset.s,curMode));
+  const hint=$('#stageModeHint');if(hint)hint.textContent='Difficulty: '+MODES[curMode].n+' (change it below the maps). Tap a map to start.';
+  el.querySelectorAll('canvas.stage-fruit').forEach(k=>{if(k.width===72){k.width=288;k.height=256;}const c=k.getContext('2d');c.setTransform(4,0,0,4,0,0);c.clearRect(0,0,72,64);itemArt(c,k.dataset.item,36,32,1.5);c.setTransform(1,0,0,1,0,0);});
+  paintEnemyLegend();queueStageThumbs();
+}
+function queueStageThumbs(){
+  if(stageThumbBusy||typeof GGA==='undefined')return;stageThumbBusy=true;let i=0;
+  const next=()=>{while(i<STAGES.length&&stageThumbs[i]!=null)i++;if(i>=STAGES.length){stageThumbBusy=false;return;}
+    try{const bg=GGA.mapBackground(GGA.STAGE_THEME[i]||'meadow',STAGES[i].path);const k=document.createElement('canvas');k.width=320;k.height=180;k.getContext('2d').drawImage(bg,0,0,320,180);stageThumbs[i]=k.toDataURL('image/jpeg',.82);}catch(e){stageThumbs[i]='';}
+    document.querySelectorAll('img[data-thumb="'+i+'"]').forEach(img=>{if(stageThumbs[i])img.src=stageThumbs[i];});i++;setTimeout(next,40);};
+  setTimeout(next,80);
+}
+let enemyLegendPainted=false;
+function paintEnemyLegend(){
+  if(enemyLegendPainted||typeof GGA==='undefined')return;enemyLegendPainted=true;
+  document.querySelectorAll('canvas[data-enemy]').forEach(k=>{const c=k.getContext('2d'),kind=k.dataset.enemy;c.clearRect(0,0,k.width,k.height);c.save();const s=kind==='boss'?1.25:1.7;c.translate(40,kind==='boss'?52:46);c.scale(s,s);GGA.drawEnemy(c,kind,0,0,0,1);c.restore();});
+}
+/* ---------- Team-matched enemy strength (2026.10.11.4) ----------
+   Average equipped damage-per-second (incl. level, prestige stars and traits) is compared with
+   a "fair" power for the map and difficulty. Only teams far stronger than the content face
+   tougher enemies; beginner teams (power below 2.5) are never scaled. The extra health ramps
+   up over the waves so early placement is always possible. */
+function teamPowerScale(si,mode,raidLevel){
+  const ps=(S.equipped||[]).map(uid=>S.units.find(u=>u.uid===uid)).filter(i=>i&&UNITS[i.id]&&UNITS[i.id].d>0).map(i=>{const s=stats(i);return (s.d/s.cd)/25;});
+  if(!ps.length)return 1;
+  const power=ps.reduce((a,b)=>a+b,0)/ps.length;
+  const modeF={easy:1,medium:1.8,hard:3,hell:5,infinite:1.4}[mode]||1;
+  const fair=raidLevel?0.8*Math.pow(1.446,10)*5*raidScale(raidLevel):0.8*Math.pow(1.446,si)*modeF;
+  const threshold=Math.max(2.5,fair*1.5);
+  return Math.min(25,Math.pow(Math.max(1,power/threshold),1.25));
+}
+function enemyWaveScale(){const sc=G&&G.teamScale||1;if(sc<=1)return 1;const full=G.raidLevel?raidMaxWave(G.raidLevel):15;return 1+(sc-1)*Math.min(1,G.wave/full);}
 
 /* ---------- AFK rewards ---------- */
 // AFK rewards accrue only while this screen is open. No offline earnings.
@@ -2461,6 +2547,7 @@ function startBattle(si,mode,raidLevel=0){
   const p=(raidLevel?RAID_MAPS.duskmoor:STAGES[si]).path,L=[];let tot=0;
   for(let i=1;i<p.length;i++){const l=Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1]);L.push(l);tot+=l}
   G={si,L,tot,raidLevel,raidKills:0,lives:STARTING_LIVES,coins:500,wave:0,q:[],sp:0,run:false,over:false,en:[],us:[],fx:[],sel:null,pl:null,speed:1,boss:false,mode,hpm:STAGES[si].hp*stageDifficulty(si)*MODES[mode].hp*(raidLevel?raidScale(raidLevel):1),ig:0,fg:0,paused:false,autoUpgrade:false,autoUpgradeTimer:0,autoPlay:false,autoPlayTimer:0,waveSpawnCountdown:null,restartTimer:0};
+  G.teamScale=teamPowerScale(si,mode,raidLevel);
   $('#bAutoPlay').textContent=autoPlayEligible(si,mode,raidLevel)?'Auto Play: OFF':(raidLevel?'🔒 Auto Play (regular maps only)':S.playerLevel<5?'🔒 Auto Play (Player Lv 5)':'🔒 Auto Play (3★ required)');
   $('#bAutoPlay').disabled=!autoPlayEligible(si,mode,raidLevel);
   $('#bAutoPlay').setAttribute('aria-pressed','false');
@@ -2495,13 +2582,13 @@ function posAt(d){
   const a=p[i],b=p[i+1],t=Math.min(1,d/G.L[i]);
   return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
 }
-function hud(){if(G)$('#hud').textContent=(G.raidLevel?'Duskmoor Castle · Raid Level '+G.raidLevel+' · ':'')+'Wave '+G.wave+(G.mode==='infinite'?'':'/'+(G.raidLevel?raidMaxWave(G.raidLevel):15))+'   '+MODES[G.mode].n+'   Lives '+G.lives+'   Coins '+G.coins+'   Units '+G.us.length}
+function hud(){if(G)$('#hud').textContent=(G.raidLevel?'Duskmoor Castle · Raid Level '+G.raidLevel+' · ':'')+'Wave '+G.wave+(G.mode==='infinite'?'':'/'+(G.raidLevel?raidMaxWave(G.raidLevel):15))+'   '+MODES[G.mode].n+'   Lives '+G.lives+'   Coins '+G.coins+'   Units '+G.us.length+((G.teamScale||1)>1.05?'   Enemy ×'+enemyWaveScale().toFixed(1):'')}
 function nextWave(force=false){
   if(!G||G.over||(G.run&&!force)) return;
   G.wave++;G.run=true;
   if(G.wave>=2)$('#bWave').classList.add('hide');
   else {$('#bWave').disabled=true;$('#bWave').textContent='Wave started';}G.boss=G.raidLevel?G.wave===raidMaxWave(G.raidLevel):G.mode==='infinite'?G.wave%10===0:G.wave===15;
-  const n=Math.min(110,5+3*G.wave+Math.floor(G.wave*G.wave/14)),hp=22*G.hpm*Math.pow(1.24,G.wave);
+  const n=Math.min(110,5+3*G.wave+Math.floor(G.wave*G.wave/14)),hp=22*G.hpm*Math.pow(1.24,G.wave)*enemyWaveScale();
   // Each map introduces enemy classes progressively: Map 1 normal, Map 2 tanks,
   // Map 3 runners, Map 4 elites; later maps use the classes introduced so far.
   // Boss waves always end with one elite, then the boss exactly 3 seconds later.
@@ -3422,12 +3509,12 @@ function loop(ts){
 /* Beginner tutorial: independent from game save; no rewards or gameplay modifications. */
 const GG_TUTORIAL_KEY='gemGuardiansTutorialSeen-'+(typeof KEY==='string'?KEY:'edition');
 const GG_TUTORIAL_STEPS=[
- {title:'💎 Welcome to Gem Guardians!',text:'Defend your base from waves of enemies. Summon units, equip a team, place them beside the path, and upgrade them to survive. This short tutorial takes less than a minute.'},
- {title:'🎰 1. Summon units',text:'Open the Summon tab to spend gems on new units. Higher rarities are harder to obtain. Your new units appear in Units, and you can use Auto-Sell in Settings to sell selected rarities automatically.'},
- {title:'🛡️ 2. Equip your team',text:'Open Units and equip your best units before battle. You begin with four equipment slots; more unlock at Player Levels 5 and 10. Try combining attackers with Barter, a support unit that earns battle coins.'},
- {title:'⚔️ 3. Defend your base',text:'Open Battle, select a map and difficulty, and place equipped units beside the enemy path using your starting coins. Start Wave 1, defeat enemies before they reach your base, and upgrade placed units with earned coins. Regular maps have 15 waves.'},
- {title:'🍓 4. Grow your units',text:'Open Bag to use fruits to level up owned units. At Level 100, prestige a unit to reset it to Level 1 and earn one permanent star (up to five). Each prestige star gives Barter +10% money generation.'},
- {title:'🏆 5. Progress and save',text:'Win maps to earn rewards and unlock harder difficulties. AFK Mode earns idle rewards; Raids unlock at Player Level 25. Progress autosaves locally, but export a backup from the save controls before clearing browser data or changing devices. You can replay this tutorial any time using the 📖 Tutorial button.'}
+ {title:'💎 Welcome to Gem Guardians!',text:'Defend your castle from waves of enemies. Summon units, equip a team, place them beside the road and upgrade them. New players are taught step by step by the guided tutorial. Tap “Guided tutorial” below to replay it any time.'},
+ {title:'🎰 1. Summon units',text:'Summon 1 costs 50 gems and Summon 10 costs 450 gems (a ten-pull always includes an Epic or better). Base odds: Common 65%, Rare 20%, Epic 7.5%, Legendary 5%, Mythic 2%, and Secret 0.5% from Player Level 10. Pity guarantees a Legendary by 100 pulls and a Mythic by 500. Auto-Sell in Settings can sell chosen rarities for gems.'},
+ {title:'🛡️ 2. Equip and place',text:'Equip units in the Units tab: 4 slots, with a 5th at Player Level 5 and a 6th at Level 10. In battle, tap a unit card and then the grass beside the road. Tap a placed unit to upgrade or sell it. Barter earns extra coins; every other unit attacks.'},
+ {title:'⚔️ 3. Battles and difficulty',text:'Choose a map, then a difficulty below it (Easy, Medium, Hard, Hell or Infinite). Survive 15 waves and keep lives for up to 3 stars. Enemy strength adapts to your team, so very strong teams face tougher enemies on easier maps.'},
+ {title:'🍓 4. Fruits, traits and stars',text:'Feed fruits in the Bag to level units. Trait Rerolls (crystals) give random permanent bonuses in the Trait Forge. You earn them from AFK mode, Player Level milestones and Hard/Hell bosses, or pay 30 gems per reroll. At level 100, prestige for a star: +50% damage, +4% range and +6% speed per star, plus perks at 3★ and 5★.'},
+ {title:'🏆 5. Progress and save',text:'Claim Index rewards for every new unit, use AFK mode for idle gems, and unlock Raids at Player Level 25. Progress saves automatically. Use Export, Share or Copy Save in Settings for a backup before clearing browser data or changing devices.'}
 ];
 let ggTutorialStep=0;
 function ggTutorialRender(){
@@ -3444,7 +3531,101 @@ document.getElementById('ggTutorialBack').addEventListener('click',()=>{if(ggTut
 document.getElementById('ggTutorialNext').addEventListener('click',()=>{if(ggTutorialStep<GG_TUTORIAL_STEPS.length-1){ggTutorialStep++;ggTutorialRender()}else ggTutorialClose()});
 document.getElementById('ggTutorialSkip').addEventListener('click',ggTutorialClose);
 document.getElementById('bTutorial').addEventListener('click',ggTutorialOpen);
-setTimeout(()=>{try{if(!localStorage.getItem(GG_TUTORIAL_KEY))ggTutorialOpen()}catch(e){ggTutorialOpen()}},2700);
+// The quick tutorial no longer opens automatically; the guided tutorial teaches new players.
+document.getElementById('ggStartGuide').addEventListener('click',()=>{ggTutorialClose();guideStart(0);});
+
+/* ---------- Guided tutorial (2026.10.11.4) ----------
+   A non-blocking coach panel that teaches new players by asking them to use the real
+   controls. Each step highlights its target and advances when the action is detected.
+   Progress is stored per edition in localStorage (not in the save file). */
+const GG_GUIDE_KEY='gemGuardiansGuide-'+(typeof KEY==='string'?KEY:'edition');
+const tabOpen=id=>{const el=document.getElementById(id);return !!el&&!el.classList.contains('hide');};
+const tabBtn=id=>document.querySelector('.tabs button[data-tab="'+id+'"]');
+const firstEquipBtn=()=>[...document.querySelectorAll('#coll [data-equip]')].find(b=>!/Equipped/.test(b.textContent));
+const totalUnitXp=()=>S.units.reduce((a,u)=>a+u.lv*100000+u.xp,0);
+let guide={active:false,step:0,base:{},hidden:false};
+const GUIDE_STEPS=[
+ {title:'💎 Welcome, Guardian!',text:'I’ll teach you how to play by guiding you through the real game. Follow the glowing highlight. You start with 500 gems, 25 free trait rerolls and Barter, a merchant who earns coins in battle.',info:true},
+ {title:'🎰 Open the Summon tab',text:'Units are your towers. Tap the glowing Summon tab.',tab:'summon',target:()=>tabBtn('summon'),done:()=>tabOpen('summon')},
+ {title:'🎰 Summon 10 units',text:'Tap “Summon 10” to spend 450 gems on ten units. A ten-pull always includes at least one Epic or better. (If you have fewer than 450 gems, use Summon 1.)',
+  enter:b=>{b.units=S.units.length},target:()=>S.gems>=450?$('#p10'):$('#p1'),done:b=>S.units.length>b.units},
+ {title:'🛡️ Open the Units tab',text:'Your new units are in the Units tab. Tap it.',target:()=>tabBtn('units'),done:()=>tabOpen('units')},
+ {title:'🛡️ Equip your team',text:'Only equipped units can be used in battle. Tap “＋ Equip” on your strongest units until your 4 loadout slots are full. Barter is already equipped. Rarer units, shown by their colored names, are stronger.',
+  target:()=>tabOpen('units')?(firstEquipBtn()||$('#loadoutSlots')):tabBtn('units'),done:()=>(S.equipped||[]).length>=Math.min(unlockedLoadoutSlots(),S.units.length)},
+ {title:'⚔️ Open the Battle tab',text:'Time to defend! Tap the Battle tab.',target:()=>tabBtn('battle'),done:()=>tabOpen('battle')},
+ {title:'🗺️ Choose Green Meadow',text:'Maps unlock one by one. The difficulty buttons under the maps change enemy health and rewards. Keep Easy for now and tap Green Meadow.',
+  enter:()=>{if(typeof curMode!=='undefined'&&curMode!=='easy'&&S.cleared===0){curMode='easy';renderAll();}},target:()=>tabOpen('battle')?document.querySelector('#stages [data-s="0"]'):tabBtn('battle'),done:()=>!!(G&&!G.over)},
+ {title:'📍 Place your first unit',text:'Tap a unit card in the panel on the left of the map, then tap the grass beside the road. You can’t place units on the road. Each placement costs coins; you start every battle with 500.',
+  target:()=>(G&&G.pl)?$('#cv'):document.querySelector('#bar .card'),done:()=>!!(G&&G.us.length>=1)},
+ {title:'📍 Place more units',text:'Place another unit along the road. Spread them out so enemies pass through every unit’s range. Barter attacks nothing, but earns extra coins every few seconds.',
+  target:()=>(G&&G.pl)?$('#cv'):document.querySelector('#bar .card'),done:()=>!!(G&&(G.us.length>=2||G.wave>0))},
+ {title:'▶ Start the first wave',text:'Tap “Start wave”. After that, waves keep coming automatically. Defeated enemies give coins.',target:()=>$('#bWave'),done:()=>!!(G&&G.wave>=1)},
+ {title:'⬆ Upgrade a unit',text:'Tap one of your placed units on the map to open its menu, then press Upgrade when you have enough coins. Upgrades raise damage, range and speed. You can also sell a placed unit from the same menu.',
+  target:()=>$('#cv'),done:()=>!!(G&&G.us.some(u=>u.bl>=2)),skippable:true},
+ {title:'⏩ Speed and helpers',text:'“Speed” makes the battle faster and “Pause” stops it. “Auto Upgrade” spends coins on upgrades for you. Auto Play unlocks at Player Level 5 on maps where you earned 3 stars.',target:()=>$('#bSpd'),info:true},
+ {title:'🏰 Survive all 15 waves',text:'Keep enemies from reaching your castle. Each enemy that gets through costs a life, and you have 10. The more lives you keep, the more stars you earn (up to 3).',
+  target:()=>$('#hud'),done:()=>!!(G&&G.over),skippable:true},
+ {title:'🎁 Rewards',text:'The results card shows your rewards: gems, the map’s fruit, Player EXP and EXP for every unit you placed. Winning unlocks the next map. Losing still pays a few gems and EXP.',info:true},
+ {title:'🍓 Open your Bag',text:'Fruits level up your units. Tap the Bag tab.',target:()=>tabBtn('bag'),done:()=>tabOpen('bag'),
+  enter:()=>{if(!Object.keys(ITEMS).some(k=>(S.bag[k]||0)>0)){S.bag.berry=(S.bag.berry||0)+3;discoverItem('berry');save(false);renderAll();toast('Tutorial gift: 3 Meadow Berries');}}},
+ {title:'🍓 Feed a unit',text:'Tap a fruit, choose a unit below, then tap “Feed 1” or “Feed up to 10”. Better fruits from later maps give much more EXP. At level 100, a unit can be prestiged for a permanent star.',
+  enter:b=>{b.xp=totalUnitXp()},target:()=>{if(!tabOpen('bag'))return tabBtn('bag');if(!bagSel||!ITEMS[bagSel])return document.querySelector('#bagGrid .card[data-k]:not([data-k="trait_reroll"])');return $('#f1');},done:b=>totalUnitXp()>b.xp,skippable:true},
+ {title:'✨ Open the Trait Forge',text:'Traits give a unit permanent bonuses such as extra damage, range or attack speed. Tap the Traits tab.',target:()=>tabBtn('traits'),done:()=>tabOpen('traits')},
+ {title:'✨ Reroll a trait',text:'Pick a unit, then tap “Reroll trait”. Each reroll uses one Trait Reroll crystal (you have '+'{rerolls}'+'). With none left, a reroll costs 30 gems. Rare traits are rarer, and every 150th reroll without a Mythic guarantees one.',
+  enter:b=>{b.rr=S.traitRerolls;b.gems=S.gems},target:()=>tabOpen('traits')?$('#traitRoll'):tabBtn('traits'),done:b=>S.traitRerolls<b.rr||S.gems<b.gems,skippable:true},
+ {title:'💎 Earning more Trait Rerolls',text:'Trait Rerolls come from: AFK mode (5% chance each minute), Player Level milestone rewards every 5 levels, and Hard or Hell boss waves. You can see your crystals in the Bag. Auto Reroll can keep rolling until it finds the trait you choose.',info:true,target:()=>$('#autoTraitToggle')},
+ {title:'📖 Collect Index rewards',text:'Every new unit you discover pays a one-time gem reward in the Index. Open the Index tab and claim your rewards.',target:()=>tabBtn('index'),info:true},
+ {title:'🌙 AFK rewards',text:'The AFK tab earns gems and sometimes Trait Rerolls every minute while it stays open. It’s great when you’re away from the game.',target:()=>tabBtn('afk'),info:true},
+ {title:'⭐ Prestige stars',text:'At level 100 a unit can prestige: it returns to level 1 and gains a star (up to 5). Every star gives +50% damage, +4% range and +6% attack speed. 3★ and 5★ unlock bonus strike perks.',info:true},
+ {title:'💾 Keep your progress safe',text:'The game saves automatically. Open Settings to Export, Share or Copy your save as a backup before clearing browser data or switching devices.',target:()=>$('#bSettings'),info:true},
+ {title:'🏆 You’re ready!',text:'Win maps to unlock new ones and harder difficulties. Raids unlock at Player Level 25. You can replay this guide any time from the 📖 Tutorial button. Good luck, Guardian!',info:true,last:true},
+];
+function guideSave(){try{localStorage.setItem(GG_GUIDE_KEY,JSON.stringify({step:guide.step,done:!guide.active,ts:Date.now()}))}catch(e){}}
+function guideClearGlow(){document.querySelectorAll('.guide-glow').forEach(el=>el.classList.remove('guide-glow'));}
+function guideEnter(i){
+  guide.step=Math.max(0,Math.min(GUIDE_STEPS.length-1,i));guide.base={};
+  const st=GUIDE_STEPS[guide.step];try{st.enter&&st.enter(guide.base)}catch(e){console.warn('Guide step setup failed',e)}
+  guide.lastTarget=null;guideSave();guideRender();
+}
+function guideRender(){
+  const box=$('#ggGuide');if(!box)return;
+  if(!guide.active){box.classList.add('hide');guideClearGlow();return;}
+  const st=GUIDE_STEPS[guide.step];box.classList.remove('hide');box.classList.toggle('mini',guide.hidden);
+  $('#ggGuideStep').textContent='Tutorial '+(guide.step+1)+' / '+GUIDE_STEPS.length;
+  $('#ggGuideTitle').textContent=st.title;
+  $('#ggGuideText').textContent=st.text.replace('{rerolls}',String(S.traitRerolls));
+  $('#ggGuideNext').classList.toggle('hide',!(st.info||st.skippable));
+  $('#ggGuideNext').textContent=st.last?'Finish ✓':st.info?'Next →':'Skip this step';
+  $('#ggGuideBack').disabled=guide.step===0;
+}
+function guideTick(){
+  if(!guide.active)return;
+  const st=GUIDE_STEPS[guide.step];
+  let done=false;try{done=!st.info&&!!(st.done&&st.done(guide.base))}catch(e){}
+  if(done){guideClearGlow();if(guide.step>=GUIDE_STEPS.length-1)return guideFinish();guideEnter(guide.step+1);return;}
+  let t=null;try{t=st.target?st.target():null}catch(e){}
+  if(t!==guide.lastTarget){guideClearGlow();guide.lastTarget=t;
+    if(t&&!guide.hidden){t.classList.add('guide-glow');if(t.getBoundingClientRect().height&&(t.getBoundingClientRect().top<0||t.getBoundingClientRect().bottom>innerHeight))t.scrollIntoView({block:'center',behavior:'smooth'});}}
+  else if(t&&!guide.hidden&&!t.classList.contains('guide-glow'))t.classList.add('guide-glow');
+  $('#ggGuideText').textContent=st.text.replace('{rerolls}',String(S.traitRerolls));
+}
+function guideStart(fromStep=0){guide.active=true;guide.hidden=false;guideEnter(fromStep);}
+function guideFinish(){guide.active=false;guideClearGlow();guideSave();guideRender();toast('Tutorial complete! Replay it any time from 📖 Tutorial.');}
+function guideSkip(){if(!confirm('Skip the tutorial? You can restart it any time from the 📖 Tutorial button.'))return;guide.active=false;guideClearGlow();guideSave();guideRender();}
+$('#ggGuideNext').onclick=()=>{const st=GUIDE_STEPS[guide.step];guideClearGlow();if(st.last||guide.step>=GUIDE_STEPS.length-1)return guideFinish();guideEnter(guide.step+1);};
+$('#ggGuideBack').onclick=()=>{guideClearGlow();guideEnter(guide.step-1);};
+$('#ggGuideSkip').onclick=guideSkip;
+$('#ggGuideMin').onclick=()=>{guide.hidden=!guide.hidden;$('#ggGuideMin').textContent=guide.hidden?'▲ Show':'▼ Hide';guideClearGlow();guide.lastTarget=null;guideRender();};
+setInterval(guideTick,400);
+function guideAutoStart(){
+  let saved=null;try{saved=JSON.parse(localStorage.getItem(GG_GUIDE_KEY)||'null')}catch(e){}
+  if(saved&&saved.done)return;
+  if(saved&&Number.isInteger(saved.step)){guideStart(saved.step);return;}
+  // Only brand-new players are guided automatically; existing players can start it from 📖 Tutorial.
+  const isNew=S.playerLevel<=1&&(S.cleared||0)===0&&S.units.length<=1;
+  if(isNew)guideStart(0);
+}
+
 
 
 /* ---------- Storage protection, version label and update notice ---------- */
@@ -3488,6 +3669,7 @@ document.querySelectorAll('#qolFilter [data-filter]').forEach(btn=>btn.onclick=(
   document.querySelectorAll('#qolModal .qol-section').forEach(sec=>sec.classList.toggle('filtered',f!=='All'&&sec.dataset.category!==f));
 });
 load();afkPendingUI();syncSettings();ensureBanner();updateBannerClock();setInterval(updateBannerClock,1000);gemUI();renderAll();save(false);requestAnimationFrame(loop);
+setTimeout(guideAutoStart,1200);
 renderVersionLabels();requestPersistentStorage();
 </script>
 
