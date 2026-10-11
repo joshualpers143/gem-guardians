@@ -164,6 +164,19 @@ button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff1c,0 1px
 @keyframes ggFill{to{width:100%}}@keyframes ggPulse{to{transform:scale(1.12);filter:drop-shadow(0 0 35px #b8b3ff)}}
 <style>
 .ico{width:72px}
+/* 2026.10.11.5: clearer map stars */
+.mode-star-grid{gap:5px 6px}
+.mode-stars{display:flex;align-items:center;justify-content:space-between;gap:4px;background:#0d0a1f;border:1px solid #ffffff22;border-radius:8px;padding:2px 6px;opacity:1!important;font-size:11px;white-space:nowrap}
+.mode-stars .ms-label{color:#cfc9ef;font-weight:700}
+.mode-stars .ms-stars{display:inline-flex;gap:1px;font-size:14px;line-height:1}
+.ms-star{color:#3d3760;-webkit-text-stroke:.5px #000a}
+.ms-star.on{color:#ffd84a;text-shadow:0 0 6px #ffb800aa,0 1px 0 #8a5a00}
+.mode-stars.active{border-color:#facc15;background:#2a2148;box-shadow:0 0 0 1px #facc1555}
+.mode-stars.active .ms-label{color:#fde68a}
+.mode-stars.perfect{background:linear-gradient(90deg,#3a2a08,#0d0a1f)}
+.stage-stars-big{position:absolute;left:8px;bottom:6px;display:flex;gap:2px;font-size:22px;line-height:1;padding:2px 7px 3px;border-radius:999px;background:#000b}
+.stage-stars-big .ms-star.on{text-shadow:0 0 8px #ffc400,0 2px 0 #8a5a00}
+.stage-stars-big .sb-mode{font-size:10px;font-weight:800;color:#fde68a;align-self:center;margin-right:4px;letter-spacing:.04em;text-transform:uppercase}
 /* 2026.10.11.4: battle menu, map cards, guided tutorial */
 .battle-pick-title{margin:0 0 2px}.battle-pick-hint{margin:0 0 10px;color:var(--mut);font-size:13px}
 #stages{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:12px}
@@ -354,6 +367,10 @@ canvas.inline-ico{display:inline-block;width:38px;height:auto;vertical-align:mid
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Tactician Auto Play AI &amp; Auto Speed</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 09:22 AM MDT</p><ul><li>Auto Play has a brand-new, much smarter AI.</li><li><strong>Studies the map:</strong> it measures how much of the road every build spot can reach with each unit’s range, so it can find corners and loops where one unit hits enemies twice.</li><li><strong>Places units by role:</strong> freeze and slow units go near the start of the road, damage dealers cover the most road, and Barter is placed away from the best firing spots.</li><li><strong>Compares every option:</strong> it weighs placing a new unit against upgrading an existing one by the damage gained per coin, and it briefly saves up when a much better option is only a few seconds away.</li><li><strong>Reacts to danger:</strong> when enemies get close to your castle or a life is lost, it stops spending on income and strengthens the end of the road.</li><li><strong>Auto speed:</strong> Auto Play now picks the battle speed: ×3 when the wave is under control, ×2 under pressure, and ×1 when enemies are near your castle or a boss is advancing. If you press Speed yourself, it keeps your choice for that battle.</li><li>Auto Play unlock rules are unchanged: Player Level 5 and 3★ on that map and difficulty.</li></ul></section>
+<section class="qol-section" data-category="Balance Update"><span class="update-tag tag-balance-update">Balance Update</span><h3>Every Map Is Harder Than the One Before</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 09:22 AM MDT</p><ul><li>With team-matched enemy strength, a very strong team could sometimes find an earlier map harder than a later one. That can no longer happen.</li><li>For your team, enemies on every map are now always at least as strong as on the map before it. Each harder difficulty (Easy → Medium → Hard → Hell) is always at least as hard as the one below it on the same map.</li><li>Beginner teams are still never scaled. Rewards are unchanged.</li></ul></section>
+<section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Auto Restart Keeps Your Speed</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 09:22 AM MDT</p><ul><li>When a map restarts automatically, it keeps the speed you were using (×1, ×2 or ×3). It only changes if you press the Speed button.</li></ul></section>
+<section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Clearer Stars on Map Cards</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 09:22 AM MDT</p><ul><li>Map cards show your stars as bright gold stars on dark badges, with grey stars for ones not earned yet. Each difficulty has its own labelled row.</li><li>The selected difficulty’s stars are also shown large on the map picture, and difficulties with all 3 stars get a golden highlight.</li></ul></section>
 <section class="qol-section" data-category="Balance Update"><span class="update-tag tag-balance-update">Balance Update</span><h3>Enemies Now Match Your Team’s Strength</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 02:01 AM MDT</p><ul><li>Enemy health now adapts to your equipped team’s damage, including unit levels, prestige stars and traits.</li><li><strong>New players are not affected:</strong> beginner teams always face normal enemies.</li><li>Teams far stronger than the map and difficulty face tougher enemies, up to ×25 health. Taking a maxed team to an early map no longer wipes everything instantly. Playing maps that fit your team’s strength is unchanged.</li><li>The extra health builds up over the waves, so you always have time to place your units first. Raids and Infinite mode scale the same way.</li><li>The battle bar shows the current enemy strength (for example “Enemy ×3.2”) whenever it is above normal.</li><li>Rewards are unchanged.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Guided Tutorial for New Players</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 02:01 AM MDT</p><ul><li>New players are now taught by the game itself. A guide panel highlights the real buttons and moves on as you complete each action. It covers:<ul><li>summoning, equipping a team, choosing a map, placing units and starting waves</li><li>upgrading, speed controls, rewards, feeding fruits and rerolling traits</li><li>how to earn Trait Rerolls, Index rewards, AFK mode, prestige stars and save backups</li></ul></li><li>The guide can be hidden, stepped back, skipped, or replayed from the 📖 Tutorial button. It remembers your progress if you close the game.</li><li>The quick tutorial no longer pops up by itself. It is still available from 📖 Tutorial, with updated information.</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>New Battle Menu Layout &amp; Illustrated Map Cards</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 02:01 AM MDT</p><ul><li>The Battle tab now lists the maps first, with the difficulty options below the maps and the enemy guide below the difficulty.</li><li>Each map card shows a picture of the map, its number, its fruit (with icon), your stars for every difficulty and a ✓ Cleared badge. Locked maps are greyed out and show which map unlocks them.</li><li>The old enemy-color legend is replaced by pictures and names of each enemy type.</li></ul></section>
@@ -1533,7 +1550,7 @@ function save(manual){
 }
 function syncSettings(){document.querySelectorAll('[data-setting]').forEach(el=>el.checked=S.settings[el.dataset.setting]);}
 const GG_EDITION='public';
-const GAME_VERSION='2026.10.11.4';
+const GAME_VERSION='2026.10.11.5';
 // Save portability: never change the existing localStorage keys. Import validates before replacement.
 function buildSaveExport(){
   if(!save(false))throw Error('Browser storage is unavailable or full; export cancelled to avoid an unreliable backup');
@@ -2334,9 +2351,11 @@ function renderStageCards(){
   const el=$('#stages');if(!el)return;
   el.innerHTML=STAGES.map((s,i)=>{
     const locked=i>S.cleared,cleared=i<S.cleared;
-    const ratings=['easy','medium','hard','hell'].map(mode=>{const stars=S.stageStars?.[stageStarKey(i,mode)]||0;return '<span class="mode-stars'+(curMode===mode?' active':'')+'">'+MODES[mode].n+': '+('★'.repeat(stars)+'☆'.repeat(3-stars))+'</span>';}).join('');
+    const starRow=n=>[0,1,2].map(k=>'<span class="ms-star'+(k<n?' on':'')+'">★</span>').join('');
+    const ratings=['easy','medium','hard','hell'].map(mode=>{const stars=S.stageStars?.[stageStarKey(i,mode)]||0;return '<span class="mode-stars'+(curMode===mode?' active':'')+(stars===3?' perfect':'')+'" title="'+MODES[mode].n+': '+stars+' of 3 stars"><span class="ms-label">'+MODES[mode].n+'</span><span class="ms-stars">'+starRow(stars)+'</span></span>';}).join('');
+    const curStars=curMode==='infinite'?-1:(S.stageStars?.[stageStarKey(i,curMode)]||0);
     return '<button type="button" class="stage-card'+(locked?' locked':'')+(cleared?' cleared':'')+'" data-s="'+i+'"'+(locked?' disabled':'')+' aria-label="'+s.n+(locked?' (locked)':'')+'">'
-      +'<span class="stage-thumb"><img alt="" data-thumb="'+i+'"'+(stageThumbs[i]?' src="'+stageThumbs[i]+'"':'')+'><span class="stage-num">'+(i+1)+'</span>'+(cleared?'<span class="stage-badge">✓ Cleared</span>':'')+(locked?'<span class="stage-lock">🔒</span>':'')+'</span>'
+      +'<span class="stage-thumb"><img alt="" data-thumb="'+i+'"'+(stageThumbs[i]?' src="'+stageThumbs[i]+'"':'')+'><span class="stage-num">'+(i+1)+'</span>'+(curStars>=0&&!locked?'<span class="stage-stars-big" aria-label="'+curStars+' of 3 stars on '+MODES[curMode].n+'"><span class="sb-mode">'+MODES[curMode].n+'</span>'+starRow(curStars)+'</span>':'')+(cleared?'<span class="stage-badge">✓ Cleared</span>':'')+(locked?'<span class="stage-lock">🔒</span>':'')+'</span>'
       +'<span class="stage-body"><strong>'+s.n+'</strong><span class="stage-food"><canvas class="ico stage-fruit" width="72" height="64" data-item="'+s.food+'"></canvas>Drops '+ITEMS[s.food].n+'</span><span class="mode-star-grid">'+ratings+'</span>'
       +(autoPlayEligible(i,curMode)?'<small style="color:#86efac">▶ Auto Play unlocked</small>':'')+(curMode==='infinite'?'<small>∞ Infinite mode selected</small>':'')+(locked?'<small style="color:#fca5a5">Clear '+STAGES[i-1].n+' to unlock</small>':'')+'</span></button>';
   }).join('');
@@ -2362,7 +2381,18 @@ function paintEnemyLegend(){
    a "fair" power for the map and difficulty. Only teams far stronger than the content face
    tougher enemies; beginner teams (power below 2.5) are never scaled. The extra health ramps
    up over the waves so early placement is always possible. */
+// Every map (and every harder difficulty) must stay at least as hard as the previous one, even after
+// team scaling: the effective enemy health on this map/mode is capped by the effective health of
+// every later map and harder mode.
 function teamPowerScale(si,mode,raidLevel){
+  if(raidLevel||mode==='infinite')return teamPowerScaleRaw(si,mode,raidLevel);
+  const order=['easy','medium','hard','hell'],r=order.indexOf(mode);if(r<0)return teamPowerScaleRaw(si,mode,raidLevel);
+  const base=(i,m)=>STAGES[i].hp*stageDifficulty(i)*MODES[m].hp;
+  let eff=base(si,mode)*teamPowerScaleRaw(si,mode,0);
+  for(let j=si;j<STAGES.length;j++)for(let k=r;k<order.length;k++){if(j===si&&k===r)continue;eff=Math.min(eff,base(j,order[k])*teamPowerScaleRaw(j,order[k],0));}
+  return Math.max(1,eff/base(si,mode));
+}
+function teamPowerScaleRaw(si,mode,raidLevel){
   const ps=(S.equipped||[]).map(uid=>S.units.find(u=>u.uid===uid)).filter(i=>i&&UNITS[i.id]&&UNITS[i.id].d>0).map(i=>{const s=stats(i);return (s.d/s.cd)/25;});
   if(!ps.length)return 1;
   const power=ps.reduce((a,b)=>a+b,0)/ps.length;
@@ -2624,7 +2654,7 @@ $('#bNextMap').onclick=()=>{
   startBattle(next,mode);
   toast('Next map: '+STAGES[next].n+' · '+MODES[mode].n);
 };
-$('#bSpd').onclick=()=>{if(!G)return;G.speed=G.speed%3+1;$('#bSpd').textContent='Speed x'+G.speed};
+$('#bSpd').onclick=()=>{if(!G)return;G.speed=G.speed%3+1;G.manualSpeed=true;G.autoSpeed=false;$('#bSpd').textContent='Speed x'+G.speed;if(G.autoPlay)toast('Speed set manually: Auto Play will keep Speed x'+G.speed+' for this battle.')};
 $('#bPause').onclick=()=>{if(!G||G.over)return;G.paused=!G.paused;$('#bPause').textContent=G.paused?'Resume':'Pause'};
 function upgradePlacedUnit(u){
   if(!G||G.over||u.bl>=5)return false;
@@ -2680,6 +2710,149 @@ function autoPlayPosition(inst){
   }
   return bestScore>0?best:null;
 }
+// ---------- Tactician Auto Play AI (2026.10.11.5) ----------
+// Plans with a cached map analysis: every candidate build spot knows how much of the road
+// (and which part of it) each attack range would cover. Each tick it compares placing a new
+// unit against upgrading an existing one by expected damage gained per coin, reacts to danger
+// by defending the end of the road, saves up briefly for clearly better options, and manages
+// game speed (×3 calm, ×2 pressure, ×1 danger/boss) unless the player sets the speed manually.
+function aiMap(){
+  if(G.ai&&G.ai.map)return G.ai.map;
+  const path=battleStage().path,samples=[];let tot=0;
+  for(let i=1;i<path.length;i++){const a=path[i-1],b=path[i],l=Math.hypot(b[0]-a[0],b[1]-a[1]);
+    for(let s=0;s<l;s+=10){const t=s/l;samples.push({x:a[0]+(b[0]-a[0])*t,y:a[1]+(b[1]-a[1])*t,d:tot+s});}tot+=l;}
+  const visible=samples.filter(p=>p.x>=-5&&p.x<=805&&p.y>=-5&&p.y<=455);
+  for(const p of visible)p.f=Math.max(0,Math.min(1,p.d/G.tot));
+  const spots=[];
+  for(let y=34;y<=416;y+=16)for(let x=34;x<=766;x+=16){
+    if(path.some((p,i)=>i>0&&dSeg(x,y,path[i-1],p)<35))continue;
+    const dist=new Float32Array(visible.length);let near=1e9;
+    for(let k=0;k<visible.length;k++){const dd=Math.hypot(x-visible[k].x,y-visible[k].y);dist[k]=dd;if(dd<near)near=dd;}
+    spots.push({x,y,dist,near});
+  }
+  G.ai.map={samples:visible,spots};return G.ai.map;
+}
+function aiThreat(){let lead=0;for(const e of G.en)if(e.hp>0)lead=Math.max(lead,e.d/G.tot);return lead;}
+// Weight of a road sample: normal play values the whole road with a bias toward the castle end;
+// in danger the last stretch matters most; slow/freeze units prefer the first half.
+function aiWeight(f,role,danger){
+  if(danger)return .25+1.9*f*f;
+  if(role==='slow')return 1.35-.7*f;
+  return .8+.45*f;
+}
+function aiRole(id){const U=UNITS[id];if(id==='barter')return 'economy';if(U.d<=0||id==='eternity')return 'support';if(U.slow||['chrono_warden','chronos','witch','xenowarden','mage','leviathan','druid'].includes(id))return 'slow';return 'damage';}
+function aiCoverage(spot,range,role,danger,coverCount){
+  const S2=G.ai.map.samples;let v=0;
+  for(let k=0;k<S2.length;k++)if(spot.dist[k]<=range){const w=aiWeight(S2[k].f,role,danger);v+=coverCount?w/(1+.18*coverCount[k]):w;}
+  return v*10; // ≈ weighted road length in pixels
+}
+function aiCoverCounts(){
+  const S2=G.ai.map.samples,cnt=new Float32Array(S2.length);
+  for(const u of G.us){if(u.d<=0)continue;for(let k=0;k<S2.length;k++){if(Math.hypot(u.x-S2[k].x,u.y-S2[k].y)<=u.rg)cnt[k]++;}}
+  return cnt;
+}
+function aiUnitDps(id,d,cd){const U=UNITS[id];let m=1;if(U.splash)m*=1.35;if(['cosmos','abyss','dragonlord','worldtree','starlord','rift_blade','abyss_summoner','alucard'].includes(id))m*=1.4;return d/Math.max(.1,cd)*m;}
+function aiBestSpot(inst,role,danger,cnt){
+  const key=inst.uid+'|'+danger+'|'+G.us.length+'|'+G.us.reduce((a,u)=>a+u.x*3+u.y,0);
+  G.ai.spotCache=G.ai.spotCache||{};if(G.ai.spotCache[key]!==undefined)return G.ai.spotCache[key];
+  const r=aiBestSpotCompute(inst,role,danger,cnt);G.ai.spotCache[key]=r;
+  if(Object.keys(G.ai.spotCache).length>200)G.ai.spotCache={};return r;
+}
+function aiBestSpotCompute(inst,role,danger,cnt){
+  const st=stats(inst),spots=G.ai.map.spots;let best=null,bestV=-1;
+  for(const sp of spots){
+    if(G.us.some(u=>Math.hypot(u.x-sp.x,u.y-sp.y)<36))continue;
+    let v;
+    if(role==='economy'){ // keep prime firing spots free: prefer spots that cover little road
+      v=1000-aiCoverage(sp,140,'damage',false)-sp.near*.2;if(sp.near<45)v-=200;
+    }else if(role==='support'){
+      const allies=G.us.filter(u=>u.d>0);v=allies.reduce((s,u)=>s+(Math.hypot(u.x-sp.x,u.y-sp.y)<=st.rg?aiUnitDps(u.id,u.d,u.cd):0),0);
+    }else v=aiCoverage(sp,st.rg,role,danger,cnt);
+    if(v>bestV){bestV=v;best=sp;}
+  }
+  return best?{x:best.x,y:best.y,v:bestV}:null;
+}
+function aiRemainingWaves(){return G.mode==='infinite'?12:Math.max(0,(G.raidLevel?raidMaxWave(G.raidLevel):15)-G.wave);}
+function aiOptions(danger){
+  const cnt=aiCoverCounts(),opts=[];
+  const equipped=(S.equipped||[]).map(uid=>S.units.find(u=>u.uid===uid)).filter(Boolean);
+  const dmgPlaced=G.us.filter(u=>u.d>0).length,barters=G.us.filter(u=>u.id==='barter');
+  const remaining=aiRemainingWaves();
+  for(const inst of equipped){
+    if(placedNameCount(inst.id)>=unitPlacementCap(inst.id))continue;
+    const role=aiRole(inst.id),cost=placementCost(inst);
+    if(role==='economy')continue; // handled by aiEconomy() (return on investment)
+    if(role==='support'&&dmgPlaced<2)continue;
+    const pos=aiBestSpot(inst,role,danger,cnt);if(!pos)continue;
+    const st=stats(inst);
+    let value=role==='support'?pos.v*.25:aiUnitDps(inst.id,st.d,st.cd)*pos.v/100;
+    if(!dmgPlaced&&role!=='support')value*=4;
+    opts.push({type:'place',inst,pos,cost,score:value/Math.pow(cost,.9)});
+  }
+  for(const u of G.us){
+    if(u.bl>=5)continue;const cost=boostCost(u),role=aiRole(u.id);
+    let score;
+    if(role==='economy')continue;
+    else if(role==='support'){const near=G.us.filter(v=>v.d>0&&Math.hypot(v.x-u.x,v.y-u.y)<=u.rg);score=near.reduce((s,v)=>s+aiUnitDps(v.id,v.d,v.cd),0)*.05/Math.pow(cost,.9);if(!near.length)continue;}
+    else{const sp={dist:G.ai.map.samples.map(p=>Math.hypot(u.x-p.x,u.y-p.y))};const cov=aiCoverage(sp,u.rg+4,role,danger,null);score=aiUnitDps(u.id,u.d,u.cd)*.35*cov/100/Math.pow(cost,.9);}
+    opts.push({type:'upgrade',u,cost,score});
+  }
+  return opts.sort((a,b)=>b.score-a.score);
+}
+// Barter economics: coins per second at a boost level, and return on investment for the
+// remaining battle time. Income is taken first whenever it pays back at least twice.
+function aiBarterRate(bl){const bonus=bl<=1?0:5*(Math.pow(1.1,bl-2)-1)/.1;return Math.round(10+bonus)/Math.max(1,6-bl);}
+function aiEconomy(danger){
+  if(danger||G.mode==='infinite'&&G.wave>40)return null;
+  const secsLeft=aiRemainingWaves()*28;if(secsLeft<40)return null;
+  const dmgPlaced=G.us.filter(u=>u.d>0).length;if(!dmgPlaced)return null;
+  const opts=[];
+  for(const u of G.us)if(u.id==='barter'&&u.bl<5){const cost=boostCost(u),gain=(aiBarterRate(u.bl+1)-aiBarterRate(u.bl))*secsLeft;opts.push({type:'upgrade',u,cost,roi:gain/cost});}
+  const inst=(S.equipped||[]).map(uid=>S.units.find(x=>x.uid===uid)).find(i=>i&&i.id==='barter');
+  if(inst&&placedNameCount('barter')<unitPlacementCap('barter')&&dmgPlaced>=Math.min(2,1+G.us.filter(u=>u.id==='barter').length)){
+    const cost=placementCost(inst),pos=aiBestSpot(inst,'economy',false,null);
+    if(pos)opts.push({type:'place',inst,pos,cost,roi:aiBarterRate(1)*secsLeft/cost});}
+  opts.sort((a,b)=>b.roi-a.roi);const best=opts[0];
+  return best&&best.roi>=2?best:null;
+}
+function aiDo(o){
+  if(o.type==='upgrade')return upgradePlacedUnit(o.u);
+  const inst=o.inst,U=UNITS[inst.id],st=stats(inst);
+  if(G.coins<o.cost)return false;
+  G.coins-=o.cost;
+  G.us.push({summonTimer:5,chronoTimer:10,uid:inst.uid,id:inst.id,x:o.pos.x,y:o.pos.y,bl:1,pl:inst.lv,d:st.d,rg:st.rg,cd:st.cd,t:0,col:U.col,slow:U.slow,splash:U.splash,spent:o.cost});
+  refreshPlacementBar();hud();return true;
+}
+function aiSpeed(danger,lead){
+  if(!G.autoSpeed||G.manualSpeed)return;
+  const bossOut=G.en.some(e=>e.boss);
+  const want=(danger||bossOut&&lead>.35)?1:(lead>.45||G.lifeLostAt&&G.time-G.lifeLostAt<6)?2:3;
+  if(want!==G.speed){G.speed=want;const b=$('#bSpd');if(b)b.textContent='Speed x'+want+' (Auto)';}
+}
+function tacticianTick(){
+  if(!G||G.over||!G.autoPlay)return;
+  G.ai=G.ai||{};aiMap();
+  G.time=(G.time||0);
+  if(G.ai.lastLives!=null&&G.lives<G.ai.lastLives)G.lifeLostAt=G.time;G.ai.lastLives=G.lives;
+  const lead=aiThreat(),danger=lead>.8||(G.lifeLostAt!=null&&G.time-G.lifeLostAt<4);
+  aiSpeed(danger,lead);
+  // income estimate for "save up" decisions
+  const now=G.time,c=G.coins+(G.ai.spentSince||0);
+  if(G.ai.lastT!=null&&now>G.ai.lastT){const rate=(c-G.ai.lastC)/(now-G.ai.lastT);G.ai.rate=G.ai.rate==null?Math.max(0,rate):G.ai.rate*.8+Math.max(0,rate)*.2;}
+  G.ai.lastT=now;G.ai.lastC=G.coins;G.ai.spentSince=0;
+  for(let n=0;n<4;n++){
+    const eco=aiEconomy(danger);
+    if(eco){if(eco.cost<=G.coins){const spent=eco.cost;if(aiDo(eco)){G.ai.spentSince=(G.ai.spentSince||0)+spent;continue;}}
+      else if(G.wave>0&&G.us.filter(u=>u.d>0).length>=2&&(eco.cost-G.coins)<=(G.ai.rate||0)*5)break;}
+    const opts=aiOptions(danger);if(!opts.length)break;
+    const best=opts[0],affordable=opts.find(o=>o.cost<=G.coins);if(!affordable)break;
+    // Save for a clearly better option that will be affordable within ~6 s (never while in danger).
+    if(best!==affordable&&!danger&&best.score>affordable.score*1.6&&(best.cost-G.coins)<=(G.ai.rate||0)*6)break;
+    const spent=affordable.cost;if(!aiDo(affordable))break;G.ai.spentSince=(G.ai.spentSince||0)+spent;
+  }
+}
+
+// Previous Smart Auto Play (kept for reference; no longer called by the battle loop).
 function autoPlayBuild(){
   if(!G||G.over||!G.autoPlay)return false;
   const equipped=(S.equipped||[]).map(uid=>S.units.find(u=>u.uid===uid)).filter(Boolean);
@@ -2766,11 +2939,11 @@ $('#bAutoPlay').onclick=()=>{
   if(!G.autoPlay){$('#bAutoUpgrade').textContent='Auto Upgrade: OFF';$('#bAutoUpgrade').setAttribute('aria-pressed','false');}
   if(G.autoPlay){G.pl=null;G.sel=null;hideQuick();G.autoUpgrade=false;G.autoUpgradeTimer=0;
     $('#bAutoUpgrade').textContent='Smart Upgrades: ON';$('#bAutoUpgrade').setAttribute('aria-pressed','true');
-    autoPlayBuild();if(G.wave===0)nextWave();
-  }
+    G.autoSpeed=!G.manualSpeed;tacticianTick();if(G.wave===0)nextWave();
+  }else{G.autoSpeed=false;$('#bSpd').textContent='Speed x'+G.speed;}
   $('#bAutoPlay').textContent='Auto Play: '+(G.autoPlay?'ON':'OFF');
   $('#bAutoPlay').setAttribute('aria-pressed',String(G.autoPlay));
-  toast(G.autoPlay?'Auto Play enabled: deploying and upgrading units automatically.':'Auto Play disabled.');
+  toast(G.autoPlay?'Tactician Auto Play enabled: placing, upgrading and choosing the speed automatically.':'Auto Play disabled.');
 };
 
 $('#bAutoUpgrade').onclick=()=>{
@@ -2945,7 +3118,10 @@ function renderOutcomeCard(win,R,m){
 function restartMap(){
   if(!G||!G.over)return;
   const {si,mode,raidLevel=0,restartSnapshot=[],replayAutoPlay=false}=G;
+  const keepSpeed=G.speed||1,keepManual=!!G.manualSpeed;
   startBattle(si,mode,raidLevel);
+  // Auto Restart keeps the battle speed that was active before the restart.
+  G.speed=keepSpeed;G.manualSpeed=keepManual;$('#bSpd').textContent='Speed x'+G.speed;
   // Restore affordable placed units in original order; any unaffordable units remain available to place.
   for(const old of restartSnapshot){
     const inst=S.units.find(i=>i.uid===old.uid);if(!inst)continue;
@@ -2962,7 +3138,7 @@ function restartMap(){
     refreshPlacementBar();
   }
   if(replayAutoPlay&&S.settings.autoRestart&&autoPlayEligible(si,mode,raidLevel)){
-    G.autoPlay=true;G.autoPlayTimer=0;G.autoPlayStartDelay=3;
+    G.autoPlay=true;G.autoPlayTimer=0;G.autoPlayStartDelay=3;G.autoSpeed=!G.manualSpeed;
     G.autoUpgrade=false;
     $('#bAutoPlay').textContent='Auto Play: ON';
     $('#bAutoPlay').setAttribute('aria-pressed','true');
@@ -3132,9 +3308,10 @@ function applyRankedAttackSkill(u, target, hits){
 }
 
 function step(dt){
+  G.time=(G.time||0)+dt;
   if(G.autoPlay){
     if(G.autoPlayStartDelay>0){G.autoPlayStartDelay=Math.max(0,G.autoPlayStartDelay-dt);}
-    else {G.autoPlayTimer-=dt;if(G.autoPlayTimer<=0){G.autoPlayTimer=.65;autoPlayBuild();autoPlayUpgrade();if(G.wave===0)nextWave();}}
+    else {G.autoPlayTimer-=dt;if(G.autoPlayTimer<=0){G.autoPlayTimer=.4;tacticianTick();if(G.wave===0)nextWave();}}
   }
   // Choose the most valuable affordable upgrade using combat, support, and economy priorities.
   if(G.autoUpgrade){
