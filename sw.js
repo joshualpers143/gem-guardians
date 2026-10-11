@@ -1,5 +1,5 @@
-const CACHE='gem-guardians-public-exp-rebalance-2026101112';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./privacy.html','./gg-sound.js?v=2026.10.11.12','./gg-art.js?v=2026.10.11.12','./gg-game.js?v=2026.10.11.12'];
+const CACHE='gem-guardians-public-rarity-exp-2026101113';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./privacy.html','./gg-sound.js?v=2026.10.11.13','./gg-art.js?v=2026.10.11.13','./gg-game.js?v=2026.10.11.13'];
 self.addEventListener('install', event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });

@@ -1,4 +1,4 @@
-/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.12 · built from source/public/index.html by tools/split.py */
+/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.13 · built from source/public/index.html by tools/split.py */
 const $=s=>document.querySelector(s);
 const TYPES={Physical:'#f59e0b',Ranged:'#84cc16',Magic:'#60a5fa',True:'#f8fafc'};
 const MIG={scout:'knight',slinger:'apprentice',cannon:'sniper'};
@@ -423,7 +423,9 @@ function resetGameProgress(){leaveAfk();
 
 /* ---------- Levels, stats, prestige ---------- */
 // 2026.10.11.12: exact EXP per level; each prestige star adds +50% to every level's requirement.
-const need=(lv,st=0)=>Math.round((60+12*lv+.4*lv*lv)*(1+.5*(st||0)));
+// 2026.10.11.13: rarer units need more EXP per level (stacks with the prestige-star factor).
+const RARITY_XP={Common:1,Rare:1.15,Epic:1.35,Exclusive:1.35,Legendary:1.6,Mythic:1.9,Secret:2.3};
+const need=(lv,st=0,id)=>Math.round((60+12*lv+.4*lv*lv)*(1+.5*(st||0))*(id&&UNITS[id]?RARITY_XP[UNITS[id].r]||1:1));
 function stats(i){
   const U=UNITS[i.id],g=U.g,l=i.lv-1,s=i.st,tr=TRAITS[i.trait]||{d:1,rg:1,spd:1};
   return {d:U.d*(1+l*g[0])*(1+.5*s)*tr.d,rg:U.rg*(1+l*g[1])*(1+.04*s)*tr.rg,cd:Math.max(.1,U.cd/(1+l*g[2])/(1+.06*s)/tr.spd)};
@@ -431,7 +433,7 @@ function stats(i){
 function addXp(i,x){
   if(i.lv>=100) return;
   i.xp+=x;
-  i.xp=Math.floor(i.xp);while(i.lv<100&&i.xp>=need(i.lv,i.st)){i.xp-=need(i.lv,i.st);i.lv++}
+  i.xp=Math.floor(i.xp);while(i.lv<100&&i.xp>=need(i.lv,i.st,i.id)){i.xp-=need(i.lv,i.st,i.id);i.lv++}
   if(i.lv>=100){i.lv=100;i.xp=0}
 }
 // 2026.10.11.12: Common and Rare units are starter units and cannot prestige.
@@ -1057,7 +1059,7 @@ function renderAll(){
   setupUnitSort('collectionSort','collection',renderAll);const list=sortedOwnedUnits(S.units,unitSortSettings.collection);
   $('#coll').innerHTML=list.length?list.map(i=>{
     const u=UNITS[i.id],t=stats(i),can=i.lv>=100&&i.st<5&&canPrestigeRarity(i.id);
-    return '<div class="card unit-card"><button class="unit-fav'+(i.favorite?' active':'')+'" data-fav="'+i.uid+'" title="Toggle favorite">'+(i.favorite?'♥':'♡')+'</button><canvas class="ico" width="72" height="64" data-id="'+i.id+'" data-trait="'+(i.trait||'')+'"></canvas><b class="'+u.r+'">'+u.n+'</b>'+(i.nickname?'<br><span class="unit-nickname"></span>':'')+'<br><span style="color:#ffc94d">'+'★'.repeat(i.st)+'☆'.repeat(5-i.st)+'</span><br><span style="color:'+TYPES[u.t]+'">'+u.t+'</span>, level '+i.lv+(i.lv<100?'<br>EXP '+Math.floor(i.xp).toLocaleString()+' / '+need(i.lv,i.st).toLocaleString():'<br>Max level')+'<br>Damage '+t.d.toFixed(0)+', range '+t.rg.toFixed(0)+'<br>Attacks per second '+(1/t.cd).toFixed(1)+'<br>Trait: '+(TRAITS[i.trait]?.n||'None')+(can?'<br><button data-p="'+i.uid+'">Prestige</button>':'')+'<div class="unit-actions"><button class="alt" data-info="'+i.uid+'" title="Unit skills and passives" aria-label="Information about '+u.n+'">ⓘ Info</button><button class="alt" data-equip="'+i.uid+'">'+((S.equipped||[]).includes(i.uid)?'✓ Equipped · Remove':'＋ Equip')+'</button><button class="alt" data-lock="'+i.uid+'">'+(i.locked?'🔒 Unlock':'🔓 Lock')+'</button><button class="alt" data-sell="'+i.uid+'"'+(i.locked?' disabled title="Unlock before selling"':'')+'>Sell for '+sellVal(i)+' gems</button></div></div>';
+    return '<div class="card unit-card"><button class="unit-fav'+(i.favorite?' active':'')+'" data-fav="'+i.uid+'" title="Toggle favorite">'+(i.favorite?'♥':'♡')+'</button><canvas class="ico" width="72" height="64" data-id="'+i.id+'" data-trait="'+(i.trait||'')+'"></canvas><b class="'+u.r+'">'+u.n+'</b>'+(i.nickname?'<br><span class="unit-nickname"></span>':'')+'<br><span style="color:#ffc94d">'+'★'.repeat(i.st)+'☆'.repeat(5-i.st)+'</span><br><span style="color:'+TYPES[u.t]+'">'+u.t+'</span>, level '+i.lv+(i.lv<100?'<br>EXP '+Math.floor(i.xp).toLocaleString()+' / '+need(i.lv,i.st,i.id).toLocaleString():'<br>Max level')+'<br>Damage '+t.d.toFixed(0)+', range '+t.rg.toFixed(0)+'<br>Attacks per second '+(1/t.cd).toFixed(1)+'<br>Trait: '+(TRAITS[i.trait]?.n||'None')+(can?'<br><button data-p="'+i.uid+'">Prestige</button>':'')+'<div class="unit-actions"><button class="alt" data-info="'+i.uid+'" title="Unit skills and passives" aria-label="Information about '+u.n+'">ⓘ Info</button><button class="alt" data-equip="'+i.uid+'">'+((S.equipped||[]).includes(i.uid)?'✓ Equipped · Remove':'＋ Equip')+'</button><button class="alt" data-lock="'+i.uid+'">'+(i.locked?'🔒 Unlock':'🔓 Lock')+'</button><button class="alt" data-sell="'+i.uid+'"'+(i.locked?' disabled title="Unlock before selling"':'')+'>Sell for '+sellVal(i)+' gems</button></div></div>';
   }).join(''):'<span style="color:var(--mut)">No units yet. Summon some to get started.</span>';
   $('#coll').querySelectorAll('.card').forEach((card,j)=>{const i=list[j];if(i.locked)card.classList.add('unit-locked');const nick=card.querySelector('.unit-nickname');if(nick)nick.textContent=i.nickname;});
   $('#coll').querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>showUnitInfo(+b.dataset.info));
