@@ -1,4 +1,4 @@
-const CACHE='gem-guardians-public-android-layout-2026101107';
+const CACHE='gem-guardians-public-new-enemies-2026101108';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install', event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));

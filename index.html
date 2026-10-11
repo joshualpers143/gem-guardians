@@ -502,7 +502,13 @@ window.ggSplashHide=hide;
      <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="runner"></canvas><span><b style="color:#4ade80">Goblin Runner</b><br><small>Fast, low health</small></span></span>
      <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="tank"></canvas><span><b style="color:#60a5fa">Iron Beetle</b><br><small>Tank, high health</small></span></span>
      <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="elite"></canvas><span><b style="color:#c084fc">Void Knight</b><br><small>Elite</small></span></span>
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="boss"></canvas><span><b style="color:#d4d4d8">Demon Overlord</b><br><small>Boss, final wave</small></span></span>
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="boss"></canvas><span><b style="color:#d4d4d8">Demon Overlord</b><br><small>Boss, final wave: summons guards and enrages</small></span></span>
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="shield"></canvas><span><b style="color:#67e8f9">Crystal Shellback</b><br><small>Map 5+: shield, then stunned</small></span></span>
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="flyer"></canvas><span><b style="color:#c4a1ff">Gloomwing</b><br><small>Map 6+: flies, ignores slow &amp; freeze</small></span></span>
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="healer"></canvas><span><b style="color:#86efac">Moss Shaman</b><br><small>Map 7+: heals nearby enemies</small></span></span>
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="splitter"></canvas><span><b style="color:#5eead4">Gloop</b><br><small>Map 8+: splits in two</small></span></span>
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="dasher"></canvas><span><b style="color:#a78bfa">Shadow Lynx</b><br><small>Map 9+: dashes forward</small></span></span>
+     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="berserk"></canvas><span><b style="color:#fb923c">Ember Brute</b><br><small>Map 10+: faster when hurt</small></span></span>
     </div><p style="margin:8px 0 0;color:var(--mut);font-size:12px">Enemy strength adapts to your equipped team: new teams face normal enemies, while very strong teams (high levels, prestige stars and traits) face tougher enemies on easier maps.</p></div>
     <div id="arena" class="hide">
       <div class="panel row"><b id="hud"></b>
@@ -551,6 +557,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>New Enemies With Abilities &amp; Boss Phases</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:27 AM MDT</p><ul><li>Six new enemies, each with its own original art and ability. They join the enemy mix one map at a time, so every map adds something new:</li><li><strong>Crystal Shellback</strong> (Map 5+): carries a crystal shield that absorbs damage first. When the shield shatters, the Shellback is stunned for a moment.</li><li><strong>Gloomwing</strong> (Map 6+): a fast bat that flies above the road. Slow, freeze and stun effects don’t work on it, so damage units must stop it.</li><li><strong>Moss Shaman</strong> (Map 7+): heals nearby enemies every 3 seconds with a green pulse. Take it down first!</li><li><strong>Gloop</strong> (Map 8+): a jelly slime that splits into two fast Glooplings when defeated.</li><li><strong>Shadow Lynx</strong> (Map 9+): dashes forward along the road every 4 seconds. Cover the whole road, not just one spot.</li><li><strong>Ember Brute</strong> (Map 10+): a lava ogre that gets faster the more it is hurt (up to +90% speed).</li><li><strong>Boss phases:</strong> the Demon Overlord now calls guards and raises a dark ward shield at 66% and 33% health, and becomes Enraged (faster) below 25%. Raid mini-bosses call two Void Knight guards at half health.</li><li>Raids use every enemy type. The enemy list under the difficulty buttons shows each new enemy and the map where it first appears.</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Android &amp; Phone Layout</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:17 AM MDT</p><ul><li><strong>No more sideways scrolling:</strong> the page now fits phone screens exactly. The 8 tabs sit in two neat rows of four, each with its own icon.</li><li><strong>Compact header:</strong> on phones the header shows your profile, gems, sound and settings in one row. Update Info, App Guide, Tutorial and Save are in the new ☰ menu.</li><li><strong>Full-screen landscape battles:</strong> on phones, starting a battle opens the map full screen and turns it sideways (Android). The battle buttons move to a side column so the map is as big as possible, and the map keeps its true shape instead of stretching. You can turn this off in Settings.</li><li><strong>Bigger buttons:</strong> unit card buttons, favorites, sort menus and battle controls are easier to tap. The battle unit panel is more compact on small screens.</li><li><strong>Android back button:</strong> closes the open menu, unit menu or window first, exits full screen, returns to the Summon tab, and only leaves the game if you press it twice.</li><li><strong>Feels like an app:</strong> no accidental zoom on double-tap, no text highlighting when holding buttons, and support for screens with camera cutouts.</li><li>The installed app can now be used in portrait or landscape (it was locked to landscape before).</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Original Music &amp; Sound Effects</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 09:47 AM MDT</p><ul><li>Gem Guardians now has its own soundtrack and sound effects. Everything is composed for this game and created live by your device, so it works offline and adds almost nothing to the download.</li><li><strong>A theme for every place:</strong> the menu, each of the 11 maps, the Duskmoor Castle raids, AFK mode and boss fights each have their own music. Battle music gets fuller as the waves go on.</li><li><strong>Jingles:</strong> victory and defeat, level ups, prestige stars, Mythic traits, the boss warning, and a summon fanfare that gets grander with rarity, up to Secret.</li><li><strong>Battle sounds:</strong> arrows, bullets, magic bolts, fire, frost, poison, void, beams, slashes and explosions match each unit’s attack. Placing, upgrading, Barter coins, new waves, lost lives and defeated enemies have sounds too.</li><li><strong>Controls:</strong> use the 🔊 button in the header to mute or unmute. Settings → Music &amp; Sound has separate Music and Effects volumes.</li><li>Sound settings are stored on this device, separately from your save, so exporting, importing and recovery are unchanged. Music pauses while the game is in the background.</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>New Loading Screen</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 09:47 AM MDT</p><ul><li>A new animated loading screen with a shining crystal, a starry sky with floating sparkles, and a parade of guardians chasing enemies along a road.</li><li>The progress bar shows real loading steps and a percentage, and a new gameplay tip appears every few seconds.</li><li>The game version and edition are shown at the bottom. Tap anywhere to skip once the game is ready.</li><li>Respects the device’s “reduce motion” setting.</li></ul></section>
@@ -1342,7 +1349,8 @@ function drawUnit(c,id,x,y,sc=1,time=performance.now()/1000,opt={}){
 
 /* ---------------- enemies (cached walk frames) ---------------- */
 const ENEMY_LOOK={
-  normal:{name:'Horned Imp',r:11},tank:{name:'Iron Beetle',r:14},runner:{name:'Goblin Runner',r:9},elite:{name:'Void Knight',r:13},boss:{name:'Demon Overlord',r:18}};
+  normal:{name:'Horned Imp',r:11},tank:{name:'Iron Beetle',r:14},runner:{name:'Goblin Runner',r:9},elite:{name:'Void Knight',r:13},boss:{name:'Demon Overlord',r:18},
+  shield:{name:'Crystal Shellback',r:14},flyer:{name:'Gloomwing',r:10},healer:{name:'Moss Shaman',r:11},splitter:{name:'Gloop',r:13},gloopling:{name:'Gloopling',r:8},dasher:{name:'Shadow Lynx',r:11},berserk:{name:'Ember Brute',r:15}};
 function enemyBody(c,kind,f){ // f: walk phase 0..3
   const step=[0,1,0,-1][f];
   if(kind==='tank'){
@@ -1385,6 +1393,73 @@ function enemyBody(c,kind,f){ // f: walk phase 0..3
     HATS.crown(c,{col:'#f2c84b',gem:'#ff3e60'});c.save();c.translate(0,-6);c.restore();
     for(const s of[-1,1]){glow(c,s*3.4,-17,5,'#ff3e60',.9);c.fillStyle='#ffd0d8';c.beginPath();c.ellipse(s*3.4,-17,1.5,1.2,0,0,7);c.fill();}
     c.strokeStyle=INK;c.lineWidth=1;c.beginPath();c.moveTo(-4,-12);c.lineTo(4,-12);c.stroke();c.fillStyle='#fff';c.fill(P.poly([-3,-12,-2.4,-10,-1.8,-12]));c.fill(P.poly([1.8,-12,2.4,-10,3,-12]));
+    return;}
+  // ---- 2026.10.11.8: new enemy classes (original designs) ----
+  if(kind==='shield'){ // Crystal Shellback: stocky beast carrying a crystal shell and a round crystal shield
+    for(const s of[-1,1])line(c,[s*6,6,s*(7+step*s*2),13],'#4a3a2a',3.4,.8);
+    fillInk(c,P.smooth([-14,4,-15,-6,-8,-15,6,-16,13,-8,13,4,4,9,-8,9]),'#2f6f86',-1,-3,15,1.7);
+    for(const [x,y,h] of[[-8,-10,7],[-2,-14,8],[5,-12,7],[-11,-3,5],[9,-4,5]])fillInk(c,P.poly([x-2.4,y+2,x,y-h,x+2.4,y+2]),'#9ff3ff',x,y-h/2,h/2,.9,{dark:-.35});
+    fillInk(c,P.circle(-13,-2,5.5),'#8a6a4a',-13,-2,5.5,1.3,{dark:-.25});
+    for(const s of[-1,1])fillInk(c,P.poly([-15+s*2,-6,-17+s*3,-11,-12+s*2,-7]),'#efe2c8',-15,-8,2,.8);
+    c.fillStyle='#ffd166';c.beginPath();c.arc(-15,-3,1.2,0,7);c.fill();
+    fillInk(c,P.circle(10,1,8),'#6fd6ef',10,1,8,1.6,{dark:-.32});
+    fillInk(c,P.poly([10,-4,14,1,10,6,6,1]),'#e9fdff',10,1,4,1,{dark:-.2});glow(c,10,1,9,'#9ff3ff',.45);
+    return;}
+  if(kind==='healer'){ // Moss Shaman: small mossy robed shaman with a glowing leaf staff
+    line(c,[-3,6,-4-step*2,13],'#3a2a1a',2.6,.8);line(c,[3,6,4+step*2,13],'#3a2a1a',2.6,.8);
+    line(c,[9,13,11,-20],'#6b4a2e',2,.7);
+    fillInk(c,P.smooth([-8,-3,8,-3,10,9,-10,9]),'#4f7a3a',0,3,10,1.4);
+    for(const x of[-6,-1,4])fillInk(c,P.poly([x,7,x+2,11,x+4,7]),'#3b5f2a',x+2,9,2,.7);
+    fillInk(c,P.circle(0,-8,6.2),'#9bbd6a',0,-8,6.2,1.4,{dark:-.25});
+    fillInk(c,P.smooth([-8,-7,-6,-15,0,-19,6,-15,8,-7,4,-10,-4,-10]),'#3b6a2a',0,-12,8,1.3);
+    for(const s of[-1,1])fillInk(c,P.smooth([s*4,-17,s*10,-21,s*8,-15]),'#6fbf4a',s*7,-18,3,.8);
+    for(const s of[-1,1]){c.fillStyle='#fff6a0';c.beginPath();c.ellipse(s*2.3,-8,1.3,1.5,0,0,7);c.fill();c.fillStyle=INK;c.beginPath();c.arc(s*2.3,-7.8,.6,0,7);c.fill();}
+    arm(c,{outfit:'#4f7a3a',skin:'#9bbd6a'},1,[10,-2]);
+    glow(c,11,-22,9,'#7dff8a',.7);fillInk(c,P.circle(11,-22,3.2),'#8dff9a',11,-22,3.2,1,{dark:-.2});
+    for(const s of[-1,1])fillInk(c,P.smooth([11,-24,11+s*5,-28,11+s*2,-23]),'#4fbf3a',11+s*3,-26,2,.7);
+    return;}
+  if(kind==='flyer'){ // Gloomwing: a purple bat that flies above the road (immune to slow and freeze)
+    const up=[-1,0,1,0][f],wy=-12+up*5;
+    c.save();c.translate(0,-9+up);
+    for(const s of[-1,1]){const w=P.smooth([s*4,-3,s*12,wy-4,s*20,wy-1,s*22,wy+6,s*16,wy+3,s*13,wy+8,s*8,wy+4,s*5,3]);fillInk(c,w,'#5a3a8a',s*13,wy+1,10,1.3,{dark:-.35});
+      line(c,[s*5,-1,s*12,wy-3,s*20,wy],'#2a1a4a',.9);}
+    fillInk(c,P.ellipse(0,0,6,7.5),'#6b4a9a',0,0,7,1.4,{dark:-.28});
+    for(const s of[-1,1])fillInk(c,P.poly([s*2,-6,s*6,-12,s*5,-4]),'#6b4a9a',s*4,-8,3,.9);
+    for(const s of[-1,1]){c.fillStyle='#ffdf5a';c.beginPath();c.ellipse(s*2.3,-2,1.5,1.2,0,0,7);c.fill();glow(c,s*2.3,-2,3,'#ffdf5a',.5);}
+    c.fillStyle='#fff';c.fill(P.poly([-1.6,2,-1,3.8,-.4,2]));c.fill(P.poly([.4,2,1,3.8,1.6,2]));
+    c.restore();
+    return;}
+  if(kind==='splitter'||kind==='gloopling'){ // Gloop: a jelly slime that splits into two Glooplings
+    const sq=[0,1,0,-1][f]*.08,sc=kind==='gloopling'?.62:1;
+    c.save();c.scale(sc*(1+sq),sc*(1-sq));
+    const body=P.smooth([-13,10,-14,0,-9,-10,0,-14,9,-10,14,0,13,10]);
+    c.globalAlpha=.92;fillInk(c,body,'#3ed6a6',0,-1,14,1.6,{dark:-.3});c.globalAlpha=1;
+    c.fillStyle='rgba(255,255,255,.55)';c.beginPath();c.ellipse(-6,-7,3,2,-.5,0,7);c.fill();
+    for(const [x,y,r] of[[5,4,2],[-4,5,1.4],[8,-3,1.1]]){c.strokeStyle='rgba(230,255,245,.8)';c.lineWidth=.8;c.beginPath();c.arc(x,y,r,0,7);c.stroke();}
+    for(const s of[-1,1]){c.fillStyle='#fff';c.beginPath();c.ellipse(s*4,-3,2.6,3,0,0,7);c.fill();c.strokeStyle=INK;c.lineWidth=.8;c.stroke();c.fillStyle=INK;c.beginPath();c.arc(s*4+.5,-2.5,1.2,0,7);c.fill();}
+    c.strokeStyle=INK;c.lineWidth=.9;c.beginPath();c.arc(0,2,2.6,.25,Math.PI-.25);c.stroke();
+    c.restore();
+    return;}
+  if(kind==='dasher'){ // Shadow Lynx: a dark cat that dashes forward every few seconds
+    const lg=[[1,-1],[0,0],[-1,1],[0,0]][f];
+    for(const [x,p] of[[-8,lg[0]],[-4,lg[1]],[5,lg[1]],[9,lg[0]]])line(c,[x,3,x+p*3,12],'#1c1430',2.6,.8);
+    const tail=new Path2D();tail.moveTo(-11,-1);tail.quadraticCurveTo(-19,-4,-17,-12);stroke(c,tail,INK,3.6);stroke(c,tail,'#2c2148',2.2);
+    fillInk(c,P.smooth([-12,-4,-6,-8,6,-8,12,-4,11,4,-11,4]),'#2c2148',0,-2,12,1.5,{dark:-.3});
+    for(const x of[-6,-2,2])line(c,[x,-7,x+1.5,-2],'#8a5adf',1.2);
+    fillInk(c,P.smooth([8,-6,9,-13,14,-15,19,-12,19,-6,14,-3]),'#2c2148',14,-9,6,1.4,{dark:-.25});
+    for(const s of[0,1])fillInk(c,P.poly([10+s*5,-13,11+s*5,-19,14+s*5,-14]),'#2c2148',12+s*5,-15,3,.9);
+    for(const s of[0,1]){c.fillStyle='#ffe14d';c.beginPath();c.ellipse(13+s*4,-10,1.4,1,0,0,7);c.fill();glow(c,13+s*4,-10,3,'#ffe14d',.6);}
+    return;}
+  if(kind==='berserk'){ // Ember Brute: a cracked lava ogre that speeds up as it is hurt
+    line(c,[-5,7,-6-step*2,15],'#5a1e10',4,.8);line(c,[5,7,6+step*2,15],'#5a1e10',4,.8);
+    fillInk(c,P.smooth([-13,-8,13,-8,14,4,9,10,-9,10,-14,4]),'#c2481e',0,1,14,1.8,{dark:-.32});
+    for(const p of[[-8,-4,-3,2,-6,6],[4,-6,8,0,5,5],[-1,-7,1,-1]])line(c,p,'#ffd04a',1.1);glow(c,0,0,10,'#ff7a2a',.45);
+    line(c,[11,-2,17,-10],'#c2481e',4.6,1.2);line(c,[16,-8,21,-24],'#4a2e1a',3,.8);fillInk(c,P.smooth([18,-22,24,-30,28,-24,23,-18]),'#5a3e2a',23,-24,6,1.3);
+    line(c,[-11,-2,-16,6],'#c2481e',4.6,1.2);
+    fillInk(c,P.circle(0,-14,7.5),'#d4582a',0,-14,7.5,1.6,{dark:-.28});
+    for(const s of[-1,1])fillInk(c,P.poly([s*4,-19,s*7,-26,s*6,-18]),'#3a2a2a',s*6,-22,3,.9);
+    for(const s of[-1,1]){c.fillStyle='#fff3a0';c.beginPath();c.ellipse(s*2.8,-15,1.6,1.1,0,0,7);c.fill();glow(c,s*2.8,-15,4,'#ffb02a',.7);}
+    c.fillStyle='#fff';c.fill(P.poly([-3,-10,-2.4,-8,-1.8,-10]));c.fill(P.poly([1.8,-10,2.4,-8,3,-10]));
     return;}
   // normal: horned imp
   const tail=new Path2D();tail.moveTo(-5,4);tail.quadraticCurveTo(-15,6,-13,-4);stroke(c,tail,INK,3.2);stroke(c,tail,'#c8323a',1.8);fillInk(c,P.poly([-13,-4,-16,-7,-11,-7]),'#c8323a',-13,-6,2,.8);
@@ -1930,7 +2005,7 @@ function save(manual){
 }
 function syncSettings(){document.querySelectorAll('[data-setting]').forEach(el=>el.checked=S.settings[el.dataset.setting]);}
 const GG_EDITION='public';
-const GAME_VERSION='2026.10.11.7';
+const GAME_VERSION='2026.10.11.8';
 // Save portability: never change the existing localStorage keys. Import validates before replacement.
 function buildSaveExport(){
   if(!save(false))throw Error('Browser storage is unavailable or full; export cancelled to avoid an unreliable backup');
@@ -2781,6 +2856,97 @@ function teamPowerScaleRaw(si,mode,raidLevel){
   const threshold=Math.max(2.5,fair*1.5);
   return Math.min(25,Math.pow(Math.max(1,power/threshold),1.25));
 }
+// ---------- Enemy abilities (2026.10.11.8) ----------
+// New enemy classes and boss phases. Damage from every unit is applied first, then
+// enemyAbilitiesPost() lets shields absorb it, so every attack in the game works with shields.
+const ENEMY_INFO={
+  shield:{n:'Crystal Shellback',from:4,hp:1.15,v:34,desc:'Crystal shield absorbs damage first; when it breaks the Shellback is stunned'},
+  flyer:{n:'Gloomwing',from:5,hp:.7,v:74,desc:'Flies: immune to slow, freeze and stun'},
+  healer:{n:'Moss Shaman',from:6,hp:.85,v:40,desc:'Heals nearby enemies every 3 seconds'},
+  splitter:{n:'Gloop',from:7,hp:1.25,v:36,desc:'Splits into two fast Glooplings when defeated'},
+  dasher:{n:'Shadow Lynx',from:8,hp:.95,v:46,desc:'Dashes forward along the road every 4 seconds'},
+  berserk:{n:'Ember Brute',from:9,hp:1.5,v:36,desc:'Gets faster as it loses health (up to +90%)'},
+  gloopling:{n:'Gloopling',from:99,hp:.3,v:70,desc:'Small, fast piece of a Gloop'}
+};
+const ENEMY_ORDER=['shield','flyer','healer','splitter','dasher','berserk'];
+function enemyClassesFor(si,raid){return ENEMY_ORDER.filter(k=>raid||si>=ENEMY_INFO[k].from);}
+function efx(kind,x,y,extra){(G.efx=G.efx||[]).push(Object.assign({kind,x,y,l:.6,max:.6},extra||{}));if(G.efx.length>60)G.efx.shift();}
+function spawnExtraEnemy(kind,hp,d,wave){
+  const [x,y]=posAt(Math.max(0,d));const info=ENEMY_INFO[kind];
+  const e={wave,d:Math.max(0,d),hp,mx:hp,kind,boss:false,v:(info?info.v:({elite:57,tank:27,runner:105}[kind]||44))*(.95+Math.random()*.1),sl:0,x,y,_hp0:hp};
+  G.en.push(e);
+  if(G.mode==='infinite'&&G.waveRemaining&&wave!=null&&G.waveRemaining[wave]!=null)G.waveRemaining[wave]++;
+  return e;
+}
+function enemyAbilitiesPre(dt){
+  for(const fx of (G.efx||[]))fx.l-=dt;if(G.efx)G.efx=G.efx.filter(f=>f.l>0);
+  for(const e of G.en){
+    if(e.hp<=0)continue;
+    if(e._init!==1){e._init=1;e.v0=e.v;
+      if(e.kind==='shield'){e.shield=e.shMax=e.mx*.6;}
+      if(e.kind==='healer')e.healT=1.5+Math.random();
+      if(e.kind==='dasher')e.dashT=2+Math.random()*2;
+      if(e.boss){e.phase=0;}
+    }
+    if(e.kind==='flyer'){e.sl=0;e.frozen=0;e.stunned=0;}
+    if(e.kind==='berserk'){const lost=1-Math.max(0,e.hp/e.mx);e.v=e.v0*(1+.9*lost);e.rage=lost;}
+    if(e.kind==='dasher'&&!(e.frozen>0||e.stunned>0)){e.dashT-=dt;if(e.dashT<=0){e.dashT=4;const from=[e.x,e.y];e.d=Math.min(G.tot-1,e.d+70);[e.x,e.y]=posAt(e.d);efx('dash',e.x,e.y,{fx:from[0],fy:from[1],l:.35,max:.35});}}
+    if(e.kind==='healer'&&!(e.frozen>0||e.stunned>0)){e.healT-=dt;if(e.healT<=0){e.healT=3;let healed=false;
+      for(const o of G.en)if(o.hp>0&&o!==e&&o.hp<o.mx&&Math.hypot(o.x-e.x,o.y-e.y)<=85){o.hp=Math.min(o.mx,o.hp+o.mx*(o.boss?.03:.1));healed=true;}
+      if(healed)efx('heal',e.x,e.y,{l:.7,max:.7});}}
+    if(e.boss){
+      const pct=e.hp/e.mx;
+      // Boss phases: summon guards and raise a dark ward at 66% and 33% health; enrage below 25%.
+      const marks=e.kind==='miniboss'?[.5]:[.66,.33];
+      while(e.phase<marks.length&&pct<=marks[e.phase]){
+        e.phase++;const n=e.kind==='miniboss'?2:3,kind=e.kind==='miniboss'?'elite':'normal';
+        for(let i=0;i<n;i++)spawnExtraEnemy(kind,e.mx*(e.kind==='miniboss'?.12:.06),e.d-14-i*14,e.wave);
+        e.shield=(e.shield||0)+e.mx*.12;e.shMax=Math.max(e.shMax||0,e.shield);
+        efx('summon',e.x,e.y,{l:.9,max:.9});if(typeof ggSfx==='function')ggSfx('wave');
+      }
+      if(!e.enraged&&pct<=.25&&e.kind==='boss'){e.enraged=true;e.v*=1.35;efx('rage',e.x,e.y,{l:.9,max:.9});}
+    }
+  }
+  for(const e of G.en)e._hp0=e.hp;
+}
+function enemyAbilitiesPost(){
+  const born=[];
+  for(const e of G.en){
+    if(e.leak||e._hp0==null)continue;
+    const dmg=e._hp0-e.hp;
+    if(dmg>0&&e.shield>0){
+      const take=Math.min(e.shield,dmg);e.shield-=take;e.hp+=take;
+      if(e.shield<=0.001){e.shield=0;if(e.kind==='shield'){e.stunned=Math.max(e.stunned||0,1);}efx('shatter',e.x,e.y);}
+    }
+    e._hp0=e.hp;
+    if(e.hp<=0&&e.kind==='splitter'&&!e.split){e.split=true;born.push(e);}
+  }
+  for(const e of born){for(const off of[6,-8])spawnExtraEnemy('gloopling',e.mx*ENEMY_INFO.gloopling.hp,e.d+off,e.wave);efx('split',e.x,e.y);}
+}
+function enemyFxRender(){
+  for(const e of G.en){
+    if(e.hp<=0)continue;
+    const r=(typeof GGA!=='undefined'&&GGA.ENEMY_LOOK[e.boss?'boss':e.kind]?GGA.ENEMY_LOOK[e.boss?'boss':e.kind].r:11);
+    if(e.shield>0&&e.shMax){
+      cx.save();cx.globalAlpha=.28+.1*Math.sin(performance.now()/200);cx.fillStyle='#8fe9ff';cx.beginPath();cx.ellipse(e.x,e.y-4,r+5,r+8,0,0,7);cx.fill();
+      cx.globalAlpha=.9;cx.strokeStyle='#c9f6ff';cx.lineWidth=1.4;cx.stroke();cx.restore();
+      const p=Math.max(0,Math.min(1,e.shield/e.shMax));cx.fillStyle='#0b0f1c';cx.fillRect(e.x-13,e.y-r-22,26,3);cx.fillStyle='#67e8f9';cx.fillRect(e.x-13,e.y-r-22,26*p,3);
+    }
+    if(e.kind==='berserk'&&e.rage>.2){cx.save();cx.globalAlpha=Math.min(.6,e.rage*.7);const g=cx.createRadialGradient(e.x,e.y-4,2,e.x,e.y-4,r+10);g.addColorStop(0,'rgba(255,120,40,.8)');g.addColorStop(1,'rgba(255,60,20,0)');cx.fillStyle=g;cx.beginPath();cx.arc(e.x,e.y-4,r+10,0,7);cx.fill();cx.restore();}
+    if(e.enraged){cx.save();cx.globalAlpha=.35+.2*Math.sin(performance.now()/120);cx.strokeStyle='#ff2a4a';cx.lineWidth=3;cx.beginPath();cx.ellipse(e.x,e.y+r*.8,r+8,6,0,0,7);cx.stroke();cx.restore();}
+  }
+  for(const f of (G.efx||[])){
+    const t=1-f.l/f.max;cx.save();cx.globalAlpha=Math.max(0,1-t);
+    if(f.kind==='heal'){cx.strokeStyle='#7dff8a';cx.lineWidth=3;cx.beginPath();cx.arc(f.x,f.y-4,10+75*t,0,7);cx.stroke();
+      cx.fillStyle='#b8ffbf';cx.font='bold 12px sans-serif';cx.textAlign='center';cx.fillText('+',f.x-8,f.y-18-14*t);cx.fillText('+',f.x+9,f.y-24-14*t);}
+    else if(f.kind==='shatter'){for(let i=0;i<8;i++){const a=i*.785;cx.fillStyle=i%2?'#c9f6ff':'#67e8f9';cx.beginPath();cx.arc(f.x+Math.cos(a)*20*t,f.y-6+Math.sin(a)*20*t,3*(1-t)+1,0,7);cx.fill();}}
+    else if(f.kind==='dash'){cx.strokeStyle='#a678ff';cx.lineWidth=5*(1-t)+1;cx.setLineDash([6,5]);cx.beginPath();cx.moveTo(f.fx,f.fy);cx.lineTo(f.x,f.y);cx.stroke();}
+    else if(f.kind==='split'){cx.fillStyle='#3ed6a6';for(let i=0;i<6;i++){const a=i*1.05;cx.beginPath();cx.arc(f.x+Math.cos(a)*16*t,f.y+Math.sin(a)*10*t,3,0,7);cx.fill();}}
+    else if(f.kind==='summon'||f.kind==='rage'){cx.strokeStyle=f.kind==='rage'?'#ff2a4a':'#b06bff';cx.lineWidth=4;cx.beginPath();cx.arc(f.x,f.y-6,12+50*t,0,7);cx.stroke();
+      cx.fillStyle='#fff';cx.font='bold 13px sans-serif';cx.textAlign='center';cx.strokeStyle='#000';cx.lineWidth=3;const txt=f.kind==='rage'?'ENRAGED!':'GUARDS!';cx.strokeText(txt,f.x,f.y-34-10*t);cx.fillText(txt,f.x,f.y-34-10*t);}
+    cx.restore();
+  }
+}
 function enemyWaveScale(){const sc=G&&G.teamScale||1;if(sc<=1)return 1;const full=G.raidLevel?raidMaxWave(G.raidLevel):15;return 1+(sc-1)*Math.min(1,G.wave/full);}
 
 /* ---------- AFK rewards ---------- */
@@ -3006,11 +3172,13 @@ function nextWave(force=false){
   if(G.si>=1||G.raidLevel)available.push('tank');
   if(G.si>=2||G.raidLevel)available.push('runner');
   if(G.si>=3||G.raidLevel)available.push('elite');
+  // 2026.10.11.8: one new enemy class per map from Map 5 (raids use all of them).
+  available.push(...enemyClassesFor(G.si,!!G.raidLevel));
   const miniBoss=!!G.raidLevel&&G.wave%10===0&&!G.boss;
   const ordinaryCount=G.boss?Math.max(0,n-2):miniBoss?Math.max(0,n-1):n;
   G.q=Array.from({length:ordinaryCount},(_,i)=>{
-    const kind=available[i%available.length];
-    const hpMult={tank:3,runner:.65,elite:1.8,normal:1}[kind];
+    const kind=available[(i+G.wave)%available.length];
+    const hpMult={tank:3,runner:.65,elite:1.8,normal:1}[kind]??(ENEMY_INFO[kind]?ENEMY_INFO[kind].hp:1);
     return {hp:hp*hpMult,kind};
   });
   if(G.boss){
@@ -3702,7 +3870,7 @@ function step(dt){
       if(pick)upgradePlacedUnit(pick);
     }
   }
-  if(G.q.length){G.sp-=dt;if(G.sp<=0){const spawn=G.q.shift();const kind=typeof spawn==='number'?'normal':spawn.kind,hp=typeof spawn==='number'?spawn:spawn.hp;G.en.push({wave:G.wave,d:0,hp,mx:hp,kind,boss:kind==='boss'||kind==='miniboss',v:kind==='boss'?32:kind==='miniboss'?37:kind==='tank'?27:kind==='runner'?105:kind==='elite'?57:44+Math.random()*18,sl:0,x:-30,y:-30});G.sp=G.q[0]?.delayBefore??.75;if(!G.q.length)G.waveSpawnCountdown=5;}}
+  if(G.q.length){G.sp-=dt;if(G.sp<=0){const spawn=G.q.shift();const kind=typeof spawn==='number'?'normal':spawn.kind,hp=typeof spawn==='number'?spawn:spawn.hp;G.en.push({wave:G.wave,d:0,hp,mx:hp,kind,boss:kind==='boss'||kind==='miniboss',v:kind==='boss'?32:kind==='miniboss'?37:kind==='tank'?27:kind==='runner'?105:kind==='elite'?57:ENEMY_INFO[kind]?ENEMY_INFO[kind].v*(.95+Math.random()*.1):44+Math.random()*18,sl:0,x:-30,y:-30});G.sp=G.q[0]?.delayBefore??.75;if(!G.q.length)G.waveSpawnCountdown=5;}}
   // Start the next wave 5 game-seconds after the final enemy of this wave is spawned.
   // The countdown is independent of whether earlier enemies are still alive.
   if(G.run&&G.waveSpawnCountdown!==null){
@@ -3712,6 +3880,7 @@ function step(dt){
       if(G.mode==='infinite'){nextWave(true)}else if(G.wave<(G.raidLevel?raidMaxWave(G.raidLevel):15))nextWave(true);
     }
   }
+  enemyAbilitiesPre(dt);
   for(const e of G.en){
     e.sl-=dt;e.frozen=Math.max(0,(e.frozen||0)-dt);e.stunned=Math.max(0,(e.stunned||0)-dt);e.d+=e.v*(e.frozen>0||e.stunned>0?0:(e.sl>0?.5:1))*dt;
     if(e.d>=G.tot){e.hp=0;e.leak=1;G.lives--}else{[e.x,e.y]=posAt(e.d)}
@@ -3861,6 +4030,7 @@ function step(dt){
     }
   }
   G.allies=G.allies.filter(a=>a.ttl>0);
+  enemyAbilitiesPost();
   for(const e of G.en) if(e.hp<=0&&!e.leak){
     if(G.us.some(u=>u.id==='alucard')){G.raidKills=(G.raidKills||0)+1;if(G.raidKills%20===0)G.lives=Math.min(STARTING_LIVES,G.lives+1);}
     G.coins+=Math.round((4+G.wave)*midasIncomeMultiplier(e.lastHitUid,e.lastHitBoost||1));
@@ -3911,7 +4081,7 @@ function raisedDisc(x,y,r,top,edge,height=7){
 function shadedEnemy(e){
   if(typeof GGA!=='undefined'){
     // Animated enemy art: walk cycle, faces its direction of travel, frost/slow markers.
-    const kind=e.boss?'boss':(GGA.ENEMY_LOOK[e.kind]?e.kind:'normal'),r=kind==='boss'?18:kind==='tank'?14:kind==='runner'?9:kind==='elite'?13:11;
+    const kind=e.boss?'boss':(GGA.ENEMY_LOOK[e.kind]?e.kind:'normal'),r=kind==='boss'?18:(GGA.ENEMY_LOOK[kind].r||11);
     if(e._px!=null&&Math.abs(e.x-e._px)>.05)e._dir=e.x<e._px?-1:1;e._px=e.x;
     GGA.drawEnemy(cx,kind,e.x,e.y,performance.now()/1000,e._dir||1,{frozen:(e.frozen>0||e.stunned>0),slow:e.sl>0});
     const pct=Math.max(0,Math.min(1,e.hp/e.mx));
@@ -4047,6 +4217,7 @@ function draw(){
   }
   for(const e of G.en){shadedEnemy(e);
   }
+  enemyFxRender();
   // Lighting and vignette are baked into the cached map background.
   cx.setTransform(1,0,0,1,0,0);
 }
