@@ -298,6 +298,17 @@ button,.tabs,#bar,canvas{-webkit-user-select:none;user-select:none;-webkit-touch
   .enemy-grid{grid-template-columns:1fr}
   .enemy-card canvas.enemy-art{width:72px;height:72px}
 }
+/* 2026.10.11.10: battle stats bar on the map */
+#battleStats{position:absolute;top:6px;right:6px;z-index:6;display:flex;gap:5px;pointer-events:none;font-weight:900;font-size:14px;line-height:1}
+#battleStats.hide{display:none}
+#battleStats span{display:flex;align-items:center;gap:4px;background:#120c26d9;border:1px solid #ffffff30;border-radius:999px;padding:5px 9px;color:#fff;box-shadow:0 2px 8px #0008;white-space:nowrap}
+#battleStats .bs-coins{color:#ffe066;border-color:#facc1580;font-size:16px}
+#battleStats .bs-coins.up{animation:bsUp .45s ease-out}
+#battleStats .bs-coins.down{animation:bsDown .45s ease-out}
+#battleStats .bs-lives.low{color:#ff8a8a;border-color:#f43f5e99}
+@keyframes bsUp{0%{transform:scale(1.18);box-shadow:0 0 14px #facc15}100%{transform:scale(1)}}
+@keyframes bsDown{0%{transform:scale(.92);color:#ffb4b4}100%{transform:scale(1)}}
+@media (max-width:640px),(max-height:520px){#battleStats{top:4px;right:4px;gap:3px;font-size:12px}#battleStats span{padding:4px 7px}#battleStats .bs-coins{font-size:14px}}
 /* 2026.10.11.6: sound settings */
 .sound-box{padding:12px 0;border-bottom:1px solid #ffffff20}
 .sound-row{display:grid;grid-template-columns:92px 1fr 44px;align-items:center;gap:10px;margin-top:8px;font-size:14px}
@@ -546,7 +557,7 @@ window.ggSplashHide=hide;
         <button class="alt" id="bPause">Pause</button><button class="alt" id="bAutoUpgrade" aria-pressed="false">Auto Upgrade: OFF</button><button class="alt" id="bAutoPlay" aria-pressed="false">🔒 Auto Play</button><button class="alt" id="bFullMap">⛶ Fullscreen Map</button><span id="battleWakeStatus" style="font-size:11px;color:#9fe5bb" aria-live="polite"></span>
         <button class="alt" id="bQuit">Leave stage</button>
       </div>
-      <div class="battle-canvas-wrap"><canvas id="cv" width="800" height="450"></canvas><div id="battleOutcome" class="hide" role="status" aria-live="polite" aria-label="Battle result"><div class="outcome-card"><div class="outcome-ribbon"><div class="outcome-title" id="battleOutcomeTitle"></div></div><div class="outcome-stars" id="battleOutcomeStars"></div><div class="outcome-sub" id="battleOutcomeSub"></div><div class="outcome-rewards" id="battleOutcomeRewards"></div><div class="outcome-note" id="battleOutcomeNote"></div></div></div><div id="battleUnitDock" aria-label="Battle unit slots"><div id="bar"></div></div><button type="button" id="battleDockToggle" aria-label="Hide unit slots" aria-expanded="true" title="Hide unit slots">◀</button><div id="unitQuick" class="unit-quick hide" role="group" aria-label="Selected unit quick actions"></div></div>
+      <div class="battle-canvas-wrap"><canvas id="cv" width="800" height="450"></canvas><div id="battleStats" class="hide" aria-live="off" aria-label="Battle stats"><span class="bs-coins" title="Coins">💰 <b id="bsCoins">0</b></span><span class="bs-lives" title="Lives">❤️ <b id="bsLives">10</b></span><span class="bs-wave" title="Wave">🌊 <b id="bsWave">0</b></span></div><div id="battleOutcome" class="hide" role="status" aria-live="polite" aria-label="Battle result"><div class="outcome-card"><div class="outcome-ribbon"><div class="outcome-title" id="battleOutcomeTitle"></div></div><div class="outcome-stars" id="battleOutcomeStars"></div><div class="outcome-sub" id="battleOutcomeSub"></div><div class="outcome-rewards" id="battleOutcomeRewards"></div><div class="outcome-note" id="battleOutcomeNote"></div></div></div><div id="battleUnitDock" aria-label="Battle unit slots"><div id="bar"></div></div><button type="button" id="battleDockToggle" aria-label="Hide unit slots" aria-expanded="true" title="Hide unit slots">◀</button><div id="unitQuick" class="unit-quick hide" role="group" aria-label="Selected unit quick actions"></div></div>
       <div id="msg" class="hide"></div>
       
       <div class="panel row" id="selp">Pick a unit above to place it. Tap a placed unit for its nearby upgrade menu.</div>
@@ -584,6 +595,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="Bug Fix"><span class="update-tag tag-bug-fix">Bug Fix</span><h3>Coins Always Visible in Battle</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 11:07 AM MDT</p><ul><li>Your coins could be hard or impossible to see while playing, because they were only shown in the text line above the map. That line scrolls out of view on phones and is easy to miss in full screen.</li><li>Coins, lives and the current wave are now shown in badges on the top-right corner of the battle map itself, so they are always visible: on phones, in full screen, in landscape and on desktop.</li><li>The coin badge flashes gold when you earn coins and shrinks briefly when you spend them. The lives badge turns red when 3 or fewer lives are left.</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Easier Difficulty Picking &amp; Enemy Index</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:50 AM MDT</p><ul><li><strong>Difficulty first, then the map:</strong> the difficulty choice now sits above the maps as five colored cards (🌱 Easy, ⚔️ Medium, 🔥 Hard, 💀 Hell, ♾️ Infinite), so you no longer have to scroll down and back up before tapping a map.</li><li>Each card shows enemy health, gem and fruit rewards, unit EXP and how many stars you have earned on that difficulty across all maps. The selected card is highlighted, and the game remembers your last difficulty.</li><li><strong>New Enemy Index:</strong> the Index now has three sections: Units, Enemies and Items. Every enemy has its own information box with its art, class, health, speed, where it first appears, its ability and tips to beat it.</li><li>Enemies you have not met yet are shown as dark silhouettes. Their information unlocks the first time you meet them in battle, and each box counts how many you have encountered and defeated.</li><li>Enemies from maps you had already cleared before this update are unlocked automatically.</li><li>The enemy list was moved out of the Battle tab into the Index. The 📖 Enemy Index button in the Battle tab opens it.</li></ul></section>
 <section class="qol-section" data-category="Bug Fix"><span class="update-tag tag-bug-fix">Bug Fix</span><h3>Screen No Longer Turns Off During Battles</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:50 AM MDT</p><ul><li>Before, the screen only stayed awake in full-screen battles, and it could turn off between Auto Restart battles. Now it stays awake the whole time the battle screen is open, including results and Auto Restart.</li><li>If the browser drops the keep-awake permission (for example after switching apps), the game asks for it again automatically.</li><li>On browsers without keep-awake support, a tiny invisible silent video keeps the screen on instead.</li><li>Battery saver modes can still force the screen off; the “Screen awake” label in the battle controls shows the current status.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>New Enemies With Abilities &amp; Boss Phases</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:27 AM MDT</p><ul><li>Six new enemies, each with its own original art and ability. They join the enemy mix one map at a time, so every map adds something new:</li><li><strong>Crystal Shellback</strong> (Map 5+): carries a crystal shield that absorbs damage first. When the shield shatters, the Shellback is stunned for a moment.</li><li><strong>Gloomwing</strong> (Map 6+): a fast bat that flies above the road. Slow, freeze and stun effects don’t work on it, so damage units must stop it.</li><li><strong>Moss Shaman</strong> (Map 7+): heals nearby enemies every 3 seconds with a green pulse. Take it down first!</li><li><strong>Gloop</strong> (Map 8+): a jelly slime that splits into two fast Glooplings when defeated.</li><li><strong>Shadow Lynx</strong> (Map 9+): dashes forward along the road every 4 seconds. Cover the whole road, not just one spot.</li><li><strong>Ember Brute</strong> (Map 10+): a lava ogre that gets faster the more it is hurt (up to +90% speed).</li><li><strong>Boss phases:</strong> the Demon Overlord now calls guards and raises a dark ward shield at 66% and 33% health, and becomes Enraged (faster) below 25%. Raid mini-bosses call two Void Knight guards at half health.</li><li>Raids use every enemy type. The enemy list under the difficulty buttons shows each new enemy and the map where it first appears.</li></ul></section>
@@ -2038,7 +2050,7 @@ function save(manual){
 }
 function syncSettings(){document.querySelectorAll('[data-setting]').forEach(el=>el.checked=S.settings[el.dataset.setting]);}
 const GG_EDITION='public';
-const GAME_VERSION='2026.10.11.9';
+const GAME_VERSION='2026.10.11.10';
 // Save portability: never change the existing localStorage keys. Import validates before replacement.
 function buildSaveExport(){
   if(!save(false))throw Error('Browser storage is unavailable or full; export cancelled to avoid an unreliable backup');
@@ -4518,6 +4530,24 @@ battleWakeWanted=function(){return !!(G&&$('#arena')&&!$('#arena').classList.con
   addEventListener('pointerdown',()=>{if(!screenWakeWanted())return;if(!afkWakeLock)requestAfkWakeLock();setTimeout(()=>ggAwakeVideo(screenWakeWanted()&&!afkWakeLock),400);},{capture:true,passive:true});
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&screenWakeWanted()){syncScreenWake();setTimeout(()=>ggAwakeVideo(screenWakeWanted()&&!afkWakeLock),600);}else if(document.visibilityState!=='visible')ggAwakeVideo(false);});
   setInterval(()=>{if(!screenWakeWanted()){ggAwakeVideo(false);return;}if(document.visibilityState==='visible'&&!afkWakeLock)requestAfkWakeLock();},10000);
+})();
+// ---------- Battle stats on the map (2026.10.11.10) ----------
+// Coins, lives and wave are drawn as a badge row on the map itself, so they stay visible
+// while scrolled to the map, in full screen and on phones.
+(function(){
+  const orig=hud;let lastCoins=null,lastG=null;
+  hud=function(){
+    const r=orig.apply(this,arguments);
+    const el=$('#battleStats');if(!el)return r;
+    if(!G){el.classList.add('hide');lastCoins=null;return r;}
+    el.classList.remove('hide');if(G!==lastG){lastG=G;lastCoins=null;}
+    const c=Math.floor(G.coins),cEl=$('#bsCoins'),lEl=$('#bsLives'),wEl=$('#bsWave');
+    if(c!==lastCoins){cEl.textContent=c.toLocaleString();const pill=cEl.parentElement;if(lastCoins!=null){pill.classList.remove('up','down');void pill.offsetWidth;pill.classList.add(c>lastCoins?'up':'down');}lastCoins=c;}
+    lEl.textContent=G.lives;lEl.parentElement.classList.toggle('low',G.lives<=3);
+    wEl.textContent=G.wave+(G.mode==='infinite'?'':'/'+battleMaxWaveSafe());
+    return r;
+  };
+  function battleMaxWaveSafe(){return typeof battleMaxWave==='function'?battleMaxWave():(G.raidLevel?raidMaxWave(G.raidLevel):15);}
 })();
 load();afkPendingUI();syncSettings();ensureBanner();updateBannerClock();setInterval(updateBannerClock,1000);gemUI();renderAll();save(false);requestAnimationFrame(loop);
 // ---------- Sound director (2026.10.11.6) ----------
