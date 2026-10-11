@@ -1,6 +1,3 @@
-def f():
-    if x:
-        return (1)
 #!/usr/bin/env python3
 """Gem Guardians - Android TEST app project generator.
 
