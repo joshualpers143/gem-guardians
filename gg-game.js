@@ -1,4 +1,4 @@
-/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.13 · built from source/public/index.html by tools/split.py */
+/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.14 · built from source/public/index.html by tools/split.py */
 const $=s=>document.querySelector(s);
 const TYPES={Physical:'#f59e0b',Ranged:'#84cc16',Magic:'#60a5fa',True:'#f8fafc'};
 const MIG={scout:'knight',slinger:'apprentice',cannon:'sniper'};
@@ -437,14 +437,16 @@ function addXp(i,x){
   if(i.lv>=100){i.lv=100;i.xp=0}
 }
 // 2026.10.11.12: Common and Rare units are starter units and cannot prestige.
-function canPrestigeRarity(id){return !['Common','Rare'].includes(UNITS[id]&&UNITS[id].r);}
+// 2026.10.11.14: Common units can prestige to 1 star and Rare units to 2 stars; Epic and rarer to 5.
+function maxPrestigeStars(id){const r=UNITS[id]&&UNITS[id].r;return r==='Common'?1:r==='Rare'?2:5;}
+function canPrestigeRarity(id){return maxPrestigeStars(id)>0;}
 function prestige(uid){
   const i=S.units.find(x=>x.uid===uid);
   if(!i)return toast('Unit not found');
-  if(!canPrestigeRarity(i.id))return toast(UNITS[i.id].n+' is a '+UNITS[i.id].r+' unit. Only Epic and rarer units can prestige.');
+  if(i.st>=maxPrestigeStars(i.id))return toast(UNITS[i.id].n+' is '+(/^[AEIOU]/.test(UNITS[i.id].r)?'an ':'a ')+UNITS[i.id].r+' unit and already has its maximum of '+maxPrestigeStars(i.id)+' prestige star'+(maxPrestigeStars(i.id)>1?'s':'')+'.');
   if(i.st>=5)return toast('This unit already has the maximum 5 prestige stars');
   if(i.lv<100)return toast('Reach unit level 100 before prestiging');
-  if(!confirm('Prestige '+UNITS[i.id].n+'? It returns to level 1 and gains a star ('+(i.st+1)+'/5), which makes it stronger at every level.\n\nEvery star: +50% damage, +4% range, +6% attack speed.\nLeveling up again needs 50% more EXP for each star.\n3★ perk: Awakened Strike (every 5th attack +50% damage).\n5★ perk: Ascended Strike (every 5th attack +100% damage and a shockwave).'+(i.id==='barter'?' Each star permanently increases this Barter’s coin generation by 10%.':''))) return;
+  if(!confirm('Prestige '+UNITS[i.id].n+'? It returns to level 1 and gains a star ('+(i.st+1)+'/'+maxPrestigeStars(i.id)+'), which makes it stronger at every level.\n\nEvery star: +50% damage, +4% range, +6% attack speed.\nLeveling up again needs 50% more EXP for each star.\n3★ perk: Awakened Strike (every 5th attack +50% damage).\n5★ perk: Ascended Strike (every 5th attack +100% damage and a shockwave).'+(i.id==='barter'?' Each star permanently increases this Barter’s coin generation by 10%.':''))) return;
   i.st++;i.lv=1;i.xp=0;save(false);renderAll();toast(UNITS[i.id].n+' now has '+i.st+' star'+(i.st>1?'s':''));
 }
 
@@ -523,13 +525,13 @@ function renderBag(){setupUnitSort('feedPickerSort','feedPicker',renderBag);
 function renderBagPrestigeTools(){
   let panel=$('#bagPrestigeTools');
   if(!panel){panel=document.createElement('div');panel.id='bagPrestigeTools';panel.className='panel';$('#bagInfo').insertAdjacentElement('afterend',panel)}
-  const units=S.units.filter(u=>u.st<5&&canPrestigeRarity(u.id));
+  const units=S.units.filter(u=>u.st<maxPrestigeStars(u.id));
   const selected=Number(panel.querySelector('select')?.value)||Number(renderBagPrestigeTools.selectedUid)||units[0]?.uid;
   const target=units.find(u=>u.uid===selected)||units[0];
-  panel.innerHTML='<h3>⭐ Unit Prestige</h3><p style="color:var(--mut)">At level 100, prestige resets that unit to level 1 and adds one permanent star (maximum 5). Only Epic and rarer units can prestige.</p>'
-    +(units.length?'<label for="bagPrestigeUnit">Choose unit</label><select id="bagPrestigeUnit" style="width:100%;margin:6px 0">'+units.map(u=>'<option value="'+u.uid+'"'+(u.uid===target.uid?' selected':'')+'>'+unitLabel(u)+' · Lv '+u.lv+' · '+'★'.repeat(u.st)+'☆'.repeat(5-u.st)+' ('+u.st+'/5)</option>').join('')+'</select><p id="bagPrestigeHint"></p><button id="bagPrestigeButton">⭐ Prestige selected unit</button>':'<p>All owned units have five stars, or you have no units yet.</p>');
+  panel.innerHTML='<h3>⭐ Unit Prestige</h3><p style="color:var(--mut)">At level 100, prestige resets that unit to level 1 and adds one permanent star. Star limits: Common 1★, Rare 2★, Epic and rarer 5★.</p>'
+    +(units.length?'<label for="bagPrestigeUnit">Choose unit</label><select id="bagPrestigeUnit" style="width:100%;margin:6px 0">'+units.map(u=>'<option value="'+u.uid+'"'+(u.uid===target.uid?' selected':'')+'>'+unitLabel(u)+' · Lv '+u.lv+' · '+'★'.repeat(u.st)+'☆'.repeat(Math.max(0,maxPrestigeStars(u.id)-u.st))+' ('+u.st+'/'+maxPrestigeStars(u.id)+')</option>').join('')+'</select><p id="bagPrestigeHint"></p><button id="bagPrestigeButton">⭐ Prestige selected unit</button>':'<p>All owned units have five stars, or you have no units yet.</p>');
   const sel=$('#bagPrestigeUnit');if(!sel)return;
-  const update=()=>{const u=S.units.find(x=>x.uid===Number(sel.value));if(!u)return;renderBagPrestigeTools.selectedUid=u.uid;$('#bagPrestigeHint').textContent=u.lv>=100?'Ready to prestige!':'Level '+u.lv+'/100 — feed fruits to reach level 100';$('#bagPrestigeButton').disabled=u.lv<100||u.st>=5};
+  const update=()=>{const u=S.units.find(x=>x.uid===Number(sel.value));if(!u)return;renderBagPrestigeTools.selectedUid=u.uid;$('#bagPrestigeHint').textContent=u.lv>=100?'Ready to prestige!':'Level '+u.lv+'/100 — feed fruits to reach level 100';$('#bagPrestigeButton').disabled=u.lv<100||u.st>=maxPrestigeStars(u.id)};
   sel.onchange=update;
   $('#bagPrestigeButton').onclick=()=>prestige(Number(sel.value));
   update();
@@ -1058,8 +1060,8 @@ function renderAll(){
   const order=Object.keys(UNITS);
   setupUnitSort('collectionSort','collection',renderAll);const list=sortedOwnedUnits(S.units,unitSortSettings.collection);
   $('#coll').innerHTML=list.length?list.map(i=>{
-    const u=UNITS[i.id],t=stats(i),can=i.lv>=100&&i.st<5&&canPrestigeRarity(i.id);
-    return '<div class="card unit-card"><button class="unit-fav'+(i.favorite?' active':'')+'" data-fav="'+i.uid+'" title="Toggle favorite">'+(i.favorite?'♥':'♡')+'</button><canvas class="ico" width="72" height="64" data-id="'+i.id+'" data-trait="'+(i.trait||'')+'"></canvas><b class="'+u.r+'">'+u.n+'</b>'+(i.nickname?'<br><span class="unit-nickname"></span>':'')+'<br><span style="color:#ffc94d">'+'★'.repeat(i.st)+'☆'.repeat(5-i.st)+'</span><br><span style="color:'+TYPES[u.t]+'">'+u.t+'</span>, level '+i.lv+(i.lv<100?'<br>EXP '+Math.floor(i.xp).toLocaleString()+' / '+need(i.lv,i.st,i.id).toLocaleString():'<br>Max level')+'<br>Damage '+t.d.toFixed(0)+', range '+t.rg.toFixed(0)+'<br>Attacks per second '+(1/t.cd).toFixed(1)+'<br>Trait: '+(TRAITS[i.trait]?.n||'None')+(can?'<br><button data-p="'+i.uid+'">Prestige</button>':'')+'<div class="unit-actions"><button class="alt" data-info="'+i.uid+'" title="Unit skills and passives" aria-label="Information about '+u.n+'">ⓘ Info</button><button class="alt" data-equip="'+i.uid+'">'+((S.equipped||[]).includes(i.uid)?'✓ Equipped · Remove':'＋ Equip')+'</button><button class="alt" data-lock="'+i.uid+'">'+(i.locked?'🔒 Unlock':'🔓 Lock')+'</button><button class="alt" data-sell="'+i.uid+'"'+(i.locked?' disabled title="Unlock before selling"':'')+'>Sell for '+sellVal(i)+' gems</button></div></div>';
+    const u=UNITS[i.id],t=stats(i),can=i.lv>=100&&i.st<maxPrestigeStars(i.id);
+    return '<div class="card unit-card"><button class="unit-fav'+(i.favorite?' active':'')+'" data-fav="'+i.uid+'" title="Toggle favorite">'+(i.favorite?'♥':'♡')+'</button><canvas class="ico" width="72" height="64" data-id="'+i.id+'" data-trait="'+(i.trait||'')+'"></canvas><b class="'+u.r+'">'+u.n+'</b>'+(i.nickname?'<br><span class="unit-nickname"></span>':'')+'<br><span style="color:#ffc94d">'+'★'.repeat(i.st)+'☆'.repeat(Math.max(0,maxPrestigeStars(i.id)-i.st))+'</span><br><span style="color:'+TYPES[u.t]+'">'+u.t+'</span>, level '+i.lv+(i.lv<100?'<br>EXP '+Math.floor(i.xp).toLocaleString()+' / '+need(i.lv,i.st,i.id).toLocaleString():'<br>Max level')+'<br>Damage '+t.d.toFixed(0)+', range '+t.rg.toFixed(0)+'<br>Attacks per second '+(1/t.cd).toFixed(1)+'<br>Trait: '+(TRAITS[i.trait]?.n||'None')+(can?'<br><button data-p="'+i.uid+'">Prestige</button>':'')+'<div class="unit-actions"><button class="alt" data-info="'+i.uid+'" title="Unit skills and passives" aria-label="Information about '+u.n+'">ⓘ Info</button><button class="alt" data-equip="'+i.uid+'">'+((S.equipped||[]).includes(i.uid)?'✓ Equipped · Remove':'＋ Equip')+'</button><button class="alt" data-lock="'+i.uid+'">'+(i.locked?'🔒 Unlock':'🔓 Lock')+'</button><button class="alt" data-sell="'+i.uid+'"'+(i.locked?' disabled title="Unlock before selling"':'')+'>Sell for '+sellVal(i)+' gems</button></div></div>';
   }).join(''):'<span style="color:var(--mut)">No units yet. Summon some to get started.</span>';
   $('#coll').querySelectorAll('.card').forEach((card,j)=>{const i=list[j];if(i.locked)card.classList.add('unit-locked');const nick=card.querySelector('.unit-nickname');if(nick)nick.textContent=i.nickname;});
   $('#coll').querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>showUnitInfo(+b.dataset.info));
