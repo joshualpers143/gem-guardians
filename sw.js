@@ -1,4 +1,4 @@
-const CACHE='gem-guardians-public-import-export-repair-20261010';
+const CACHE='gem-guardians-public-safety-update-2026101002';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install', event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
