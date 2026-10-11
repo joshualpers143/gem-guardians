@@ -259,6 +259,45 @@ button,.tabs,#bar,canvas{-webkit-user-select:none;user-select:none;-webkit-touch
 .gg-rotate-hint .ph{display:inline-block;font-size:34px;animation:ggRot 1.8s ease-in-out infinite}
 @keyframes ggRot{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
 .gg-back-toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:999998;background:#140e29f2;color:#fff;border:1px solid #a48bea;border-radius:999px;padding:10px 18px;font-weight:700;font-size:14px;box-shadow:0 8px 24px #000c;pointer-events:none}
+/* 2026.10.11.9: difficulty cards, enemy index */
+.mode-title{margin:0 0 8px}
+.mode-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.mode-card{display:flex;flex-direction:column;align-items:stretch;gap:4px;text-align:left;padding:10px;border-radius:12px;background:linear-gradient(160deg,#2b2450,#1b1636);border:2px solid color-mix(in srgb,var(--mc) 35%,transparent);color:#fff;box-shadow:0 4px 0 #0005;min-height:104px;cursor:pointer}
+.mode-card:hover{filter:brightness(1.12)}
+.mode-card.on,#modes .mode-card.on{color:#fff;border-color:var(--mc);background:linear-gradient(160deg,color-mix(in srgb,var(--mc) 32%,#2b2450),#1b1636);box-shadow:0 0 0 2px color-mix(in srgb,var(--mc) 40%,transparent),0 0 18px color-mix(in srgb,var(--mc) 45%,transparent)}
+.mc-top{display:flex;align-items:center;gap:6px}
+.mc-top b{font-size:16px;color:var(--mc)}
+.mc-ico{font-size:20px}
+.mc-check{margin-left:auto;background:var(--mc);color:#111;border-radius:999px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px}
+.mc-stats{display:flex;flex-direction:column;font-size:12px;color:#d6d0f0;line-height:1.35}
+.mc-stars{font-size:12px;color:#ffd84a;font-weight:800;margin-top:auto}
+.mode-info{margin:10px 0 0;color:var(--mut);font-size:13px}
+.enemy-note{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;font-size:13px;color:var(--mut)}
+.index-tabs{gap:8px;margin-bottom:10px}
+.index-tabs button{flex:1;min-height:44px;background:#3a3357}
+.index-tabs button.on{background:var(--gold);color:#241a00}
+.enemy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.enemy-card{display:flex;gap:10px;align-items:flex-start;background:linear-gradient(160deg,#2b2450,#1b1636);border:1px solid color-mix(in srgb,var(--ec,#8b78ad) 50%,transparent);border-radius:14px;padding:10px}
+.enemy-card canvas.enemy-art{width:84px;height:84px;flex:none;background:radial-gradient(circle at 50% 60%,#3d6b3a,#20361f);border-radius:12px;box-shadow:inset 0 0 0 1px #ffffff22;cursor:default;margin:0}
+.enemy-card.locked canvas.enemy-art{filter:brightness(0) opacity(.55)}
+.enemy-card.locked{border-style:dashed;border-color:#ffffff33}
+.ec-body{display:flex;flex-direction:column;gap:3px;min-width:0}
+.ec-body b{font-size:16px}
+.ec-cls{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#a99bd4}
+.ec-stats{display:flex;flex-wrap:wrap;gap:4px 8px;font-size:12px;color:#e4defa}
+.ec-body p{margin:2px 0;font-size:13px;line-height:1.4;color:#d6d0f0}
+.ec-log{color:#fde68a;font-size:12px}
+.ec-hint{color:#a99bd4;font-size:12px}
+@media (max-width:640px){
+  .mode-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+  .mode-card{min-height:0;padding:7px 2px;align-items:center;text-align:center}
+  .mode-card .mc-top{flex-direction:column;gap:2px}
+  .mode-card .mc-top b{font-size:12px}
+  .mode-card .mc-stats,.mode-card .mc-check{display:none}
+  .mode-card .mc-stars{font-size:10px;margin-top:2px}
+  .enemy-grid{grid-template-columns:1fr}
+  .enemy-card canvas.enemy-art{width:72px;height:72px}
+}
 /* 2026.10.11.6: sound settings */
 .sound-box{padding:12px 0;border-bottom:1px solid #ffffff20}
 .sound-row{display:grid;grid-template-columns:92px 1fr 44px;align-items:center;gap:10px;margin-top:8px;font-size:14px}
@@ -495,21 +534,9 @@ window.ggSplashHide=hide;
     <div class="panel" id="raidMap2ComingSoon" aria-label="Raid Map 2 coming soon" style="margin-top:12px;text-align:center"><h2 style="margin:0 0 8px">⚔️ Raid Map 2</h2><p style="margin:0;color:var(--mut);font-weight:700">Coming Soon</p></div>
   </section>
   <section id="battle" class="hide">
-    <div class="panel"><h2 class="battle-pick-title">🗺️ Choose a map</h2><p class="battle-pick-hint" id="stageModeHint"></p><div id="stages"></div></div>
-    <div class="panel"><h3 style="margin:0 0 6px">⚔️ Difficulty</h3><div class="row" id="modes"></div><p id="modeInfo" style="margin:8px 0 0;color:var(--mut)"></p></div>
-    <div class="panel" id="enemyLegend"><b>Enemies</b><div class="legend-row">
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="normal"></canvas><span><b style="color:#ef4444">Horned Imp</b><br><small>Normal</small></span></span>
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="runner"></canvas><span><b style="color:#4ade80">Goblin Runner</b><br><small>Fast, low health</small></span></span>
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="tank"></canvas><span><b style="color:#60a5fa">Iron Beetle</b><br><small>Tank, high health</small></span></span>
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="elite"></canvas><span><b style="color:#c084fc">Void Knight</b><br><small>Elite</small></span></span>
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="boss"></canvas><span><b style="color:#d4d4d8">Demon Overlord</b><br><small>Boss, final wave: summons guards and enrages</small></span></span>
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="shield"></canvas><span><b style="color:#67e8f9">Crystal Shellback</b><br><small>Map 5+: shield, then stunned</small></span></span>
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="flyer"></canvas><span><b style="color:#c4a1ff">Gloomwing</b><br><small>Map 6+: flies, ignores slow &amp; freeze</small></span></span>
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="healer"></canvas><span><b style="color:#86efac">Moss Shaman</b><br><small>Map 7+: heals nearby enemies</small></span></span>
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="splitter"></canvas><span><b style="color:#5eead4">Gloop</b><br><small>Map 8+: splits in two</small></span></span>
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="dasher"></canvas><span><b style="color:#a78bfa">Shadow Lynx</b><br><small>Map 9+: dashes forward</small></span></span>
-     <span class="legend-item"><canvas class="enemy-ico" width="80" height="80" data-enemy="berserk"></canvas><span><b style="color:#fb923c">Ember Brute</b><br><small>Map 10+: faster when hurt</small></span></span>
-    </div><p style="margin:8px 0 0;color:var(--mut);font-size:12px">Enemy strength adapts to your equipped team: new teams face normal enemies, while very strong teams (high levels, prestige stars and traits) face tougher enemies on easier maps.</p></div>
+    <div class="panel mode-panel"><h3 class="mode-title">⚔️ 1. Choose a difficulty</h3><div id="modes" class="mode-grid" role="group" aria-label="Difficulty"></div><p id="modeInfo" class="mode-info"></p></div>
+    <div class="panel"><h2 class="battle-pick-title">🗺️ 2. Choose a map</h2><p class="battle-pick-hint" id="stageModeHint"></p><div id="stages"></div></div>
+    <div class="panel enemy-note"><span>👹 Enemy strength adapts to your equipped team: new teams face normal enemies, while very strong teams (high levels, prestige stars and traits) face tougher enemies on easier maps. Details on every enemy you have met are in the Index.</span><button type="button" class="alt" id="openEnemyIndex">📖 Enemy Index</button></div>
     <div id="arena" class="hide">
       <div class="panel row"><b id="hud"></b>
         <span style="margin-left:auto"></span>
@@ -532,7 +559,7 @@ window.ggSplashHide=hide;
   </section>
   <section id="traits" class="hide"><div class="panel"><h2><canvas class="ico inline-ico" width="72" height="64" data-item="trait_reroll"></canvas>Trait Forge</h2><p style="color:var(--mut)">Each unit has one trait slot. New players receive 25 free trait rerolls; after those are used, each reroll costs 30 gems. Every 150th reroll without a Mythic trait guarantees a random Mythic trait. Legendary and Mythic trait rolls trigger a 3-second reroll cooldown to prevent accidental skipping. Trait effects apply in battle.</p><div class="row"><label for="traitUnit">Choose unit:</label><select id="traitUnitPickerSort" class="unit-sort" aria-label="Sort trait units"></select><div id="traitUnitPicker" class="unit-picker"></div><select id="traitUnit" class="hide" aria-label="Selected trait unit"></select><button id="traitRoll">Reroll trait</button><label for="autoTraitTarget">Target trait:</label><select id="autoTraitTarget" aria-label="Target trait for auto reroll"></select><button id="autoTraitToggle" type="button">▶ Auto Reroll: OFF</button><small id="autoTraitStatus" style="color:var(--mut)">Choose Any trait for normal Auto Reroll with 3-second protection, or a specific trait to reroll without that delay until matched.</small></div><p id="traitPity"></p><div id="traitCurrent" class="panel"></div><h3>Trait possibilities</h3><div class="grid" id="traitList"></div></div></section>
   <section id="index" class="hide">
-    <div class="panel"><h2>📖 Unit Index</h2><p id="indexProgress" style="color:var(--mut)"></p><div class="row" style="margin:10px 0"><label for="indexSort">Sort units:</label><select id="indexSort" aria-label="Sort unit index"><option value="rarityDesc">Rarity: Highest to Lowest</option><option value="rarityAsc">Rarity: Lowest to Highest</option><option value="damageDesc">Damage: Highest to Lowest</option><option value="damageAsc">Damage: Lowest to Highest</option><option value="discoveredFirst">Discovered First</option><option value="undiscoveredFirst">Undiscovered First</option></select></div><div class="grid" id="indexGrid"></div></div><div class="panel"><h2>🎒 Item Index</h2><p style="color:var(--mut)">Items are recorded permanently after you obtain them. No rewards are granted for discovering items.</p><p id="itemIndexProgress"></p><div class="grid" id="itemIndexGrid"></div></div>
+    <div class="row index-tabs" id="indexTabs" role="tablist"><button type="button" data-ix="units" class="on" role="tab">🛡️ Units</button><button type="button" data-ix="enemies" role="tab">👹 Enemies</button><button type="button" data-ix="items" role="tab">🎒 Items</button></div><div class="panel" id="unitIndexPanel"><h2>📖 Unit Index</h2><p id="indexProgress" style="color:var(--mut)"></p><div class="row" style="margin:10px 0"><label for="indexSort">Sort units:</label><select id="indexSort" aria-label="Sort unit index"><option value="rarityDesc">Rarity: Highest to Lowest</option><option value="rarityAsc">Rarity: Lowest to Highest</option><option value="damageDesc">Damage: Highest to Lowest</option><option value="damageAsc">Damage: Lowest to Highest</option><option value="discoveredFirst">Discovered First</option><option value="undiscoveredFirst">Undiscovered First</option></select></div><div class="grid" id="indexGrid"></div></div><div class="panel hide" id="enemyIndexPanel"><h2>👹 Enemy Index</h2><p id="enemyIndexProgress" style="color:var(--mut)"></p><div id="enemyIndexGrid" class="enemy-grid"></div></div><div class="panel hide" id="itemIndexPanel"><h2>🎒 Item Index</h2><p style="color:var(--mut)">Items are recorded permanently after you obtain them. No rewards are granted for discovering items.</p><p id="itemIndexProgress"></p><div class="grid" id="itemIndexGrid"></div></div>
   </section>
   <section id="bag" class="hide">
     <div class="panel"><div class="grid" id="bagGrid"></div></div>
@@ -557,6 +584,8 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Easier Difficulty Picking &amp; Enemy Index</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:50 AM MDT</p><ul><li><strong>Difficulty first, then the map:</strong> the difficulty choice now sits above the maps as five colored cards (🌱 Easy, ⚔️ Medium, 🔥 Hard, 💀 Hell, ♾️ Infinite), so you no longer have to scroll down and back up before tapping a map.</li><li>Each card shows enemy health, gem and fruit rewards, unit EXP and how many stars you have earned on that difficulty across all maps. The selected card is highlighted, and the game remembers your last difficulty.</li><li><strong>New Enemy Index:</strong> the Index now has three sections: Units, Enemies and Items. Every enemy has its own information box with its art, class, health, speed, where it first appears, its ability and tips to beat it.</li><li>Enemies you have not met yet are shown as dark silhouettes. Their information unlocks the first time you meet them in battle, and each box counts how many you have encountered and defeated.</li><li>Enemies from maps you had already cleared before this update are unlocked automatically.</li><li>The enemy list was moved out of the Battle tab into the Index. The 📖 Enemy Index button in the Battle tab opens it.</li></ul></section>
+<section class="qol-section" data-category="Bug Fix"><span class="update-tag tag-bug-fix">Bug Fix</span><h3>Screen No Longer Turns Off During Battles</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:50 AM MDT</p><ul><li>Before, the screen only stayed awake in full-screen battles, and it could turn off between Auto Restart battles. Now it stays awake the whole time the battle screen is open, including results and Auto Restart.</li><li>If the browser drops the keep-awake permission (for example after switching apps), the game asks for it again automatically.</li><li>On browsers without keep-awake support, a tiny invisible silent video keeps the screen on instead.</li><li>Battery saver modes can still force the screen off; the “Screen awake” label in the battle controls shows the current status.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>New Enemies With Abilities &amp; Boss Phases</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:27 AM MDT</p><ul><li>Six new enemies, each with its own original art and ability. They join the enemy mix one map at a time, so every map adds something new:</li><li><strong>Crystal Shellback</strong> (Map 5+): carries a crystal shield that absorbs damage first. When the shield shatters, the Shellback is stunned for a moment.</li><li><strong>Gloomwing</strong> (Map 6+): a fast bat that flies above the road. Slow, freeze and stun effects don’t work on it, so damage units must stop it.</li><li><strong>Moss Shaman</strong> (Map 7+): heals nearby enemies every 3 seconds with a green pulse. Take it down first!</li><li><strong>Gloop</strong> (Map 8+): a jelly slime that splits into two fast Glooplings when defeated.</li><li><strong>Shadow Lynx</strong> (Map 9+): dashes forward along the road every 4 seconds. Cover the whole road, not just one spot.</li><li><strong>Ember Brute</strong> (Map 10+): a lava ogre that gets faster the more it is hurt (up to +90% speed).</li><li><strong>Boss phases:</strong> the Demon Overlord now calls guards and raises a dark ward shield at 66% and 33% health, and becomes Enraged (faster) below 25%. Raid mini-bosses call two Void Knight guards at half health.</li><li>Raids use every enemy type. The enemy list under the difficulty buttons shows each new enemy and the map where it first appears.</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Android &amp; Phone Layout</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:17 AM MDT</p><ul><li><strong>No more sideways scrolling:</strong> the page now fits phone screens exactly. The 8 tabs sit in two neat rows of four, each with its own icon.</li><li><strong>Compact header:</strong> on phones the header shows your profile, gems, sound and settings in one row. Update Info, App Guide, Tutorial and Save are in the new ☰ menu.</li><li><strong>Full-screen landscape battles:</strong> on phones, starting a battle opens the map full screen and turns it sideways (Android). The battle buttons move to a side column so the map is as big as possible, and the map keeps its true shape instead of stretching. You can turn this off in Settings.</li><li><strong>Bigger buttons:</strong> unit card buttons, favorites, sort menus and battle controls are easier to tap. The battle unit panel is more compact on small screens.</li><li><strong>Android back button:</strong> closes the open menu, unit menu or window first, exits full screen, returns to the Summon tab, and only leaves the game if you press it twice.</li><li><strong>Feels like an app:</strong> no accidental zoom on double-tap, no text highlighting when holding buttons, and support for screens with camera cutouts.</li><li>The installed app can now be used in portrait or landscape (it was locked to landscape before).</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Original Music &amp; Sound Effects</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 09:47 AM MDT</p><ul><li>Gem Guardians now has its own soundtrack and sound effects. Everything is composed for this game and created live by your device, so it works offline and adds almost nothing to the download.</li><li><strong>A theme for every place:</strong> the menu, each of the 11 maps, the Duskmoor Castle raids, AFK mode and boss fights each have their own music. Battle music gets fuller as the waves go on.</li><li><strong>Jingles:</strong> victory and defeat, level ups, prestige stars, Mythic traits, the boss warning, and a summon fanfare that gets grander with rarity, up to Secret.</li><li><strong>Battle sounds:</strong> arrows, bullets, magic bolts, fire, frost, poison, void, beams, slashes and explosions match each unit’s attack. Placing, upgrading, Barter coins, new waves, lost lives and defeated enemies have sounds too.</li><li><strong>Controls:</strong> use the 🔊 button in the header to mute or unmute. Settings → Music &amp; Sound has separate Music and Effects volumes.</li><li>Sound settings are stored on this device, separately from your save, so exporting, importing and recovery are unchanged. Music pauses while the game is in the background.</li></ul></section>
@@ -1943,6 +1972,10 @@ function clean(d){
   o.afkPendingGems=Math.max(0,Math.floor(+d.afkPendingGems||0));
   o.afkPendingRerolls=Math.max(0,Math.floor(+d.afkPendingRerolls||0));
   o.raidCleared=Math.max(0,Math.min(5,Math.floor(+d.raidCleared||0)));
+  // Enemy Index log: per-enemy encounter/defeat counts. Enemies from maps cleared before tracking existed are marked as known.
+  {const keys=['normal','tank','runner','elite','shield','flyer','healer','splitter','gloopling','dasher','berserk','boss'],src=d.enemyLog&&typeof d.enemyLog==='object'?d.enemyLog:null;o.enemyLog={};
+   for(const k of keys){const r=src&&src[k];if(r&&typeof r==='object'){const e={s:Math.max(0,Math.floor(+r.s||0)),d:Math.max(0,Math.floor(+r.d||0))};if(r.k)e.k=1;if(e.s||e.d||e.k)o.enemyLog[k]=e;}}
+   if(!src){const c=Math.floor(+d.cleared||0),raid=Math.floor(+d.raidCleared||0)>0;const back=[[1,'normal'],[1,'boss'],[2,'tank'],[3,'runner'],[4,'elite']];for(const [m,k] of back)if(c>=m||raid)o.enemyLog[k]={s:0,d:0,k:1};}}
   o.unitRarityVersion=2;
   o.autoSellRarities=Array.isArray(d.autoSellRarities)?[...new Set(d.autoSellRarities.map(r=>d.unitRarityVersion===2?r:({Common:'Rare',Uncommon:'Common',Rare:'Epic'}[r]||r)).filter(r=>['Common','Rare','Epic','Legendary','Mythic','Secret','Exclusive'].includes(r)))]:[];
   o.playerLevel=Math.max(1,Math.min(100,Math.floor(+d.playerLevel||1)));
@@ -2005,7 +2038,7 @@ function save(manual){
 }
 function syncSettings(){document.querySelectorAll('[data-setting]').forEach(el=>el.checked=S.settings[el.dataset.setting]);}
 const GG_EDITION='public';
-const GAME_VERSION='2026.10.11.8';
+const GAME_VERSION='2026.10.11.9';
 // Save portability: never change the existing localStorage keys. Import validates before replacement.
 function buildSaveExport(){
   if(!save(false))throw Error('Browser storage is unavailable or full; export cancelled to avoid an unreliable backup');
@@ -2815,7 +2848,7 @@ function renderStageCards(){
       +(autoPlayEligible(i,curMode)?'<small style="color:#86efac">▶ Auto Play unlocked</small>':'')+(curMode==='infinite'?'<small>∞ Infinite mode selected</small>':'')+(locked?'<small style="color:#fca5a5">Clear '+STAGES[i-1].n+' to unlock</small>':'')+'</span></button>';
   }).join('');
   el.querySelectorAll('button[data-s]').forEach(b=>b.onclick=()=>startBattle(+b.dataset.s,curMode));
-  const hint=$('#stageModeHint');if(hint)hint.textContent='Difficulty: '+MODES[curMode].n+' (change it below the maps). Tap a map to start.';
+  const hint=$('#stageModeHint');if(hint)hint.textContent='Difficulty: '+(MODE_STYLE[curMode]?MODE_STYLE[curMode].i+' ':'')+MODES[curMode].n+' (change it with the cards above). Tap a map to start.';
   el.querySelectorAll('canvas.stage-fruit').forEach(k=>{if(k.width===72){k.width=288;k.height=256;}const c=k.getContext('2d');c.setTransform(4,0,0,4,0,0);c.clearRect(0,0,72,64);itemArt(c,k.dataset.item,36,32,1.5);c.setTransform(1,0,0,1,0,0);});
   paintEnemyLegend();queueStageThumbs();
 }
@@ -2887,6 +2920,7 @@ function enemyAbilitiesPre(dt){
       if(e.kind==='healer')e.healT=1.5+Math.random();
       if(e.kind==='dasher')e.dashT=2+Math.random()*2;
       if(e.boss){e.phase=0;}
+      logEnemy(e.kind,'s');
     }
     if(e.kind==='flyer'){e.sl=0;e.frozen=0;e.stunned=0;}
     if(e.kind==='berserk'){const lost=1-Math.max(0,e.hp/e.mx);e.v=e.v0*(1+.9*lost);e.rage=lost;}
@@ -4032,6 +4066,7 @@ function step(dt){
   G.allies=G.allies.filter(a=>a.ttl>0);
   enemyAbilitiesPost();
   for(const e of G.en) if(e.hp<=0&&!e.leak){
+    logEnemy(e.kind,'d');
     if(G.us.some(u=>u.id==='alucard')){G.raidKills=(G.raidKills||0)+1;if(G.raidKills%20===0)G.lives=Math.min(STARTING_LIVES,G.lives+1);}
     G.coins+=Math.round((4+G.wave)*midasIncomeMultiplier(e.lastHitUid,e.lastHitBoost||1));
     // Every defeated enemy in Infinite mode has an independent 1% chance.
@@ -4282,7 +4317,7 @@ const GUIDE_STEPS=[
  {title:'🛡️ Equip your team',text:'Only equipped units can be used in battle. Tap “＋ Equip” on your strongest units until your 4 loadout slots are full. Barter is already equipped. Rarer units, shown by their colored names, are stronger.',
   target:()=>tabOpen('units')?(firstEquipBtn()||$('#loadoutSlots')):tabBtn('units'),done:()=>(S.equipped||[]).length>=Math.min(unlockedLoadoutSlots(),S.units.length)},
  {title:'⚔️ Open the Battle tab',text:'Time to defend! Tap the Battle tab.',target:()=>tabBtn('battle'),done:()=>tabOpen('battle')},
- {title:'🗺️ Choose Green Meadow',text:'Maps unlock one by one. The difficulty buttons under the maps change enemy health and rewards. Keep Easy for now and tap Green Meadow.',
+ {title:'🗺️ Choose Green Meadow',text:'First pick a difficulty with the colored cards at the top: they change enemy health and rewards. Keep Easy for now. Then pick a map: maps unlock one by one, so tap Green Meadow.',
   enter:()=>{if(typeof curMode!=='undefined'&&curMode!=='easy'&&S.cleared===0){curMode='easy';renderAll();}},target:()=>tabOpen('battle')?document.querySelector('#stages [data-s="0"]'):tabBtn('battle'),done:()=>!!(G&&!G.over)},
  {title:'📍 Place your first unit',text:'Tap a unit card in the panel on the left of the map, then tap the grass beside the road. You can’t place units on the road. Each placement costs coins; you start every battle with 500.',
   target:()=>(G&&G.pl)?$('#cv'):document.querySelector('#bar .card'),done:()=>!!(G&&G.us.length>=1)},
@@ -4397,6 +4432,93 @@ document.querySelectorAll('#qolFilter [data-filter]').forEach(btn=>btn.onclick=(
   document.querySelectorAll('#qolFilter [data-filter]').forEach(b=>b.classList.toggle('on',b===btn));
   document.querySelectorAll('#qolModal .qol-section').forEach(sec=>sec.classList.toggle('filtered',f!=='All'&&sec.dataset.category!==f));
 });
+const GG_AWAKE_MP4="data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAMrbW9vdgAAAGxtdmhkAAAAAAAAAAAAAAAAAAAD6AAAB9AAAQAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAlV0cmFrAAAAXHRraGQAAAADAAAAAAAAAAAAAAABAAAAAAAAB9AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAABAAAAAQAAAAAAAkZWR0cwAAABxlbHN0AAAAAAAAAAEAAAfQAAAAAAABAAAAAAHNbWRpYQAAACBtZGhkAAAAAAAAAAAAAAAAAABAAAAAgABVxAAAAAAALWhkbHIAAAAAAAAAAHZpZGUAAAAAAAAAAAAAAABWaWRlb0hhbmRsZXIAAAABeG1pbmYAAAAUdm1oZAAAAAEAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAAAThzdGJsAAAAuHN0c2QAAAAAAAAAAQAAAKhhdmMxAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABAAEABIAAAASAAAAAAAAAABFUxhdmM2MC4zMS4xMDIgbGlieDI2NAAAAAAAAAAAAAAAGP//AAAALmF2Y0MBQsAK/+EAFmdCwArZHsBEAAADAAQAAAMACDxImSABAAVoy4PLIAAAABBwYXNwAAAAAQAAAAEAAAAUYnRydAAAAAAAAApAAAAKQAAAABhzdHRzAAAAAAAAAAEAAAACAABAAAAAABRzdHNzAAAAAAAAAAEAAAABAAAAHHN0c2MAAAAAAAAAAQAAAAEAAAACAAAAAQAAABxzdHN6AAAAAAAAAAAAAAACAAAChgAAAAoAAAAUc3RjbwAAAAAAAAABAAADWwAAAGJ1ZHRhAAAAWm1ldGEAAAAAAAAAIWhkbHIAAAAAAAAAAG1kaXJhcHBsAAAAAAAAAAAAAAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNjAuMTYuMTAwAAAACGZyZWUAAAKYbWRhdAAAAnAGBf//bNxF6b3m2Ui3lizYINkj7u94MjY0IC0gY29yZSAxNjQgcjMxMDggMzFlMTlmOSAtIEguMjY0L01QRUctNCBBVkMgY29kZWMgLSBDb3B5bGVmdCAyMDAzLTIwMjMgLSBodHRwOi8vd3d3LnZpZGVvbGFuLm9yZy94MjY0Lmh0bWwgLSBvcHRpb25zOiBjYWJhYz0wIHJlZj0zIGRlYmxvY2s9MTowOjAgYW5hbHlzZT0weDE6MHgxMTEgbWU9aGV4IHN1Ym1lPTcgcHN5PTEgcHN5X3JkPTEuMDA6MC4wMCBtaXhlZF9yZWY9MSBtZV9yYW5nZT0xNiBjaHJvbWFfbWU9MSB0cmVsbGlzPTEgOHg4ZGN0PTAgY3FtPTAgZGVhZHpvbmU9MjEsMTEgZmFzdF9wc2tpcD0xIGNocm9tYV9xcF9vZmZzZXQ9LTIgdGhyZWFkcz0xIGxvb2thaGVhZF90aHJlYWRzPTEgc2xpY2VkX3RocmVhZHM9MCBucj0wIGRlY2ltYXRlPTEgaW50ZXJsYWNlZD0wIGJsdXJheV9jb21wYXQ9MCBjb25zdHJhaW5lZF9pbnRyYT0wIGJmcmFtZXM9MCB3ZWlnaHRwPTAga2V5aW50PTI1MCBrZXlpbnRfbWluPTEgc2NlbmVjdXQ9NDAgaW50cmFfcmVmcmVzaD0wIHJjX2xvb2thaGVhZD00MCByYz1jcmYgbWJ0cmVlPTEgY3JmPTIzLjAgcWNvbXA9MC42MCBxcG1pbj0wIHFwbWF4PTY5IHFwc3RlcD00IGlwX3JhdGlvPTEuNDAgYXE9MToxLjAwAIAAAAAOZYiEBb///w9FAAFPf4AAAAAGQZo4CvqA";
+const GG_AWAKE_WEBM="data:video/webm;base64,GkXfo59ChoEBQveBAULygQRC84EIQoKEd2VibUKHgQJChYECGFOAZwEAAAAAAAH9EU2bdLpNu4tTq4QVSalmU6yBoU27i1OrhBZUrmtTrIHYTbuMU6uEElTDZ1OsggEeTbuMU6uEHFO7a1OsggHn7AEAAAAAAABZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVSalmsirXsYMPQkBNgI1MYXZmNjAuMTYuMTAwV0GNTGF2ZjYwLjE2LjEwMESJiECfQAAAAAAAFlSua8GuAQAAAAAAADjXgQFzxYjnirKGA+xUkJyBACK1nIN1bmSIgQCGhVZfVlA4g4EBI+ODhDuaygDgibCBELqBEJqBAhJUw2f8c3OgY8CAZ8iaRaOHRU5DT0RFUkSHjUxhdmY2MC4xNi4xMDBzc9ZjwItjxYjnirKGA+xUkGfIoUWjh0VOQ09ERVJEh5RMYXZjNjAuMzEuMTAyIGxpYnZweGfIoUWjiERVUkFUSU9ORIeTMDA6MDA6MDIuMDAwMDAwMDAwAB9DtnXD54EAo6OBAACAEAIAnQEqEAAQAABHCIWFiJmEiAICAAwNYAD+/6tQgKOZgQPoALEBAAEQEAAYADA/9AwAAAD+/6tQgBxTu2uRu4+zgQC3iveBAfGCAZ/wgQM=";
+// ---------- Battle & Index QoL (2026.10.11.9) ----------
+// 1) Difficulty cards above the maps (pick difficulty first, then tap a map).
+// 2) Enemy Index: every enemy has its own info box once you have met it in battle.
+// 3) Screen stays awake for the whole time the battle screen is open.
+const MODE_STYLE={easy:{i:'🌱',c:'#4ade80',d:'Relaxed enemies for learning a map'},medium:{i:'⚔️',c:'#60a5fa',d:'A fair fight with double rewards'},hard:{i:'🔥',c:'#fb923c',d:'Tough enemies, 4× rewards, boss rerolls'},hell:{i:'💀',c:'#f43f5e',d:'Brutal enemies, 8× rewards, big boss rerolls'},infinite:{i:'♾️',c:'#c084fc',d:'Endless waves with rewards every wave'}};
+const GG_MODE_KEY='gemGuardiansMode-'+KEY;
+try{const m=localStorage.getItem(GG_MODE_KEY);if(m&&MODES[m])curMode=m;}catch(e){}
+function modeStars(mode){let n=0;for(let i=0;i<STAGES.length;i++)n+=S.stageStars?.[stageStarKey(i,mode)]||0;return n;}
+renderModes=function(){
+  renderRaids();
+  const el=$('#modes');if(!el)return;
+  el.innerHTML=Object.keys(MODES).map(k=>{const M=MODES[k],st=MODE_STYLE[k]||{i:'⚔️',c:'#a78bfa',d:''},inf=k==='infinite';
+    return '<button type="button" class="mode-card'+(k===curMode?' on':'')+'" data-m="'+k+'" style="--mc:'+st.c+'" aria-pressed="'+(k===curMode)+'">'
+      +'<span class="mc-top"><span class="mc-ico">'+st.i+'</span><b>'+M.n+'</b>'+(k===curMode?'<span class="mc-check">✓</span>':'')+'</span>'
+      +'<span class="mc-stats">'+(inf?'<span>Endless waves</span><span>💎 every wave</span>':'<span>Enemy HP ×'+M.hp+'</span><span>💎 '+25*M.mult+' · 🍎 '+Math.ceil(2*M.mult)+'</span>')+'<span>Unit EXP ×'+M.xp+'</span></span>'
+      +(inf?'':'<span class="mc-stars">★ '+modeStars(k)+'/'+STAGES.length*3+'</span>')
+      +'</button>';}).join('');
+  el.querySelectorAll('button[data-m]').forEach(b=>b.onclick=()=>{curMode=b.dataset.m;try{localStorage.setItem(GG_MODE_KEY,curMode)}catch(e){};renderAll();});
+  const M=MODES[curMode],st=MODE_STYLE[curMode]||{};
+  $('#modeInfo').innerHTML='<b style="color:'+(st.c||'#fff')+'">'+(st.i||'')+' '+M.n+':</b> '+(st.d?st.d+'. ':'')+(curMode==='infinite'
+    ?'Endless waves that keep getting stronger. Every wave you clear pays 6 gems (31 on each 10th wave) plus food from that map as you go. Player EXP per wave: 1 on waves 1–10, 2 on waves 11–20, 3 on waves 21–30, and +1 for every further 10 waves.'
+    :'Clear all 15 waves to earn '+25*M.mult+' gems and '+Math.ceil(2*M.mult)+' of that map’s food. Enemy health ×'+M.hp+', unit EXP ×'+M.xp+'.');
+};
+// ---- Enemy Index ----
+const ENEMY_INDEX=[
+  {k:'normal',cls:'Normal',from:1,hp:1,spd:'Normal',ab:'No special ability. The most common enemy.',col:'#ef4444'},
+  {k:'tank',cls:'Tank',from:2,hp:3,spd:'Slow',ab:'Very high health. Splash and high-damage units handle it best.',col:'#60a5fa'},
+  {k:'runner',cls:'Fast',from:3,hp:.65,spd:'Very fast',ab:'Low health but rushes past slow attackers. Freeze and slow units help.',col:'#4ade80'},
+  {k:'elite',cls:'Elite',from:4,hp:1.8,spd:'Normal',ab:'Strong armored knight. Appears on every boss wave just before the boss.',col:'#c084fc'},
+  {k:'shield',cls:'Shield',from:5,hp:1.15,spd:'Slow',ab:'Crystal shield (60% of its health) absorbs damage first. When the shield shatters, it is stunned for 1 second.',col:'#67e8f9'},
+  {k:'flyer',cls:'Flying',from:6,hp:.7,spd:'Fast',ab:'Flies above the road: slow, freeze and stun do not affect it. Use damage units.',col:'#c4a1ff'},
+  {k:'healer',cls:'Healer',from:7,hp:.85,spd:'Normal',ab:'Every 3 seconds heals nearby enemies by 10% of their health. Defeat it first!',col:'#86efac'},
+  {k:'splitter',cls:'Splitter',from:8,hp:1.25,spd:'Slow',ab:'Splits into two fast Glooplings when defeated. Splash damage cleans them up.',col:'#5eead4'},
+  {k:'gloopling',cls:'Minion',from:8,hp:.3,spd:'Fast',ab:'A small piece of a Gloop. Weak, but quick.',col:'#5eead4'},
+  {k:'dasher',cls:'Dasher',from:9,hp:.95,spd:'Normal + dash',ab:'Dashes 70 steps forward along the road every 4 seconds. Cover the whole road.',col:'#a78bfa'},
+  {k:'berserk',cls:'Berserker',from:10,hp:1.5,spd:'Slow → very fast',ab:'Gets faster as it loses health (up to +90% speed). Finish it quickly.',col:'#fb923c'},
+  {k:'boss',cls:'Boss',from:1,hp:7,spd:'Slow',ab:'Final-wave boss. Calls 3 guards and raises a dark ward at 66% and 33% health, then becomes Enraged (faster) below 25%.',col:'#e4e4e7'}
+];
+function enemyName(k){return (typeof GGA!=='undefined'&&GGA.ENEMY_LOOK[k]&&GGA.ENEMY_LOOK[k].name)||k;}
+function logEnemy(kind,what){
+  if(!ENEMY_INDEX.some(x=>x.k===kind))return;
+  S.enemyLog=S.enemyLog||{};const r=S.enemyLog[kind]||(S.enemyLog[kind]={s:0,d:0});
+  const isNew=!r.s&&!r.k;r[what]=(r[what]||0)+1;
+  if(what==='s'&&isNew)toast('👹 New enemy discovered: '+enemyName(kind)+'! See the Index → Enemies.');
+}
+let ggIndexTab='units';
+function setIndexTab(t){ggIndexTab=t;document.querySelectorAll('#indexTabs [data-ix]').forEach(b=>{b.classList.toggle('on',b.dataset.ix===t);b.setAttribute('aria-selected',String(b.dataset.ix===t));});
+  const show={units:'#unitIndexPanel',enemies:'#enemyIndexPanel',items:'#itemIndexPanel'};for(const [k,q] of Object.entries(show)){const p=$(q);if(p)p.classList.toggle('hide',k!==t);}
+  if(t==='enemies')renderEnemyIndex();}
+function renderEnemyIndex(){
+  const grid=$('#enemyIndexGrid');if(!grid)return;
+  const log=S.enemyLog||{};let known=0;
+  grid.innerHTML=ENEMY_INDEX.map(x=>{const r=log[x.k]||{},met=!!(r.s||r.k);if(met)known++;
+    if(!met)return '<div class="enemy-card locked"><canvas class="enemy-art" width="160" height="160" data-enemy="'+x.k+'"></canvas><div class="ec-body"><b>???</b><span class="ec-cls">Unknown enemy</span><p>Meet it in battle to unlock its information.</p><small class="ec-hint">'+(x.k==='boss'?'Appears on the final wave of every map':x.k==='gloopling'?'Appears from Map 8':'First appears on Map '+x.from)+'</small></div></div>';
+    const seen=r.s?r.s.toLocaleString():'—',def=r.d?r.d.toLocaleString():'—';
+    return '<div class="enemy-card" style="--ec:'+x.col+'"><canvas class="enemy-art" width="160" height="160" data-enemy="'+x.k+'"></canvas><div class="ec-body"><b style="color:'+x.col+'">'+enemyName(x.k)+'</b><span class="ec-cls">'+x.cls+'</span>'
+      +'<div class="ec-stats"><span>❤️ Health ×'+x.hp+'</span><span>👟 '+x.spd+'</span><span>🗺️ '+(x.k==='boss'?'Final wave':'Map '+x.from+'+')+'</span></div>'
+      +'<p>'+x.ab+'</p><small class="ec-log">Encountered '+seen+' · Defeated '+def+(r.k&&!r.s?' · met before records began':'')+'</small></div></div>';}).join('');
+  $('#enemyIndexProgress').textContent='Enemies discovered: '+known+'/'+ENEMY_INDEX.length+'. Each enemy’s information box unlocks the first time you meet it in battle.';
+  grid.querySelectorAll('canvas[data-enemy]').forEach(k=>{if(typeof GGA==='undefined')return;const c=k.getContext('2d'),kind=k.dataset.enemy;c.clearRect(0,0,160,160);c.save();const s=kind==='boss'?2.3:kind==='gloopling'?3.6:3;c.translate(80,kind==='boss'?100:94);c.scale(s,s);GGA.drawEnemy(c,kind,0,0,0,1);c.restore();});
+  const tabBtn=document.querySelector('#indexTabs [data-ix="enemies"]');if(tabBtn)tabBtn.textContent='👹 Enemies '+known+'/'+ENEMY_INDEX.length;
+}
+(function(){
+  document.querySelectorAll('#indexTabs [data-ix]').forEach(b=>b.onclick=()=>setIndexTab(b.dataset.ix));
+  const go=$('#openEnemyIndex');if(go)go.onclick=()=>{document.querySelector('.tabs [data-tab="index"]')?.click();setIndexTab('enemies');$('#indexTabs')?.scrollIntoView({block:'start',behavior:'smooth'});};
+  const origRI=renderIndex;renderIndex=function(){const r=origRI.apply(this,arguments);try{renderEnemyIndex()}catch(e){}return r;};
+  setIndexTab('units');
+})();
+// ---- Keep the screen awake for the whole battle (not only in full screen) ----
+battleWakeWanted=function(){return !!(G&&$('#arena')&&!$('#arena').classList.contains('hide'));};
+(function(){
+  const origShow=showArena;showArena=function(v){const r=origShow.apply(this,arguments);try{syncScreenWake();ggAwakeVideo(screenWakeWanted()&&!afkWakeLock);}catch(e){}return r;};
+  // Fallback for browsers without the Wake Lock API, or when it is blocked: a tiny silent looping video.
+  let vid=null;
+  window.ggAwakeVideo=function(on){
+    if(on&&!vid){vid=document.createElement('video');vid.setAttribute('playsinline','');vid.setAttribute('aria-hidden','true');vid.muted=true;vid.loop=true;vid.style.cssText='position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:0;bottom:0';
+      const s1=document.createElement('source');s1.src=GG_AWAKE_WEBM;s1.type='video/webm';const s2=document.createElement('source');s2.src=GG_AWAKE_MP4;s2.type='video/mp4';vid.append(s1,s2);document.body.appendChild(vid);}
+    if(!vid)return;
+    if(on){const p=vid.play();if(p&&p.catch)p.catch(()=>{});}else vid.pause();
+  };
+  // After every tap during a battle: re-check the lock (some browsers need a tap) and run the fallback if the lock is missing.
+  addEventListener('pointerdown',()=>{if(!screenWakeWanted())return;if(!afkWakeLock)requestAfkWakeLock();setTimeout(()=>ggAwakeVideo(screenWakeWanted()&&!afkWakeLock),400);},{capture:true,passive:true});
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&screenWakeWanted()){syncScreenWake();setTimeout(()=>ggAwakeVideo(screenWakeWanted()&&!afkWakeLock),600);}else if(document.visibilityState!=='visible')ggAwakeVideo(false);});
+  setInterval(()=>{if(!screenWakeWanted()){ggAwakeVideo(false);return;}if(document.visibilityState==='visible'&&!afkWakeLock)requestAfkWakeLock();},10000);
+})();
 load();afkPendingUI();syncSettings();ensureBanner();updateBannerClock();setInterval(updateBannerClock,1000);gemUI();renderAll();save(false);requestAnimationFrame(loop);
 // ---------- Sound director (2026.10.11.6) ----------
 // Connects the original synthesized music & sound effects (GGS) to the game. Audio settings are
