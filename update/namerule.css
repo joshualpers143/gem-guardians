@@ -1,4 +1,0 @@
-/* ---------- Online-only name changes (2026.10.11.24) ---------- */
-.gg-name-why{display:block;color:var(--mut);font-size:12px;margin-top:2px}
-.gg-cloud-flash{animation:ggCloudFlash 1.5s ease}
-@keyframes ggCloudFlash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 3px #7dd3fc,0 0 24px #7dd3fc88}}

@@ -670,6 +670,12 @@ select,input:not([type=checkbox]):not([type=range]){background:#16122f;color:var
 .gg-name-note{color:var(--mut);font-size:13px;margin:6px 0 0}
 #playerName:disabled{opacity:.85}
 </style>
+<style>
+/* ---------- Online-only name changes (2026.10.11.24) ---------- */
+.gg-name-why{display:block;color:var(--mut);font-size:12px;margin-top:2px}
+.gg-cloud-flash{animation:ggCloudFlash 1.5s ease}
+@keyframes ggCloudFlash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 3px #7dd3fc,0 0 24px #7dd3fc88}}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -868,6 +874,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Name Changes Are Checked Online</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 3:22 AM MDT</p><ul><li><strong>Every name is checked online.</strong> To choose or change your player name you must be signed in to Cloud Save and connected to the internet, so the game can confirm that nobody else already has it. Names can no longer be changed offline.</li><li>If you are offline, the name screen says so instead of letting you pick a name that might already be taken.</li><li>Tapping <em>Sign in to change</em> in your Profile takes you straight to Cloud Save.</li><li><strong>Leaderboards (coming soon) require a claimed player name.</strong> Players without one will be asked to claim a name before they can join.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Unique Player Names</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 2:55 AM MDT</p><ul><li><strong>Every online player now has their own name.</strong> After signing in to Cloud Save, you choose a player name that nobody else can use. The game checks it live and shows ✓ when it is available.</li><li><strong>No copycats:</strong> names that look the same count as the same name, so if "Josh" is taken, "JOSH", "josh" and "J0sh" are taken too.</li><li><strong>Rules:</strong> 3–16 letters, numbers or _, starting with a letter. Rude words and names like "Admin" or "Moderator" are not allowed.</li><li><strong>Names are permanent</strong>, so choose carefully; the game asks you to confirm first. Your name follows your account to every device.</li><li>Players who do not sign in keep their offline name, which only they can see.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Cloud Save (Optional)</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 2:04 AM MDT</p><ul><li><strong>Back up your progress online.</strong> Open Settings → Cloud Save and create an account with your email and a password. Your progress then backs up automatically about once a minute while you play and are online, and you can tap Back up now any time.</li><li><strong>Continue on another device.</strong> Sign in on another phone or on the website and tap Load cloud save.</li><li><strong>Your saves are protected.</strong> If this device and the cloud have different progress, the game never overwrites either one by itself; it shows both (level, gems and units) and lets you choose which to keep. Loading a cloud save keeps a recovery copy of your previous progress.</li><li><strong>Still fully offline.</strong> Cloud Save is optional. Without signing in, nothing leaves your device, exactly as before.</li><li>You can sign out at any time, or delete your cloud account and all its cloud saves from the same screen. The privacy policy has been updated to explain what Cloud Save stores.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Unit Abilities: Every Unit Plays Differently</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 12:37 AM MDT</p><ul><li><strong>Real abilities for 50 units.</strong> Every Common, Rare, Epic and Legendary unit now has one named ability that does exactly what its card says. Before, many cards only said a word like "burn" or "swarm", and units shared hidden bonuses that were never explained.</li><li><strong>New effects on enemies:</strong> Burn and Poison deal damage over time (Poison stacks up to 3 times), Sunder makes an enemy take more damage from every unit, Root and Stun stop it, Freeze locks it in place, and Knockback pushes it back down the road. Small icons under each enemy show what is affecting it.</li><li><strong>Counters for every enemy:</strong> Squire and Light Warden smash Crystal Shellback shields; Falconer, Wind Scout and Archer hit Gloomwings harder; burning stops Moss Shamans from healing well; Moss Druid roots stop Tide Crabs from diving; Forest Hunter finishes off weak enemies; splash and chain units clear Gloop pieces.</li><li><strong>Support units:</strong> Wandering Monk makes nearby units attack 10% faster, Dawn Paladin Blesses nearby units with +12% damage, and Star Oracle, Seraph Sentinel, Hex Witch and Alchemist Sunder enemies for the whole team. Iron Miner digs up coins.</li><li><strong>Role tags:</strong> tap any unit to see its ability with tags such as Area, Control, Support, Anti-Shield, Anti-Air, Finisher and Economy, so building a balanced team is easier.</li><li>Mythic and Secret unit cards now describe exactly what their abilities do. Their power is unchanged.</li><li>The Help screen explains each ability effect icon.</li></ul></section>
@@ -960,10 +967,10 @@ window.ggSplashHide=hide;
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.23"></script>
-<script src="gg-art.js?v=2026.10.11.23"></script>
-<script>const GAME_VERSION='2026.10.11.23';</script>
-<script src="gg-game.js?v=2026.10.11.23"></script>
+<script src="gg-sound.js?v=2026.10.11.24"></script>
+<script src="gg-art.js?v=2026.10.11.24"></script>
+<script>const GAME_VERSION='2026.10.11.24';</script>
+<script src="gg-game.js?v=2026.10.11.24"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).
