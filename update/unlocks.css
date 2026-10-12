@@ -1,0 +1,26 @@
+/* ---------- Level unlocks & tutorials (2026.10.11.16) ---------- */
+.tabs button{position:relative}
+.tabs button.tab-locked{filter:grayscale(.85) brightness(.7);box-shadow:inset 0 1px 0 #ffffff14,0 2px 0 #120e2a}
+.tabs button.tab-locked .tab-ico{opacity:.55}
+.tab-lock{position:absolute;top:3px;right:4px;display:inline-flex;align-items:center;gap:2px;font-size:10px;font-weight:900;color:#ffe08a;background:#000a;border-radius:999px;padding:1px 6px 1px 3px;filter:none}
+.tab-lock .ggi{width:11px;height:11px}
+.gg-unlock{position:fixed;inset:0;z-index:2100;display:flex;align-items:center;justify-content:center;padding:18px;background:radial-gradient(circle at 50% 40%,#3b2a86e6,#07051af2 70%)}
+.gg-unlock.hide{display:none}
+.gg-unlock-card{position:relative;width:min(380px,100%);text-align:center;background:linear-gradient(180deg,#2f2768,#1b1640);border:2px solid #ffd98a88;border-radius:20px;padding:22px 18px 18px;box-shadow:0 0 40px #ffc94d44,0 20px 50px #000a}
+.gg-unlock.in .gg-unlock-card{animation:unlockPop .45s cubic-bezier(.2,1.4,.4,1)}
+.gg-unlock-ico{width:84px;height:84px;margin:-62px auto 6px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#5a3fc0,#241b55);border:3px solid #ffd98a;box-shadow:0 0 24px #ffc94d88}
+.gg-unlock-ico .ggi{width:46px;height:46px}
+.gg-unlock-kicker{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#ffd98a}
+.gg-unlock-card h2{margin:4px 0 8px;font-size:24px}
+.gg-unlock-card p{margin:0 0 16px;color:#e6e0ff;line-height:1.5}
+.gg-unlock-actions{display:flex;gap:10px;justify-content:center}
+.gg-unlock-actions button{min-height:44px;min-width:120px}
+@keyframes unlockPop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.gg-help-box{max-width:520px}
+.gg-help-row{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid #ffffff14}
+.gg-help-ico .ggi{width:30px;height:30px}
+.gg-help-txt{flex:1;min-width:0}.gg-help-txt b{display:block}.gg-help-txt small{display:block;color:var(--mut);line-height:1.35}
+.gg-help-row button{min-width:88px}
+.gg-help-locked{display:inline-flex;align-items:center;gap:3px;color:#ffd98a;font-weight:800;font-size:13px;min-width:88px;justify-content:center}
+.gg-help-locked .ggi{width:14px;height:14px}
+@media (prefers-reduced-motion:reduce){.gg-unlock.in .gg-unlock-card{animation:none}}
