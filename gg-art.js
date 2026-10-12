@@ -1,4 +1,4 @@
-/* Gem Guardians public edition · gg-art.js · Version 2026.10.11.17 · built from source/public/index.html by tools/split.py */
+/* Gem Guardians public edition · gg-art.js · Version 2026.10.11.18 · built from source/public/index.html by tools/split.py */
 /* Gem Guardians Art Engine v2 (2026.10.11.3) */
 /* ===================================================================
    Gem Guardians Art Engine v2 — core helpers + map renderer
