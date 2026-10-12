@@ -1,0 +1,43 @@
+name: Apply game update
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'update/apply.py'
+
+permissions:
+  contents: write
+  pages: write
+  actions: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply update to the game files
+        run: python3 update/apply.py "$GITHUB_WORKSPACE"
+      - name: Render app icons
+        run: |
+          if [ -f update/icon.svg ]; then
+            for s in 192 512; do
+              google-chrome --headless=new --disable-gpu --hide-scrollbars --window-size=$s,$s --screenshot="$PWD/new-icon-$s.png" "file://$PWD/update/icon.svg" || true
+              if [ -s "new-icon-$s.png" ]; then mv "new-icon-$s.png" "icon-$s.png"; fi
+            done
+          fi
+      - name: Commit updated game
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git rm -r -q update
+          git add -A
+          git commit -m "Apply game update $(grep -o "GAME_VERSION='[^']*'" index.html)"
+          git push
+      - name: Rebuild website and Android app
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
+          gh workflow run android-apk.yml --ref main || true
