@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1024 1024">
+<defs>
+<radialGradient id="bg" cx="50%" cy="42%" r="70%"><stop offset="0" stop-color="#5b3fb0"/><stop offset=".55" stop-color="#2a1b5e"/><stop offset="1" stop-color="#120c2b"/></radialGradient>
+<radialGradient id="halo" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#9ef0ff" stop-opacity=".75"/><stop offset=".45" stop-color="#8b6cff" stop-opacity=".35"/><stop offset="1" stop-color="#8b6cff" stop-opacity="0"/></radialGradient>
+<linearGradient id="ga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0fdff"/><stop offset=".45" stop-color="#7fe3ff"/><stop offset="1" stop-color="#3a6cff"/></linearGradient>
+<linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9b7bff"/><stop offset="1" stop-color="#3b1f9e"/></linearGradient>
+<linearGradient id="rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a3"/><stop offset="1" stop-color="#c98a1b"/></linearGradient>
+</defs>
+<g id="bgg"><rect width="1024" height="1024" fill="url(#bg)"/>
+<g opacity=".55" fill="#fff"><circle cx="170" cy="210" r="5"/><circle cx="860" cy="170" r="4"/><circle cx="820" cy="820" r="5"/><circle cx="210" cy="830" r="4"/><circle cx="120" cy="520" r="3"/><circle cx="910" cy="520" r="3"/></g></g>
+<g id="fg">
+<circle cx="512" cy="500" r="420" fill="url(#halo)"/>
+<circle cx="512" cy="512" r="350" fill="none" stroke="url(#rim)" stroke-width="26" opacity=".95"/>
+<circle cx="512" cy="512" r="322" fill="none" stroke="#ffe9a3" stroke-width="4" opacity=".5"/>
+<g transform="translate(512 520) scale(4.1) translate(-60 -62)">
+ <path d="M30 18H90L112 46L60 112L8 46Z" fill="url(#gb)"/>
+ <path d="M30 18L44 46H76L90 18Z" fill="#d6f8ff"/><path d="M8 46H44L30 18Z" fill="#8fd9ff"/><path d="M112 46H76L90 18Z" fill="#5aa8ff"/>
+ <path d="M8 46H44L60 112Z" fill="url(#ga)"/><path d="M44 46H76L60 112Z" fill="#6fc8ff"/><path d="M76 46H112L60 112Z" fill="#4560e8"/>
+ <path d="M30 18H90L112 46L60 112L8 46Z" fill="none" stroke="#f4fbff" stroke-width="3" stroke-linejoin="round"/>
+ <path d="M36 24L46 40" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+</g>
+<g fill="#fff"><path d="M800 250l10 28 28 10-28 10-10 28-10-28-28-10 28-10z"/><path d="M245 730l7 19 19 7-19 7-7 19-7-19-19-7 19-7z" opacity=".85"/></g>
+</g>
+</svg>
