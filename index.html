@@ -624,6 +624,18 @@ select,input:not([type=checkbox]):not([type=range]){background:#16122f;color:var
 .trait-odds{font-size:12.5px;color:var(--mut);margin:2px 0 10px}
 .trait-odds b{font-weight:800}
 </style>
+<style>
+/* ---------- Unit abilities (2026.10.11.21) ---------- */
+.gg-abil{background:#ffffff0d;border:1px solid #ffffff22;border-radius:12px;padding:10px 12px;margin-top:8px}
+.gg-abil-name{display:flex;align-items:center;gap:6px;font-weight:800;color:#ffe08a;font-size:16px}
+.gg-abil-name .ggi-wrap svg{width:18px;height:18px}
+.gg-abil p,.gg-abil-line{margin:6px 0 0;line-height:1.5;color:#e6e0ff}
+.gg-roles{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.gg-role{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;color:#14101f;background:var(--rc)}
+.gg-status-legend{margin-top:12px;border-top:1px solid #ffffff22;padding-top:8px}
+.gg-status-legend p{line-height:1.6;color:#e6e0ff}
+#unitInfoBody{white-space:normal}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -822,6 +834,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Unit Abilities: Every Unit Plays Differently</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 12:37 AM MDT</p><ul><li><strong>Real abilities for 50 units.</strong> Every Common, Rare, Epic and Legendary unit now has one named ability that does exactly what its card says. Before, many cards only said a word like "burn" or "swarm", and units shared hidden bonuses that were never explained.</li><li><strong>New effects on enemies:</strong> Burn and Poison deal damage over time (Poison stacks up to 3 times), Sunder makes an enemy take more damage from every unit, Root and Stun stop it, Freeze locks it in place, and Knockback pushes it back down the road. Small icons under each enemy show what is affecting it.</li><li><strong>Counters for every enemy:</strong> Squire and Light Warden smash Crystal Shellback shields; Falconer, Wind Scout and Archer hit Gloomwings harder; burning stops Moss Shamans from healing well; Moss Druid roots stop Tide Crabs from diving; Forest Hunter finishes off weak enemies; splash and chain units clear Gloop pieces.</li><li><strong>Support units:</strong> Wandering Monk makes nearby units attack 10% faster, Dawn Paladin Blesses nearby units with +12% damage, and Star Oracle, Seraph Sentinel, Hex Witch and Alchemist Sunder enemies for the whole team. Iron Miner digs up coins.</li><li><strong>Role tags:</strong> tap any unit to see its ability with tags such as Area, Control, Support, Anti-Shield, Anti-Air, Finisher and Economy, so building a balanced team is easier.</li><li>Mythic and Secret unit cards now describe exactly what their abilities do. Their power is unchanged.</li><li>The Help screen explains each ability effect icon.</li></ul></section>
 <section class="qol-section" data-category="Bug Fix"><span class="update-tag tag-bug-fix">Bug Fix</span><h3>Trait Fixes &amp; Rebalance</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:02 PM MDT</p><ul><li><strong>Auto Reroll no longer throws away great traits.</strong> Before, it paused for only 3 seconds on a Legendary or Mythic and then rolled over it, and when hunting a target it skipped other Mythics. Now you choose when it stops: <em>Legendary or better</em> (default), <em>Mythic only</em>, or <em>only my target trait</em>.</li><li><strong>Gem reserve:</strong> Auto Reroll stops before spending below the amount you set (500 gems by default) instead of using every gem.</li><li><strong>Safety check:</strong> rerolling a unit that has a Legendary or Mythic trait, or starting Auto Reroll on it, now asks you first.</li><li><strong>Odds shown:</strong> the Trait Forge lists the chance of each rarity (Common 40%, Rare 30%, Epic 20%, Legendary 9%, Mythic 1%).</li><li>Trait rarities now use the same names as units: the old Uncommon traits are now Rare, and the old Rare traits are now Epic. Their effects did not change.</li><li><strong>Balance:</strong> Mythic traits were far stronger than everything else (about 2.6–2.75× damage per second). They now give about 2×: Astral Overlord +60% damage, +20% range, +25% speed; Singularity +35% damage, +50% range, +45% speed; Cosmic Ascendant +80% damage, +10% range, +10% speed. Legendary traits are slightly stronger: War Monarch +50% damage, +12% speed; Far Horizon +25% damage, +40% range, +18% speed. Midas is unchanged. Units keep the traits they have.</li></ul></section>
 <section class="qol-section" data-category="Balance Update"><span class="update-tag tag-balance-update">Balance Update</span><h3>Player EXP Rebalance</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 9:36 PM MDT</p><ul><li><strong>Harder difficulties pay off:</strong> Medium gives ×1.5 Player EXP, Hard ×2.5 and Hell ×4 (before, Hell gave only 10% more than Easy).</li><li><strong>Later maps are worth more:</strong> +6% per map, so Map 12 gives about twice as much as Map 1 (before, +1.5% per map).</li><li><strong>First-clear bonus:</strong> +60% the first time you win a map on each difficulty. <strong>Star bonus:</strong> +10% per star.</li><li><strong>Losses count:</strong> a lost battle now gives 25% of the win EXP, so trying a hard map is never wasted.</li><li><strong>Raids:</strong> 120 EXP on Level 1, up to 200 on Level 5 (was 50).</li><li>Example: Map 1 Easy with 3 stars on the first win gives 104 EXP (was 50). Map 12 Hell with 3 stars gives 494 (was 65). Reaching Level 25 for Raids now takes roughly 100 battles instead of about 420.</li><li>Your current level and EXP are kept.</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Cleaner Screens</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 9:04 PM MDT</p><ul><li>Long rule paragraphs on the Summon banner, Units, Traits, AFK, Raids and Battle screens now sit behind a small <strong>ⓘ</strong> button next to each title. Tap it to read the full rules in a card.</li><li>The summon odds are shown in one short line under the summon buttons.</li><li>The Battle screen’s enemy-strength note is one short line, with the full explanation behind ⓘ.</li><li>No rules changed. All the information is still there, just out of the way.</li></ul></section>
@@ -911,10 +924,10 @@ window.ggSplashHide=hide;
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.20"></script>
-<script src="gg-art.js?v=2026.10.11.20"></script>
-<script>const GAME_VERSION='2026.10.11.20';</script>
-<script src="gg-game.js?v=2026.10.11.20"></script>
+<script src="gg-sound.js?v=2026.10.11.21"></script>
+<script src="gg-art.js?v=2026.10.11.21"></script>
+<script>const GAME_VERSION='2026.10.11.21';</script>
+<script src="gg-game.js?v=2026.10.11.21"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).
