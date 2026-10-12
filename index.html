@@ -599,6 +599,12 @@ select,input:not([type=checkbox]):not([type=range]){background:#16122f;color:var
 .gg-help-locked .ggi{width:14px;height:14px}
 @media (prefers-reduced-motion:reduce){.gg-unlock.in .gg-unlock-card{animation:none}}
 </style>
+<style>
+/* ---------- Battle effects (2026.10.11.17) ---------- */
+#battleStats .bs-coins{transition:transform .12s}
+#battleStats .bs-coins.bs-pulse{transform:scale(1.18);filter:drop-shadow(0 0 8px #ffc533)}
+#cv{will-change:transform}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -797,6 +803,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Battle Effects Overhaul</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 8:51 PM MDT</p><ul><li><strong>Hits you can feel:</strong> enemies flash white when hit, with sparks; heavy hits throw golden sparks.</li><li><strong>Defeats:</strong> enemies burst in their own color with a fading spirit, and a coin flies to your coin counter, which pulses as it lands.</li><li><strong>Wave banners:</strong> “WAVE 5” slides across the map at the start of each wave, and the last wave gets a gold “FINAL WAVE” banner.</li><li><strong>Bosses:</strong> a red warning banner, a screen shake and a red flash when a boss or mini-boss arrives, a boss health bar at the top of the map, and a big golden explosion with a shower of coins when it falls.</li><li><strong>Your units:</strong> a landing ring and dust when you place a unit; golden rings, sparkles and “BOOST 3” text when you boost one.</li><li>A red flash around the map when an enemy reaches your castle, and confetti when you win.</li><li><strong>Screen shake</strong> can be turned off in Settings. Performance mode turns off the particles and shake but keeps the banners and boss bar.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Systems Unlock as You Level Up &amp; New Tutorials</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 8:27 PM MDT</p><ul><li><strong>Easier start:</strong> new players begin with Summon, Battle, Units, Bag and Quests. Other systems unlock with Player Level: Index at 2, Traits at 3, AFK at 4, 5th team slot and Auto Play at 5, Upgrade Paths at 6, Prestige and the 6th slot at 10, Raids at 25. Locked tabs show a lock and the level they open at.</li><li><strong>New beginner tutorial:</strong> 9 hands-on steps (summon, equip, place, upgrade, win) instead of 24.</li><li><strong>A tutorial for every system:</strong> when something unlocks, a “New system unlocked!” card explains it and can walk you through it.</li><li><strong>Help &amp; Tutorials</strong> (in the ☰ menu) lets you replay any tutorial or read the game overview.</li><li>Before Upgrade Paths unlock, Boost 3 applies each unit’s recommended path automatically. Daily quests never ask for a locked system.</li><li>Players who already had progress keep every system unlocked (Raids still need Level 25).</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Visual Overhaul &amp; Summon Reveal</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 6:07 PM MDT</p><ul><li><strong>New icon set:</strong> tabs, header buttons, battle badges and headings now use hand-drawn game icons instead of emoji, so they look the same on every phone.</li><li><strong>Refreshed look:</strong> deeper background, glossy buttons that press down when tapped, rounded panels with soft shadows, and unit cards that glow in their rarity color.</li><li><strong>Crystal Summon altar:</strong> the Summon tab has an animated crystal and two big summon buttons that show their gem cost.</li><li><strong>Summon reveal:</strong> after a manual summon, your new units flip in as cards. Legendary, Mythic and Secret pulls get a colored light burst. Tap Continue, or Summon again. Auto Summon skips it, and you can turn it off in Settings.</li><li>The gem counter shows thousands separators (for example 18,650).</li><li><strong>New app icon:</strong> a faceted gem in a gold ring, used for the home-screen app and the Android app.</li><li>Performance mode and the phone’s reduce-motion setting stop the decorative animations.</li></ul></section>
 <section class="qol-section" data-category="Balance Update"><span class="update-tag tag-balance-update">Balance Update</span><h3>Common &amp; Rare Units Can Prestige Again (Limited)</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 03:39 PM MDT</p><ul><li>Instead of no prestige at all, Common and Rare units can now earn a small number of prestige stars: <strong>Common up to 1★</strong> and <strong>Rare up to 2★</strong>.</li><li>Epic, Legendary, Mythic, Secret and Exclusive units can still reach the full 5★.</li><li>The Prestige button, the Bag prestige tool and the unit cards show each unit’s own star limit. Stars still need level 100 and still raise the EXP needed per level (+50% per star).</li><li>Units keep any stars they already have.</li></ul></section>
@@ -882,10 +889,10 @@ window.ggSplashHide=hide;
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.16"></script>
-<script src="gg-art.js?v=2026.10.11.16"></script>
-<script>const GAME_VERSION='2026.10.11.16';</script>
-<script src="gg-game.js?v=2026.10.11.16"></script>
+<script src="gg-sound.js?v=2026.10.11.17"></script>
+<script src="gg-art.js?v=2026.10.11.17"></script>
+<script>const GAME_VERSION='2026.10.11.17';</script>
+<script src="gg-game.js?v=2026.10.11.17"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).

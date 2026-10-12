@@ -1,4 +1,0 @@
-/* ---------- Battle effects (2026.10.11.17) ---------- */
-#battleStats .bs-coins{transition:transform .12s}
-#battleStats .bs-coins.bs-pulse{transform:scale(1.18);filter:drop-shadow(0 0 8px #ffc533)}
-#cv{will-change:transform}
