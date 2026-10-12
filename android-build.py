@@ -335,6 +335,7 @@ dependencies {{ implementation 'androidx.webkit:webkit:1.11.0' }}
 write('app/test-keystore.jks', base64.b64decode(KEYSTORE), True)
 write('app/src/main/AndroidManifest.xml', """<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <uses-permission android:name="android.permission.INTERNET" />
   <application android:label="Gem Guardians" android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="true"
       android:theme="@style/GGTheme" android:hardwareAccelerated="true">

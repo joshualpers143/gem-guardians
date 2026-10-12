@@ -636,6 +636,26 @@ select,input:not([type=checkbox]):not([type=range]){background:#16122f;color:var
 .gg-status-legend p{line-height:1.6;color:#e6e0ff}
 #unitInfoBody{white-space:normal}
 </style>
+<style>
+/* ---------- Cloud Save (2026.10.11.22) ---------- */
+.gg-cloud{margin-top:16px;padding:12px 14px;border:1px solid #7dd3fc55;border-radius:14px;background:linear-gradient(180deg,#1b2a4a66,#1a163599)}
+.gg-cloud>small{display:block;color:var(--mut);margin:4px 0 8px;line-height:1.45}
+.gg-cloud-tag{font-size:11px;font-weight:700;color:#14101f;background:#7dd3fc;border-radius:999px;padding:1px 7px;margin-left:4px;vertical-align:middle}
+.gg-cloud-form{display:flex;flex-direction:column;gap:8px}
+.gg-cloud-form input{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:10px;border:1px solid #ffffff33;background:#0f0c22;color:#fff;font-size:16px}
+.gg-cloud .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.gg-linkbtn{background:none!important;border:0!important;box-shadow:none!important;color:#a5b4fc!important;padding:4px 0!important;font-size:13px;text-decoration:underline;align-self:flex-start;min-height:0}
+.gg-cloud-del{color:#fca5a5!important;margin-top:8px}
+.gg-cloud-user,.gg-cloud-status{margin:4px 0;color:#e6e0ff}
+.gg-cloud-user b{word-break:break-all}
+.gg-cloud-warn{color:#fde68a}
+.gg-cloud-msg{margin:8px 0 0;padding:8px 10px;border-radius:10px;background:#ffffff12;color:#e6e0ff;line-height:1.4}
+.gg-cloud-choice{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.gg-cloud-choice p{margin:0;color:#fde68a}
+.gg-cloud-opt{display:flex;flex-direction:column;gap:3px;padding:10px;border-radius:12px;background:#ffffff0f;border:1px solid #ffffff22}
+.gg-cloud-opt span{color:#fff;font-weight:700}.gg-cloud-opt small,.gg-cloud-choice>small{color:var(--mut)}
+.gg-cloud-opt button{margin-top:6px;align-self:flex-start}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -834,6 +854,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Cloud Save (Optional)</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 2:04 AM MDT</p><ul><li><strong>Back up your progress online.</strong> Open Settings → Cloud Save and create an account with your email and a password. Your progress then backs up automatically about once a minute while you play and are online, and you can tap Back up now any time.</li><li><strong>Continue on another device.</strong> Sign in on another phone or on the website and tap Load cloud save.</li><li><strong>Your saves are protected.</strong> If this device and the cloud have different progress, the game never overwrites either one by itself; it shows both (level, gems and units) and lets you choose which to keep. Loading a cloud save keeps a recovery copy of your previous progress.</li><li><strong>Still fully offline.</strong> Cloud Save is optional. Without signing in, nothing leaves your device, exactly as before.</li><li>You can sign out at any time, or delete your cloud account and all its cloud saves from the same screen. The privacy policy has been updated to explain what Cloud Save stores.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Unit Abilities: Every Unit Plays Differently</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 12:37 AM MDT</p><ul><li><strong>Real abilities for 50 units.</strong> Every Common, Rare, Epic and Legendary unit now has one named ability that does exactly what its card says. Before, many cards only said a word like "burn" or "swarm", and units shared hidden bonuses that were never explained.</li><li><strong>New effects on enemies:</strong> Burn and Poison deal damage over time (Poison stacks up to 3 times), Sunder makes an enemy take more damage from every unit, Root and Stun stop it, Freeze locks it in place, and Knockback pushes it back down the road. Small icons under each enemy show what is affecting it.</li><li><strong>Counters for every enemy:</strong> Squire and Light Warden smash Crystal Shellback shields; Falconer, Wind Scout and Archer hit Gloomwings harder; burning stops Moss Shamans from healing well; Moss Druid roots stop Tide Crabs from diving; Forest Hunter finishes off weak enemies; splash and chain units clear Gloop pieces.</li><li><strong>Support units:</strong> Wandering Monk makes nearby units attack 10% faster, Dawn Paladin Blesses nearby units with +12% damage, and Star Oracle, Seraph Sentinel, Hex Witch and Alchemist Sunder enemies for the whole team. Iron Miner digs up coins.</li><li><strong>Role tags:</strong> tap any unit to see its ability with tags such as Area, Control, Support, Anti-Shield, Anti-Air, Finisher and Economy, so building a balanced team is easier.</li><li>Mythic and Secret unit cards now describe exactly what their abilities do. Their power is unchanged.</li><li>The Help screen explains each ability effect icon.</li></ul></section>
 <section class="qol-section" data-category="Bug Fix"><span class="update-tag tag-bug-fix">Bug Fix</span><h3>Trait Fixes &amp; Rebalance</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 10:02 PM MDT</p><ul><li><strong>Auto Reroll no longer throws away great traits.</strong> Before, it paused for only 3 seconds on a Legendary or Mythic and then rolled over it, and when hunting a target it skipped other Mythics. Now you choose when it stops: <em>Legendary or better</em> (default), <em>Mythic only</em>, or <em>only my target trait</em>.</li><li><strong>Gem reserve:</strong> Auto Reroll stops before spending below the amount you set (500 gems by default) instead of using every gem.</li><li><strong>Safety check:</strong> rerolling a unit that has a Legendary or Mythic trait, or starting Auto Reroll on it, now asks you first.</li><li><strong>Odds shown:</strong> the Trait Forge lists the chance of each rarity (Common 40%, Rare 30%, Epic 20%, Legendary 9%, Mythic 1%).</li><li>Trait rarities now use the same names as units: the old Uncommon traits are now Rare, and the old Rare traits are now Epic. Their effects did not change.</li><li><strong>Balance:</strong> Mythic traits were far stronger than everything else (about 2.6–2.75× damage per second). They now give about 2×: Astral Overlord +60% damage, +20% range, +25% speed; Singularity +35% damage, +50% range, +45% speed; Cosmic Ascendant +80% damage, +10% range, +10% speed. Legendary traits are slightly stronger: War Monarch +50% damage, +12% speed; Far Horizon +25% damage, +40% range, +18% speed. Midas is unchanged. Units keep the traits they have.</li></ul></section>
 <section class="qol-section" data-category="Balance Update"><span class="update-tag tag-balance-update">Balance Update</span><h3>Player EXP Rebalance</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 9:36 PM MDT</p><ul><li><strong>Harder difficulties pay off:</strong> Medium gives ×1.5 Player EXP, Hard ×2.5 and Hell ×4 (before, Hell gave only 10% more than Easy).</li><li><strong>Later maps are worth more:</strong> +6% per map, so Map 12 gives about twice as much as Map 1 (before, +1.5% per map).</li><li><strong>First-clear bonus:</strong> +60% the first time you win a map on each difficulty. <strong>Star bonus:</strong> +10% per star.</li><li><strong>Losses count:</strong> a lost battle now gives 25% of the win EXP, so trying a hard map is never wasted.</li><li><strong>Raids:</strong> 120 EXP on Level 1, up to 200 on Level 5 (was 50).</li><li>Example: Map 1 Easy with 3 stars on the first win gives 104 EXP (was 50). Map 12 Hell with 3 stars gives 494 (was 65). Reaching Level 25 for Raids now takes roughly 100 battles instead of about 420.</li><li>Your current level and EXP are kept.</li></ul></section>
@@ -924,10 +945,10 @@ window.ggSplashHide=hide;
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.21"></script>
-<script src="gg-art.js?v=2026.10.11.21"></script>
-<script>const GAME_VERSION='2026.10.11.21';</script>
-<script src="gg-game.js?v=2026.10.11.21"></script>
+<script src="gg-sound.js?v=2026.10.11.22"></script>
+<script src="gg-art.js?v=2026.10.11.22"></script>
+<script>const GAME_VERSION='2026.10.11.22';</script>
+<script src="gg-game.js?v=2026.10.11.22"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).
