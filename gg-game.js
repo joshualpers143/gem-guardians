@@ -1,4 +1,4 @@
-/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.19 · built from source/public/index.html by tools/split.py */
+/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.20 · built from source/public/index.html by tools/split.py */
 const $=s=>document.querySelector(s);
 const TYPES={Physical:'#f59e0b',Ranged:'#84cc16',Magic:'#60a5fa',True:'#f8fafc'};
 const MIG={scout:'knight',slinger:'apprentice',cannon:'sniper'};
@@ -121,18 +121,18 @@ const INDEX_REWARDS={Common:15,Rare:25,Epic:45,Legendary:100,Mythic:250,Secret:5
 const TRAITS={
  steady:{n:'Steady',rarity:'Common',d:1.08,rg:1,spd:1,desc:'+8% damage'},
  keen:{n:'Keen Sight',rarity:'Common',d:1,rg:1.12,spd:1,desc:'+12% range'},
- nimble:{n:'Quickstep',rarity:'Uncommon',d:1,rg:1,spd:1.12,desc:'+12% attack speed'},
- fierce:{n:'Ferocious',rarity:'Uncommon',d:1.18,rg:1,spd:1,desc:'+18% damage'},
- hunter:{n:'Eagle Eye',rarity:'Rare',d:1.15,rg:1.18,spd:1,desc:'+15% damage, +18% range'},
- tempest:{n:'Tempest',rarity:'Rare',d:1.1,rg:1,spd:1.28,desc:'+10% damage, +28% attack speed'},
- monarch:{n:'War Monarch',rarity:'Legendary',d:1.45,rg:1,spd:1.1,desc:'+45% damage, +10% attack speed'},
- horizon:{n:'Far Horizon',rarity:'Legendary',d:1.2,rg:1.4,spd:1.15,desc:'+20% damage, +40% range, +15% attack speed'},
- astral:{n:'Astral Overlord',rarity:'Mythic',d:2.1,rg:1.25,spd:1.25,desc:'+110% damage, +25% range, +25% attack speed'},
- singularity:{n:'Singularity',rarity:'Mythic',d:1.7,rg:1.6,spd:1.55,desc:'+70% damage, +60% range, +55% attack speed'},
- cosmic:{n:'Cosmic Ascendant',rarity:'Mythic',d:2.5,rg:1.1,spd:1.1,desc:'+150% damage, +10% range, +10% attack speed'},
+ nimble:{n:'Quickstep',rarity:'Rare',d:1,rg:1,spd:1.12,desc:'+12% attack speed'},
+ fierce:{n:'Ferocious',rarity:'Rare',d:1.18,rg:1,spd:1,desc:'+18% damage'},
+ hunter:{n:'Eagle Eye',rarity:'Epic',d:1.15,rg:1.18,spd:1,desc:'+15% damage, +18% range'},
+ tempest:{n:'Tempest',rarity:'Epic',d:1.1,rg:1,spd:1.28,desc:'+10% damage, +28% attack speed'},
+ monarch:{n:'War Monarch',rarity:'Legendary',d:1.5,rg:1,spd:1.12,desc:'+50% damage, +12% attack speed'},
+ horizon:{n:'Far Horizon',rarity:'Legendary',d:1.25,rg:1.4,spd:1.18,desc:'+25% damage, +40% range, +18% attack speed'},
+ astral:{n:'Astral Overlord',rarity:'Mythic',d:1.6,rg:1.2,spd:1.25,desc:'+60% damage, +20% range, +25% attack speed'},
+ singularity:{n:'Singularity',rarity:'Mythic',d:1.35,rg:1.5,spd:1.45,desc:'+35% damage, +50% range, +45% attack speed'},
+ cosmic:{n:'Cosmic Ascendant',rarity:'Mythic',d:1.8,rg:1.1,spd:1.1,desc:'+80% damage, +10% range, +10% attack speed'},
  midas:{n:'Midas',rarity:'Mythic',d:1,rg:1,spd:1,desc:'Golden shimmering aura. +50% coins from kills and money production, plus +25% per boost after the first. Placement and boost costs -25%.'}
 };
-const TRAIT_RATES=[['Common',.40],['Uncommon',.30],['Rare',.20],['Legendary',.09],['Mythic',.01]];
+const TRAIT_RATES=[['Common',.40],['Rare',.30],['Epic',.20],['Legendary',.09],['Mythic',.01]];
 function pickTrait(forceMythic=false){let rarity='Mythic';if(!forceMythic){let r=Math.random();for(const [name,rate] of TRAIT_RATES){r-=rate;if(r<0){rarity=name;break}}}const pool=Object.keys(TRAITS).filter(k=>TRAITS[k].rarity===rarity);return pool[Math.floor(Math.random()*pool.length)];}
 function unitLabel(u){return (u.nickname?u.nickname+' · ':'')+UNITS[u.id].n+' #'+u.uid;}
 const UNIT_SORT_OPTIONS=[['rarityDesc','Highest rank → lowest'],['rarityAsc','Lowest rank → highest'],['damageDesc','Highest damage → lowest'],['damageAsc','Lowest damage → highest'],['costAsc','Cheapest → most expensive'],['costDesc','Most expensive → cheapest']];
@@ -3607,3 +3607,35 @@ function ggTuck(...nodes){nodes.forEach(n=>n&&n.classList.add('gg-tucked'));retu
   const en=$('.enemy-note > span');if(en&&!en.dataset.full){en.dataset.full=en.innerHTML;const full=en.innerHTML;en.innerHTML='<span class="ggi-wrap">'+GGI.demon+'</span>Enemies get tougher when your team is very strong.';
     ggInfoButton(en,'Enemy strength',()=>[full]);}
 })();
+// ---------- Trait fixes (2026.10.11.20) ----------
+// Auto Reroll stops on good traits and keeps a gem reserve, great traits ask before being replaced,
+// and the Trait Forge shows its odds.
+const GG_TRAIT_RANK={Common:0,Rare:1,Epic:2,Legendary:3,Mythic:4};
+function ggTraitRank(k){const t=TRAITS[k];return t?GG_TRAIT_RANK[t.rarity]??0:-1;}
+if(!['legendary','mythic','target'].includes(S.autoTraitStop))S.autoTraitStop='legendary';
+if(!Number.isFinite(S.autoTraitGemFloor)||S.autoTraitGemFloor<0)S.autoTraitGemFloor=500;
+(function(){
+  const st=$('#autoTraitStatus');if(!st)return;
+  st.insertAdjacentHTML('beforebegin','<div class="trait-auto-opts"><label>Stop when I roll <select id="autoTraitStop"><option value="legendary">Legendary or better</option><option value="mythic">Mythic only</option><option value="target">Only my target trait</option></select></label><label>Keep at least <input id="autoTraitFloor" type="number" min="0" step="50" inputmode="numeric"> gems</label></div>');
+  const s=$('#autoTraitStop'),f=$('#autoTraitFloor');s.value=S.autoTraitStop;f.value=S.autoTraitGemFloor;
+  s.onchange=()=>{S.autoTraitStop=s.value;save(false);};
+  f.onchange=()=>{S.autoTraitGemFloor=Math.max(0,Math.floor(+f.value||0));f.value=S.autoTraitGemFloor;save(false);};
+  const pity=$('#traitPity');if(pity)pity.insertAdjacentHTML('afterend','<p id="traitOdds" class="trait-odds">Odds per reroll: <b class="Common">Common 40%</b> · <b class="Rare">Rare 30%</b> · <b class="Epic">Epic 20%</b> · <b class="Legendary">Legendary 9%</b> · <b class="Mythic">Mythic 1%</b></p>');
+})();
+function ggStopAuto(msg){S.autoTraitEnabled=false;S.autoTraitUnitUid=null;save(false);try{refreshAutoTraitUI()}catch(e){}if(msg)toast(msg);}
+(function(){const orig=rollSelectedTrait;rollSelectedTrait=function(auto=false){
+  const u=S.units.find(u=>String(u.uid)===$('#traitUnit').value);
+  if(!auto&&u&&ggTraitRank(u.trait)>=3&&traitRerollSecondsLeft()===0){
+    if(!confirm('Replace '+TRAITS[u.trait].n+' ('+TRAITS[u.trait].rarity+')? The new trait is random and this one will be lost.'))return false;}
+  if(auto){
+    if(u&&S.autoTraitStop!=='target'&&ggTraitRank(u.trait)>=(S.autoTraitStop==='mythic'?4:3)){ggStopAuto('Auto Reroll stopped: '+UNITS[u.id].n+' already has '+TRAITS[u.trait].n+'.');return false;}
+    if(S.traitRerolls<=0&&S.gems-30<(S.autoTraitGemFloor||0)){ggStopAuto('Auto Reroll stopped to keep at least '+(S.autoTraitGemFloor||0).toLocaleString()+' gems.');return false;}}
+  const r=orig.apply(this,arguments);
+  if(r&&auto&&u&&S.autoTraitEnabled){const k=u.trait,rk=ggTraitRank(k);
+    if(S.autoTraitStop!=='target'&&rk>=(S.autoTraitStop==='mythic'?4:3))ggStopAuto('Kept '+TRAITS[k].n+' ('+TRAITS[k].rarity+')! Auto Reroll stopped.');}
+  return r;};})();
+// Starting Auto Reroll on a unit that already has a great trait asks first.
+(function(){const b=$('#autoTraitToggle');if(!b)return;const orig=b.onclick;b.onclick=function(e){
+  if(!S.autoTraitEnabled){const u=S.units.find(u=>String(u.uid)===$('#traitUnit').value);
+    if(u&&ggTraitRank(u.trait)>=3&&!confirm(UNITS[u.id].n+' has '+TRAITS[u.trait].n+' ('+TRAITS[u.trait].rarity+'). Start Auto Reroll anyway? It may replace it.'))return;}
+  return orig.call(this,e);};})();
