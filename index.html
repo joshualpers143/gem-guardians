@@ -571,6 +571,34 @@ select,input:not([type=checkbox]):not([type=range]){background:#16122f;color:var
 #indexGrid .card[data-ix-id]:active{transform:scale(.98)}
 .dock-cost .ggi{width:1.1em;height:1.1em}
 </style>
+<style>
+/* ---------- Level unlocks & tutorials (2026.10.11.16) ---------- */
+.tabs button{position:relative}
+.tabs button.tab-locked{filter:grayscale(.85) brightness(.7);box-shadow:inset 0 1px 0 #ffffff14,0 2px 0 #120e2a}
+.tabs button.tab-locked .tab-ico{opacity:.55}
+.tab-lock{position:absolute;top:3px;right:4px;display:inline-flex;align-items:center;gap:2px;font-size:10px;font-weight:900;color:#ffe08a;background:#000a;border-radius:999px;padding:1px 6px 1px 3px;filter:none}
+.tab-lock .ggi{width:11px;height:11px}
+.gg-unlock{position:fixed;inset:0;z-index:2100;display:flex;align-items:center;justify-content:center;padding:18px;background:radial-gradient(circle at 50% 40%,#3b2a86e6,#07051af2 70%)}
+.gg-unlock.hide{display:none}
+.gg-unlock-card{position:relative;width:min(380px,100%);text-align:center;background:linear-gradient(180deg,#2f2768,#1b1640);border:2px solid #ffd98a88;border-radius:20px;padding:22px 18px 18px;box-shadow:0 0 40px #ffc94d44,0 20px 50px #000a}
+.gg-unlock.in .gg-unlock-card{animation:unlockPop .45s cubic-bezier(.2,1.4,.4,1)}
+.gg-unlock-ico{width:84px;height:84px;margin:-62px auto 6px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#5a3fc0,#241b55);border:3px solid #ffd98a;box-shadow:0 0 24px #ffc94d88}
+.gg-unlock-ico .ggi{width:46px;height:46px}
+.gg-unlock-kicker{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#ffd98a}
+.gg-unlock-card h2{margin:4px 0 8px;font-size:24px}
+.gg-unlock-card p{margin:0 0 16px;color:#e6e0ff;line-height:1.5}
+.gg-unlock-actions{display:flex;gap:10px;justify-content:center}
+.gg-unlock-actions button{min-height:44px;min-width:120px}
+@keyframes unlockPop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.gg-help-box{max-width:520px}
+.gg-help-row{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid #ffffff14}
+.gg-help-ico .ggi{width:30px;height:30px}
+.gg-help-txt{flex:1;min-width:0}.gg-help-txt b{display:block}.gg-help-txt small{display:block;color:var(--mut);line-height:1.35}
+.gg-help-row button{min-width:88px}
+.gg-help-locked{display:inline-flex;align-items:center;gap:3px;color:#ffd98a;font-weight:800;font-size:13px;min-width:88px;justify-content:center}
+.gg-help-locked .ggi{width:14px;height:14px}
+@media (prefers-reduced-motion:reduce){.gg-unlock.in .gg-unlock-card{animation:none}}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -769,6 +797,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Systems Unlock as You Level Up &amp; New Tutorials</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 8:27 PM MDT</p><ul><li><strong>Easier start:</strong> new players begin with Summon, Battle, Units, Bag and Quests. Other systems unlock with Player Level: Index at 2, Traits at 3, AFK at 4, 5th team slot and Auto Play at 5, Upgrade Paths at 6, Prestige and the 6th slot at 10, Raids at 25. Locked tabs show a lock and the level they open at.</li><li><strong>New beginner tutorial:</strong> 9 hands-on steps (summon, equip, place, upgrade, win) instead of 24.</li><li><strong>A tutorial for every system:</strong> when something unlocks, a “New system unlocked!” card explains it and can walk you through it.</li><li><strong>Help &amp; Tutorials</strong> (in the ☰ menu) lets you replay any tutorial or read the game overview.</li><li>Before Upgrade Paths unlock, Boost 3 applies each unit’s recommended path automatically. Daily quests never ask for a locked system.</li><li>Players who already had progress keep every system unlocked (Raids still need Level 25).</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Visual Overhaul &amp; Summon Reveal</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 6:07 PM MDT</p><ul><li><strong>New icon set:</strong> tabs, header buttons, battle badges and headings now use hand-drawn game icons instead of emoji, so they look the same on every phone.</li><li><strong>Refreshed look:</strong> deeper background, glossy buttons that press down when tapped, rounded panels with soft shadows, and unit cards that glow in their rarity color.</li><li><strong>Crystal Summon altar:</strong> the Summon tab has an animated crystal and two big summon buttons that show their gem cost.</li><li><strong>Summon reveal:</strong> after a manual summon, your new units flip in as cards. Legendary, Mythic and Secret pulls get a colored light burst. Tap Continue, or Summon again. Auto Summon skips it, and you can turn it off in Settings.</li><li>The gem counter shows thousands separators (for example 18,650).</li><li><strong>New app icon:</strong> a faceted gem in a gold ring, used for the home-screen app and the Android app.</li><li>Performance mode and the phone’s reduce-motion setting stop the decorative animations.</li></ul></section>
 <section class="qol-section" data-category="Balance Update"><span class="update-tag tag-balance-update">Balance Update</span><h3>Common &amp; Rare Units Can Prestige Again (Limited)</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 03:39 PM MDT</p><ul><li>Instead of no prestige at all, Common and Rare units can now earn a small number of prestige stars: <strong>Common up to 1★</strong> and <strong>Rare up to 2★</strong>.</li><li>Epic, Legendary, Mythic, Secret and Exclusive units can still reach the full 5★.</li><li>The Prestige button, the Bag prestige tool and the unit cards show each unit’s own star limit. Stars still need level 100 and still raise the EXP needed per level (+50% per star).</li><li>Units keep any stars they already have.</li></ul></section>
 <section class="qol-section" data-category="Balance Update"><span class="update-tag tag-balance-update">Balance Update</span><h3>Rarer Units Need More EXP</h3><p style="color:var(--mut);font-size:12px">Implemented Sunday, October 11, 2026 at 03:18 PM MDT</p><ul><li>Stronger units now take longer to level up. Each level needs more EXP the rarer the unit is: Common ×1, Rare ×1.15, Epic ×1.35, Exclusive ×1.35, Legendary ×1.6, Mythic ×1.9, Secret ×2.3.</li><li>This stacks with the prestige-star increase (+50% per star). For example, a level-1 Secret unit with 2★ needs about 333 EXP for its next level (72 × 2.3 × 2).</li><li>Total EXP from level 1 to 100 without stars: about 197k for Common, 266k for Epic, 315k for Legendary, 374k for Mythic and 452k for Secret.</li><li>Unit cards show the exact EXP each unit needs. Units keep their current levels, and EXP already earned toward the next level is kept.</li></ul></section>
@@ -853,10 +882,10 @@ window.ggSplashHide=hide;
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.15"></script>
-<script src="gg-art.js?v=2026.10.11.15"></script>
-<script>const GAME_VERSION='2026.10.11.15';</script>
-<script src="gg-game.js?v=2026.10.11.15"></script>
+<script src="gg-sound.js?v=2026.10.11.16"></script>
+<script src="gg-art.js?v=2026.10.11.16"></script>
+<script>const GAME_VERSION='2026.10.11.16';</script>
+<script src="gg-game.js?v=2026.10.11.16"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).

@@ -1,4 +1,4 @@
-/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.15 · built from source/public/index.html by tools/split.py */
+/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.16 · built from source/public/index.html by tools/split.py */
 const $=s=>document.querySelector(s);
 const TYPES={Physical:'#f59e0b',Ranged:'#84cc16',Magic:'#60a5fa',True:'#f8fafc'};
 const MIG={scout:'knight',slinger:'apprentice',cannon:'sniper'};
@@ -2570,43 +2570,25 @@ const tabBtn=id=>document.querySelector('.tabs button[data-tab="'+id+'"]');
 const firstEquipBtn=()=>[...document.querySelectorAll('#coll [data-equip]')].find(b=>!/Equipped/.test(b.textContent));
 const totalUnitXp=()=>S.units.reduce((a,u)=>a+u.lv*100000+u.xp,0);
 let guide={active:false,step:0,base:{},hidden:false};
-const GUIDE_STEPS=[
- {title:'💎 Welcome, Guardian!',text:'I’ll teach you how to play by guiding you through the real game. Follow the glowing highlight. You start with 500 gems, 25 free trait rerolls and Barter, a merchant who earns coins in battle.',info:true},
- {title:'🎰 Open the Summon tab',text:'Units are your towers. Tap the glowing Summon tab.',tab:'summon',target:()=>tabBtn('summon'),done:()=>tabOpen('summon')},
- {title:'🎰 Summon 10 units',text:'Tap “Summon 10” to spend 450 gems on ten units. A ten-pull always includes at least one Epic or better. (If you have fewer than 450 gems, use Summon 1.)',
-  enter:b=>{b.units=S.units.length},target:()=>S.gems>=450?$('#p10'):$('#p1'),done:b=>S.units.length>b.units},
- {title:'🛡️ Open the Units tab',text:'Your new units are in the Units tab. Tap it.',target:()=>tabBtn('units'),done:()=>tabOpen('units')},
- {title:'🛡️ Equip your team',text:'Only equipped units can be used in battle. Tap “＋ Equip” on your strongest units until your 4 loadout slots are full. Barter is already equipped. Rarer units, shown by their colored names, are stronger.',
+const GG_INTRO_STEPS=[
+ {title:'💎 Welcome, Guardian!',text:'Enemies march down the road toward your castle, and your units stop them. Follow the glowing highlights and you will win your first battle in a few minutes. You start with 500 gems and Barter, a merchant who earns extra coins in battle.',info:true},
+ {title:'🎰 Summon your team',text:'Open the Summon tab and tap “Summon ×10”. Ten units for 450 gems, with at least one Epic or better guaranteed.',
+  enter:b=>{b.units=S.units.length},target:()=>!tabOpen('summon')?tabBtn('summon'):(S.gems>=450?$('#p10'):$('#p1')),done:b=>S.units.length>b.units},
+ {title:'🛡️ Equip your best units',text:'Only equipped units go into battle. Open the Units tab and tap “＋ Equip” until your team slots are full. Colored names show rarity: rarer units are stronger.',
   target:()=>tabOpen('units')?(firstEquipBtn()||$('#loadoutSlots')):tabBtn('units'),done:()=>(S.equipped||[]).length>=Math.min(unlockedLoadoutSlots(),S.units.length)},
- {title:'⚔️ Open the Battle tab',text:'Time to defend! Tap the Battle tab.',target:()=>tabBtn('battle'),done:()=>tabOpen('battle')},
- {title:'🗺️ Choose Green Meadow',text:'First pick a difficulty with the colored cards at the top: they change enemy health and rewards. Keep Easy for now. Then pick a map: maps unlock one by one, so tap Green Meadow.',
+ {title:'🗺️ Pick your first map',text:'Open the Battle tab. Keep the Easy difficulty and tap Green Meadow.',
   enter:()=>{if(typeof curMode!=='undefined'&&curMode!=='easy'&&S.cleared===0){curMode='easy';renderAll();}},target:()=>tabOpen('battle')?document.querySelector('#stages [data-s="0"]'):tabBtn('battle'),done:()=>!!(G&&!G.over)},
- {title:'📍 Place your first unit',text:'Tap a unit card in the panel on the left of the map, then tap the grass beside the road. You can’t place units on the road. Each placement costs coins; you start every battle with 500.',
-  target:()=>(G&&G.pl)?$('#cv'):document.querySelector('#bar .card'),done:()=>!!(G&&G.us.length>=1)},
- {title:'📍 Place more units',text:'Place another unit along the road. Spread them out so enemies pass through every unit’s range. Barter attacks nothing, but earns extra coins every few seconds.',
+ {title:'📍 Place two units',text:'Tap a unit card on the left, then tap the grass next to the road (not the road itself). Place two units where enemies will walk past both of them. Each one costs coins.',
   target:()=>(G&&G.pl)?$('#cv'):document.querySelector('#bar .card'),done:()=>!!(G&&(G.us.length>=2||G.wave>0))},
- {title:'▶ Start the first wave',text:'Tap “Start wave”. After that, waves keep coming automatically. Defeated enemies give coins.',target:()=>$('#bWave'),done:()=>!!(G&&G.wave>=1)},
- {title:'⬆ Upgrade a unit',text:'Tap one of your placed units on the map to open its menu, then press Upgrade when you have enough coins. Upgrades raise damage, range and speed. You can also sell a placed unit from the same menu.',
+ {title:'▶ Start the battle',text:'Tap “Start wave”. Waves then keep coming on their own, and every defeated enemy gives coins.',target:()=>$('#bWave'),done:()=>!!(G&&G.wave>=1)},
+ {title:'⬆ Upgrade a unit',text:'Tap one of your placed units on the map, then tap Boost when you have the coins. Boosts raise damage, range and speed. Spend extra coins on more units or boosts.',
   target:()=>$('#cv'),done:()=>!!(G&&G.us.some(u=>u.bl>=2)),skippable:true},
- {title:'⏩ Speed and helpers',text:'“Speed” makes the battle faster and “Pause” stops it. “Auto Upgrade” spends coins on upgrades for you. Auto Play unlocks at Player Level 5 on maps where you earned 3 stars.',target:()=>$('#bSpd'),info:true},
- {title:'🏰 Survive all 15 waves',text:'Keep enemies from reaching your castle. Each enemy that gets through costs a life, and you have 10. The more lives you keep, the more stars you earn (up to 3).',
+ {title:'🏰 Win the battle',text:'Survive all 15 waves. Each enemy that reaches the castle costs a life; keep more lives for more stars (up to 3). Tip: “Speed” makes battles faster.',
   target:()=>$('#hud'),done:()=>!!(G&&G.over),skippable:true},
- {title:'🎁 Rewards',text:'The results card shows your rewards: gems, the map’s fruit, Player EXP and EXP for every unit you placed. Winning unlocks the next map. Losing still pays a few gems and EXP.',info:true},
- {title:'🍓 Open your Bag',text:'Fruits level up your units. Tap the Bag tab.',target:()=>tabBtn('bag'),done:()=>tabOpen('bag'),
-  enter:()=>{if(!Object.keys(ITEMS).some(k=>(S.bag[k]||0)>0)){S.bag.berry=(S.bag.berry||0)+3;discoverItem('berry');save(false);renderAll();toast('Tutorial gift: 3 Meadow Berries');}}},
- {title:'🍓 Feed a unit',text:'Tap a fruit, choose a unit below, then tap “Feed 1” or “Feed up to 10”. Better fruits from later maps give much more EXP. At level 100, a unit can be prestiged for a permanent star.',
-  enter:b=>{b.xp=totalUnitXp()},target:()=>{if(!tabOpen('bag'))return tabBtn('bag');if(!bagSel||!ITEMS[bagSel])return document.querySelector('#bagGrid .card[data-k]:not([data-k="trait_reroll"])');return $('#f1');},done:b=>totalUnitXp()>b.xp,skippable:true},
- {title:'✨ Open the Trait Forge',text:'Traits give a unit permanent bonuses such as extra damage, range or attack speed. Tap the Traits tab.',target:()=>tabBtn('traits'),done:()=>tabOpen('traits')},
- {title:'✨ Reroll a trait',text:'Pick a unit, then tap “Reroll trait”. Each reroll uses one Trait Reroll crystal (you have '+'{rerolls}'+'). With none left, a reroll costs 30 gems. Rare traits are rarer, and every 150th reroll without a Mythic guarantees one.',
-  enter:b=>{b.rr=S.traitRerolls;b.gems=S.gems},target:()=>tabOpen('traits')?$('#traitRoll'):tabBtn('traits'),done:b=>S.traitRerolls<b.rr||S.gems<b.gems,skippable:true},
- {title:'💎 Earning more Trait Rerolls',text:'Trait Rerolls come from: AFK mode (5% chance each minute), Player Level milestone rewards every 5 levels, and Hard or Hell boss waves. You can see your crystals in the Bag. Auto Reroll can keep rolling until it finds the trait you choose.',info:true,target:()=>$('#autoTraitToggle')},
- {title:'📖 Collect Index rewards',text:'Every new unit you discover pays a one-time gem reward in the Index. Open the Index tab and claim your rewards.',target:()=>tabBtn('index'),info:true},
- {title:'🌙 AFK rewards',text:'The AFK tab earns gems and sometimes Trait Rerolls every minute while it stays open. It’s great when you’re away from the game.',target:()=>tabBtn('afk'),info:true},
- {title:'⭐ Prestige stars',text:'At level 100 a unit can prestige: it returns to level 1 and gains a star (up to 5). Every star gives +50% damage, +4% range and +6% attack speed. 3★ and 5★ unlock bonus strike perks.',info:true},
- {title:'💾 Keep your progress safe',text:'The game saves automatically. Open Settings to Export, Share or Copy your save as a backup before clearing browser data or switching devices.',target:()=>$('#bSettings'),info:true},
- {title:'🏆 You’re ready!',text:'Win maps to unlock new ones and harder difficulties. Raids unlock at Player Level 25. You can replay this guide any time from the 📖 Tutorial button. Good luck, Guardian!',info:true,last:true},
+ {title:'🏆 You’re ready!',text:'Wins give gems, fruit, unit EXP and Player EXP, and unlock the next map. As your Player Level rises, new systems unlock (Index, Traits, AFK and more), and each one comes with its own short tutorial. Replay any tutorial from ☰ → Help & Tutorials.',info:true,last:true}
 ];
-function guideSave(){try{localStorage.setItem(GG_GUIDE_KEY,JSON.stringify({step:guide.step,done:!guide.active,ts:Date.now()}))}catch(e){}}
+let GUIDE_STEPS=GG_INTRO_STEPS;
+function guideSave(){if(guide.kind&&guide.kind!=='intro')return;try{localStorage.setItem(GG_GUIDE_KEY,JSON.stringify({step:guide.step,done:!guide.active,ts:Date.now()}))}catch(e){}}
 function guideClearGlow(){document.querySelectorAll('.guide-glow').forEach(el=>el.classList.remove('guide-glow'));}
 function guideEnter(i){
   guide.step=Math.max(0,Math.min(GUIDE_STEPS.length-1,i));guide.base={};
@@ -2617,7 +2599,7 @@ function guideRender(){
   const box=$('#ggGuide');if(!box)return;
   if(!guide.active){box.classList.add('hide');guideClearGlow();return;}
   const st=GUIDE_STEPS[guide.step];box.classList.remove('hide');box.classList.toggle('mini',guide.hidden);
-  $('#ggGuideStep').textContent='Tutorial '+(guide.step+1)+' / '+GUIDE_STEPS.length;
+  $('#ggGuideStep').textContent=(guide.label||'Tutorial')+' · '+(guide.step+1)+' / '+GUIDE_STEPS.length;
   $('#ggGuideTitle').textContent=st.title;
   $('#ggGuideText').textContent=st.text.replace('{rerolls}',String(S.traitRerolls));
   $('#ggGuideNext').classList.toggle('hide',!(st.info||st.skippable));
@@ -2635,8 +2617,8 @@ function guideTick(){
   else if(t&&!guide.hidden&&!t.classList.contains('guide-glow'))t.classList.add('guide-glow');
   $('#ggGuideText').textContent=st.text.replace('{rerolls}',String(S.traitRerolls));
 }
-function guideStart(fromStep=0){guide.active=true;guide.hidden=false;guideEnter(fromStep);}
-function guideFinish(){guide.active=false;guideClearGlow();guideSave();guideRender();toast('Tutorial complete! Replay it any time from 📖 Tutorial.');}
+function guideStart(fromStep=0){GUIDE_STEPS=GG_INTRO_STEPS;guide.kind='intro';guide.label='Tutorial';guide.active=true;guide.hidden=false;guideEnter(fromStep);}
+function guideFinish(){guide.active=false;guideClearGlow();guideSave();guideRender();toast(guide.kind==='feature'?'Got it! Replay this any time from ☰ → Help & Tutorials.':'Tutorial complete! Replay any tutorial from ☰ → Help & Tutorials.');}
 function guideSkip(){if(!confirm('Skip the tutorial? You can restart it any time from the 📖 Tutorial button.'))return;guide.active=false;guideClearGlow();guideSave();guideRender();}
 $('#ggGuideNext').onclick=()=>{const st=GUIDE_STEPS[guide.step];guideClearGlow();if(st.last||guide.step>=GUIDE_STEPS.length-1)return guideFinish();guideEnter(guide.step+1);};
 $('#ggGuideBack').onclick=()=>{guideClearGlow();guideEnter(guide.step-1);};
@@ -2646,7 +2628,7 @@ setInterval(guideTick,400);
 function guideAutoStart(){
   let saved=null;try{saved=JSON.parse(localStorage.getItem(GG_GUIDE_KEY)||'null')}catch(e){}
   if(saved&&saved.done)return;
-  if(saved&&Number.isInteger(saved.step)){guideStart(saved.step);return;}
+  if(saved&&Number.isInteger(saved.step)){if(saved.step<GG_INTRO_STEPS.length)guideStart(saved.step);return;}
   // Only brand-new players are guided automatically; existing players can start it from 📖 Tutorial.
   const isNew=S.playerLevel<=1&&(S.cleared||0)===0&&S.units.length<=1;
   if(isNew)guideStart(0);
@@ -3374,3 +3356,110 @@ function ggShowUnitById(id){const u=UNITS[id];if(!u)return;const m=$('#unitInfoM
   const lines=['Damage '+u.d+(u.rg?' · Range '+u.rg:'')+' · Cost '+u.c+' coins',(typeof u.ability==='string'&&u.ability.trim())||'Standard attack'];
   $('#unitInfoBody').textContent=lines.join('\n\n');$('#unitInfoBody').classList.remove('hide');m.classList.remove('hide');}
 (function(){const orig=renderIndex;renderIndex=function(){const r=orig.apply(this,arguments);try{$('#indexGrid').querySelectorAll('.card[data-ix-id]').forEach(c=>{c.onclick=e=>{if(e.target.closest('button'))return;ggShowUnitById(c.dataset.ixId);};});}catch(e){}return r;};})();
+// ---------- Level unlocks & system tutorials (2026.10.11.16) ----------
+// New players start with Summon, Battle, Units, Bag and Quests. Other systems unlock with
+// Player Level; each unlock shows a "New system unlocked" card with a short hands-on tutorial.
+// Players who already had progress before this update keep every system (except Raids, which
+// always needed Level 25).
+const GG_FEATURES=[
+ {id:'index',lv:2,tab:'index',icon:'book',n:'Index',d:'See every unit, enemy and item you have found. Each new unit you discover pays a one-time gem reward here.'},
+ {id:'traits',lv:3,tab:'traits',icon:'sparkle',n:'Trait Forge',d:'Give a unit a permanent bonus such as extra damage, range or attack speed. You already own 25 free Trait Rerolls.'},
+ {id:'afk',lv:4,tab:'afk',icon:'moon',n:'AFK Rewards',d:'Leave AFK mode open to earn gems every minute, with a small chance of a Trait Reroll.'},
+ {id:'team5',lv:5,icon:'shield',n:'5th Team Slot & Auto Play',d:'You can equip a fifth unit, and Auto Play can finish maps where you already earned 3 stars.'},
+ {id:'paths',lv:6,icon:'swords',n:'Upgrade Paths',d:'When a placed unit reaches Boost 3, you choose one of two specializations. Until now, units took their recommended path automatically.'},
+ {id:'prestige',lv:10,icon:'star',n:'Prestige & 6th Team Slot',d:'Units that reach level 100 can prestige for permanent stars, and you can equip a sixth unit.'},
+ {id:'raids',lv:25,tab:'raids',icon:'swords',n:'Raids',d:'Fight through Duskmoor Castle on Hell difficulty for big rewards and a 5% chance at Count Vesper on Level 5.'}
+];
+const GG_FEATURE=Object.fromEntries(GG_FEATURES.map(f=>[f.id,f]));
+function ggEnsureUnlockState(){
+  if(Array.isArray(S.unlockSeen)&&Array.isArray(S.unlockGrand)){S.unlockSeen=S.unlockSeen.filter(id=>GG_FEATURE[id]);S.unlockGrand=S.unlockGrand.filter(id=>GG_FEATURE[id]&&id!=='raids');return;}
+  const existing=S.playerLevel>1||(S.cleared||0)>0||S.units.length>1;
+  S.unlockGrand=existing?GG_FEATURES.filter(f=>f.id!=='raids').map(f=>f.id):[];
+  S.unlockSeen=existing?GG_FEATURES.filter(f=>f.id!=='raids'||f.lv<=S.playerLevel).map(f=>f.id):[];
+  try{save(false)}catch(e){}
+}
+function ggFeatureOn(id){const f=GG_FEATURE[id];if(!f)return true;ggEnsureUnlockState();return S.playerLevel>=f.lv||S.unlockGrand.includes(id);}
+function ggRefreshLocks(){
+  ggEnsureUnlockState();
+  for(const f of GG_FEATURES){if(!f.tab)continue;const b=document.querySelector('.tabs button[data-tab="'+f.tab+'"]');if(!b)continue;
+    const locked=!ggFeatureOn(f.id);b.classList.toggle('tab-locked',locked);b.setAttribute('aria-disabled',String(locked));
+    let tag=b.querySelector('.tab-lock');if(locked&&!tag){tag=document.createElement('span');tag.className='tab-lock';b.appendChild(tag);}
+    if(tag){if(locked)tag.innerHTML=GGI.lock+'Lv '+f.lv;else tag.remove();}
+    b.title=locked?f.n+' unlocks at Player Level '+f.lv:'';
+    if(locked&&b.classList.contains('on'))document.querySelector('.tabs button[data-tab="summon"]')?.click();}
+}
+// Locked tabs refuse clicks (real taps and code) with a friendly message.
+document.querySelector('.tabs')?.addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(!b)return;
+  const f=GG_FEATURES.find(x=>x.tab===b.dataset.tab);if(f&&!ggFeatureOn(f.id)){e.stopImmediatePropagation();e.preventDefault();toast('🔒 '+f.n+' unlocks at Player Level '+f.lv+'. Win battles to earn Player EXP.');}},true);
+// Prestige waits for its unlock level.
+(function(){const orig=prestige;prestige=function(uid){if(!ggFeatureOn('prestige'))return toast('🔒 Prestige unlocks at Player Level '+GG_FEATURE.prestige.lv+'.');return orig.apply(this,arguments);};})();
+// Before Upgrade Paths unlock, Boost 3 is a normal upgrade that applies the recommended path.
+(function(){const orig=selUI;selUI=function(){const r=orig.apply(this,arguments);try{
+  const u=G&&G.sel,box=document.querySelector('#unitQuick .quick-paths');
+  if(u&&box&&!ggFeatureOn('paths')){const cost=boostCost(u),p=PATH_BY_KEY[defaultPath(u)];const b=document.createElement('button');b.id='bUp';b.textContent='⬆ Boost · '+cost+' coins';b.title='Applies '+p.n+' ('+p.d+')';
+    box.replaceWith(b);b.onclick=()=>{if(!upgradePlacedUnit(u))toast('Not enough coins or already max boosted');};positionQuick();}}catch(e){}return r;};})();
+// Daily quests never ask for a system the player has not unlocked yet.
+(function(){const orig=questsForDay;questsForDay=function(day){const out=orig.apply(this,arguments);if(ggFeatureOn('traits'))return out;
+  return out.map(q=>{if(q.stat!=='rerolls')return q;return QUEST_POOL.find(x=>x.stat!=='rerolls'&&!out.some(o=>o.stat===x.stat))||q;});};})();
+// ---- System tutorials (use the guided-tutorial panel) ----
+const GG_FEATURE_GUIDES={
+ index:[
+  {title:'📖 Open the Index',text:'Tap the glowing Index tab.',target:()=>tabBtn('index'),done:()=>tabOpen('index')},
+  {title:'💎 Claim discovery rewards',text:'Every unit you discover has a one-time gem reward. Tap “Claim” on a unit card. Tap any discovered card to read its full skills. The Enemies tab describes every enemy you have met.',target:()=>document.querySelector('#indexGrid button[data-claim]')||document.querySelector('#indexTabs'),info:true,last:true}],
+ traits:[
+  {title:'✨ Open the Trait Forge',text:'Tap the glowing Traits tab.',target:()=>tabBtn('traits'),done:()=>tabOpen('traits')},
+  {title:'✨ Reroll a trait',text:'Pick a unit, then tap “Reroll trait”. Each reroll uses one Trait Reroll crystal (you have {rerolls}); with none left it costs 30 gems. Rarer traits are stronger.',
+   enter:b=>{b.rr=S.traitRerolls;b.gems=S.gems},target:()=>tabOpen('traits')?$('#traitRoll'):tabBtn('traits'),done:b=>S.traitRerolls<b.rr||S.gems<b.gems,skippable:true},
+  {title:'💎 Getting more rerolls',text:'Trait Rerolls come from AFK mode, Player Level rewards every 5 levels, and boss waves on Hard or Hell. Every 150th reroll without a Mythic trait guarantees one.',info:true,last:true}],
+ afk:[
+  {title:'🌙 Open AFK',text:'Tap the glowing AFK tab.',target:()=>tabBtn('afk'),done:()=>tabOpen('afk')},
+  {title:'🌙 Earn while away',text:'Tap “Enter AFK Mode” and leave it open. Every full minute adds 5–10 gems, with a 5% chance of a Trait Reroll. Leaving resets the timer, but rewards you earned stay saved until you claim them.',target:()=>$('#enterAfk'),info:true,last:true}],
+ team5:[
+  {title:'🛡️ A fifth unit',text:'Open the Units tab and tap “＋ Equip” on another unit. More units in battle means more coverage on long roads.',target:()=>tabOpen('units')?(firstEquipBtn()||$('#loadoutSlots')):tabBtn('units'),done:()=>(S.equipped||[]).length>=Math.min(unlockedLoadoutSlots(),S.units.length),skippable:true},
+  {title:'🤖 Auto Play',text:'On any map where you earned 3 stars, “Auto Play” in battle places and upgrades units for you. It is great for farming fruit and gems.',info:true,last:true}],
+ paths:[
+  {title:'⚔️ Upgrade Paths',text:'In battle, tap a placed unit at Boost 2. Instead of one upgrade button you now see two paths, for example Sharpshooter (more range) or Rapid Fire (faster attacks). Pick the one that fits the map.',info:true},
+  {title:'⚔️ Tips',text:'Splash paths are best against groups and swarms. Single-target paths beat tanks and bosses. Auto Upgrade always picks the recommended path.',info:true,last:true}],
+ prestige:[
+  {title:'⭐ Prestige',text:'When a unit reaches level 100, open the Units tab and tap Prestige. It returns to level 1 with a permanent star: +50% damage, +4% range and +6% attack speed per star. Common units can earn 1★, Rare 2★, and Epic or rarer up to 5★.',info:true},
+  {title:'🛡️ Sixth team slot',text:'You can now equip six units. Open the Units tab to add one.',target:()=>tabBtn('units'),info:true,last:true}],
+ raids:[
+  {title:'⚔️ Open Raids',text:'Tap the glowing Raids tab.',target:()=>tabBtn('raids'),done:()=>tabOpen('raids')},
+  {title:'🏰 Duskmoor Castle',text:'Raids are Hell-difficulty battles with five levels. Each level is 25% harder than the last and must be cleared to unlock the next. Level 5 has a 5% chance to drop Count Vesper.',info:true,last:true}]
+};
+function ggStartFeatureGuide(id){const steps=GG_FEATURE_GUIDES[id];if(!steps)return;
+  if(typeof closeHelp==='function')closeHelp();
+  GUIDE_STEPS=steps;guide.kind='feature';guide.label=GG_FEATURE[id].n;guide.active=true;guide.hidden=false;guideEnter(0);}
+// ---- "New system unlocked" card ----
+document.body.insertAdjacentHTML('beforeend','<div id="ggUnlock" class="gg-unlock hide" role="dialog" aria-modal="true" aria-labelledby="ggUnlockName"><div class="gg-unlock-card"><div class="gg-unlock-ico" id="ggUnlockIco"></div><div class="gg-unlock-kicker">New system unlocked!</div><h2 id="ggUnlockName"></h2><p id="ggUnlockText"></p><div class="gg-unlock-actions"><button type="button" class="alt" id="closeUnlockCard">Later</button><button type="button" id="ggUnlockGo">Show me how</button></div></div></div>');
+let ggUnlockCurrent=null;
+function ggShowUnlock(f){ggUnlockCurrent=f;$('#ggUnlockIco').innerHTML=GGI[f.icon]||'';$('#ggUnlockName').textContent=f.n;$('#ggUnlockText').textContent=f.d;
+  if(!S.unlockSeen.includes(f.id)){S.unlockSeen.push(f.id);save(false);}
+  const ov=$('#ggUnlock');ov.classList.remove('hide');ov.classList.remove('in');void ov.offsetWidth;ov.classList.add('in');try{ggJingle('levelup')}catch(e){}}
+$('#closeUnlockCard').onclick=()=>{$('#ggUnlock').classList.add('hide');if(ggUnlockCurrent)toast('Replay it any time from ☰ → Help & Tutorials.');};
+$('#ggUnlockGo').onclick=()=>{$('#ggUnlock').classList.add('hide');if(ggUnlockCurrent)ggStartFeatureGuide(ggUnlockCurrent.id);};
+function ggUnlockTick(){
+  try{ggEnsureUnlockState();
+    if(document.hidden||guide.active||(G&&!G.over))return;
+    if([...document.querySelectorAll('[role=dialog]')].some(d=>!d.classList.contains('hide')&&getComputedStyle(d).display!=='none'))return;
+    const f=GG_FEATURES.find(f=>S.playerLevel>=f.lv&&!S.unlockSeen.includes(f.id));if(f)ggShowUnlock(f);}catch(e){}
+}
+setInterval(ggUnlockTick,1500);
+(function(){const orig=gainPlayerExp;gainPlayerExp=function(){const r=orig.apply(this,arguments);try{ggRefreshLocks()}catch(e){}return r;};})();
+(function(){const orig=renderAll;renderAll=function(){const r=orig.apply(this,arguments);try{ggRefreshLocks()}catch(e){}return r;};})();
+// ---- Help & Tutorials ----
+document.body.insertAdjacentHTML('beforeend','<div id="ggHelp" class="settings-panel hide" role="dialog" aria-modal="true" aria-labelledby="ggHelpTitle"><div class="settings-box gg-help-box"><div class="row" style="justify-content:space-between;align-items:center"><h2 id="ggHelpTitle">📖 Help &amp; Tutorials</h2><button class="alt" id="closeHelp">Close ✕</button></div><div id="ggHelpList"></div></div></div>');
+function closeHelp(){$('#ggHelp').classList.add('hide');}
+$('#closeHelp').onclick=closeHelp;
+function openHelp(){
+  const row=(icon,name,sub,btn)=>'<div class="gg-help-row"><span class="gg-help-ico">'+(GGI[icon]||'')+'</span><span class="gg-help-txt"><b>'+name+'</b><small>'+sub+'</small></span>'+btn+'</div>';
+  let h=row('cap','Beginner tutorial','Summon, build a team and win your first battle.','<button type="button" data-help="intro">Play</button>');
+  for(const f of GG_FEATURES){const on=ggFeatureOn(f.id);h+=row(f.icon,f.n,on?f.d:'Unlocks at Player Level '+f.lv+'.',on?'<button type="button" data-help="'+f.id+'">Show me</button>':'<span class="gg-help-locked">'+GGI.lock+'Lv '+f.lv+'</span>');}
+  h+=row('book','Game overview','A quick read about every part of the game.','<button type="button" class="alt" data-help="overview">Read</button>');
+  $('#ggHelpList').innerHTML=h;
+  $('#ggHelpList').querySelectorAll('[data-help]').forEach(b=>b.onclick=()=>{const k=b.dataset.help;closeHelp();
+    if(k==='intro'){document.querySelector('.tabs button[data-tab="summon"]')?.click();guideStart(0);}else if(k==='overview')ggTutorialOpen();else ggStartFeatureGuide(k);});
+  $('#ggHelp').classList.remove('hide');$('#bMore')?.getAttribute('aria-expanded')==='true'&&$('#bMore').click();
+}
+(function(){const old=$('#bTutorial');if(!old)return;const b=old.cloneNode(true);b.removeAttribute('data-ggi');b.innerHTML='<span class="ggi-wrap">'+GGI.book+'</span>Help &amp; Tutorials';old.replaceWith(b);b.addEventListener('click',openHelp);})();
+ggRefreshLocks();
