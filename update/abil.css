@@ -1,0 +1,10 @@
+/* ---------- Unit abilities (2026.10.11.21) ---------- */
+.gg-abil{background:#ffffff0d;border:1px solid #ffffff22;border-radius:12px;padding:10px 12px;margin-top:8px}
+.gg-abil-name{display:flex;align-items:center;gap:6px;font-weight:800;color:#ffe08a;font-size:16px}
+.gg-abil-name .ggi-wrap svg{width:18px;height:18px}
+.gg-abil p,.gg-abil-line{margin:6px 0 0;line-height:1.5;color:#e6e0ff}
+.gg-roles{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.gg-role{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;color:#14101f;background:var(--rc)}
+.gg-status-legend{margin-top:12px;border-top:1px solid #ffffff22;padding-top:8px}
+.gg-status-legend p{line-height:1.6;color:#e6e0ff}
+#unitInfoBody{white-space:normal}
