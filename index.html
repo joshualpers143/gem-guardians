@@ -676,6 +676,35 @@ select,input:not([type=checkbox]):not([type=range]){background:#16122f;color:var
 .gg-cloud-flash{animation:ggCloudFlash 1.5s ease}
 @keyframes ggCloudFlash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 3px #7dd3fc,0 0 24px #7dd3fc88}}
 </style>
+<style>
+/* ---------- Leaderboards (2026.10.11.25) ---------- */
+#ggLbModal{z-index:115}
+.gg-lb-box{max-width:520px}
+.gg-lb-tabs{display:flex;gap:8px;margin:8px 0}
+.gg-lb-tabs button{flex:1;background:#ffffff12;border:1px solid #ffffff2a;box-shadow:none}
+.gg-lb-tabs button.on{background:linear-gradient(180deg,#7c6cf0,#5446c4);border-color:#ffffff55}
+.gg-lb-maprow{display:flex;align-items:center;gap:8px;margin:6px 0}
+.gg-lb-maprow.hide{display:none}
+.gg-lb-maprow select{flex:1;padding:9px 10px;border-radius:10px;background:#0f0c22;color:#fff;border:1px solid #ffffff33;font-size:15px}
+.gg-lb-hint{color:var(--mut);margin:6px 0}
+.gg-lb-elig{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;margin:8px 0;border-radius:12px;background:#fde68a1a;border:1px solid #fde68a55;color:#fde68a}
+.gg-lb-elig button{flex:none}
+.gg-lb-me{padding:10px 12px;margin:8px 0;border-radius:12px;background:#7dd3fc1a;border:1px solid #7dd3fc55;color:#e6f6ff}
+.gg-lb-list{list-style:none;margin:8px 0;padding:0;max-height:52vh;overflow:auto}
+.gg-lb-row{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:8px;padding:9px 10px;border-radius:10px;margin-bottom:4px;background:#ffffff0a}
+.gg-lb-row.me{background:#7c6cf033;outline:1px solid #a5b4fc88}
+.gg-lb-row.top1{background:linear-gradient(90deg,#f2c84b33,#ffffff08)}.gg-lb-row.top2{background:linear-gradient(90deg,#cbd5e133,#ffffff08)}.gg-lb-row.top3{background:linear-gradient(90deg,#d9773833,#ffffff08)}
+.gg-lb-rank{font-weight:800;text-align:center;color:#e6e0ff}
+.gg-lb-name{font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.gg-lb-name small{color:var(--mut);font-weight:400}
+.gg-lb-val{font-weight:800;color:#ffe08a;white-space:nowrap}
+.gg-lb-empty{padding:16px;text-align:center;color:var(--mut)}
+.gg-lb-rules{display:block;color:var(--mut);line-height:1.45;margin-top:8px}
+.gg-lb-open{margin-top:8px}
+.gg-lb-note{margin-top:8px;padding:8px 10px;border-radius:10px;font-weight:700;line-height:1.4}
+.gg-lb-note.good{background:#f2c84b26;color:#ffe08a;border:1px solid #f2c84b66}
+.gg-lb-note.muted{background:#ffffff10;color:#e6e0ff}
+.gg-lb-note.bad{background:#fca5a51a;color:#fecaca}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -874,6 +903,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Leaderboards</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 9:36 AM MDT</p><ul><li><strong>Compete with other players!</strong> Open 🏆 Leaderboards from the Battle screen, the Raids panel or the ☰ menu.</li><li><strong>Infinite Mode:</strong> one leaderboard per map, ranked by the highest wave you reach.</li><li><strong>Raids:</strong> ranked by the highest raid level you clear; faster clears rank higher. Raid levels count in order, starting from Level 1.</li><li><strong>How to join:</strong> sign in to Cloud Save, claim your unique player name, and be online when a run starts. Your result appears on the battle result card, with your rank and a 🏆 when you set a new best.</li><li><strong>Fair play:</strong> the server times every run itself, so results that are faster than the game allows (even at Speed ×3) are not counted.</li><li>If your run ends while you are offline, the result is sent automatically when you are back online (within a day).</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Name Changes Are Checked Online</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 3:22 AM MDT</p><ul><li><strong>Every name is checked online.</strong> To choose or change your player name you must be signed in to Cloud Save and connected to the internet, so the game can confirm that nobody else already has it. Names can no longer be changed offline.</li><li>If you are offline, the name screen says so instead of letting you pick a name that might already be taken.</li><li>Tapping <em>Sign in to change</em> in your Profile takes you straight to Cloud Save.</li><li><strong>Leaderboards (coming soon) require a claimed player name.</strong> Players without one will be asked to claim a name before they can join.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Unique Player Names</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 2:55 AM MDT</p><ul><li><strong>Every online player now has their own name.</strong> After signing in to Cloud Save, you choose a player name that nobody else can use. The game checks it live and shows ✓ when it is available.</li><li><strong>No copycats:</strong> names that look the same count as the same name, so if "Josh" is taken, "JOSH", "josh" and "J0sh" are taken too.</li><li><strong>Rules:</strong> 3–16 letters, numbers or _, starting with a letter. Rude words and names like "Admin" or "Moderator" are not allowed.</li><li><strong>Names are permanent</strong>, so choose carefully; the game asks you to confirm first. Your name follows your account to every device.</li><li>Players who do not sign in keep their offline name, which only they can see.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Cloud Save (Optional)</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 2:04 AM MDT</p><ul><li><strong>Back up your progress online.</strong> Open Settings → Cloud Save and create an account with your email and a password. Your progress then backs up automatically about once a minute while you play and are online, and you can tap Back up now any time.</li><li><strong>Continue on another device.</strong> Sign in on another phone or on the website and tap Load cloud save.</li><li><strong>Your saves are protected.</strong> If this device and the cloud have different progress, the game never overwrites either one by itself; it shows both (level, gems and units) and lets you choose which to keep. Loading a cloud save keeps a recovery copy of your previous progress.</li><li><strong>Still fully offline.</strong> Cloud Save is optional. Without signing in, nothing leaves your device, exactly as before.</li><li>You can sign out at any time, or delete your cloud account and all its cloud saves from the same screen. The privacy policy has been updated to explain what Cloud Save stores.</li></ul></section>
@@ -967,10 +997,10 @@ window.ggSplashHide=hide;
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.24"></script>
-<script src="gg-art.js?v=2026.10.11.24"></script>
-<script>const GAME_VERSION='2026.10.11.24';</script>
-<script src="gg-game.js?v=2026.10.11.24"></script>
+<script src="gg-sound.js?v=2026.10.11.25"></script>
+<script src="gg-art.js?v=2026.10.11.25"></script>
+<script>const GAME_VERSION='2026.10.11.25';</script>
+<script src="gg-game.js?v=2026.10.11.25"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).
