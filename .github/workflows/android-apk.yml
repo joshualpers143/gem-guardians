@@ -45,3 +45,5 @@ jobs:
           gh release create test-apk GemGuardians-test.apk --prerelease \
             --title "Gem Guardians - Android test app" \
             --notes "Tap GemGuardians-test.apk on your Android phone to install. Test build only (not the Play Store version)."
+          # Safety net: make sure the release is published (GitHub occasionally leaves it as a draft).
+          gh release edit test-apk --draft=false --prerelease
