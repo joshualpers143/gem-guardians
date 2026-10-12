@@ -705,6 +705,28 @@ select,input:not([type=checkbox]):not([type=range]){background:#16122f;color:var
 .gg-lb-note.muted{background:#ffffff10;color:#e6e0ff}
 .gg-lb-note.bad{background:#fca5a51a;color:#fecaca}
 </style>
+<style>
+/* ---------- Restart Map & Offline Lock (2026.10.11.26) ---------- */
+.gg-net-badge{background:#3a1d1d!important;border:1px solid #f8717166!important;color:#fecaca!important;font-size:12px;padding:6px 9px;white-space:nowrap}
+.gg-net-badge.hide{display:none!important}
+.gg-net-locked{opacity:.5;filter:grayscale(.6)}
+.gg-net-locked::after{content:' 🔒';font-size:.85em}
+.gg-net-note{margin:8px 0 4px;padding:8px 10px;border-radius:10px;background:#3a1d1d;border:1px solid #f8717155;color:#fecaca;font-size:13px;line-height:1.35}
+.gg-net-note.hide{display:none}
+.gg-net-note .gg-linkbtn{color:#fde68a}
+.gg-restart-ask{position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:#07051099;padding:10px}
+.gg-restart-ask.hide{display:none}
+.gg-restart-card{max-width:330px;width:100%;background:linear-gradient(180deg,#2a1f4d,#171230);border:1px solid #a78bfa77;border-radius:14px;padding:14px 16px;box-shadow:0 12px 30px #000a;text-align:center}
+.gg-restart-card b{font-size:17px}
+.gg-restart-card p{font-size:13px;line-height:1.4;color:#ddd6fe;margin:8px 0 12px}
+.gg-restart-card .row{justify-content:center;gap:8px}
+#bRestartMap{white-space:nowrap}
+/* Phone landscape fullscreen: keep Restart Map near the top of the control column (no scrolling needed). */
+@media (orientation:landscape) and (max-height:520px){
+  #arena.map-fullscreen>.panel.row:first-child>#bAutoUpgrade,#arena.map-fullscreen>.panel.row:first-child>#bAutoPlay,#arena.map-fullscreen>.panel.row:first-child>#bFullMap,#arena.map-fullscreen>.panel.row:first-child>#battleWakeStatus,#arena.map-fullscreen>.panel.row:first-child>#bQuit{order:1}
+  #arena.map-fullscreen>.panel.row:first-child>#bRestartMap{white-space:normal}
+}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -845,7 +867,7 @@ window.ggSplashHide=hide;
       <button id="p10">Summon 10 (450 gems)</button><button id="autoSummonToggle" type="button">▶ Auto Summon ×10</button><small id="autoSummonStatus" style="color:var(--mut)">Requires more than 1,000 gems to start. Stops below 400 gems.</small>
       <span id="res" style="color:var(--mut)">Rarity odds: Common 65%, Rare 20%, Epic 7.5%, Legendary 5%, Mythic 2%, Secret 0.5% (unlocks at Level 10). Ten pulls guarantee Epic or better.</span>
     </div>
-    <div class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">⏳ Rotating Summon Banner</h2><b id="bannerTimer" style="color:var(--gem)"></b></div><p style="color:var(--mut)">Three featured Common units and one featured Rare, Epic, Legendary and Mythic unit rotate every 5 minutes. Common pulls are split evenly between the three featured Commons. Secret units enter the shared pool at Player Level 10.</p><div class="grid" id="summonPool"></div><p id="pityInfo" style="color:var(--gold)"></p><small style="color:var(--mut)">Base banner odds: Common 65%, Rare 20%, Epic 7.5%, Legendary 5%, Mythic 2%, Secret 0.5% (Level 10+). Three Secret units unlock at Player Level 10 (Abyss Summoner, Rift Blade, Chrono Warden). Once unlocked, each pull has a 0.5% Secret chance, guaranteed by 2,500 eligible pulls; otherwise these banner odds apply. Guaranteed Legendary by 100 pulls and Mythic by 500 pulls. Each pity resets when its rarity is obtained. Ten pulls guarantee Epic or better.</small></div>
+    <div class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">⏳ Rotating Summon Banner</h2><b id="bannerTimer" style="color:var(--gem)"></b></div><p style="color:var(--mut)">Three featured Common units and one featured Rare, Epic, Legendary, Mythic and Secret unit rotate every 5 minutes. Common pulls are split evenly between the three featured Commons. The featured Secret unit unlocks at Player Level 10.</p><div class="grid" id="summonPool"></div><p id="pityInfo" style="color:var(--gold)"></p><small style="color:var(--mut)">Base banner odds: Common 65%, Rare 20%, Epic 7.5%, Legendary 5%, Mythic 2%, Secret 0.5% (Level 10+). One Secret unit is featured per banner, rotating between Abyss Summoner, Rift Blade and Chrono Warden; Secrets unlock at Player Level 10. Once unlocked, each pull has a 0.5% chance of the featured Secret, guaranteed by 2,500 eligible pulls; otherwise these banner odds apply. Guaranteed Legendary by 100 pulls and Mythic by 500 pulls. Each pity resets when its rarity is obtained. Ten pulls guarantee Epic or better.</small></div>
   </section>
 
   <section id="raids" class="hide">
@@ -903,6 +925,9 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Restart Map Button</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 11:04 AM MDT</p><ul><li><strong>New ↻ Restart Map button</strong> in the battle controls, including fullscreen. No more playing out a bad run until you win or lose.</li><li>The game asks first, right on the battle screen, so fullscreen stays on. The battle pauses while it asks.</li><li>A restarted run gives <strong>no rewards</strong> (only finishing or losing a map does), so restarting cannot be used to farm gems or EXP.</li><li>The map starts fresh from wave 1 with your starting coins. Your battle speed and Auto Play stay on.</li><li>In Infinite Mode, use End Run to keep your rewards. A ranked leaderboard run that is restarted does not count; the new run starts a new one.</li></ul></section>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Online Features Lock When You Are Offline</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 11:04 AM MDT</p><ul><li>When the game cannot reach its server, a <strong>📴 Offline</strong> badge appears and every online feature locks: Cloud Save, choosing a player name and Leaderboards. Future online features (shop, events, codes) use the same lock.</li><li>The game checks the real connection itself, because a phone can say it is online on Wi-Fi with no internet.</li><li>Gameplay and saving on this device keep working normally offline.</li><li>When the connection comes back, everything unlocks by itself, your cloud backup runs and any waiting leaderboard result is sent.</li><li>Leaderboard runs that start offline never count. A ranked run that loses its connection midway is sent when you are back online; the server times every run, so going offline cannot help a score.</li></ul></section>
+<section class="qol-section" data-category="Bug Fix"><span class="update-tag tag-bug-fix">Bug Fix</span><h3>One Secret Unit per Banner</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 11:04 AM MDT</p><ul><li>The summon banner showed all three Secret units at once. Now each banner features <strong>one</strong> Secret unit, and it rotates every refresh (every 5 minutes) between Abyss Summoner, Rift Blade and Chrono Warden.</li><li>Secret pulls (0.5% from Player Level 10, guaranteed by 2,500 pulls) give the featured Secret unit, just like the other rarities.</li><li>Odds and pity are unchanged.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Leaderboards</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 9:36 AM MDT</p><ul><li><strong>Compete with other players!</strong> Open 🏆 Leaderboards from the Battle screen, the Raids panel or the ☰ menu.</li><li><strong>Infinite Mode:</strong> one leaderboard per map, ranked by the highest wave you reach.</li><li><strong>Raids:</strong> ranked by the highest raid level you clear; faster clears rank higher. Raid levels count in order, starting from Level 1.</li><li><strong>How to join:</strong> sign in to Cloud Save, claim your unique player name, and be online when a run starts. Your result appears on the battle result card, with your rank and a 🏆 when you set a new best.</li><li><strong>Fair play:</strong> the server times every run itself, so results that are faster than the game allows (even at Speed ×3) are not counted.</li><li>If your run ends while you are offline, the result is sent automatically when you are back online (within a day).</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Name Changes Are Checked Online</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 3:22 AM MDT</p><ul><li><strong>Every name is checked online.</strong> To choose or change your player name you must be signed in to Cloud Save and connected to the internet, so the game can confirm that nobody else already has it. Names can no longer be changed offline.</li><li>If you are offline, the name screen says so instead of letting you pick a name that might already be taken.</li><li>Tapping <em>Sign in to change</em> in your Profile takes you straight to Cloud Save.</li><li><strong>Leaderboards (coming soon) require a claimed player name.</strong> Players without one will be asked to claim a name before they can join.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Unique Player Names</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 2:55 AM MDT</p><ul><li><strong>Every online player now has their own name.</strong> After signing in to Cloud Save, you choose a player name that nobody else can use. The game checks it live and shows ✓ when it is available.</li><li><strong>No copycats:</strong> names that look the same count as the same name, so if "Josh" is taken, "JOSH", "josh" and "J0sh" are taken too.</li><li><strong>Rules:</strong> 3–16 letters, numbers or _, starting with a letter. Rude words and names like "Admin" or "Moderator" are not allowed.</li><li><strong>Names are permanent</strong>, so choose carefully; the game asks you to confirm first. Your name follows your account to every device.</li><li>Players who do not sign in keep their offline name, which only they can see.</li></ul></section>
@@ -997,10 +1022,10 @@ window.ggSplashHide=hide;
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.25"></script>
-<script src="gg-art.js?v=2026.10.11.25"></script>
-<script>const GAME_VERSION='2026.10.11.25';</script>
-<script src="gg-game.js?v=2026.10.11.25"></script>
+<script src="gg-sound.js?v=2026.10.11.26"></script>
+<script src="gg-art.js?v=2026.10.11.26"></script>
+<script>const GAME_VERSION='2026.10.11.26';</script>
+<script src="gg-game.js?v=2026.10.11.26"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).
