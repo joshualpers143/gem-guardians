@@ -1,4 +1,4 @@
-/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.18 · built from source/public/index.html by tools/split.py */
+/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.19 · built from source/public/index.html by tools/split.py */
 const $=s=>document.querySelector(s);
 const TYPES={Physical:'#f59e0b',Ranged:'#84cc16',Magic:'#60a5fa',True:'#f8fafc'};
 const MIG={scout:'knight',slinger:'apprentice',cannon:'sniper'};
@@ -992,9 +992,10 @@ syncSettings();
 // Map EXP increases by 1.5% per map; difficulty bonuses compare to Easy on the same map.
 // Round only the final reward to an integer so small percentage increases accumulate fairly.
 function regularMapPlayerExp(stageIndex,mode){
-  const bonus={easy:1,medium:1.025,hard:1.05,hell:1.10};
+  // 2026.10.11.19: difficulty matters as much as it does for gems, and later maps are worth more.
+  const bonus={easy:1,medium:1.5,hard:2.5,hell:4};
   const index=Math.max(0,Math.min(STAGES.length-1,Math.floor(Number(stageIndex)||0)));
-  return Math.round(50*Math.pow(1.015,index)*(bonus[mode]||1));
+  return Math.round(50*Math.pow(1.06,index)*(bonus[mode]||1));
 }
 function playerExpNeeded(level){return 100+75*(level-1);}
 function gainPlayerExp(amount){
@@ -1010,7 +1011,7 @@ function renderProfile(){
   $('#headerPlayer').textContent=S.playerName+' · Lv '+S.playerLevel;
   $('#profileLevel').textContent='Level '+S.playerLevel;
   $('#profileFill').style.width=Math.min(100,100*S.playerExp/playerExpNeeded(S.playerLevel))+'%';
-  $('#profileExp').textContent=S.playerLevel>=100?'MAX LEVEL · 100':S.playerExp+'/'+playerExpNeeded(S.playerLevel)+' EXP · Regular maps: 50 base EXP, +1.5% per map; Medium +2.5%, Hard +5%, Hell +10%; Infinite: +1 EXP per wave, increasing every 10 waves';
+  $('#profileExp').textContent=S.playerLevel>=100?'MAX LEVEL · 100':S.playerExp+'/'+playerExpNeeded(S.playerLevel)+' EXP · Wins: 50 EXP on Map 1 Easy, +6% per map; Medium ×1.5, Hard ×2.5, Hell ×4; +60% for a first clear on a difficulty; +10% per star. Losses: 25%. Raids: 120–200. Infinite: +1 EXP per wave, increasing every 10 waves';
   $('#playerName').value=S.playerName;
   const avatar=$('#headerAvatar'),c=avatar.getContext('2d');c.clearRect(0,0,48,48);
   if(S.playerAvatar&&UNITS[S.playerAvatar])art(c,S.playerAvatar,24,30,.8);else{c.fillStyle='#8e83c7';c.font='bold 27px sans-serif';c.textAlign='center';c.fillText('★',24,33)}
@@ -1912,16 +1913,17 @@ function finish(win){
       if(!S.discovered.includes('alucard'))S.discovered.push('alucard');
       drop=' SECRET DROP: Count Vesper obtained!';
     }
-    gainPlayerExp(50);R.gems=gems;R.pxp=50;R.drop=drop.trim()||(lv===5?'Count Vesper drop roll: not obtained (5% chance)':'');R.sub='Duskmoor Castle · Raid Level '+lv+(lv<5?' · next level unlocked':'');
+    const raidXp=100+20*lv;gainPlayerExp(raidXp);R.gems=gems;R.pxp=raidXp;R.drop=drop.trim()||(lv===5?'Count Vesper drop roll: not obtained (5% chance)':'');R.sub='Duskmoor Castle · Raid Level '+lv+(lv<5?' · next level unlocked':'');
     m='Duskmoor Castle Raid Level '+lv+' cleared! +'+gems+' gems. '+(lv<5?'Next raid level unlocked. ':'')+(lv===5&&!drop?'Count Vesper drop roll: not obtained (5% chance).':'')+drop;
   }else if(win){
     first=S.cleared<=G.si;const g=25*M.mult,f=Math.ceil(2*M.mult);
     S.gems+=g;S.bag[fd]=(S.bag[fd]||0)+f;discoverItem(fd);S.cleared=Math.max(S.cleared,G.si+1);
-    const stars=stageStars(G.lives),key=stageStarKey(G.si,G.mode);
+    const stars=stageStars(G.lives),key=stageStarKey(G.si,G.mode);const firstMode=!inf&&!S.stageStars[key];
     if(!inf)S.stageStars[key]=Math.max(S.stageStars[key]||0,stars);
-    const playerXp=regularMapPlayerExp(G.si,G.mode);gainPlayerExp(playerXp);m='Stage cleared on '+M.n+'! '+(inf?'':('Rating: '+ '★'.repeat(stars)+'☆'.repeat(3-stars)+' (best: '+'★'.repeat(S.stageStars[key])+'☆'.repeat(3-S.stageStars[key])+'). '))+'You earned '+g+' gems, '+f+' '+ITEMS[fd].n+' and '+playerXp+' player EXP.';R.gems=g;R.food=f;R.pxp=playerXp;if(!inf){R.stars=stars;R.best=S.stageStars[key];}R.sub=STAGES[G.si].n+' · '+M.n+' · '+G.lives+'/'+STARTING_LIVES+' lives left';
+    // First clear of a map on a difficulty: +60%. Each star: +10%.
+    const playerXp=Math.round(regularMapPlayerExp(G.si,G.mode)*(firstMode?1.6:1)*(inf?1:1+.1*stars));gainPlayerExp(playerXp);m='Stage cleared on '+M.n+'! '+(inf?'':('Rating: '+ '★'.repeat(stars)+'☆'.repeat(3-stars)+' (best: '+'★'.repeat(S.stageStars[key])+'☆'.repeat(3-S.stageStars[key])+'). '))+'You earned '+g+' gems, '+f+' '+ITEMS[fd].n+' and '+playerXp+' player EXP'+(firstMode?' (first-clear bonus)':'')+'.';R.gems=g;R.food=f;R.pxp=playerXp;if(!inf){R.stars=stars;R.best=S.stageStars[key];}R.sub=STAGES[G.si].n+' · '+M.n+' · '+G.lives+'/'+STARTING_LIVES+' lives left';
   }else if(inf){R.gems=G.ig;R.food=G.fg;R.pxp=G.infinitePlayerXp||0;R.sub=STAGES[G.si].n+' · Infinite · reached wave '+G.wave;m='Run over at wave '+G.wave+'. This run earned '+G.ig+' gems, '+(G.infinitePlayerXp||0)+' player EXP and '+G.fg+' '+ITEMS[fd].n+'.';}
-  else{S.gems+=10;R.gems=10;R.sub=(G.raidLevel?'Duskmoor Castle · Raid Level '+G.raidLevel:STAGES[G.si].n+' · '+M.n)+' · your base fell on wave '+G.wave;m='Your base fell. You earned 10 gems for trying.'}
+  else{S.gems+=10;R.gems=10;const lossXp=Math.round((G.raidLevel?100+20*G.raidLevel:regularMapPlayerExp(G.si,G.mode))*.25);gainPlayerExp(lossXp);R.pxp=lossXp;R.sub=(G.raidLevel?'Duskmoor Castle · Raid Level '+G.raidLevel:STAGES[G.si].n+' · '+M.n)+' · your base fell on wave '+G.wave;m='Your base fell. You earned 10 gems and '+lossXp+' player EXP for trying.'}
   const bx=150+G.si*190;
   const xp=Math.round((inf?bx*G.wave/10:bx*M.xp*(win?1:.3*G.wave/10))*(first?1.5:1)),ups=[];
   G.us.forEach(u=>{const i=S.units.find(x=>x.uid===u.uid);if(!i)return;const b=i.lv;addXp(i,xp);if(i.lv>b)ups.push(UNITS[i.id].n+' '+b+' to '+i.lv)});
