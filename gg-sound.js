@@ -1,4 +1,4 @@
-/* Gem Guardians public edition · gg-sound.js · Version 2026.10.11.26 · built from source/public/index.html by tools/split.py */
+/* Gem Guardians public edition · gg-sound.js · Version 2026.10.11.27 · built from source/public/index.html by tools/split.py */
 /* ===================================================================
    Gem Guardians Sound (GGS) — original procedural music & sound effects
    Everything is synthesized live with the Web Audio API: no recordings,

@@ -1,5 +1,5 @@
-const CACHE='gem-guardians-public-restart-offline-2026101126';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./privacy.html','./gg-sound.js?v=2026.10.11.26','./gg-art.js?v=2026.10.11.26','./gg-game.js?v=2026.10.11.26'];
+const CACHE='gem-guardians-public-passes-2026101127';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./privacy.html','./gg-sound.js?v=2026.10.11.27','./gg-art.js?v=2026.10.11.27','./gg-game.js?v=2026.10.11.27'];
 self.addEventListener('install', event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
