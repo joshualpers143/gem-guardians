@@ -762,6 +762,58 @@ body.gg-vip #bProfile::after{content:'👑';position:absolute;left:4px;top:-9px;
 .gg-lb-crown{margin-right:4px}
 @media (max-width:420px){.gg-pass{flex-wrap:wrap}.gg-pass-act{flex-basis:100%;max-width:none;text-align:left;padding-left:50px}}
 </style>
+<style>
+/* ---------- Easier scrolling & Quick Feed (2026.10.11.28) ---------- */
+/* Big lists scroll with the page instead of trapping your finger in their own box. */
+#coll,#bagGrid,#indexGrid{max-height:none!important;overflow:visible!important}
+/* Small pickers still scroll, and keep scrolling the page when they reach the end. */
+#traitUnitPicker,#feedPicker,.unit-picker{overscroll-behavior:auto!important;touch-action:pan-y}
+.gg-to-top{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:60;border-radius:999px;padding:10px 15px;font-weight:800;font-size:14px;box-shadow:0 6px 18px #000a;opacity:.94}
+.gg-to-top.hide{display:none}
+@media (max-width:520px){.gg-to-top span{display:none}.gg-to-top{width:48px;height:48px;padding:0;font-size:20px}}
+/* Quick Feed panel: a bottom sheet on phones, a centered window on wide screens. */
+.gg-feed{position:fixed;inset:0;z-index:118;background:#06041099;display:flex;align-items:flex-end;justify-content:center}
+.gg-feed.hide{display:none}
+body.gg-feed-open{overflow:hidden}
+.gg-feed-box{width:min(560px,100%);max-height:88vh;max-height:88dvh;display:flex;flex-direction:column;gap:8px;background:linear-gradient(180deg,#2a2152,#18132f);border:1px solid #a78bfa66;border-radius:18px 18px 0 0;padding:12px 12px max(12px,env(safe-area-inset-bottom));box-shadow:0 -10px 40px #000b}
+@media (min-width:700px){.gg-feed{align-items:center}.gg-feed-box{border-radius:18px}}
+.gg-feed-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.gg-feed-head h2{margin:0;font-size:19px}
+.gg-feed-fruits{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 6px;flex:0 0 auto;scrollbar-width:thin}
+.gg-fruit{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:92px;padding:6px 8px;background:#ffffff0d;border:2px solid #ffffff22;box-shadow:none;border-radius:12px;color:#fff}
+.gg-fruit.on{border-color:#facc15;background:#facc1522}
+.gg-fruit canvas{width:40px;height:36px}
+.gg-fruit b{font-size:12px;white-space:nowrap}
+.gg-fruit small{font-size:11px;color:#cbd5e1;white-space:nowrap}
+.gg-feed-pick{flex:0 0 auto;padding:8px;border-radius:12px;background:#ffffff0a;border:1px solid #ffffff1f}
+.gg-feed-sel{display:flex;align-items:center;gap:10px}
+.gg-feed-sel canvas{width:54px;height:48px;flex:0 0 auto}
+.gg-feed-sel-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;font-size:13px}
+.gg-feed-sel-txt>b{font-size:15px;overflow-wrap:anywhere}
+.gg-feed-bar{display:block;height:7px;border-radius:999px;background:#0d0a1f;overflow:hidden}
+.gg-feed-bar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#a3e635);border-radius:999px}
+.gg-feed-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.gg-feed-btns button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px;font-size:14px;font-weight:800;min-height:52px}
+.gg-feed-btns small{font-size:11px;font-weight:600;opacity:.9}
+.gg-feed-tools{display:flex;gap:6px;flex:0 0 auto}
+.gg-feed-tools input{flex:1;min-width:0}
+.gg-feed-tools select{flex:0 1 46%;min-width:0}
+.gg-feed-list{flex:1 1 auto;min-height:120px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;align-content:start;padding:2px}
+.gg-feed-unit{display:flex;align-items:center;gap:6px;padding:6px;text-align:left;background:#ffffff0b;border:2px solid #ffffff1c;box-shadow:none;border-radius:10px;color:#fff;min-height:58px}
+.gg-feed-unit.sel{border-color:#facc15;background:#facc151c}
+.gg-feed-unit.max{opacity:.5}
+.gg-feed-unit canvas{width:40px;height:36px;flex:0 0 auto}
+.gg-feed-unit-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.gg-feed-unit-txt b{font-size:12px;line-height:1.15;overflow-wrap:anywhere}
+.gg-feed-unit-txt small{font-size:11px;color:#cbd5e1}
+.gg-feed-empty{margin:6px 0;color:#cbd5e1;font-size:13px}
+.gg-lvup{animation:ggLvUp .7s ease-out}
+@keyframes ggLvUp{0%{box-shadow:0 0 0 0 #facc15cc}100%{box-shadow:0 0 0 14px #facc1500}}
+.gg-bag-fruit{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.gg-bag-fruit canvas{width:58px;height:52px;flex:0 0 auto}
+#ggBagFeed{width:100%;padding:12px;font-size:16px;font-weight:800}
+.gg-feed-card{border-color:#22c55e88!important}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -960,6 +1012,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Easier Scrolling &amp; Quick Feed</h3><p style="color:var(--mut);font-size:12px">Implemented Tuesday, October 13, 2026 at 8:35 AM MDT</p><ul><li><strong>No more stuck scrolling:</strong> your unit collection, the Bag and the Index used to sit inside their own scroll boxes. On phones, a swipe inside them could not scroll the page, so it was hard to get back up. They now scroll with the page.</li><li>Small unit pickers (Traits) still scroll, but when they reach the end your swipe keeps scrolling the page.</li><li><strong>⬆ Top button:</strong> appears when you are far down a page and takes you back to the top. Switching tabs from far down also brings the new tab into view.</li><li><strong>🍎 Quick Feed:</strong> tap a fruit in the Bag to open one panel with your fruits, your units and the Feed buttons together. It stays open while you feed, so no more scrolling up and down.</li><li>Switch fruits at the top, search or sort your units, and see each unit’s level and EXP bar.</li><li><strong>Feed 1, Feed 10 and Feed max</strong> (up to level 100 or until the fruit runs out) show what you will get before you tap, for example “→ Lv 24”.</li><li>When a fruit runs out, Quick Feed switches to your next fruit. When a unit reaches level 100, it moves on to the next unit.</li><li><strong>🍎 Feed on unit cards:</strong> in the Units tab, every unit below level 100 has a Feed button that opens Quick Feed with that unit already chosen.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Game Passes</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 2:18 PM MDT</p><ul><li><strong>New 💎 Passes window</strong> in the ☰ menu. Passes are one-time unlocks saved to your Cloud Save account, so they work on every device. They add convenience or looks, never extra power.</li><li><strong>⏩ ×3 Speed:</strong> Speed ×1 and ×2 stay free for everyone; Speed ×3 needs the pass.</li><li><strong>🌙 2× AFK Rewards:</strong> double gems (10–20 a minute) and a 10% trait reroll chance in AFK mode.</li><li><strong>🎰 Auto Summon+:</strong> Auto Summon starts with 450 gems (instead of more than 1,000) and keeps waiting for gems instead of stopping below 400.</li><li><strong>👑 VIP:</strong> gold name and crown in the header, profile and leaderboards, and a golden glow under your units.</li><li><strong>Thank you, early players:</strong> if you played before this update, you keep ×3 Speed for free. Accounts that existed before this update have it on the leaderboards too.</li><li><strong>🎟️ Redeem codes:</strong> passes can be unlocked with codes from events and gifts (sign in to Cloud Save). Buying passes is coming soon.</li><li>Leaderboard fairness: ranked runs at Speed ×3 need the pass on your account.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Restart Map Button</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 11:04 AM MDT</p><ul><li><strong>New ↻ Restart Map button</strong> in the battle controls, including fullscreen. No more playing out a bad run until you win or lose.</li><li>The game asks first, right on the battle screen, so fullscreen stays on. The battle pauses while it asks.</li><li>A restarted run gives <strong>no rewards</strong> (only finishing or losing a map does), so restarting cannot be used to farm gems or EXP.</li><li>The map starts fresh from wave 1 with your starting coins. Your battle speed and Auto Play stay on.</li><li>In Infinite Mode, use End Run to keep your rewards. A ranked leaderboard run that is restarted does not count; the new run starts a new one.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Online Features Lock When You Are Offline</h3><p style="color:var(--mut);font-size:12px">Implemented Monday, October 12, 2026 at 11:04 AM MDT</p><ul><li>When the game cannot reach its server, a <strong>📴 Offline</strong> badge appears and every online feature locks: Cloud Save, choosing a player name and Leaderboards. Future online features (shop, events, codes) use the same lock.</li><li>The game checks the real connection itself, because a phone can say it is online on Wi-Fi with no internet.</li><li>Gameplay and saving on this device keep working normally offline.</li><li>When the connection comes back, everything unlocks by itself, your cloud backup runs and any waiting leaderboard result is sent.</li><li>Leaderboard runs that start offline never count. A ranked run that loses its connection midway is sent when you are back online; the server times every run, so going offline cannot help a score.</li></ul></section>
@@ -1058,10 +1111,10 @@ window.ggSplashHide=hide;
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.27"></script>
-<script src="gg-art.js?v=2026.10.11.27"></script>
-<script>const GAME_VERSION='2026.10.11.27';</script>
-<script src="gg-game.js?v=2026.10.11.27"></script>
+<script src="gg-sound.js?v=2026.10.11.28"></script>
+<script src="gg-art.js?v=2026.10.11.28"></script>
+<script>const GAME_VERSION='2026.10.11.28';</script>
+<script src="gg-game.js?v=2026.10.11.28"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).
