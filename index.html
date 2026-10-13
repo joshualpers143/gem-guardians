@@ -837,6 +837,11 @@ body.gg-feed-open{overflow:hidden}
 #ggShop{overflow-y:auto;overscroll-behavior:contain;align-items:safe center}
 .gg-shop-box{max-height:calc(100dvh - 24px);max-height:calc(100vh - 24px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 </style>
+<style>
+/* ---------- Leaderboards: time played & summons (2026.10.11.31) ---------- */
+#ggLbModal .gg-lb-tabs{flex-wrap:wrap}
+#ggLbModal .gg-lb-tabs button{flex:1 1 calc(50% - 8px);min-width:0;white-space:nowrap}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -1035,6 +1040,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Leaderboards: Most Time Played &amp; Most Summons</h3><p style="color:var(--mut);font-size:12px">Implemented Tuesday, October 13, 2026 at 10:52 AM MDT</p><ul><li>Two new tabs in <strong>🏆 Leaderboards</strong>: <strong>⏱️ Time played</strong> and <strong>🎰 Summons</strong>.</li><li><strong>Time played</strong> counts while the game is open on your screen and you are signed in with your player name. The game server keeps the time itself, and playing on two devices at once never counts double.</li><li><strong>Summons</strong> counts every summon you make while signed in (a ×10 counts as 10), even offline. They are sent when you are back online.</li><li>Both boards started counting with this update, so everyone starts from zero.</li><li>Fair play: the server only accepts summons at a realistic speed and never more time than really passed.</li></ul></section>
 <section class="qol-section" data-category="Bug Fix"><span class="update-tag tag-bug-fix">Bug Fix</span><h3>Void Sovereign Sigil Under the Feet</h3><p style="color:var(--mut);font-size:12px">Implemented Tuesday, October 13, 2026 at 10:16 AM MDT</p><ul><li>The crimson sigil and shadow pool of <strong>☠ Void Sovereign</strong> were drawn across the unit’s legs. They now lie on the ground under the unit’s feet, behind the unit, in battle and on unit cards.</li><li>The shadow smoke, circling embers and glowing red eyes still float around the unit.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Secret Trait: Void Sovereign</h3><p style="color:var(--mut);font-size:12px">Implemented Tuesday, October 13, 2026 at 9:46 AM MDT</p><ul><li><strong>☠ Void Sovereign</strong> is the first <strong>Secret</strong> trait and the strongest in the game: <strong>+500% damage, +50% range and +30% attack speed</strong>.</li><li>The price of power: a unit with Void Sovereign can be <strong>placed only once</strong> per battle.</li><li>Every trait reroll has a <strong>0.1%</strong> chance to roll it. <strong>Secret pity:</strong> 1,000 rerolls without it guarantees Void Sovereign. The Trait Forge shows your Secret pity.</li><li>An ominous look: a dark pool with a burning crimson sigil, rising shadow smoke, orbiting embers and glowing red eyes, plus dark-red hits in battle.</li><li>Rolling it plays a full-screen reveal. Auto Reroll always stops when it lands, and replacing it asks first.</li><li>New odds per reroll: Common 39.9%, Rare 30%, Epic 20%, Legendary 9%, Mythic 1%, Secret 0.1%.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Auto Reroll Is Now a Pass</h3><p style="color:var(--mut);font-size:12px">Implemented Tuesday, October 13, 2026 at 9:46 AM MDT</p><ul><li>Auto Reroll in the Trait Forge is now the <strong>🔁 Auto Reroll</strong> pass (💎 Passes in the ☰ menu).</li><li><strong>Thank you, current players:</strong> if you played before this update, you keep Auto Reroll for free, and accounts that existed before this update have it too.</li><li>Rerolling by hand stays free for everyone, and nobody loses a trait they already have.</li><li>New: the developer can now send gifts to a player’s account. They arrive the next time you open the game signed in to Cloud Save.</li></ul></section>
@@ -1137,10 +1143,10 @@ window.ggSplashHide=hide;
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.30"></script>
-<script src="gg-art.js?v=2026.10.11.30"></script>
-<script>const GAME_VERSION='2026.10.11.30';</script>
-<script src="gg-game.js?v=2026.10.11.30"></script>
+<script src="gg-sound.js?v=2026.10.11.31"></script>
+<script src="gg-art.js?v=2026.10.11.31"></script>
+<script>const GAME_VERSION='2026.10.11.31';</script>
+<script src="gg-game.js?v=2026.10.11.31"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).
