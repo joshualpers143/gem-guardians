@@ -26,10 +26,10 @@ J = rep(J, 'for(let i=0;i<2;i++)G.wolves.push({owner:u.uid,d:Math.max(0,G.tot*.0
 J = rep(J, '  for(const a of (G.allies||[]))drawSummonedCreature(a);\n', '  ggDrawAllies();\n', 'ally draw')
 J = rep(J, '  enemyFxRender();\n  // Lighting', '  enemyFxRender();\n  ggEnemyHpLabels();\n  // Lighting', 'hp labels')
 J = rep(J, 'const DEFAULT_SETTINGS={autoRestart:false,attackFx:true,autoSell:false};', 'const DEFAULT_SETTINGS={autoRestart:false,attackFx:true,autoSell:false,hpNumbers:true};', 'settings default')
-J = rep(J, '\'<div class="quick-meta">2 Hell Wolves every 15s Â· 125% damage each</div>\'', '\'<div class="quick-meta">2 Hell Wolves every 15s from your base Â· 125% damage per collision Â· \'+ggHpNum(ggAllyHp(u))+\' HP each</div>\'', 'wolf info')
-J = rep(J, "(u.bl>=5?'2 Elite Ghouls every 5s Â· each 150% DMG / 125% HP':'3 shadow monsters every 5s')", "(u.bl>=5?'2 Elite Ghouls every 5s Â· 150% damage per collision':'3 shadow monsters every 5s Â· 55% damage per collision')+' Â· '+ggHpNum(ggAllyHp(u))+' HP each'", 'summoner info')
+J = rep(J, '\'<div class="quick-meta">2 Hell Wolves every 15s · 125% damage each</div>\'', '\'<div class="quick-meta">2 Hell Wolves every 15s from your base · 125% damage per collision · \'+ggHpNum(ggAllyHp(u))+\' HP each</div>\'', 'wolf info')
+J = rep(J, "(u.bl>=5?'2 Elite Ghouls every 5s · each 150% DMG / 125% HP':'3 shadow monsters every 5s')", "(u.bl>=5?'2 Elite Ghouls every 5s · 150% damage per collision':'3 shadow monsters every 5s · 55% damage per collision')+' · '+ggHpNum(ggAllyHp(u))+' HP each'", 'summoner info')
 if split:
-    J = rep(J, f'Â· gg-game.js Â· Version {OLD} Â·', f'Â· gg-game.js Â· Version {NEW} Â·', 'game header')
+    J = rep(J, f'· gg-game.js · Version {OLD} ·', f'· gg-game.js · Version {NEW} ·', 'game header')
     H_ = H
 else:
     H_ = J
@@ -45,7 +45,7 @@ if split:
     H_ = rep(H_, f'.js?v={OLD}"', f'.js?v={NEW}"', 'script tags', 3)
     out['index.html'] = H_; out['gg-game.js'] = J
     for f in ('gg-sound.js', 'gg-art.js'):
-        out[f] = rep(rd(f), f'Â· {f} Â· Version {OLD} Â·', f'Â· {f} Â· Version {NEW} Â·', f + ' header')
+        out[f] = rep(rd(f), f'· {f} · Version {OLD} ·', f'· {f} · Version {NEW} ·', f + ' header')
 else:
     out['index.html'] = H_
 sw = rd('sw.js')
