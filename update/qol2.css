@@ -1,0 +1,50 @@
+/* ---------- Easier scrolling & Quick Feed (2026.10.11.28) ---------- */
+/* Big lists scroll with the page instead of trapping your finger in their own box. */
+#coll,#bagGrid,#indexGrid{max-height:none!important;overflow:visible!important}
+/* Small pickers still scroll, and keep scrolling the page when they reach the end. */
+#traitUnitPicker,#feedPicker,.unit-picker{overscroll-behavior:auto!important;touch-action:pan-y}
+.gg-to-top{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:60;border-radius:999px;padding:10px 15px;font-weight:800;font-size:14px;box-shadow:0 6px 18px #000a;opacity:.94}
+.gg-to-top.hide{display:none}
+@media (max-width:520px){.gg-to-top span{display:none}.gg-to-top{width:48px;height:48px;padding:0;font-size:20px}}
+/* Quick Feed panel: a bottom sheet on phones, a centered window on wide screens. */
+.gg-feed{position:fixed;inset:0;z-index:118;background:#06041099;display:flex;align-items:flex-end;justify-content:center}
+.gg-feed.hide{display:none}
+body.gg-feed-open{overflow:hidden}
+.gg-feed-box{width:min(560px,100%);max-height:88vh;max-height:88dvh;display:flex;flex-direction:column;gap:8px;background:linear-gradient(180deg,#2a2152,#18132f);border:1px solid #a78bfa66;border-radius:18px 18px 0 0;padding:12px 12px max(12px,env(safe-area-inset-bottom));box-shadow:0 -10px 40px #000b}
+@media (min-width:700px){.gg-feed{align-items:center}.gg-feed-box{border-radius:18px}}
+.gg-feed-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.gg-feed-head h2{margin:0;font-size:19px}
+.gg-feed-fruits{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 6px;flex:0 0 auto;scrollbar-width:thin}
+.gg-fruit{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:92px;padding:6px 8px;background:#ffffff0d;border:2px solid #ffffff22;box-shadow:none;border-radius:12px;color:#fff}
+.gg-fruit.on{border-color:#facc15;background:#facc1522}
+.gg-fruit canvas{width:40px;height:36px}
+.gg-fruit b{font-size:12px;white-space:nowrap}
+.gg-fruit small{font-size:11px;color:#cbd5e1;white-space:nowrap}
+.gg-feed-pick{flex:0 0 auto;padding:8px;border-radius:12px;background:#ffffff0a;border:1px solid #ffffff1f}
+.gg-feed-sel{display:flex;align-items:center;gap:10px}
+.gg-feed-sel canvas{width:54px;height:48px;flex:0 0 auto}
+.gg-feed-sel-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;font-size:13px}
+.gg-feed-sel-txt>b{font-size:15px;overflow-wrap:anywhere}
+.gg-feed-bar{display:block;height:7px;border-radius:999px;background:#0d0a1f;overflow:hidden}
+.gg-feed-bar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#a3e635);border-radius:999px}
+.gg-feed-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.gg-feed-btns button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px;font-size:14px;font-weight:800;min-height:52px}
+.gg-feed-btns small{font-size:11px;font-weight:600;opacity:.9}
+.gg-feed-tools{display:flex;gap:6px;flex:0 0 auto}
+.gg-feed-tools input{flex:1;min-width:0}
+.gg-feed-tools select{flex:0 1 46%;min-width:0}
+.gg-feed-list{flex:1 1 auto;min-height:120px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;align-content:start;padding:2px}
+.gg-feed-unit{display:flex;align-items:center;gap:6px;padding:6px;text-align:left;background:#ffffff0b;border:2px solid #ffffff1c;box-shadow:none;border-radius:10px;color:#fff;min-height:58px}
+.gg-feed-unit.sel{border-color:#facc15;background:#facc151c}
+.gg-feed-unit.max{opacity:.5}
+.gg-feed-unit canvas{width:40px;height:36px;flex:0 0 auto}
+.gg-feed-unit-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.gg-feed-unit-txt b{font-size:12px;line-height:1.15;overflow-wrap:anywhere}
+.gg-feed-unit-txt small{font-size:11px;color:#cbd5e1}
+.gg-feed-empty{margin:6px 0;color:#cbd5e1;font-size:13px}
+.gg-lvup{animation:ggLvUp .7s ease-out}
+@keyframes ggLvUp{0%{box-shadow:0 0 0 0 #facc15cc}100%{box-shadow:0 0 0 14px #facc1500}}
+.gg-bag-fruit{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.gg-bag-fruit canvas{width:58px;height:52px;flex:0 0 auto}
+#ggBagFeed{width:100%;padding:12px;font-size:16px;font-weight:800}
+.gg-feed-card{border-color:#22c55e88!important}
