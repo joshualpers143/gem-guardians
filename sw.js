@@ -1,5 +1,5 @@
-const CACHE='gem-guardians-public-more-boards-2026101131';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./privacy.html','./gg-sound.js?v=2026.10.11.31','./gg-art.js?v=2026.10.11.31','./gg-game.js?v=2026.10.11.31'];
+const CACHE='gem-guardians-public-summon-collide-2026101132';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./privacy.html','./gg-sound.js?v=2026.10.11.32','./gg-art.js?v=2026.10.11.32','./gg-game.js?v=2026.10.11.32'];
 self.addEventListener('install', event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });

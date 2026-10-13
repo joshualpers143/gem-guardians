@@ -1,4 +1,4 @@
-/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.31 · built from source/public/index.html by tools/split.py */
+/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.32 · built from source/public/index.html by tools/split.py */
 const $=s=>document.querySelector(s);
 const TYPES={Physical:'#f59e0b',Ranged:'#84cc16',Magic:'#60a5fa',True:'#f8fafc'};
 const MIG={scout:'knight',slinger:'apprentice',cannon:'sniper'};
@@ -155,7 +155,7 @@ function updateTraitRerollButton(){
   btn.textContent=left>0?'Protected trait — wait '+left+'s':(S.traitRerolls>0?'Reroll trait (free: '+S.traitRerolls+' left)':'Reroll trait (30 gems)');
 }
 setInterval(updateTraitRerollButton,200);
-const DEFAULT_SETTINGS={autoRestart:false,attackFx:true,autoSell:false};
+const DEFAULT_SETTINGS={autoRestart:false,attackFx:true,autoSell:false,hpNumbers:true};
 let S={gems:500,units:[],cleared:0,nid:1,bag:{},settings:{...DEFAULT_SETTINGS},discovered:[],indexClaimed:[],pityLegendary:0,pityMythic:0,pitySecret:0,traitPity:0,traitRerolls:25,autoTraitEnabled:false,autoTraitTarget:"",autoTraitUnitUid:null,autoSellRarities:[],unitRarityVersion:2,playerLevel:1,playerExp:0,playerName:"Player",playerAvatar:"",playerRewards:[],stageStars:{},equipped:[],afkPendingGems:0,afkPendingRerolls:0,raidCleared:0};
 let lastSaved='';
 let saveTransitionPending=false; // Prevent pagehide/autosave from overwriting an imported or restored save.
@@ -1875,10 +1875,10 @@ function selUI(){
     +(u.id==='xenowarden'?'<div class="quick-meta">Triune Wards: every 2s · max 3 active · 3s duration · Slow 5s (50% speed) · Stun / Freeze 0.5s</div>':'')
     +(isMidas(u.uid)?'<div class="quick-meta">✦ Midas: +'+Math.round((midasIncomeMultiplier(u.uid,u.bl)-1)*100)+'% kill/production coins · 25% cheaper placement and boosts</div>':'')
     +(u.id==='cosmos'?'<div class="quick-meta">3 mud piles · 30% damage · 5s duration · cooldown '+Math.max(1,5-(u.bl-1))+'s</div>':'')
-    +(u.id==='abyss'?'<div class="quick-meta">2 Hell Wolves every 15s · 125% damage each</div>':'')
+    +(u.id==='abyss'?'<div class="quick-meta">2 Hell Wolves every 15s from your base · 125% damage per collision · '+ggHpNum(ggAllyHp(u))+' HP each</div>':'')
     +(u.id==='worldtree'?'<div class="quick-meta">Infinite range · -3% damage per other placed unit (minimum 0%)</div>':'')
     +(u.id==='dragonlord'?'<div class="quick-meta">AOE on every hit'+(u.bl===5?' · Burns path 5s every 8s':' · MAX unlocks burning path')+'</div>':'')
-    +(u.id==='abyss_summoner'?'<div class="quick-meta">'+(u.bl>=5?'2 Elite Ghouls every 5s · each 150% DMG / 125% HP':'3 shadow monsters every 5s')+'</div>':'')
+    +(u.id==='abyss_summoner'?'<div class="quick-meta">'+(u.bl>=5?'2 Elite Ghouls every 5s · 150% damage per collision':'3 shadow monsters every 5s · 55% damage per collision')+' · '+ggHpNum(ggAllyHp(u))+' HP each'+'</div>':'')
     +'<button id="bUp"'+(u.bl>=5?' disabled':'')+'>'+(u.bl>=5?'✓ Max boost':'⬆ Boost · '+cost+' coins')+'</button>'
     +'<button class="alt" id="bSell">Sell · '+Math.floor(u.spent/2)+' coins</button>';
   $('#quickName').textContent=(owned&&owned.nickname)||base.n;
@@ -2109,7 +2109,7 @@ function mythicAbilities(dt){
     if(u.id==='abyss'){
       u.wolfTimer=(u.wolfTimer??0)-dt;
       if(u.wolfTimer<=0){u.wolfTimer+=15;
-        for(let i=0;i<2;i++)G.wolves.push({owner:u.uid,d:Math.max(0,G.tot*.04),damage:u.d*1.25,offset:i*12,ttl:15});
+        for(let i=0;i<2;i++)summonPathAlly(u.uid,false,ggAllyHp(u),u.d*1.25,i*16,'wolf');
       }
     }
     if(u.id==='dragonlord'&&u.bl===5){
@@ -2240,9 +2240,8 @@ function step(dt){
         u.summonTimer+=5;
         G.allies=G.allies||[];
         const elite=u.bl>=5,count=elite?2:3;
-        // Summoner HP is a unit-specific stat for its minions, not a tower life bar.
-        const summonerHp=100+u.pl*12+u.bl*35;
-        for(let i=0;i<count;i++)summonPathAlly(u.uid,elite,elite?summonerHp*1.25:summonerHp*.75,u.d*(elite?1.5:.55),i*18);
+        // 2026.10.11.32: creature HP = 275% of the unit's damage (grows with every boost).
+        for(let i=0;i<count;i++)summonPathAlly(u.uid,elite,ggAllyHp(u),u.d*(elite?1.5:.55),i*18,elite?'ghoul':'shadow');
         if(S.settings.attackFx)G.fx.push({kind:'summon',x:u.x,y:u.y,l:.65,max:.65});
       }
     }
@@ -2316,26 +2315,8 @@ function step(dt){
       if(MYTHIC_VISUALS[trait])G.fx.push({kind:'mythic',trait,x:b.x,y:b.y,l:.5,max:.5});
     }
   }
-  // Allied summons march from the player base to the enemy entrance, fighting along the path.
-  G.allies=G.allies||[];
-  for(const a of G.allies){
-    a.ttl-=dt;a.cooldown-=dt;
-    // Advance against the enemy flow, from the path exit to its entrance.
-    if(Number.isFinite(a.d)){
-      a.d=Math.max(0,a.d-(a.speed||135)*dt);
-      [a.x,a.y]=posAt(a.d);
-      if(a.d<=0)a.ttl=0;
-    }
-    if(a.ttl<=0)continue;
-    if(a.cooldown<=0){
-      const target=G.en.filter(e=>e.hp>0).sort((x,y)=>Math.hypot(x.x-a.x,x.y-a.y)-Math.hypot(y.x-a.x,y.y-a.y))[0];
-      if(target&&Math.hypot(target.x-a.x,target.y-a.y)<110){
-        target.hp-=a.damage;a.cooldown=a.elite?.7:1.05;
-        if(S.settings.attackFx)G.fx.push({a:[a.x,a.y],b:[target.x,target.y],l:.12,c:a.elite?'#ff173d':'#a52a40'});
-      }
-    }
-  }
-  G.allies=G.allies.filter(a=>a.ttl>0);
+  // 2026.10.11.32: summoned creatures walk from the base and fight by collision (summonfix).
+  ggAlliesStep(dt);
   enemyAbilitiesPost();
   for(const e of G.en) if(e.hp<=0&&!e.leak){
     logEnemy(e.kind,'d');ggStat('kills');if(e.boss)ggStat('bossKills');
@@ -2486,7 +2467,7 @@ function draw(){
     if(typeof GGA!=='undefined'){GGA.drawWolf(cx,x,y,performance.now()/1000,nx<x?-1:1);continue;}
     cx.save();cx.translate(x,y);cx.fillStyle='#371a20';cx.beginPath();cx.ellipse(0,0,11,7,0,0,7);cx.fill();cx.restore();
   }
-  for(const a of (G.allies||[]))drawSummonedCreature(a);
+  ggDrawAllies();
   for(const u of G.us){
     if(typeof GGA!=='undefined')cx.drawImage(GGA.unitPad(artThemeKey()),u.x-24,u.y,48,30);
     else raisedDisc(u.x,u.y+13,18,'#48516b','#181e32',8);
@@ -2525,6 +2506,7 @@ function draw(){
   for(const e of G.en){shadedEnemy(e);
   }
   enemyFxRender();
+  ggEnemyHpLabels();
   // Lighting and vignette are baked into the cached map background.
   cx.setTransform(1,0,0,1,0,0);
 }
@@ -4786,3 +4768,102 @@ function ggLbFmtPlayed(s){s=Math.max(0,Math.floor(+s||0));const h=Math.floor(s/3
   if(ggCanJoinLeaderboards()){const m=await ggRpc('lb_me',{p_board:board},true);if(seq!==ggLb.seq)return;
     if(m.ok&&m.data&&m.data.rank){me.innerHTML='Your total: <b>'+ggEsc(ggLbScore(board,m.data.value,m.data.seconds))+'</b> · Rank <b>#'+m.data.rank+'</b> of '+m.data.total;me.classList.remove('hide');}
     else{me.textContent=board==='time'?'Your time starts counting while the game is open and you are signed in.':'Your summons start counting from your next summon while signed in.';me.classList.remove('hide');}}};})();
+// ---------- Path summons fight by collision; enemy HP numbers (2026.10.11.32) ----------
+// Every creature a unit summons onto the road (Abyss Summoner's shadow monsters and Elite Ghouls,
+// Abyss Monarch's Hell Wolves) now:
+//  - appears at your base and walks the road toward the enemy entrance;
+//  - never shoots: it damages enemies by running into them. It can't walk through a living enemy, so it
+//    keeps ramming the enemy in front of it (one hit per enemy every 0.6 s) until one of them falls;
+//  - has its own HP bar: HP = 275% of the summoning unit's damage (its damage +175%), so every boost
+//    of the unit (+35% damage) also gives its creatures +35% HP, including creatures already on the road;
+//  - loses HP on every collision: 8% of that enemy's max HP (5% for bosses and mini-bosses).
+//    It is knocked back a little on each hit and disappears when its HP runs out or it reaches the entrance.
+const GG_ALLY_HP_MULT=2.75,GG_ALLY_HIT_CD=.6;
+function ggAllyHp(u){return Math.max(1,(u&&u.d||0)*GG_ALLY_HP_MULT);}
+function ggAllyRecoil(e){return Math.max(1,(e.mx||e.hp||0)*(e.boss?.05:.08));}
+function ggAllyRadius(a){return a.kind==='ghoul'?14:a.kind==='wolf'?12:10;}
+function ggEnemyRadius(e){
+  if(typeof GGA==='undefined')return e.boss?18:e.kind==='tank'?14:e.kind==='runner'?9:e.kind==='elite'?13:11;
+  const kind=e.boss?'boss':(GGA.ENEMY_LOOK[e.kind]?e.kind:'normal');return kind==='boss'?18:(GGA.ENEMY_LOOK[kind].r||11);}
+// Short numbers: exact below 10,000 (1000/1000), then 12.3K, 123K, 1.2M, 4.5B, 6.7T.
+function ggHpNum(v){v=Math.max(0,Math.ceil(v||0));if(v<1e4)return String(v);
+  for(const [n,s] of [[1e12,'T'],[1e9,'B'],[1e6,'M'],[1e3,'K']])if(v>=n){const x=v/n;return (x<100?(Math.floor(x*10)/10).toFixed(1).replace(/\.0$/,''):Math.floor(x))+s;}
+  return String(v);}
+// Spawn at the player base (end of the enemy path). kind: 'shadow', 'ghoul' or 'wolf'.
+summonPathAlly=function(owner,elite,hp,damage,offset=0,kind){
+  if(!G)return;G.allies=G.allies||[];
+  kind=kind||(elite?'ghoul':'shadow');
+  const d=Math.max(0,G.tot-8-Math.max(0,offset)),[x,y]=posAt(d);
+  hp=Math.max(1,+hp||1);
+  const a={owner,elite:!!elite,kind,d,x,y,life:hp,maxLife:hp,damage,ttl:Math.max(35,G.tot/105+8),
+    speed:kind==='wolf'?175:elite?125:145,hits:new Map(),bump:0,flash:0,dir:-1};
+  G.allies.push(a);return a;};
+// Move, collide, take damage.
+function ggAlliesStep(dt){
+  G.allies=G.allies||[];G.allyFx=G.allyFx||[];
+  for(const f of G.allyFx)f.l-=dt;G.allyFx=G.allyFx.filter(f=>f.l>0);
+  const now=G.time||0;
+  for(const a of G.allies){
+    a.ttl-=dt;if(a.ttl<=0||a.life<=0)continue;
+    a.flash=Math.max(0,(a.flash||0)-dt);
+    if(!Number.isFinite(a.d)){a.ttl=0;continue;}
+    const px=a.x;
+    if(a.bump>0){a.bump-=dt;a.d=Math.min(G.tot,a.d+70*dt);}
+    else a.d=Math.max(0,a.d-(a.speed||145)*dt);
+    const rA=ggAllyRadius(a);
+    // A creature can't walk through a living enemy in front of it: it stays in contact and keeps ramming it
+    // (enemies are never blocked and push it back as they advance).
+    for(const e of G.en){if(e.hp<=0||e.leak||e.submerged>0||e.d>a.d)continue;const hold=e.d+(rA+ggEnemyRadius(e)*.8)*.85;if(a.d<hold)a.d=Math.min(G.tot,hold);}
+    [a.x,a.y]=posAt(a.d);if(Math.abs(a.x-px)>.05)a.dir=a.x<px?-1:1;
+    if(a.d<=0){a.ttl=0;continue;}
+    if(!(a.hits instanceof Map))a.hits=new Map();
+    for(const e of G.en){
+      if(e.hp<=0||e.leak||e.submerged>0)continue;
+      if(Math.abs(e.d-a.d)>rA+ggEnemyRadius(e)*.8)continue;
+      const last=a.hits.get(e);if(last!=null&&now-last<GG_ALLY_HIT_CD)continue;
+      a.hits.set(e,now);
+      e.hp-=a.damage;
+      a.life-=ggAllyRecoil(e);a.flash=.16;a.bump=.14;
+      if(S.settings.attackFx&&G.allyFx.length<80)G.allyFx.push({x:(a.x+e.x)/2,y:(a.y+e.y)/2-6,l:.3,max:.3,c:a.kind==='wolf'?'#f43f5e':a.elite?'#ff3656':'#c084fc'});
+      if(a.life<=0){a.life=0;a.ttl=0;if(S.settings.attackFx&&G.allyFx.length<80)G.allyFx.push({x:a.x,y:a.y-6,l:.45,max:.45,c:'#e9d5ff',poof:1});break;}
+    }
+    if(a.hits.size>40)for(const [e] of a.hits)if(e.hp<=0||!G.en.includes(e))a.hits.delete(e);
+  }
+  G.allies=G.allies.filter(a=>a.ttl>0&&a.life>0);
+}
+// Each boost: +35% damage for the unit, so its creatures on the road also get +35% HP and damage.
+(function(){const o=upgradePlacedUnit;upgradePlacedUnit=function(u){const b=u&&u.bl,r=o.apply(this,arguments);
+  try{if(r&&G&&u.bl>b)for(const a of (G.allies||[]))if(a.owner===u.uid){a.maxLife*=1.35;a.life*=1.35;a.damage*=1.35;}}catch(e){}return r;};})();
+// Drawing: creature, then its HP bar (teal, so it never looks like an enemy bar).
+function ggDrawAllies(){
+  const t=performance.now()/1000;
+  for(const a of (G.allies||[])){
+    if(a.kind==='wolf'){
+      if(typeof GGA!=='undefined')GGA.drawWolf(cx,a.x,a.y,t,a.dir||-1);
+      else{cx.save();cx.translate(a.x,a.y);cx.fillStyle='#371a20';cx.beginPath();cx.ellipse(0,0,11,7,0,0,7);cx.fill();cx.restore();}
+    }else drawSummonedCreature(a);
+    if(a.flash>0){cx.save();cx.globalAlpha=Math.min(.55,a.flash*3.4);cx.fillStyle='#ffffff';cx.beginPath();cx.ellipse(a.x,a.y-4,ggAllyRadius(a)+2,ggAllyRadius(a)+4,0,0,7);cx.fill();cx.restore();}
+    const w=a.kind==='ghoul'?30:24,top=a.y-(a.kind==='ghoul'?36:a.kind==='wolf'?24:30),p=Math.max(0,Math.min(1,a.life/a.maxLife));
+    cx.fillStyle='#0b0f1c';cx.fillRect(a.x-w/2,top,w,4);
+    cx.fillStyle=p>.35?'#2dd4bf':'#f59e0b';cx.fillRect(a.x-w/2,top,w*p,4);
+    cx.strokeStyle='#e6fffb';cx.globalAlpha=.75;cx.lineWidth=1;cx.strokeRect(a.x-w/2-.5,top-.5,w+1,5);cx.globalAlpha=1;
+  }
+  for(const f of (G.allyFx||[])){const k=1-f.l/f.max;cx.save();cx.globalAlpha=Math.max(0,1-k);cx.strokeStyle=f.c;cx.lineWidth=f.poof?2:2.5;
+    cx.beginPath();cx.arc(f.x,f.y,(f.poof?6:4)+k*(f.poof?16:11),0,7);cx.stroke();cx.restore();}
+}
+// Enemy HP numbers above every enemy health bar (Settings â Enemy HP numbers).
+function ggEnemyHpLabels(){
+  if(!G||S.settings.hpNumbers===false)return;
+  cx.save();cx.font='bold 9px system-ui,-apple-system,Segoe UI,sans-serif';cx.textAlign='center';cx.textBaseline='alphabetic';cx.lineJoin='round';cx.lineWidth=2.6;cx.strokeStyle='rgba(5,8,18,.92)';
+  for(const e of G.en){
+    if(e.hp<=0||e.leak)continue;
+    const r=ggEnemyRadius(e),y=e.y-r-(e.shield>0&&e.shMax?24:19),txt=ggHpNum(e.hp)+'/'+ggHpNum(e.mx);
+    cx.strokeText(txt,e.x,y);cx.fillStyle=e.boss?'#ffd6de':'#ffffff';cx.fillText(txt,e.x,y);
+  }
+  cx.restore();
+}
+if(typeof S.settings.hpNumbers!=='boolean')S.settings.hpNumbers=true;
+try{syncSettings();}catch(e){}
+// Descriptions.
+UNITS.abyss_summoner.ability='Summons three shadow monsters every 5 seconds at your base; they walk the road toward the enemy entrance and ram enemies (55% damage per collision). Each has HP equal to 275% of this unit\'s damage and loses HP on every collision. At map boost 5/5 summons two Elite Ghouls instead (150% damage per collision)';
+if(typeof GG_ABIL_TEXT!=='undefined'&&GG_ABIL_TEXT.abyss)GG_ABIL_TEXT.abyss.d='Every 15s releases 2 Hell Wolves at your base that race up the road toward the enemy entrance, ramming enemies for 125% damage per collision. Each wolf has HP equal to 275% of this unit\'s damage and loses HP on every collision. Every 3rd attack deals +95% damage, and hits slow the target briefly.';
