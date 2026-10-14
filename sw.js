@@ -1,5 +1,5 @@
-const CACHE='gem-guardians-public-raid-autoplay-2026101137';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./privacy.html','./gg-sound.js?v=2026.10.11.37','./gg-art.js?v=2026.10.11.37','./gg-game.js?v=2026.10.11.37'];
+const CACHE='gem-guardians-public-raid-pace-2026101138';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./privacy.html','./gg-sound.js?v=2026.10.11.38','./gg-art.js?v=2026.10.11.38','./gg-game.js?v=2026.10.11.38'];
 self.addEventListener('install', event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
