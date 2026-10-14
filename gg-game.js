@@ -1,4 +1,4 @@
-/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.35 · built from source/public/index.html by tools/split.py */
+/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.36 · built from source/public/index.html by tools/split.py */
 const $=s=>document.querySelector(s);
 const TYPES={Physical:'#f59e0b',Ranged:'#84cc16',Magic:'#60a5fa',True:'#f8fafc'};
 const MIG={scout:'knight',slinger:'apprentice',cannon:'sniper'};
@@ -357,9 +357,9 @@ $('#importPasteSave').onclick=()=>{const t=$('#pasteSaveText').value;if(!t.trim(
 $('#restorePreImport').onclick=()=>{
   try{
     const raw=localStorage.getItem(PRE_IMPORT_KEY);
-    if(!raw){alert('No pre-import recovery save exists yet. Import a backup first.');return}
+    if(!raw){alert('There is nothing to undo yet.');return}
     const recovered=clean(JSON.parse(raw));
-    if(!confirm('Restore your progress from before the last successful import? Your current progress will be replaced. Export your current save first if you want to keep it.'))return;
+    if(!confirm('Go back to the progress you had before your last restore? Your current progress will be replaced.'))return;
     // Save the current state as a downloadable backup before restoring.
     // Do not replace the protected snapshot until the restore succeeds.
     const current=JSON.stringify(clean(S));
@@ -393,10 +393,10 @@ addEventListener('beforeunload',()=>save(false));
 $('#bSave').onclick=()=>save(true);
 $('#bRes').onclick=()=>{
   // Typed confirmation plus an automatic backup download: one tap can no longer erase progress.
-  const typed=prompt('This erases ALL '+GG_EDITION+' Edition progress, including the local backup and the pre-import recovery save.\n\nA backup file will be downloaded first.\n\nType RESET to confirm:');
+  const typed=prompt('This erases ALL '+GG_EDITION+' Edition progress, including the local backup and the pre-import recovery save.'+(GG_EDITION==='public'?'\n\nThis cannot be undone.':'\n\nA backup file will be downloaded first.')+'\n\nType RESET to confirm:');
   if(typed===null)return;
   if(typed.trim().toUpperCase()!=='RESET')return toast('Reset cancelled. You must type RESET to confirm.');
-  try{downloadSaveExport('pre-reset')}
+  if(GG_EDITION!=='public')try{downloadSaveExport('pre-reset')}
   catch(e){if(!confirm('The automatic backup could not be created ('+e.message+'). Reset anyway? Your progress cannot be recovered.'))return;}
   resetGameProgress();
 };
@@ -1911,7 +1911,7 @@ function finish(win){
   if(win&&G.raidLevel){
     const lv=G.raidLevel;
     S.raidCleared=Math.max(S.raidCleared,lv);
-    const gems=100*lv;
+    const gems=GG_RAID_GEMS[lv-1]||100*lv;
     S.gems+=gems;
     let drop='';
     if(lv===5&&Math.random()<.05){
@@ -2532,7 +2532,7 @@ const GG_TUTORIAL_STEPS=[
  {title:'🛡️ 2. Equip and place',text:'Equip units in the Units tab: 4 slots, with a 5th at Player Level 5 and a 6th at Level 10. In battle, tap a unit card and then the grass beside the road. Tap a placed unit to upgrade or sell it. Barter earns extra coins; every other unit attacks.'},
  {title:'⚔️ 3. Battles and difficulty',text:'Choose a difficulty with the colored cards (Easy, Medium, Hard, Hell or Infinite), then tap a map. Survive 15 waves and keep lives for up to 3 stars. Enemy strength adapts to your team, so very strong teams face tougher enemies on easier maps.'},
  {title:'🍓 4. Fruits, traits and stars',text:'Feed fruits in the Bag to level units. Trait Rerolls (crystals) give random permanent bonuses in the Trait Forge. You earn them from AFK mode, Player Level milestones and Hard/Hell bosses, or pay 30 gems per reroll. At level 100, prestige for a star: +50% damage, +4% range and +6% speed per star, plus perks at 3★ and 5★.'},
- {title:'🏆 5. Progress and save',text:'Claim Index rewards for every new unit, use AFK mode for idle gems, and unlock Raids at Player Level 25. Progress saves automatically. Use Export, Share or Copy Save in Settings for a backup before clearing browser data or changing devices.'}
+ {title:'🏆 5. Progress and save',text:'Claim Index rewards for every new unit, use AFK mode for idle gems, and unlock Raids at Player Level 25. Progress saves automatically on this device. Sign in to Cloud Save in Settings to keep a safe copy online and to play on another phone.'}
 ];
 let ggTutorialStep=0;
 function ggTutorialRender(){
@@ -2632,11 +2632,11 @@ function guideAutoStart(){
 async function requestPersistentStorage(){
   const el=$('#storageStatus');
   try{
-    if(!navigator.storage||!navigator.storage.persist){if(el)el.textContent='Storage protection: not supported by this browser. Export backups regularly.';return}
+    if(!navigator.storage||!navigator.storage.persist){if(el)el.textContent='Storage protection: not supported by this browser. Sign in to Cloud Save to keep a copy online.';return}
     let ok=await navigator.storage.persisted();
     if(!ok)ok=await navigator.storage.persist();
-    if(el)el.textContent=ok?'Storage protection: ✓ The browser will keep this save unless you clear site data.':'Storage protection: not granted yet (installing the app usually helps). Export backups regularly.';
-  }catch(e){console.warn('Persistent storage request failed',e);if(el)el.textContent='Storage protection: unavailable. Export backups regularly.'}
+    if(el)el.textContent=ok?'Storage protection: ✓ The browser will keep this save unless you clear site data.':'Storage protection: not granted yet (installing the app usually helps). Sign in to Cloud Save to keep a copy online.';
+  }catch(e){console.warn('Persistent storage request failed',e);if(el)el.textContent='Storage protection: unavailable. Sign in to Cloud Save to keep a copy online.'}
 }
 let updateReadyShown=false;
 const GAME_VERSION_PATTERN=new RegExp("const GAME_"+"VERSION='([0-9A-Za-z._-]+)'");
@@ -3949,7 +3949,7 @@ function ggCloudChoose(row){
   box.innerHTML='<p><b>Two different saves found.</b> Choose which one to keep. The other one will be replaced.</p>'
    +'<div class="gg-cloud-opt"><b>Cloud save</b><span>'+ggEsc(ggCloudSummaryText(cs))+'</span><small>Saved '+ggEsc(new Date(row.updated_at).toLocaleString())+'</small><button id="ggCloudUseCloud">Use cloud save</button></div>'
    +'<div class="gg-cloud-opt"><b>This device</b><span>'+ggEsc(ggCloudSummaryText(ls))+'</span><small>Playing now</small><button class="alt" id="ggCloudUseLocal">Keep this device&#39;s save</button></div>'
-   +'<small>Not sure? Use Export Save below first to keep a copy of this device&#39;s progress.</small>';
+   +(GG_EDITION==='public'?'':'<small>Not sure? Use Export Save below first to keep a copy of this device&#39;s progress.</small>');
   box.classList.remove('hide');
   $('#ggCloudUseCloud').onclick=async()=>{await ggCloudRestore(row);};
   $('#ggCloudUseLocal').onclick=async()=>{if(!confirm('Replace your cloud save ('+ggCloudSummaryText(cs)+') with this device\'s progress ('+ggCloudSummaryText(ls)+')?'))return;
@@ -5087,3 +5087,29 @@ function ggVipGemBonus(gain){if(!ggIsVip()||!(gain>0))return 0;const b=Math.roun
       const t='👑 VIP bonus: '+parts.join(', ');
       if(box)box.insertAdjacentHTML('beforeend','<div class="gg-vip-bonus">'+t+'</div>');const msg=$('#msg');if(msg)msg.textContent+=' '+t+'.';}}catch(e){}
   return r;};})();
+// ---------- Tougher raids; saves only on the device and in Cloud Save (2026.10.11.36) ----------
+// Raids used Green Meadow's enemy health (Map 1), so Raid Level 1 was as easy as Green Meadow on Hell.
+// Raid enemies now start from Volcanic Rift on Hell (Map 8): +25% per raid level, and Level 5 (30 waves,
+// growing every wave) at 60% of that. Tested with Auto Play: a level-60 team clears Levels 1-2, a level-100
+// 3-star team clears Levels 1-4, and only a maxed 5-star team clears Level 5. Rewards are higher.
+const GG_RAID_BASE_MAP=7,GG_RAID_L5=0.6,GG_RAID_GEMS=[250,400,550,700,1000];
+function ggRaidHpm(lv){return STAGES[GG_RAID_BASE_MAP].hp*stageDifficulty(GG_RAID_BASE_MAP)*MODES.hell.hp*raidScale(lv)*(lv===5?GG_RAID_L5:1);}
+(function(){const o=startBattle;startBattle=function(si,mode,raidLevel){const r=o.apply(this,arguments);try{if(G&&G.raidLevel)G.hpm=ggRaidHpm(G.raidLevel);}catch(e){}return r;};})();
+// Public game: no save files. Progress lives in the game's own storage on this device and in Cloud Save,
+// so nobody can hand-edit a save file and load it back in. (The Creator Edition keeps its backup tools.)
+if(GG_EDITION==='public'){
+  let ggCloudImport=false;
+  (function(){const o=importSaveText;importSaveText=async function(){if(!ggCloudImport){toast('Save files can no longer be imported. Sign in to Cloud Save to move your progress.');return false;}return o.apply(this,arguments);};})();
+  (function(){const o=ggCloudRestore;ggCloudRestore=async function(){ggCloudImport=true;try{return await o.apply(this,arguments);}finally{ggCloudImport=false;}};})();
+  (function(){const blocked=()=>{throw Error('Save files are turned off. Your progress is kept on this device and in Cloud Save.')};buildSaveExport=blocked;downloadSaveExport=blocked;})();
+  window.ggSaveSectionUpdate=function(){
+    const ex=$('#exportSave');const box=ex&&ex.closest('div[style*="border-top"]');if(!box||box.dataset.secure)return;box.dataset.secure='1';
+    const undo=$('#restorePreImport'),status=$('#storageStatus');
+    box.innerHTML='<b>Saving &amp; Recovery</b><p class="gg-save-note">Your progress saves automatically in the game\'s own storage on this device. <b>Sign in to Cloud Save</b> to keep a safe copy online and to continue on a new phone.</p>'
+      +'<p class="gg-save-note">To keep the game fair and protect players from cheating and scams, save files can\'t be downloaded, shared, copied or imported.</p><div class="row" id="ggUndoRow"></div>';
+    if(undo){undo.textContent='↶ Undo Last Cloud Restore';undo.title='Go back to the progress you had before your last Cloud Save restore';$('#ggUndoRow').appendChild(undo);}
+    if(status)box.appendChild(status);
+    const has=(()=>{try{return !!localStorage.getItem(PRE_IMPORT_KEY)}catch(e){return false}})();$('#ggUndoRow').classList.toggle('hide',!has);};
+  ggSaveSectionUpdate();
+  (function(){const o=ggCloudRestore;ggCloudRestore=async function(){const r=await o.apply(this,arguments);try{const b=$('#ggUndoRow');if(b)b.classList.remove('hide');}catch(e){}return r;};})();
+}

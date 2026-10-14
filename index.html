@@ -927,6 +927,10 @@ body.gg-feed-open{overflow:hidden}
 @keyframes ggVipIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .gg-pass-perm{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;background:#34d39926;color:#a7f3d0;font-size:10px;font-weight:800;vertical-align:middle;letter-spacing:.02em}
 </style>
+<style>
+/* Saving & Recovery note (2026.10.11.36) */
+.gg-save-note{color:var(--mut);font-size:12px;line-height:1.5;margin:6px 0}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -973,7 +977,7 @@ var t0=performance.now(),done=false,loaded=false,loadAt=0,shown=0,stars=[],TIPS=
 'Frost and freeze units are best near the start of the road.',
 'Splash attacks shine against big groups of fast enemies.',
 'Bosses arrive on the last wave — save some coins for an emergency upgrade.',
-'Export your save from Settings to keep a backup of your progress.',
+'Sign in to Cloud Save in Settings to keep your progress safe online.',
 'Music and sound volume can be changed in Settings at any time.'];
 var STEPS=[[0,'Opening the portal…'],[22,'Forging gems…'],[42,'Painting the realms…'],[62,'Tuning the music…'],[84,'Summoning guardians…'],[100,'Ready!']];
 function target(){var n=1;if(typeof GGA!=='undefined')n=2;if(typeof GGS!=='undefined')n=3;if(typeof renderAll==='function')n=4;if(loaded)n=5;return n;}
@@ -1125,6 +1129,8 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="Balance Update"><span class="update-tag tag-balance-update">Balance Update</span><h3>Tougher Raids, Bigger Rewards</h3><p style="color:var(--mut);font-size:12px">Implemented Wednesday, October 14, 2026 at 2:06 AM MDT</p><ul><li>Duskmoor Castle raids were much too easy: their enemies used the first map's health. Raid enemies are now as tough as <strong>Volcanic Rift on Hell</strong> at Level 1 and grow <strong>+25% per raid level</strong>. Level 5 keeps its 30 waves and is the hardest challenge in the game.</li><li>Raid gem rewards are higher: <strong>250 / 400 / 550 / 700 / 1,000 gems</strong> for Levels 1 to 5. Level 5 still has its 5% chance at Count Vesper.</li><li>Levels you already cleared stay cleared.</li></ul></section>
+<section class="qol-section" data-category="Bug Fix"><span class="update-tag tag-bug-fix">Bug Fix</span><h3>Saves Are Protected From Cheating</h3><p style="color:var(--mut);font-size:12px">Implemented Wednesday, October 14, 2026 at 2:06 AM MDT</p><ul><li>Save files could be downloaded, edited by hand and loaded back in to fake progress. To keep the game fair and protect players from scams, <strong>Export, Share, Copy, Import and Paste Save are removed</strong>.</li><li>Your progress still saves automatically in the game's own storage on this device. <strong>Sign in to Cloud Save</strong> to keep a safe copy online and to continue on another phone.</li><li>If you restore your Cloud Save by mistake, <strong>Settings → Undo Last Cloud Restore</strong> brings back the progress you had before.</li><li>Passes and purchases are kept on the server with your account, never in the save, so they can't be faked.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>VIP Perks: More Gems and EXP</h3><p style="color:var(--mut);font-size:12px">Implemented Wednesday, October 14, 2026 at 1:30 AM MDT</p><ul><li><strong>VIP</strong> now also gives <strong>+25% gems</strong> from battles, raids, Infinite waves, AFK and quests, <strong>+25% unit EXP</strong> and <strong>+50% player EXP</strong>, on top of the gold name, crown and golden glow.</li><li>The bonus is shown on the Victory/Defeat card as a gold <strong>👑 VIP bonus</strong> line. Selling units, Index rewards and level milestone rewards are not boosted.</li><li><strong>Every pass is permanent</strong>: once your account has it, you keep it forever, on every device through Cloud Save.</li></ul></section>
 <section class="qol-section" data-category="Balance Update"><span class="update-tag tag-balance-update">Balance Update</span><h3>Speed ×3 in Raids Is Now Its Own Pass</h3><p style="color:var(--mut);font-size:12px">Implemented Wednesday, October 14, 2026 at 1:30 AM MDT</p><ul><li>Speed ×3 in Duskmoor Castle raids now needs the new <strong>🏰 Raids ×3 Speed</strong> pass, found in <strong>💎 Passes</strong>.</li><li>The <strong>×3 Speed</strong> pass and the free ×3 for early players still cover every map battle and Infinite Mode, but not raids. Speed ×1 and ×2 stay free in raids for everyone.</li><li>Raid leaderboard runs are timed for Speed ×2 unless your account owns the Raids ×3 Speed pass.</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Faster Replies From the Creator</h3><p style="color:var(--mut);font-size:12px">Implemented Tuesday, October 13, 2026 at 11:10 PM MDT</p><ul><li>The Creator now gets an alert on their phone as soon as a support ticket needs them, and can answer it right from the game, so tickets the support helper can't solve get a reply sooner.</li><li>Support works through written messages in your ticket only. There are no phone, voice or video calls, and support will never ask for your phone number or other contact details.</li></ul></section>
@@ -1230,15 +1236,15 @@ window.ggSplashHide=hide;
  <div class="setting" style="display:block"><b>Auto-sell summoned units</b><small>Automatically sell newly summoned units of the selected rarities. New discoveries still count toward the Index.</small><div class="row" id="autoSellOptions" style="margin-top:8px"></div></div>
  <p style="color:var(--mut);font-size:12px">Settings are saved with your game progress. Automatic actions wait 3 seconds.</p>
  <div style="margin-top:16px;padding-top:14px;border-top:1px solid #ffffff30"><b>Save Backup &amp; Recovery</b><p style="color:var(--mut);font-size:12px">Download a copy of your progress before clearing browser data or changing devices. Import replaces this edition’s current progress after confirmation. If downloads do not work in the installed app (common on iPhone/iPad), use Share Save or Copy Save Text and keep the backup in Notes, email or cloud storage.</p><div class="row" style="margin-top:8px"><button type="button" id="exportSave">⬇ Export Save</button><button type="button" class="alt" id="shareSave">📤 Share Save</button><button type="button" class="alt" id="copySave">📋 Copy Save Text</button><button type="button" class="alt" id="importSave">⬆ Import Save</button><button type="button" class="alt" id="togglePasteSave">📥 Paste Save Text</button><button type="button" class="alt" id="restorePreImport">↶ Restore Before Import</button><input type="file" id="importSaveFile" accept=".json,application/json,text/plain" style="display:none" aria-label="Choose Gem Guardians save backup"></div><div id="pasteSaveBox" class="hide" style="margin-top:8px"><textarea id="pasteSaveText" rows="5" placeholder="Paste the full save text here. It starts with {&quot;game&quot;: &quot;Gem Guardians&quot;" aria-label="Paste save text"></textarea><button type="button" id="importPasteSave">⬆ Import Pasted Save</button></div><p id="storageStatus" style="color:var(--mut);font-size:12px;margin-top:8px">Storage protection: checking…</p></div>
- <div class="danger-zone"><b>Danger Zone</b><small>Reset erases all progress for this edition, including its local backup and pre-import recovery save. You must type RESET to confirm, and a backup file is downloaded first.</small><button id="bRes" style="background:#a12c47">Reset Game Progress</button></div>
+ <div class="danger-zone"><b>Danger Zone</b><small>Reset erases all progress for this edition on this device, including its local backup. You must type RESET to confirm. This cannot be undone.</small><button id="bRes" style="background:#a12c47">Reset Game Progress</button></div>
  <p style="font-size:12px;margin:10px 0 0;color:var(--mut)"><a href="privacy.html" target="_blank" rel="noopener" style="color:#c4b5fd">Privacy policy</a> · Gem Guardians collects no personal data.</p>
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.35"></script>
-<script src="gg-art.js?v=2026.10.11.35"></script>
-<script>const GAME_VERSION='2026.10.11.35';</script>
-<script src="gg-game.js?v=2026.10.11.35"></script>
+<script src="gg-sound.js?v=2026.10.11.36"></script>
+<script src="gg-art.js?v=2026.10.11.36"></script>
+<script>const GAME_VERSION='2026.10.11.36';</script>
+<script src="gg-game.js?v=2026.10.11.36"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).
