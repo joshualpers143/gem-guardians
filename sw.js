@@ -1,5 +1,5 @@
-const CACHE='gem-guardians-public-support-2026101133';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./privacy.html','./gg-sound.js?v=2026.10.11.33','./gg-art.js?v=2026.10.11.33','./gg-game.js?v=2026.10.11.33'];
+const CACHE='gem-guardians-public-support-inbox-2026101134';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./privacy.html','./gg-sound.js?v=2026.10.11.34','./gg-art.js?v=2026.10.11.34','./gg-game.js?v=2026.10.11.34'];
 self.addEventListener('install', event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });

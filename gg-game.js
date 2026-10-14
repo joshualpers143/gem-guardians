@@ -1,4 +1,4 @@
-/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.33 · built from source/public/index.html by tools/split.py */
+/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.34 · built from source/public/index.html by tools/split.py */
 const $=s=>document.querySelector(s);
 const TYPES={Physical:'#f59e0b',Ranged:'#84cc16',Magic:'#60a5fa',True:'#f8fafc'};
 const MIG={scout:'knight',slinger:'apprentice',cannon:'sniper'};
@@ -4995,8 +4995,8 @@ setTimeout(ggSupCheck,6000);
 (function(){const o=openHelp;openHelp=function(){const r=o.apply(this,arguments);const list=$('#ggHelpList');
   if(list&&!list.querySelector('[data-sup]')){list.insertAdjacentHTML('beforeend','<div class="gg-help-row"><span class="gg-help-ico gg-sup-ico">🛟</span><span class="gg-help-txt"><b>Contact Support</b><small>Ask a question or report a problem. The support helper answers right away; the Creator helps with the rest.</small></span><button type="button" data-sup="1">Contact</button></div>');
     list.querySelector('[data-sup]').onclick=()=>{closeHelp();ggSupOpen();};}return r;};})();
-// ----- Creator Edition: Support Inbox -----
-if(GG_EDITION==='creator'){
+// ----- Support Inbox: Creator Edition, and the public game for Creator accounts (2026.10.11.34) -----
+{
   const ggInbox={filter:'waiting',ticket:null,seq:0,poll:0};
   document.body.insertAdjacentHTML('beforeend','<div id="ggSupInbox" class="settings-panel hide" role="dialog" aria-modal="true" aria-labelledby="ggInboxTitle"><div class="settings-box gg-sup-box gg-inbox-box">'
    +'<div class="row gg-sup-head"><button class="alt gg-sup-back hide" id="ggInboxBack" aria-label="Back to the inbox">←</button><h2 id="ggInboxTitle">📥 Support Inbox</h2><button class="alt" id="closeInbox">Close ✕</button></div><div id="ggInboxBody"></div></div></div>');
@@ -5006,6 +5006,7 @@ if(GG_EDITION==='creator'){
   window.ggInboxOpen=function(){$('#ggSupInbox').classList.remove('hide');const h=$('header');if(h)h.classList.remove('more-open');if(ggInbox.ticket)ggInboxThread(ggInbox.ticket);else ggInboxList();};
   async function ggInboxGate(){const g=ggSupGate();if(g)return g;const a=await ggRpc('support_is_admin',{},true);
     if(!a.ok)return '<div class="gg-sup-gate">'+ggEsc(ggCloudErr(a))+'</div>';
+    if(a.data!==true&&GG_EDITION!=='creator')return '<div class="gg-sup-gate">Only the Creator\'s account can open the Support Inbox.</div>';
     if(a.data!==true)return '<div class="gg-sup-gate">This account ('+ggEsc(ggCloud.session.user.email||'')+') is not set as the Creator. Add it in Supabase → SQL editor:<code>insert into public.support_admins (user_id) select id from auth.users where email = \''+ggEsc(ggCloud.session.user.email||'you@example.com')+'\';</code></div>';
     return '';}
   async function ggInboxList(){ggInbox.ticket=null;clearTimeout(ggInbox.poll);$('#ggInboxBack').classList.add('hide');$('#ggInboxTitle').textContent='📥 Support Inbox';const seq=++ggInbox.seq,body=$('#ggInboxBody');
@@ -5039,8 +5040,16 @@ if(GG_EDITION==='creator'){
     const cb=$('#ggInboxCloseTk');if(cb)cb.onclick=()=>st('closed');const ro=$('#ggInboxReopen');if(ro)ro.onclick=()=>st('creator');
     ggInbox.poll=setTimeout(()=>{if(!$('#ggSupInbox').classList.contains('hide')&&ggInbox.ticket===id&&!$('#ggInboxReply').value)ggInboxThread(id,true);},30000);}
   function ggInboxBadge(n){const b=$('#inboxBadge');if(b&&n!=null){b.textContent=n;b.classList.toggle('hide',!n);}}
-  (function(){const s=$('#bSupport');if(s&&!$('#bInbox')){s.insertAdjacentHTML('afterend','<button class="alt hdr-more" id="bInbox">📥 Support Inbox<i id="inboxBadge" class="gg-sup-badge hide">0</i></button>');$('#bInbox').addEventListener('click',ggInboxOpen);}})();
-  window.ggInboxCount=async function(){if(!ggCloud.session||!ggIsOnline())return null;const a=await ggRpc('support_is_admin',{},true);if(!a.ok||a.data!==true)return null;
+  (function(){const s=$('#bSupport');if(s&&!$('#bInbox')){s.insertAdjacentHTML('afterend','<button class="alt hdr-more'+(GG_EDITION==='creator'?'':' hide')+'" id="bInbox">📥 Support Inbox<i id="inboxBadge" class="gg-sup-badge hide">0</i></button>');$('#bInbox').addEventListener('click',ggInboxOpen);}})();
+  window.ggInboxCount=async function(){if(!ggCloud.session){ggInboxShow(false);return null;}if(!ggIsOnline())return null;const a=await ggRpc('support_is_admin',{},true);if(a.ok)ggInboxShow(a.data===true);if(!a.ok||a.data!==true)return null;
     const r=await ggRpc('support_inbox',{p_filter:'waiting'},true);if(r.ok&&r.data&&r.data.ok){ggInboxBadge(r.data.tickets.length);return r.data.tickets.length;}return null;};
   setTimeout(ggInboxCount,7000);setInterval(()=>{if(document.visibilityState==='visible')ggInboxCount();},180000);
+  // Public game: the inbox button appears only for Creator accounts.
+  function ggInboxShow(on){const b=$('#bInbox');if(b&&GG_EDITION!=='creator')b.classList.toggle('hide',!on);}
+  (function(){const o=ggCloudAfterLogin;ggCloudAfterLogin=async function(){const r=await o.apply(this,arguments);ggInboxCount();return r;};})();
+  (function(){const o=ggCloudSignOut;ggCloudSignOut=async function(){const r=await o.apply(this,arguments);ggInboxShow(false);close();return r;};})();
+  // Tapping a phone alert opens the game at #support-inbox.
+  async function ggInboxFromLink(){if(location.hash!=='#support-inbox')return;try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+    if(GG_EDITION==='creator'||await ggInboxCount()!==null)ggInboxOpen();else if(!ggCloud.session)toast('Sign in to Cloud Save with the Creator account to open the Support Inbox.');}
+  window.ggInboxFromLink=ggInboxFromLink;setTimeout(ggInboxFromLink,3000);window.addEventListener('hashchange',ggInboxFromLink);
 }
