@@ -1,4 +1,4 @@
-/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.36 · built from source/public/index.html by tools/split.py */
+/* Gem Guardians public edition · gg-game.js · Version 2026.10.11.37 · built from source/public/index.html by tools/split.py */
 const $=s=>document.querySelector(s);
 const TYPES={Physical:'#f59e0b',Ranged:'#84cc16',Magic:'#60a5fa',True:'#f8fafc'};
 const MIG={scout:'knight',slinger:'apprentice',cannon:'sniper'};
@@ -1429,7 +1429,7 @@ function startBattle(si,mode,raidLevel=0){
   for(let i=1;i<p.length;i++){const l=Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1]);L.push(l);tot+=l}
   G={si,L,tot,raidLevel,raidKills:0,lives:STARTING_LIVES,coins:500,wave:0,q:[],sp:0,run:false,over:false,en:[],us:[],fx:[],sel:null,pl:null,speed:1,boss:false,mode,hpm:STAGES[si].hp*stageDifficulty(si)*MODES[mode].hp*(raidLevel?raidScale(raidLevel):1),ig:0,fg:0,paused:false,autoUpgrade:false,autoUpgradeTimer:0,autoPlay:false,autoPlayTimer:0,waveSpawnCountdown:null,restartTimer:0};
   G.teamScale=teamPowerScale(si,mode,raidLevel);
-  $('#bAutoPlay').textContent=autoPlayEligible(si,mode,raidLevel)?'Auto Play: OFF':(raidLevel?'🔒 Auto Play (regular maps only)':S.playerLevel<5?'🔒 Auto Play (Player Lv 5)':'🔒 Auto Play (3★ required)');
+  $('#bAutoPlay').textContent=autoPlayEligible(si,mode,raidLevel)?'Auto Play: OFF':(raidLevel?'🔒 Auto Play (Raids Auto Play pass)':S.playerLevel<5?'🔒 Auto Play (Player Lv 5)':'🔒 Auto Play (3★ required)');
   $('#bAutoPlay').disabled=!autoPlayEligible(si,mode,raidLevel);
   $('#bAutoPlay').setAttribute('aria-pressed','false');
   $('#bAutoUpgrade').textContent='Auto Upgrade: OFF';$('#bAutoUpgrade').setAttribute('aria-pressed','false');
@@ -1787,7 +1787,7 @@ function autoPlayUpgrade(){
 }
 $('#bAutoPlay').onclick=()=>{
   if(!G||G.over)return;
-  if(!autoPlayEligible(G.si,G.mode,G.raidLevel))return toast('Auto Play requires Player Level 5 and a 3-star clear of this exact map and mode.');
+  if(!autoPlayEligible(G.si,G.mode,G.raidLevel))return toast(G.raidLevel?'Auto Play in raids needs the Raids Auto Play pass. See 💎 Passes in the ☰ menu.':'Auto Play requires Player Level 5 and a 3-star clear of this exact map and mode.');
   G.autoPlay=!G.autoPlay;G.autoPlayTimer=0;G.autoPlayStartDelay=0;
   if(!G.autoPlay){$('#bAutoUpgrade').textContent='Auto Upgrade: OFF';$('#bAutoUpgrade').setAttribute('aria-pressed','false');}
   if(G.autoPlay){G.pl=null;G.sel=null;hideQuick();G.autoUpgrade=false;G.autoUpgradeTimer=0;
@@ -4386,7 +4386,7 @@ function ggMaxSpeed(){if(!G)return 3;const ranked=G.lbBoard&&!G.lbSkip;return (r
 function ggSpeedLabel(){const b=$('#bSpd');if(!b||!G)return;const auto=/\(Auto\)/.test(b.textContent);b.textContent='Speed x'+G.speed+(auto&&G.autoSpeed?' (Auto)':'');}
 function ggClampSpeed(){if(!G)return;const m=ggMaxSpeed();if(G.speed>m){G.speed=m;ggSpeedLabel();}}
 $('#bSpd').onclick=()=>{if(!G)return;const m=ggMaxSpeed();let next=G.speed%3+1;
-  if(next>m){next=1;if(!G.speedHint){G.speedHint=true;const pid=G.raidLevel?'raid3':'speed3',pn=G.raidLevel?'Raids ×3 Speed':'×3 Speed',ranked=G.lbBoard&&!G.lbSkip&&ggHasPass(pid);
+  if(next>m){next=1;if(!G.speedHint){G.speedHint=true;const pid='speed3',pn='×3 Speed',ranked=G.lbBoard&&!G.lbSkip&&ggHasPass(pid);
     toast(ranked?'⏩ Ranked runs use Speed ×3 only when your account owns the '+pn+' pass.':'⏩ Speed ×3'+(G.raidLevel?' in raids':'')+' needs the '+pn+' pass. See 💎 Passes in the ☰ menu.');}}
   G.speed=next;G.manualSpeed=true;G.autoSpeed=false;$('#bSpd').textContent='Speed x'+G.speed;
   if(G.autoPlay)toast('Speed set manually: Auto Play will keep Speed x'+G.speed+' for this battle.');};
@@ -5113,3 +5113,20 @@ if(GG_EDITION==='public'){
   ggSaveSectionUpdate();
   (function(){const o=ggCloudRestore;ggCloudRestore=async function(){const r=await o.apply(this,arguments);try{const b=$('#ggUndoRow');if(b)b.classList.remove('hide');}catch(e){}return r;};})();
 }
+// ---------- Raids Auto Play pass (2026.10.11.37) ----------
+// Owner correction: the raid pass unlocks Auto Play in raids, not Speed x3. The Raids x3 Speed pass (raid3)
+// becomes Raids Auto Play (raidauto); everyone who owned it keeps it. Speed x3 in raids follows the normal
+// x3 Speed pass again (and the free early-player x3). Auto Play on regular maps is unchanged (free).
+(function(){const raidauto={n:'Raids Auto Play',i:'🏰',d:'Unlocks Auto Play in Duskmoor Castle raids: the Tactician places, upgrades and picks the speed for you on every raid level you have unlocked. Auto Play on regular maps stays free (Player Level 5 and a 3-star clear).'};
+  GG_PASSES.speed3.d='Unlocks Speed ×3 in every battle, including raids and Infinite Mode. Speed ×1 and ×2 stay free for everyone.';
+  const all=Object.assign({},GG_PASSES,{raidauto});delete all.raid3;
+  const order=['speed3','raidauto','afk2','autosum','autotrait','vip'];
+  for(const k of Object.keys(GG_PASSES))delete GG_PASSES[k];
+  for(const k of order.concat(Object.keys(all)))if(all[k]&&!GG_PASSES[k])GG_PASSES[k]=all[k];
+  // Passes saved on this device before the change: Raids x3 Speed became Raids Auto Play.
+  try{const p=JSON.parse(localStorage.getItem(GG_PASS_KEY)||'{}');
+    if(p&&p.uid===ggPass.uid&&Array.isArray(p.list)){ggPass.list=[...new Set(p.list.map(x=>x==='raid3'?'raidauto':x))].filter(x=>GG_PASSES[x]);ggPassStore();}}catch(e){}})();
+ggMaxSpeed=function(){if(!G)return 3;const ranked=G.lbBoard&&!G.lbSkip;return (ranked?ggServerHasPass('speed3'):ggHasPass('speed3'))?3:2;};
+autoPlayEligible=function(si,mode,raidLevel=0){
+  if(raidLevel)return S.playerLevel>=5&&ggHasPass('raidauto');
+  return mode!=='infinite'&&S.playerLevel>=5&&(S.stageStars?.[stageStarKey(si,mode)]||0)>=3;};
