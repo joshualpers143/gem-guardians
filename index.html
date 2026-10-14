@@ -842,6 +842,81 @@ body.gg-feed-open{overflow:hidden}
 #ggLbModal .gg-lb-tabs{flex-wrap:wrap}
 #ggLbModal .gg-lb-tabs button{flex:1 1 calc(50% - 8px);min-width:0;white-space:nowrap}
 </style>
+<style>
+/* ---------- Contact Support (2026.10.11.33) ---------- */
+#ggSupport,#ggSupInbox{z-index:116}
+.gg-sup-box{max-width:560px;width:min(560px,100%);display:flex;flex-direction:column}
+.gg-sup-head{justify-content:space-between;align-items:center;gap:8px;flex-wrap:nowrap}
+.gg-sup-head h2{flex:1;min-width:0;margin:0;font-size:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gg-sup-back{flex:none;padding:8px 12px}
+.gg-sup-back.hide{display:none}
+#bSupport,#bInbox,#bMore{position:relative}
+.gg-sup-badge{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;border-radius:999px;background:#f43f5e;color:#fff;font-size:11px;font-weight:900;font-style:normal;display:flex;align-items:center;justify-content:center;padding:0 4px;box-shadow:0 0 0 2px #1b1636;pointer-events:none}
+.gg-sup-badge.hide{display:none}
+#bSupport .gg-sup-badge,#bInbox .gg-sup-badge{position:static;display:inline-flex;margin-left:8px;vertical-align:middle;box-shadow:none}
+#bSupport .gg-sup-badge.hide,#bInbox .gg-sup-badge.hide{display:none}
+.gg-sup-ico{width:34px;flex:none;text-align:center;font-size:24px;line-height:1}
+.gg-sup-intro{color:var(--mut);margin:8px 0 10px;line-height:1.5}
+.gg-sup-gate{display:flex;flex-direction:column;gap:10px;padding:12px 14px;margin:8px 0;border-radius:12px;background:#fde68a1a;border:1px solid #fde68a55;color:#fde68a;line-height:1.5}
+.gg-sup-gate button{align-self:flex-start}
+.gg-sup-gate code{display:block;padding:8px;border-radius:8px;background:#0f0c22;color:#e6f6ff;font-size:12px;white-space:pre-wrap;word-break:break-all}
+.gg-sup-newbtn{width:100%;min-height:46px;font-size:16px}
+.gg-sup-h3{margin:14px 0 6px;font-size:15px;color:var(--mut)}
+.gg-sup-list{list-style:none;margin:0;padding:0;max-height:48vh;overflow:auto}
+.gg-sup-list li{margin-bottom:6px}
+.gg-sup-empty{color:var(--mut);padding:12px 4px;text-align:center}
+.gg-sup-ticket{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;background:#ffffff0c;border:1px solid #ffffff1f;box-shadow:none;border-radius:12px;padding:10px 12px;color:var(--ink)}
+.gg-sup-ticket.unread{border-color:#a5b4fc;background:#7c6cf026}
+.gg-sup-tnum{font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums}
+.gg-sup-tmain{min-width:0;display:flex;flex-direction:column;gap:2px}
+.gg-sup-tmain b,.gg-sup-tmain small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gg-sup-tmain small{color:var(--mut)}
+.gg-sup-tside{display:flex;flex-direction:column;align-items:flex-end;gap:3px;position:relative}
+.gg-sup-tside small{color:var(--mut);font-size:11px}
+.gg-sup-dot{position:absolute;top:-14px;right:-16px;min-width:18px;height:18px;border-radius:999px;background:#f43f5e;color:#fff;font-size:11px;font-weight:900;font-style:normal;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.gg-sup-chip{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap;background:#ffffff1a;color:var(--ink)}
+.gg-sup-chip.wait{background:#7dd3fc26;color:#bae6fd}.gg-sup-chip.ok{background:#34d39926;color:#a7f3d0}
+.gg-sup-chip.creator{background:#ffc94d26;color:#ffe29a}.gg-sup-chip.closed{background:#ffffff14;color:var(--mut)}
+.gg-sup-note{display:block;color:var(--mut);margin-top:12px;line-height:1.45}
+.gg-sup-label{display:block;margin:6px 0;color:var(--ink);line-height:1.4}
+.gg-sup-text{width:100%;box-sizing:border-box;padding:10px 12px;border-radius:12px;background:#0f0c22;color:#fff;border:1px solid #ffffff33;font:inherit;font-size:16px;resize:vertical;min-height:48px}
+.gg-sup-text:focus{outline:2px solid #a5b4fc;border-color:transparent}
+.gg-sup-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap}
+.gg-sup-row small{color:var(--mut)}
+.gg-sup-check{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:13px;line-height:1.3}
+.gg-sup-check input{width:18px;height:18px;flex:none}
+.gg-sup-send{width:100%;min-height:46px;font-size:16px}
+.gg-sup-err{padding:8px 12px;margin:8px 0;border-radius:10px;background:#f43f5e1f;border:1px solid #f43f5e66;color:#fecdd3}
+.gg-sup-err.hide{display:none}
+.gg-sup-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:4px 0 8px;color:var(--mut)}
+.gg-sup-thread{display:flex;flex-direction:column;gap:10px;max-height:50vh;min-height:120px;overflow-y:auto;padding:10px;border-radius:14px;background:#0b0920;border:1px solid #ffffff14;margin-bottom:10px;overscroll-behavior:contain}
+.gg-sup-msg{display:flex;flex-direction:column;max-width:86%}
+.gg-sup-msg.player{align-self:flex-end;align-items:flex-end}
+.gg-sup-msg.ai,.gg-sup-msg.creator{align-self:flex-start}
+.gg-sup-msg.system{align-self:center;max-width:94%;text-align:center;font-size:12px;color:var(--mut);background:#ffffff0d;border-radius:10px;padding:6px 10px;line-height:1.4}
+.gg-sup-who{font-size:11px;color:var(--mut);margin:0 4px 3px}
+.gg-sup-bubble{padding:9px 12px;border-radius:14px;line-height:1.45;word-wrap:break-word;overflow-wrap:anywhere;font-size:14px}
+.gg-sup-msg.player .gg-sup-bubble{background:linear-gradient(180deg,#7c6cf0,#5446c4);color:#fff;border-bottom-right-radius:4px}
+.gg-sup-msg.ai .gg-sup-bubble{background:#2c2655;color:var(--ink);border:1px solid #ffffff1f;border-bottom-left-radius:4px}
+.gg-sup-msg.creator .gg-sup-bubble{background:linear-gradient(180deg,#4a3a12,#3a2d0c);color:#fff3cf;border:1px solid #ffc94d77;border-bottom-left-radius:4px}
+.gg-sup-msg.typing .gg-sup-bubble{display:flex;gap:4px;padding:12px 14px}
+.gg-sup-msg.typing span{width:7px;height:7px;border-radius:50%;background:var(--mut);animation:ggSupDot 1.2s infinite ease-in-out}
+.gg-sup-msg.typing span:nth-child(2){animation-delay:.15s}.gg-sup-msg.typing span:nth-child(3){animation-delay:.3s}
+@keyframes ggSupDot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-4px)}}
+.gg-sup-composer{display:flex;gap:8px;align-items:flex-end}
+.gg-sup-composer .gg-sup-text{flex:1;resize:none}
+.gg-sup-composer button{flex:none;min-height:48px}
+.gg-sup-closed{color:var(--mut);text-align:center}
+#ggSupCloseTk{display:block;margin:8px auto 0;font-size:13px}
+.gg-inbox-ctx{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+.gg-inbox-ctx span{font-size:12px;padding:3px 8px;border-radius:8px;background:#ffffff10;color:var(--ink)}
+.gg-inbox-ctx b{color:var(--mut);font-weight:700;text-transform:capitalize}
+.gg-inbox-tabs{flex-wrap:wrap}
+.gg-inbox-tabs button{flex:1 1 calc(50% - 8px);min-width:0;white-space:nowrap}
+.gg-inbox-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.gg-inbox-actions button{flex:1 1 auto}
+@media (max-width:640px){.gg-sup-box{padding:16px}.gg-sup-thread{max-height:46vh}.gg-sup-msg{max-width:92%}.gg-sup-ticket{grid-template-columns:auto 1fr;}.gg-sup-tside{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}.gg-sup-dot{position:static}}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -1040,6 +1115,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Contact Support</h3><p style="color:var(--mut);font-size:12px">Implemented Tuesday, October 13, 2026 at 7:26 PM MDT</p><ul><li>Need help? Open <strong>☰ → 🛟 Support</strong> (or <strong>Help &amp; Tutorials → Contact Support</strong>) and tap <strong>New ticket</strong>. Every ticket gets its own number, for example <strong>#1001</strong>.</li><li>Our <strong>support helper</strong> (an AI) reads your message and answers right away, usually within a few seconds. You can keep chatting in the same ticket.</li><li>If the helper can't solve it, it tells you, and your ticket goes to the <strong>Creator</strong>, who will help you when they're not busy. Their reply shows up in the same ticket.</li><li>A red badge on ☰ and 🛟 Support tells you when there's a new reply, even if you closed the window.</li><li>You can include basic game info (level, gems, units, version, device) so we can help faster. Please never share passwords or personal details.</li><li>Contacting support needs an internet connection and a <strong>Cloud Save</strong> sign-in, so we can send the reply to you. The game itself still works fully offline.</li></ul></section>
 <section class="qol-section" data-category="Bug Fix"><span class="update-tag tag-bug-fix">Bug Fix</span><h3>Summoned Creatures Fight by Collision</h3><p style="color:var(--mut);font-size:12px">Implemented Tuesday, October 13, 2026 at 1:15 PM MDT</p><ul><li>Every creature a unit summons onto the road now works the same way: <strong>Abyss Summoner</strong>'s shadow monsters and Elite Ghouls, and <strong>Abyss Monarch</strong>'s Hell Wolves.</li><li>They appear at <strong>your base</strong> and walk the road toward the enemy entrance. Hell Wolves used to start near the enemy entrance and run toward your base.</li><li>They <strong>no longer shoot</strong>. They damage enemies by running into them: shadow monsters 55%, Elite Ghouls 150% and Hell Wolves 125% of the unit's damage per collision. A creature can't walk through an enemy, so it keeps ramming the enemy in front of it (one hit every 0.6 seconds) until one of them falls. Enemies are not stopped by creatures.</li><li>Every creature has its own <strong>HP bar</strong> (teal). Its HP is 275% of the summoning unit's damage (damage +175%). Each boost gives the unit +35% damage, so its creatures get +35% HP too, including the ones already on the road.</li><li>Every collision costs the creature HP: 8% of that enemy's max HP (5% for bosses and mini-bosses). It bounces back a little after each hit and disappears when its HP runs out or it reaches the enemy entrance.</li><li>Submerged Tide Crabs can't be hit, so creatures pass over them.</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Enemy HP Numbers</h3><p style="color:var(--mut);font-size:12px">Implemented Tuesday, October 13, 2026 at 1:15 PM MDT</p><ul><li>Every enemy health bar now shows its HP left, for example <strong>1000/1000</strong>.</li><li>Big numbers are shortened (12.5K, 3.2M, 1.1B) so they stay readable.</li><li>You can turn the numbers off in <strong>Settings â Enemy HP numbers</strong>.</li></ul></section>
 <section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Leaderboards: Most Time Played &amp; Most Summons</h3><p style="color:var(--mut);font-size:12px">Implemented Tuesday, October 13, 2026 at 10:52 AM MDT</p><ul><li>Two new tabs in <strong>🏆 Leaderboards</strong>: <strong>⏱️ Time played</strong> and <strong>🎰 Summons</strong>.</li><li><strong>Time played</strong> counts while the game is open on your screen and you are signed in with your player name. The game server keeps the time itself, and playing on two devices at once never counts double.</li><li><strong>Summons</strong> counts every summon you make while signed in (a ×10 counts as 10), even offline. They are sent when you are back online.</li><li>Both boards started counting with this update, so everyone starts from zero.</li><li>Fair play: the server only accepts summons at a realistic speed and never more time than really passed.</li></ul></section>
@@ -1146,10 +1222,10 @@ window.ggSplashHide=hide;
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.32"></script>
-<script src="gg-art.js?v=2026.10.11.32"></script>
-<script>const GAME_VERSION='2026.10.11.32';</script>
-<script src="gg-game.js?v=2026.10.11.32"></script>
+<script src="gg-sound.js?v=2026.10.11.33"></script>
+<script src="gg-art.js?v=2026.10.11.33"></script>
+<script>const GAME_VERSION='2026.10.11.33';</script>
+<script src="gg-game.js?v=2026.10.11.33"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).
