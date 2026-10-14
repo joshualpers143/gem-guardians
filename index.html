@@ -969,6 +969,15 @@ body.gg-feed-open{overflow:hidden}
 .gg-shop-redeem{background:linear-gradient(135deg,#a78bfa14,#38bdf80f);border:1.5px dashed #a78bfa88}
 @media (max-width:420px){.gg-pass.gg-pass2{flex-wrap:nowrap}.gg-pass2 .gg-pass-act{flex-basis:auto;padding-left:0}#ggShopList.gg-shop-list{grid-template-columns:1fr}}
 </style>
+<style>
+/* 3D graphics (2026.10.11.40) */
+#cv3d{position:absolute;display:none;pointer-events:none;z-index:0;border-radius:10px;background:#0b1020}
+body.gg3d-on #cv3d{display:block}
+body.gg3d-on #cv{background:transparent!important;box-shadow:none!important;position:relative;z-index:1}
+.gg3d-altar{position:absolute;top:0;left:50%;width:124px;height:131px;margin-left:-62px;background:transparent!important;box-shadow:none!important;border-radius:0!important;pointer-events:none;filter:drop-shadow(0 0 16px #7fe3ffaa);display:none}
+body.gg3d-altar-on .gg3d-altar{display:block}
+body.gg3d-altar-on .altar-crystal{visibility:hidden}
+</style>
 </head>
 <body>
 <div id="ggSplash" role="status" aria-label="Gem Guardians loading">
@@ -1167,6 +1176,7 @@ window.ggSplashHide=hide;
   <div class="row" style="justify-content:space-between;align-items:center"><h2 id="qolTitle">📰 Update Info</h2><button class="alt" id="closeQol">Close ✕</button></div>
   <p style="color:var(--mut);margin:6px 0 8px"><b id="qolVersion"></b><br>Updates listed newest first, with implementation timestamps. Labels: New Feature, Balance Update, Bug Fix, QoL (makes playing easier).</p>
   <div class="row qol-filter" id="qolFilter"><button type="button" class="alt on" data-filter="All">All</button><button type="button" class="alt" data-filter="New Feature">New Feature</button><button type="button" class="alt" data-filter="Balance Update">Balance Update</button><button type="button" class="alt" data-filter="Bug Fix">Bug Fix</button><button type="button" class="alt" data-filter="QoL">QoL</button></div>
+<section class="qol-section" data-category="New Feature"><span class="update-tag tag-new-feature">New Feature</span><h3>Battles in Full 3D</h3><p style="color:var(--mut);font-size:12px">Implemented Wednesday, October 14, 2026 at 12:30 PM MDT</p><ul><li>Every battle is now drawn in <strong>real 3D</strong>: all 12 maps and Duskmoor Castle are lit 3D scenes with terrain, roads, trees, crystals, lava, graves and more, an enemy entrance and your <strong>gem castle</strong>, with shadows, glow and soft bloom.</li><li><strong>Every unit is a 3D model</strong> built from its look: outfits, hats, hair, weapons, shields, capes, wings and glowing eyes. Dragons, the Phoenix, the Worldtree and aliens have their own creature models. Prestige stars show as golden rings and sparkles.</li><li><strong>Every enemy is a 3D model</strong> too (imps, beetles, goblins, void knights, demon bosses, shellbacks, gloomwings, shamans, gloops, crabs, lynxes and brutes), turning to face where they walk, with frozen and slowed tints.</li><li>Shots, hits, deaths, coins, fire and mud fields, wards and summons are <strong>glowing 3D effects</strong> that light up the ground around them.</li><li>Placing, tapping, ranges, health bars, levels and damage numbers work exactly as before.</li><li>Prefer the classic look or have a slower phone? <strong>Settings → 🧊 3D graphics</strong> switches back to 2D (saved on this device).</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>New Look for Game Passes</h3><p style="color:var(--mut);font-size:12px">Implemented Wednesday, October 14, 2026 at 4:30 AM MDT</p><ul><li>The <strong>💎 Game Passes</strong> window has a fresh design: <strong>VIP</strong> is a golden featured card at the top, and every other pass has its own colored card.</li><li>Each pass now shows a short tagline and clear <strong>"what you get"</strong> points instead of a long paragraph.</li><li>A progress bar shows how many passes your account owns, and owned passes get a glowing border and an <strong>OWNED</strong> ribbon.</li><li>On wider screens the passes sit side by side; on phones they stack.</li></ul></section>
 <section class="qol-section" data-category="Balance Update"><span class="update-tag tag-balance-update">Balance Update</span><h3>Faster Raids</h3><p style="color:var(--mut);font-size:12px">Implemented Wednesday, October 14, 2026 at 4:00 AM MDT</p><ul><li>Raids took too long: Raid Level 5 could take over 11 minutes even at Speed ×3. Enemies in raids now arrive <strong>almost twice as fast</strong> (every 0.4s instead of 0.75s) and the next wave starts after 3 seconds instead of 5.</li><li>Raid Level 5 now takes about <strong>5 to 6 minutes</strong> at Speed ×3, and Levels 1 to 4 under 2 minutes. Waves, rewards and the Count Vesper chance are unchanged.</li><li>Because enemies now come in denser waves, their health was lowered to keep raids <strong>exactly as hard as before</strong>.</li><li>Raid leaderboard times are checked with the new pace. Regular maps are unchanged.</li></ul></section>
 <section class="qol-section" data-category="QoL"><span class="update-tag tag-qol">QoL</span><h3>Skill Tags for Every Unit</h3><p style="color:var(--mut);font-size:12px">Implemented Wednesday, October 14, 2026 at 4:00 AM MDT</p><ul><li>Every unit's Skills &amp; Passives now shows its ability name and tags like <strong>Single Target</strong>, <strong>Area</strong> or <strong>Control</strong>. Count Vesper, Barter, Chrono Warden and Abyss Summoner were missing them.</li><li>New tag: <strong>Summoner</strong>, for units that send out their own fighters.</li></ul></section>
@@ -1283,10 +1293,10 @@ window.ggSplashHide=hide;
  <p id="gameVersionLabel" style="color:var(--mut);font-size:12px;margin-top:12px;text-align:right"></p>
  </div></div>
 
-<script src="gg-sound.js?v=2026.10.11.39"></script>
-<script src="gg-art.js?v=2026.10.11.39"></script>
-<script>const GAME_VERSION='2026.10.11.39';</script>
-<script src="gg-game.js?v=2026.10.11.39"></script>
+<script src="gg-sound.js?v=2026.10.11.40"></script>
+<script src="gg-art.js?v=2026.10.11.40"></script>
+<script>const GAME_VERSION='2026.10.11.40';</script>
+<script src="gg-game.js?v=2026.10.11.40"></script>
 
 <script>
 // The PWA and its save store require a secure, stable origin (HTTPS or localhost).

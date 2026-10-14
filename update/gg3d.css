@@ -1,7 +1,0 @@
-/* 3D graphics (2026.10.11.40) */
-#cv3d{position:absolute;display:none;pointer-events:none;z-index:0;border-radius:10px;background:#0b1020}
-body.gg3d-on #cv3d{display:block}
-body.gg3d-on #cv{background:transparent!important;box-shadow:none!important;position:relative;z-index:1}
-.gg3d-altar{position:absolute;top:0;left:50%;width:124px;height:131px;margin-left:-62px;background:transparent!important;box-shadow:none!important;border-radius:0!important;pointer-events:none;filter:drop-shadow(0 0 16px #7fe3ffaa);display:none}
-body.gg3d-altar-on .gg3d-altar{display:block}
-body.gg3d-altar-on .altar-crystal{visibility:hidden}
